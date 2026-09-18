@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hover Card</title>
+
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      padding: 50px;
+    }
+
+    .card {
+      width: 280px;
+      padding: 25px;
+      background-color: white;
+      border-radius: 12px;
+
+      /* Transition is on the card, not hover */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      /* Card moves up when mouse is over it */
+      transform: translateY(-6px);
+
+      /* Coloured shadow appears */
+      box-shadow: 0 10px 25px rgba(20, 184, 166, 0.35);
+    }
+
+    .card h2 {
+      color: #0f766e;
+      margin-top: 0;
+    }
+
+    .card p {
+      color: #555;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h2>Hello!</h2>
+    <p>
+      Move your mouse over this card
+      to see the hover effect.
+    </p>
+  </div>
+
+</body>
+</html>

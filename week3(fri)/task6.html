@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Responsive Cards</title>
+
+  <style>
+    :root {
+      --primary: #0f766e;
+      --accent: #14b8a6;
+      --background: #f0fdfa;
+      --card-color: white;
+      --text-color: #334155;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 30px;
+      font-family: Arial, sans-serif;
+      background: var(--background);
+      color: var(--text-color);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+
+    /* One column by default */
+    .grid {
+      max-width: 1000px;
+      margin: 0 auto;
+
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-color);
+      border: 2px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 25px;
+
+      
+      position: relative;
+
+    
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    
+    .card::before {
+      content: "💡";
+      font-size: 28px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      color: var(--primary);
+    }
+
+    .card p {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(20, 184, 166, 0.3);
+    }
+
+   
+    @media (min-width: 640px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #5eead4;
+        --accent: #14b8a6;
+        --background: #0f172a;
+        --card-color: #1e293b;
+        --text-color: #e2e8f0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>My Web Skills</h1>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>HTML</h2>
+      <p>HTML gives a webpage its basic structure.</p>
+    </div>
+
+    <div class="card">
+      <h2>CSS</h2>
+      <p>CSS is used to make websites look better.</p>
+    </div>
+
+    <div class="card">
+      <h2>JavaScript</h2>
+      <p>JavaScript adds interaction to webpages.</p>
+    </div>
+
+    <div class="card">
+      <h2>Responsive Design</h2>
+      <p>Responsive design helps websites work on different screens.</p>
+    </div>
+
+    <div class="card">
+      <h2>Git</h2>
+      <p>Git helps developers manage project changes.</p>
+    </div>
+
+    <div class="card">
+      <h2>Web Design</h2>
+      <p>Good design makes websites easier to use.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>
+
