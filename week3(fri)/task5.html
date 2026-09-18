@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fixed Navigation Bar</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f8fafc;
+    }
+
+    /* Navigation bar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+
+      background-color: #1e293b;
+      padding: 15px 40px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      z-index: 1000;
+    }
+
+    .logo {
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .links a {
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    /* Link changes color when mouse is over it */
+    .links a:hover {
+      color: #14b8a6;
+    }
+
+    /* Space for the fixed navigation */
+    .content {
+      padding-top: 90px;
+      padding-left: 40px;
+      padding-right: 40px;
+
+      min-height: 1500px;
+    }
+
+    .content h1 {
+      color: #1e293b;
+    }
+
+    .content p {
+      line-height: 1.7;
+      color: #475569;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">MyWebsite</div>
+
+    <div class="links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </div>
+  </nav>
+
+  <main class="content">
+    <h1>Welcome to My Website</h1>
+
+    <p>
+      This is a simple webpage with a fixed navigation bar.
+      Scroll down to see that the navigation bar stays at the top.
+    </p>
+
+    <p>
+      The page contains enough content to make the browser scroll.
+      The navigation remains visible while the content moves.
+    </p>
+
+    <h2>About Us</h2>
+
+    <p>
+      We create simple and useful websites using HTML and CSS.
+      This example demonstrates fixed positioning and Flexbox.
+    </p>
+
+    <h2>Our Services</h2>
+
+    <p>
+      Web design, frontend development, and responsive layouts
+      are some of the services we provide.
+    </p>
+  </main>
+
+</body>
+</html>
+

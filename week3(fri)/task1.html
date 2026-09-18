@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <title>Sale Card</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 50px;
+      background-color: #f0fdfa;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Main card */
+    .card {
+      width: 280px;
+      height: 180px;
+      background-color: white;
+      border: 2px solid #14b8a6;
+      border-radius: 12px;
+
+      /* This is important because the badge
+         is positioned according to the card */
+      position: relative;
+
+      padding: 20px;
+      margin: auto;
+
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+      /* Small hover effect */
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Sale label */
+    .badge {
+      position: absolute;
+      top: -12px;
+      right: 15px;
+
+      background-color: #0f766e;
+      color: white;
+
+      padding: 5px 13px;
+      border-radius: 20px;
+
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .card h2 {
+      margin-top: 20px;
+      color: #0f766e;
+    }
+
+    .card p {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0f766e;
+    }
+
+    .old-price {
+      margin-left: 8px;
+      color: #999;
+      text-decoration: line-through;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <span class="badge">SALE</span>
+
+    <h2>Special Offer</h2>
+
+    <p>
+      Get this product today at a special
+      discounted price.
+    </p>
+
+    <span class="price">$39.99</span>
+    <span class="old-price">$59.99</span>
+
+  </div>
+
+</body>
+</html>

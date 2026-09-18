@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Portfolio</title>
+
+  <style>
+    /* =========================
+       CSS VARIABLES
+    ========================== */
+    :root {
+      --primary: #0f766e;
+      --accent: #14b8a6;
+      --background: #f0fdfa;
+      --card: white;
+      --text: #334155;
+      --nav: #1e293b;
+      --radius: 12px;
+      --space: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+
+      background: var(--nav);
+      padding: 15px 40px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      z-index: 1000;
+    }
+
+    .logo {
+      color: white;
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .hero {
+      min-height: 450px;
+      padding: 150px 30px 80px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+
+      animation: fadeIn 1.5s ease;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .hero h2 {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: auto;
+      line-height: 1.6;
+    }
+
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      position: sticky;
+      top: 65px;
+
+      background: var(--background);
+      padding: 15px 20px;
+
+      color: var(--primary);
+      border-bottom: 2px solid var(--accent);
+
+      z-index: 10;
+    }
+
+    .skills {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space);
+    }
+
+    /* Skill card */
+    .card {
+      background: var(--card);
+      border: 2px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 25px;
+
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Emoji before every card */
+    .card::before {
+      content: "💡";
+      display: block;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+
+    .card p {
+      line-height: 1.6;
+    }
+
+    /* Hover effect */
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(20, 184, 166, 0.3);
+    }
+
+    /* =========================
+       RESPONSIVE GRID
+    ========================== */
+    @media (min-width: 640px) {
+      .skills {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+   
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #5eead4;
+        --accent: #14b8a6;
+        --background: #0f172a;
+        --card: #1e293b;
+        --text: #e2e8f0;
+        --nav: #020617;
+      }
+    }
+
+    .bottom-space {
+      height: 500px;
+      padding: 50px 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">Sabhyata</div>
+
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+    </div>
+  </nav>
+
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div>
+      <h1>Hi, I'm Sabhyata</h1>
+
+      <h2>Computer Science Student</h2>
+
+      <p>
+        Welcome to my personal portfolio. I am interested in
+        programming, web development, and learning new
+        technologies.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- Sticky Heading -->
+  <h2 class="section-title" id="skills">
+    My Skills
+  </h2>
+
+
+  <!-- Skills Grid -->
+  <section class="skills">
+
+    <div class="card">
+      <h3>HTML</h3>
+      <p>
+        I use HTML to create the structure of webpages.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>CSS</h3>
+      <p>
+        I use CSS to design websites and create responsive layouts.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Python</h3>
+      <p>
+        Python is one of the languages I use for programming
+        and problem solving.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Data Structures</h3>
+      <p>
+        I am learning stacks, queues, linked lists, trees,
+        and other important data structures.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>JavaScript</h3>
+      <p>
+        I am learning JavaScript to make webpages more
+        interactive.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Web Development</h3>
+      <p>
+        I enjoy creating simple and useful websites
+        using different web technologies.
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- About Section -->
+  <div class="bottom-space" id="about">
+    <h2>About Me</h2>
+
+    <p>
+      I am a Computer Science student who enjoys learning
+      programming and building projects.
+    </p>
+
+    <p>
+      My goal is to improve my technical skills and create
+      useful projects in the future.
+    </p>
+  </div>
+
+</body>
+</html>
+

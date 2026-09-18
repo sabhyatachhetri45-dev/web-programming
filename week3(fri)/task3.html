@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loading Spinner</title>
+
+  <style>
+    body {
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+
+      /* Circle with light teal border */
+      border: 4px solid #99f6e4;
+
+      /* Dark teal on the top */
+      border-top: 4px solid #0f766e;
+
+      border-radius: 50%;
+      background-color: transparent;
+
+      /* Run the animation forever */
+      animation: spin 1s linear infinite;
+    }
+
+    /* Spinner rotation */
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="spinner"></div>
+
+</body>
+</html>
+
