@@ -1,98 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-          content="A blog article explaining semantic HTML and modern web structure.">
-
-    <title>My Blog — Semantic HTML</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A blog article explaining semantic HTML and modern web structure.">
+  <title>My Blog — Semantic HTML</title>
 </head>
-
 <body>
+  <header>
+    <h1>My Blog</h1>
+    <p>Exploring <strong>Web Development</strong> and Modern HTML</p>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="#article">Article</a></li>
+        <li><a href="#topics">Topics</a></li>
+        <li><a href="#resources">Resources</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- ================= HEADER ================= -->
-    <header>
-        <h1>My Blog</h1>
+  <main>
+    <article id="article">
+      <header>
+        <h2>Semantic HTML: Building Better Web Pages</h2>
+        <p>Published: <time datetime="2026-09-11">September 11, 2026</time></p>
+        <p>Category: <a href="#topics">Web Development</a></p>
+      </header>
 
-        <p>
-            Exploring <strong>Web Development</strong> and Modern HTML
-        </p>
+      <figure>
+        <img src="Html sementic.png" alt="Diagram showing common semantic HTML elements" width="600" height="350">
+        <figcaption>Common semantic elements used to structure a webpage.</figcaption>
+      </figure>
 
-        <nav aria-label="Main navigation">
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="#article">Article</a></li>
-                <li><a href="#topics">Topics</a></li>
-                <li><a href="#resources">Resources</a></li>
-            </ul>
-        </nav>
-    </header>
+      <section>
+        <h3>Introduction</h3>
+        <p><strong>Semantic HTML</strong> means using HTML elements according to their meaning and purpose rather than using generic elements everywhere.</p>
+        <p>Elements such as <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;footer&gt;</code> make the structure of a webpage easier to understand.</p>
+      </section>
 
+      <section id="topics">
+        <h3>Why Use Semantic HTML?</h3>
+        <p>Semantic HTML improves the organization and accessibility of web pages.</p>
+        <ul>
+          <li>It gives content a clear structure.</li>
+          <li>It helps assistive technologies navigate pages.</li>
+          <li>It makes code easier to maintain.</li>
+        </ul>
+      </section>
 
-    <!-- ================= MAIN CONTENT ================= -->
-    <main>
+      <section id="resources">
+        <h3>Resources</h3>
+        <p><a href="https://developer.mozilla.org/en-US/docs/Glossary/Semantics" target="_blank" rel="noopener noreferrer">Learn more about HTML semantics on MDN</a>.</p>
+      </section>
+    </article>
+  </main>
 
-        <!-- ================= BLOG ARTICLE ================= -->
-        <article id="article">
-
-            <header>
-                <h2>Semantic HTML: Building Better Web Pages</h2>
-
-                <p>
-                    Published:
-                    <time datetime="2026-09-11">September 11, 2026</time>
-                </p>
-
-                <p>
-                    Category:
-                    <a href="#topics">Web Development</a>
-                </p>
-            </header>
-
-
-            <!-- Featured Image -->
-            <figure>
-                <img
-                    src="Html sementic.png"
-                    alt="Diagram showing common semantic HTML elements"
-                    width="600"
-                    height="350">
-
-                <figcaption>
-                    Common semantic elements used to structure a webpage.
-                </figcaption>
-            </figure>
-
-
-            <!-- Introduction -->
-            <section>
-                <h3>Introduction</h3>
-
-                <p>
-                    <strong>Semantic HTML</strong> means using HTML elements
-                    according to their meaning and purpose rather than using
-                    generic elements everywhere.
-                </p>
-
-                <p>
-                    Elements such as
-                    <code>&lt;header&gt;</code>,
-                    <code>&lt;nav&gt;</code>,
-                    <code>&lt;main&gt;</code>,
-                    <code>&lt;article&gt;</code>,
-                    <code>&lt;section&gt;</code>,
-                    and <code>&lt;footer&gt;</code>
-                    make the structure of a webpage easier to understand.
-                </p>
-            </section>
-
-
-            <!-- Benefits -->
-            <section>
-                <h3>Why Use Semantic HTML?</h3>
-
-                <p>
-                    Semantic HTML improves the organization and accessibility
-                    of web pages.
+  <footer>
+    <p>&copy; 2026 My Blog</p>
+  </footer>
+</body>
+</html>
