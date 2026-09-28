@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rocket Launch</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; overflow: hidden; }
+  body {
+    background: linear-gradient(#0a0e2a 0%, #1b1550 60%, #43286e 100%);
+    color: #fff;
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+  }
+
+  /* ---------- Stars ---------- */
+  .star {
+    position: fixed; background: #fff; border-radius: 50%;
+    animation: twinkle var(--t, 3s) ease-in-out infinite;
+  }
+  @keyframes twinkle { 50% { opacity: .15; } }
+
+  /* ---------- Rocket ---------- */
+  #rocket {
+    position: fixed; left: 50%; bottom: 290px; width: 90px; height: 160px; margin-left: -45px;
+    transition: transform 2.4s cubic-bezier(.6, 0, 1, .6);
+    z-index: 2;
+  }
+  #rocket.launch { transform: translateY(-130vh); }
+  #rocket .body { width: 100%; height: 100%; animation: rumble .08s linear infinite; }
+  #rocket.launch .body { --amp: 4; }
+  @keyframes rumble {
+    0%   { transform: translate(calc(var(--amp, 0) * 1px), 0); }
+    50%  { transform: translate(calc(var(--amp, 0) * -1px), calc(var(--amp, 0) * .5px)); }
+    100% { transform: translate(calc(var(--amp, 0) * 1px), 0); }
+  }
+  #flame {
+    transform-origin: 50px 118px; transform: scaleY(var(--flame, 0));
+    transition: transform .3s;
+    animation: flicker .12s ease-in-out infinite alternate;
+  }
+  @keyframes flicker { to { opacity: .75; } }
+
+  /* ---------- Smoke ---------- */
+  .smoke {
+    position: fixed; bottom: 280px; width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,.7); pointer-events: none; z-index: 1;
+    animation: puff 1.6s ease-out forwards;
+  }
+  @keyframes puff { to { transform: translate(var(--dx), var(--dy)) scale(4); opacity: 0; } }
+
+  /* ---------- Control panel ---------- */
+  .panel {
+    position: relative; z-index: 3; width: min(94%, 400px); margin-bottom: 18px; padding: 1.2rem 1.4rem 1.2rem;
+    text-align: center; background: rgba(15, 12, 45, .8); backdrop-filter: blur(8px);
+    border: 2px solid rgba(255,255,255,.18); border-radius: 26px;
+    box-shadow: 0 0 40px rgba(124, 77, 255, .35);
+  }
+  h1 { margin: 0; font-size: 1.15rem; letter-spacing: .5px; }
+  #counter { font-size: 2.6rem; font-weight: 800; margin: .1rem 0; }
+  #counter.pop { animation: pop .3s ease; }
+  @keyframes pop { 50% { transform: scale(1.35); color: #ffd23f; } }
+
+  .fuel { display: flex; gap: 6px; margin: .3rem 0 .6rem; }
+  .cell { flex: 1; height: 16px; border-radius: 6px; background: rgba(255,255,255,.14); transition: background .3s, box-shadow .3s; }
+  .cell.on { background: linear-gradient(#ffd23f, #ff7a1a); box-shadow: 0 0 12px #ff9a1a; }
+
+  #message { min-height: 1.5em; margin: 0 0 .9rem; color: #c9c2f5; font-weight: 600; }
+  #message.success { color: #4dffa0; font-size: 1.1rem; }
+
+  #clickBtn {
+    position: relative; overflow: hidden;
+    font: inherit; font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: .5px;
+    background: #7c4dff; border: 0; border-radius: 16px; padding: .85rem 2.4rem;
+    cursor: pointer; box-shadow: 0 6px 0 #4a28c0;
+    transition: background .3s, box-shadow .3s, transform .08s;
+  }
+  #clickBtn:active { transform: translateY(5px); box-shadow: 0 1px 0 #4a28c0; }
+  #clickBtn:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+  #clickBtn.done { background: #1fbf6b; box-shadow: 0 6px 0 #12894b; }   /* green at 5 clicks */
+  #clickBtn:disabled { cursor: default; }
+
+  .ripple {
+    position: absolute; width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(255,255,255,.55); transform: scale(0); pointer-events: none;
+    animation: ripple .6s ease-out forwards;
+  }
+  @keyframes ripple { to { transform: scale(14); opacity: 0; } }
+
+  .plus {
+    position: fixed; z-index: 5; font-weight: 800; font-size: 1.6rem; color: #ffd23f;
+    pointer-events: none; text-shadow: 0 0 8px #ff9a1a;
+    animation: float 1s ease-out forwards;
+  }
+  @keyframes float { to { transform: translateY(-80px); opacity: 0; } }
+
+  #reset {
+    display: none; margin: .9rem auto 0; font: inherit; font-weight: 600;
+    color: #c9c2f5; background: none; border: 0; text-decoration: underline; cursor: pointer;
+  }
+  #reset.show { display: block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star, #rocket .body, #flame { animation: none !important; }
+    #rocket { transition-duration: .01s; }
+  }
+</style>
+</head>
+<body>
+
+<div id="rocket" aria-hidden="true">
+  <div class="body">
+    <svg viewBox="0 0 100 160" width="100%" height="100%">
+      <g id="flame">
+        <polygon points="36,118 64,118 50,158" fill="#ff7a1a"/>
+        <polygon points="42,118 58,118 50,146" fill="#ffd23f"/>
+      </g>
+      <path d="M25 90 L4 128 L26 116Z" fill="#ff4d6d"/>
+      <path d="M75 90 L96 128 L74 116Z" fill="#ff4d6d"/>
+      <path d="M50 4 C76 30 81 70 76 112 L24 112 C19 70 24 30 50 4Z" fill="#f4f6ff"/>
+      <path d="M50 4 C60 14 67 25 71 36 L29 36 C33 25 40 14 50 4Z" fill="#ff4d6d"/>
+      <circle cx="50" cy="64" r="13" fill="#4dabff" stroke="#c9d6ff" stroke-width="4"/>
+      <rect x="38" y="110" width="24" height="9" rx="3" fill="#8b90a8"/>
+    </svg>
+  </div>
+</div>
+
+<main class="panel">
+  <h1>Rocket launch control</h1>
+  <p id="counter">0</p>
+  <div class="fuel" aria-hidden="true">
+    <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+    <div class="cell"></div><div class="cell"></div>
+  </div>
+  <p id="message" aria-live="polite">Click 5 times to fuel the rocket.</p>
+  <button id="clickBtn">Add fuel</button>
+  <button id="reset">Launch again</button>
+</main>
+
+<script>
+  const GOAL = 5;
+  const messages = [
+    'Click 5 times to fuel the rocket.',
+    'Fuel pumping... engines warming up.',
+    'Engines rumbling!',
+    'Half way there, hold on tight!',
+    'Almost ready... one more!',
+    '🎉 Congratulations! Liftoff!'
+  ];
+  let count = 0;
+
+  // Select elements with querySelector
+  const button  = document.querySelector('#clickBtn');
+  const counter = document.querySelector('#counter');
+  const message = document.querySelector('#message');
+  const rocket  = document.querySelector('#rocket');
+  const reset   = document.querySelector('#reset');
+  const cells   = document.querySelectorAll('.cell');
+
+  // Twinkling star background
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement('div');
+    const size = Math.random() * 2.5 + 1;
+    s.className = 'star';
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random() * 100}%;top:${Math.random() * 70}%;--t:${2 + Math.random() * 3}s`;
+    document.body.prepend(s);
+  }
+
+  // Sound (rising beeps, then a whoosh)
+  let audio;
+  function beep(freq, dur = 0.15, type = 'square') {
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = type; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.08, audio.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + dur);
+      osc.connect(gain); gain.connect(audio.destination);
+      osc.start(); osc.stop(audio.currentTime + dur);
+    } catch (err) { /* sound is optional */ }
+  }
+  function whoosh() {
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(80, audio.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(900, audio.currentTime + 2);
+      gain.gain.setValueAtTime(0.07, audio.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 2.2);
+      osc.connect(gain); gain.connect(audio.destination);
+      osc.start(); osc.stop(audio.currentTime + 2.2);
+    } catch (err) { /* sound is optional */ }
+  }
+
+  function restart(el, cls) {
+    el.classList.remove(cls);
+    void el.offsetWidth;            // force reflow so the animation replays
+    el.classList.add(cls);
+  }
+
+  function addRipple(e) {
+    const rect = button.getBoundingClientRect();
+    const dot = document.createElement('span');
+    dot.className = 'ripple';
+    dot.style.left = (e.clientX - rect.left - 10) + 'px';
+    dot.style.top  = (e.clientY - rect.top - 10) + 'px';
+    button.appendChild(dot);
+    dot.addEventListener('animationend', () => dot.remove());
+  }
+
+  function floatPlus(e) {
+    const plus = document.createElement('span');
+    plus.className = 'plus';
+    plus.textContent = '+1 ⛽';
+    plus.style.left = (e.clientX - 25) + 'px';
+    plus.style.top  = (e.clientY - 40) + 'px';
+    document.body.appendChild(plus);
+    plus.addEventListener('animationend', () => plus.remove());
+  }
+
+  function smoke() {
+    for (let i = 0; i < 14; i++) {
+      const puff = document.createElement('div');
+      puff.className = 'smoke';
+      puff.style.left = `calc(50% - 20px + ${Math.random() * 60 - 30}px)`;
+      puff.style.setProperty('--dx', (Math.random() * 300 - 150) + 'px');
+      puff.style.setProperty('--dy', (Math.random() * 60 - 10) + 'px');
+      puff.style.animationDelay = (Math.random() * 0.5) + 's';
+      document.body.appendChild(puff);
+      puff.addEventListener('animationend', () => puff.remove());
+    }
+  }
+
+  // Click listener
+  button.addEventListener('click', (e) => {
+    if (count >= GOAL) return;
+
+    count++;
+    counter.textContent = count;                        // update counter text
+    message.textContent = messages[count];
+    cells[count - 1].classList.add('on');
+
+    // rocket rumbles harder and the flame grows with each click
+    rocket.querySelector('.body').style.setProperty('--amp', count * 1.2);
+    rocket.style.setProperty('--flame', count / GOAL);
+
+    addRipple(e);
+    floatPlus(e);
+    restart(counter, 'pop');
+    beep(260 + count * 110);
+
+    if (count === GOAL) {
+      button.classList.add('done');                     // green button
+      message.classList.add('success');
+      button.textContent = 'Liftoff!';
+      button.disabled = true;
+      reset.classList.add('show');
+      setTimeout(() => {
+        rocket.classList.add('launch');
+        whoosh();
+        smoke();
+      }, 500);
+    }
+  });
+
+  // Reset everything
+  reset.addEventListener('click', () => {
+    count = 0;
+    counter.textContent = 0;
+    message.textContent = messages[0];
+    message.classList.remove('success');
+    cells.forEach(c => c.classList.remove('on'));
+    button.classList.remove('done');
+    button.textContent = 'Add fuel';
+    button.disabled = false;
+    reset.classList.remove('show');
+
+    // bring the rocket back instantly, with no fly-down animation
+    rocket.style.transition = 'none';
+    rocket.classList.remove('launch');
+    rocket.querySelector('.body').style.setProperty('--amp', 0);
+    rocket.style.setProperty('--flame', 0);
+    void rocket.offsetWidth;
+    rocket.style.transition = '';
+  });
+</script>
+</body>
+</html>
