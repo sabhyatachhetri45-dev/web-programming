@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sabhyata Chhetri – Profile Card</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@500;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{
+  --page:#fff1c9;--dot:#f3d98a;--card:#fffdf7;--ink:#2b2140;--soft:#6d6285;--line:#2b2140;
+  --pink:#ff8fb1;--mint:#7fdcc0;--sun:#ffd35c;--lilac:#c3b3ff;
+  margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;overflow:hidden;
+  font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);
+  background:radial-gradient(var(--dot) 2px,transparent 2.5px) 0 0/26px 26px,var(--page);
+  transition:background-color .6s}
+body:has(.card.dark){
+  --page:#1b1530;--dot:#2a2247;--card:#2a2247;--ink:#d8d0ee;--soft:#9c92bd;--line:#0f0b1f;
+  --pink:#c9789a;--mint:#5fa893;--sun:#c9a94f;--lilac:#8c7fcf}
+
+/* floating doodles */
+.doodle{position:fixed;font-size:34px;opacity:.85;animation:float 6s ease-in-out infinite;pointer-events:none;user-select:none}
+body:has(.card.dark) .doodle{opacity:.45}
+@keyframes float{50%{transform:translateY(-22px) rotate(12deg)}}
+
+/* card */
+.card{position:relative;z-index:1;width:min(370px,100%);padding:30px 26px 0;overflow:hidden;text-align:center;
+  background:var(--card);border:3px solid var(--line);border-radius:28px;box-shadow:9px 9px 0 var(--line);
+  transform:rotate(-2deg);transition:transform .35s cubic-bezier(.3,1.6,.5,1),background .5s,box-shadow .5s}
+.card:hover{transform:rotate(0) translateY(-4px)}
+
+/* toggle */
+.toggle{position:absolute;top:14px;right:14px;z-index:2;padding:8px 14px;cursor:pointer;
+  font:700 13px 'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--sun);
+  border:3px solid var(--line);border-radius:999px;box-shadow:3px 3px 0 var(--line);
+  transition:transform .15s,box-shadow .15s,background .4s}
+.toggle:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--line)}
+.toggle:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
+.toggle:focus-visible,.connect:focus-visible,.face:focus-visible{outline:3px solid var(--lilac);outline-offset:3px}
+
+/* mascot avatar */
+.face{position:relative;width:120px;height:120px;margin:34px auto 6px;padding:0;cursor:pointer;
+  background:var(--pink);border:3px solid var(--line);border-radius:46% 54% 50% 50%/55% 50% 50% 45%;
+  box-shadow:5px 5px 0 var(--line);animation:wobble 5s ease-in-out infinite;transition:background .5s}
+.face.jump{animation:jump .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes wobble{50%{border-radius:52% 48% 46% 54%/48% 55% 45% 52%;transform:rotate(3deg)}}
+@keyframes jump{40%{transform:translateY(-26px) scale(1.06,.94)}}
+.eye{position:absolute;top:38px;width:28px;height:28px;background:#fff;border:3px solid var(--line);border-radius:50%;
+  display:grid;place-items:center;animation:blink 4.5s infinite}
+.eye.l{left:22px}.eye.r{right:22px}
+.pupil{width:11px;height:11px;background:var(--line);border-radius:50%;transition:transform .08s}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.mouth{position:absolute;left:50%;bottom:24px;width:34px;height:14px;transform:translateX(-50%);
+  border:3px solid var(--line);border-top:0;border-radius:0 0 40px 40px;transition:all .2s}
+.face.jump .mouth{height:24px;background:var(--line)}
+.cheek{position:absolute;top:70px;width:14px;height:8px;border-radius:50%;background:#fff;opacity:.45}
+.cheek.l{left:10px}.cheek.r{right:10px}
+.hint{margin:6px 0 0;color:var(--soft);font-size:12px;font-weight:500}
+.hint b{color:var(--ink)}
+
+h1{margin:14px 0 0;font:800 30px/1.05 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em}
+.role{display:inline-block;margin:10px 0 0;padding:4px 12px;font-size:13px;font-weight:700;
+  background:var(--mint);border:2px solid var(--line);border-radius:8px;transform:rotate(1.5deg);color:#1e1a2e}
+.bio{min-height:48px;margin:16px auto 0;max-width:28ch;font-size:16px;line-height:1.5;font-weight:500}
+.bio::after{content:"|";margin-left:1px;animation:caret 1s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+
+/* sticker chips */
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:18px 0}
+.chip{padding:6px 12px;font:700 13px 'DM Sans',system-ui,sans-serif;color:#1e1a2e;cursor:pointer;
+  border:2px solid var(--line);border-radius:999px;box-shadow:2px 2px 0 var(--line);
+  transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.chip:nth-child(1){background:var(--lilac);transform:rotate(-3deg)}
+.chip:nth-child(2){background:var(--sun);transform:rotate(2deg)}
+.chip:nth-child(3){background:var(--pink);transform:rotate(-2deg)}
+.chip:nth-child(4){background:var(--mint);transform:rotate(3deg)}
+.chip:hover{transform:rotate(0) scale(1.12)}
+.chip:active{transform:scale(.9)}
+
+.connect{width:100%;padding:14px;cursor:pointer;font:800 17px 'Bricolage Grotesque',system-ui,sans-serif;
+  color:#1e1a2e;background:var(--sun);border:3px solid var(--line);border-radius:16px;box-shadow:5px 5px 0 var(--line);
+  transition:transform .15s,box-shadow .15s,background .4s}
+.connect:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--line)}
+.connect:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--line)}
+.connect.on{background:var(--mint)}
+
+/* marquee strip */
+.strip{margin:24px -26px 0;padding:9px 0;overflow:hidden;white-space:nowrap;background:var(--line);color:var(--card);
+  font:700 13px 'DM Sans',system-ui,sans-serif}
+.strip span{display:inline-block;padding-left:100%;animation:scroll 14s linear infinite}
+@keyframes scroll{to{transform:translateX(-100%)}}
+
+.bit{position:fixed;width:11px;height:11px;border:2px solid var(--line);border-radius:3px;z-index:9;pointer-events:none;
+  animation:bit 1s ease-out forwards}
+@keyframes bit{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01s!important}
+}
+</style>
+</head>
+<body>
+<span class="doodle" style="top:10%;left:12%">⭐</span>
+<span class="doodle" style="top:70%;left:8%;animation-delay:-2s">🌈</span>
+<span class="doodle" style="top:18%;right:10%;animation-delay:-4s">🪐</span>
+<span class="doodle" style="bottom:12%;right:14%;animation-delay:-1s">🍕</span>
+
+<article class="card" id="card">
+  <button class="toggle" id="toggle" type="button">🌙 Go dark</button>
+
+  <button class="face" id="face" type="button" aria-label="Give Sabhyata a high five">
+    <span class="eye l"><span class="pupil"></span></span>
+    <span class="eye r"><span class="pupil"></span></span>
+    <span class="cheek l"></span><span class="cheek r"></span>
+    <span class="mouth"></span>
+  </button>
+  <p class="hint">Poke me! High fives: <b id="fives">0</b></p>
+
+  <h1>Sabhyata Chhetri</h1>
+  <span class="role">Designer &amp; professional overthinker</span>
+  <p class="bio" id="bio"></p>
+
+  <div class="chips">
+    <span class="chip">🎨 UI design</span>
+    <span class="chip">✨ Motion</span>
+    <span class="chip">📚 Books</span>
+    <span class="chip">☕ Coffee</span>
+  </div>
+
+  <button class="connect" id="connect" type="button">Let's connect</button>
+
+  <div class="strip"><span>✦ let's get connected ✦ have fun ✦ make cool things ✦ say hi ✦ let's get connected ✦ have fun ✦ make cool things ✦ say hi</span></div>
+</article>
+
+<script>
+// 1. Select the card and the toggle button
+const card = document.querySelector('#card');
+const toggleBtn = document.querySelector('#toggle');
+
+// 2. Add a click listener to the button
+toggleBtn.addEventListener('click', () => {
+  // 3. Toggle the dark class
+  card.classList.toggle('dark');
+  // 4. Update the button text based on classList.contains('dark')
+  toggleBtn.textContent = card.classList.contains('dark') ? '☀️ Go light' : '🌙 Go dark';
+  toggleBtn.setAttribute('aria-pressed', card.classList.contains('dark'));
+});
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// typewriter bio
+const bioEl = document.querySelector('#bio');
+const bioText = "Let's get connected and have fun together! 🎉";
+let i = 0;
+(function type(){
+  bioEl.textContent = bioText.slice(0, ++i);
+  if (i < bioText.length) setTimeout(type, reduce ? 0 : 55);
+})();
+
+// eyes follow the pointer
+const pupils = document.querySelectorAll('.pupil');
+document.addEventListener('pointermove', e => {
+  pupils.forEach(p => {
+    const r = p.parentElement.getBoundingClientRect();
+    const a = Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2));
+    p.style.transform = `translate(${Math.cos(a) * 5}px,${Math.sin(a) * 5}px)`;
+  });
+});
+
+// confetti helper
+function burst(x, y, n = 18) {
+  if (reduce) return;
+  const colors = ['#ff8fb1', '#7fdcc0', '#ffd35c', '#c3b3ff'];
+  for (let k = 0; k < n; k++) {
+    const b = document.createElement('span');
+    b.className = 'bit';
+    b.style.left = x + 'px';
+    b.style.top = y + 'px';
+    b.style.background = colors[k % colors.length];
+    b.style.setProperty('--dx', (Math.random() * 260 - 130) + 'px');
+    b.style.setProperty('--dy', (Math.random() * -200 - 20) + 'px');
+    b.style.setProperty('--r', (Math.random() * 540 - 270) + 'deg');
+    document.body.appendChild(b);
+    setTimeout(() => b.remove(), 1000);
+  }
+}
+
+// poke the mascot: jump, count high fives
+const face = document.querySelector('#face');
+const fives = document.querySelector('#fives');
+let count = 0;
+face.addEventListener('click', () => {
+  fives.textContent = ++count;
+  face.classList.remove('jump'); void face.offsetWidth; face.classList.add('jump');
+  const r = face.getBoundingClientRect();
+  burst(r.left + r.width / 2, r.top + 20, 10);
+});
+
+// sticker chips pop
+document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', e => burst(e.clientX, e.clientY, 8)));
+
+// connect button
+const connect = document.querySelector('#connect');
+connect.addEventListener('click', e => {
+  const on = connect.classList.toggle('on');
+  connect.textContent = on ? "Connected! 🎉" : "Let's connect";
+  if (on) burst(e.clientX, e.clientY, 28);
+});
+</script>
+</body>
+</html>
