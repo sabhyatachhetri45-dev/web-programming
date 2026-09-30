@@ -1109,6 +1109,40 @@
         .directory-link.directory-website { border-color: #665040; background: #241e19; }
         .directory-link.directory-website .directory-icon { color: #f39a76; }
         .directory-link.directory-website:hover { border-color: #d88362; background: #2b221d; }
+        .week4-access {
+            margin-top: 22px;
+            padding: 18px;
+            border: 1px solid #343d35;
+            border-radius: 5px;
+            background: rgba(26, 32, 27, .82);
+        }
+        .week4-access-heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .week4-access-heading h2 { margin: 0; color: #e8eee7; font: 700 15px "Manrope", sans-serif; }
+        .week4-access-heading span { color: #87938a; font: 10px "DM Mono", monospace; }
+        .week4-task-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+        .week4-task-links a {
+            display: flex;
+            min-height: 62px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 12px;
+            border: 1px solid #343d35;
+            border-radius: 4px;
+            color: #e8eee7;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .week4-task-links a:hover { border-color: #809647; background: #202920; }
+        .week4-task-links a:focus-visible { outline: 3px solid #c9ed6a; outline-offset: 3px; }
+        .week4-task-links span { color: #b9d66b; font: 10px "DM Mono", monospace; }
         .directory-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 15px; border-top: 1px solid #343d35; color: #778279; font: 9px "DM Mono", monospace; letter-spacing: .5px; }
         @media (max-width: 700px) {
             .directory-folders { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1118,6 +1152,8 @@
             #root-directory { padding: 30px 17px; }
             .directory-folders { grid-template-columns: 1fr; }
             .directory-link { min-height: 126px; }
+            .week4-access-heading { align-items: start; flex-direction: column; gap: 5px; }
+            .week4-task-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .directory-footer { flex-direction: column; }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -1168,6 +1204,18 @@
                     <strong>My Projects</strong>
                     <span>Portfolio and experiments</span>
                 </a>
+                </div>
+                <div class="week4-access" aria-labelledby="week4-access-title">
+                    <div class="week4-access-heading">
+                        <h2 id="week4-access-title">Week 4 Monday exercises</h2>
+                        <span>OPEN A TASK DIRECTLY</span>
+                    </div>
+                    <div class="week4-task-links">
+                        <a href="week4(mon).html/task1.html"><span>01</span>Rocket launch <span aria-hidden="true">↗</span></a>
+                        <a href="week4(mon).html/task2.html"><span>02</span>Profile card <span aria-hidden="true">↗</span></a>
+                        <a href="week4(mon).html/task3.html"><span>03</span>To-do list <span aria-hidden="true">↗</span></a>
+                        <a href="week4(mon).html/task4.html"><span>04</span>Student directory <span aria-hidden="true">↗</span></a>
+                    </div>
                 </div>
             </section>
             <footer class="directory-footer"><span>WEB PROGRAMMING / PERSONAL ARCHIVE</span><span>BUILT WHILE LEARNING</span></footer>
@@ -1237,7 +1285,7 @@
                     <strong>Week 3 Friday</strong>
                     <span>Open folder and files</span>
                 </a>
-                <a class="directory-card" href="week4mon/index.html">
+                <a class="directory-card" href="week4(mon).html/index.html">
                     <strong>Week 4 Monday</strong>
                     <span>Four interactive exercises</span>
                 </a>
