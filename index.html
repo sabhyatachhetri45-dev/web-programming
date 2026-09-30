@@ -7,2044 +7,225 @@
     <title>Sabhyata Chhetri — Developer Portfolio</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap');
 
         :root {
-            --bg: #07070a;
-            --card: #101116;
-            --text: #f5f5f7;
-            --muted: #9698a3;
-            --line: rgba(255,255,255,0.09);
-            --pink: #ff4ecd;
-            --purple: #8b5cf6;
-            --blue: #38bdf8;
-            --green: #5eead4;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: "DM Sans", sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* CURSOR GLOW */
-
-        .cursor-glow {
-            position: fixed;
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(139,92,246,0.13),
-                transparent 65%
-            );
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-        }
-
-        /* BACKGROUND */
-
-        .grid {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            opacity: .22;
-
-            background-image:
-                linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-
-            background-size: 70px 70px;
-
-            mask-image: linear-gradient(
-                to bottom,
-                black,
-                transparent 80%
-            );
-        }
-
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: .18;
-            z-index: -1;
-        }
-
-        .orb.one {
-            width: 400px;
-            height: 400px;
-            background: var(--purple);
-            top: -150px;
-            left: -100px;
-        }
-
-        .orb.two {
-            width: 350px;
-            height: 350px;
-            background: var(--pink);
-            right: -100px;
-            top: 35%;
-        }
-
-        /* NAVBAR */
-
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-
-            width: min(900px, 92%);
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            padding: 13px 18px;
-
-            background: rgba(12,12,16,.72);
-            backdrop-filter: blur(18px);
-
-            border: 1px solid var(--line);
-            border-radius: 18px;
-
-            z-index: 1000;
-        }
-
-        .brand {
-            font-family: "Space Grotesk";
-            font-weight: 700;
-            font-size: 19px;
-        }
-
-        .brand span {
-            color: var(--pink);
-        }
-
-        nav ul {
-            display: flex;
-            gap: 26px;
-            list-style: none;
-        }
-
-        nav a {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 14px;
-            transition: .25s;
-        }
-
-        nav a:hover {
-            color: white;
-        }
-
-        .nav-button {
-            background: white;
-            color: black !important;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        /* HERO */
-
-        .hero {
-            min-height: 100vh;
-            max-width: 1200px;
-            margin: auto;
-
-            display: flex;
-            align-items: center;
-
-            padding: 150px 30px 100px;
-        }
-
-        .hero-content {
-            max-width: 850px;
-        }
-
-        .availability {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-
-            border: 1px solid var(--line);
-            background: rgba(255,255,255,.035);
-
-            padding: 8px 13px;
-            border-radius: 30px;
-
-            color: #c9cad2;
-            font-size: 13px;
-
-            margin-bottom: 25px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #4ade80;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #4ade80;
-        }
-
-        .hero h1 {
-            font-family: "Space Grotesk";
-            font-size: clamp(60px, 9vw, 115px);
-            line-height: .92;
-            letter-spacing: -6px;
-            margin-bottom: 30px;
-        }
-
-        .gradient-text {
-            background: linear-gradient(
-                90deg,
-                #fff,
-                #b9a7ff,
-                #ff6ed1,
-                #67e8f9
-            );
-
-            background-size: 300%;
-
-            -webkit-background-clip: text;
-            color: transparent;
-
-            animation: gradient 8s ease infinite;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0%; }
-            50% { background-position: 100%; }
-            100% { background-position: 0%; }
-        }
-
-        .hero-description {
-            max-width: 650px;
-            color: var(--muted);
-            font-size: 19px;
-            line-height: 1.7;
-            margin-bottom: 35px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .primary {
-            background: white;
-            color: black;
-            padding: 14px 21px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: .25s;
-        }
-
-        .primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255,255,255,.12);
-        }
-
-        .secondary {
-            color: white;
-            border: 1px solid var(--line);
-            padding: 14px 21px;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: .25s;
-        }
-
-        .secondary:hover {
-            background: rgba(255,255,255,.06);
-        }
-
-        /* MARQUEE */
-
-        .marquee {
-            border-top: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
-
-            overflow: hidden;
-            white-space: nowrap;
-
-            padding: 18px 0;
-
-            color: #686a75;
-            font-family: "Space Grotesk";
-            font-size: 14px;
-            letter-spacing: 2px;
-        }
-
-        .marquee-inner {
-            display: inline-block;
-            animation: scroll 20s linear infinite;
-        }
-
-        @keyframes scroll {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-        /* SECTIONS */
-
-        section {
-            max-width: 1100px;
-            margin: auto;
-            padding: 130px 30px;
-        }
-
-        .directory {
-            padding-top: 125px;
-            padding-bottom: 45px;
-        }
-
-        .directory-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 14px;
-        }
-
-        .directory-card {
-            display: block;
-            border: 1px solid var(--line);
-            background: rgba(255,255,255,.035);
-            border-radius: 14px;
-            padding: 20px;
-            color: var(--text);
-            text-decoration: none;
-            transition: .25s;
-        }
-
-        .directory-card:hover {
-            border-color: var(--pink);
-            transform: translateY(-3px);
-        }
-
-        .directory-card strong {
-            display: block;
-            font-family: "Space Grotesk";
-            margin-bottom: 7px;
-        }
-
-        .directory-card span {
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        .directory-site {
-            margin-top: 14px;
-            max-width: 320px;
-        }
-
-        @media (max-width: 700px) {
-            .directory-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        .section-label {
-            color: var(--pink);
-            font-size: 12px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-        }
-
-        .section-title {
-            font-family: "Space Grotesk";
-            font-size: clamp(38px, 6vw, 65px);
-            letter-spacing: -3px;
-            margin-bottom: 60px;
-        }
-
-        /* ABOUT */
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1.4fr .8fr;
-            gap: 50px;
-        }
-
-        .about-text {
-            color: var(--muted);
-            font-size: 19px;
-            line-height: 1.9;
-        }
-
-        .about-text strong {
-            color: white;
-        }
-
-        .stats {
-            display: grid;
-            gap: 15px;
-        }
-
-        .stat {
-            border: 1px solid var(--line);
-            background: rgba(255,255,255,.025);
-            border-radius: 18px;
-            padding: 25px;
-        }
-
-        .stat-number {
-            font-family: "Space Grotesk";
-            font-size: 34px;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            color: var(--muted);
-            font-size: 13px;
-            margin-top: 5px;
-        }
-
-        /* SKILLS */
-
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .skill {
-            border: 1px solid var(--line);
-            background: rgba(255,255,255,.025);
-
-            padding: 12px 17px;
-            border-radius: 100px;
-
-            color: #c7c8d0;
-            transition: .25s;
-        }
-
-        .skill:hover {
-            border-color: rgba(255,255,255,.3);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        /* PROJECTS */
-
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
-
-        .project {
-            position: relative;
-            min-height: 330px;
-
-            padding: 30px;
-
-            border: 1px solid var(--line);
-            border-radius: 24px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255,255,255,.06),
-                    rgba(255,255,255,.015)
-                );
-
-            overflow: hidden;
-
-            transition: .4s;
-        }
-
-        .project:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255,255,255,.2);
-        }
-
-        .project::after {
-            content: "";
-            position: absolute;
-            width: 200px;
-            height: 200px;
-
-            right: -80px;
-            bottom: -80px;
-
-            border-radius: 50%;
-
-            background: var(--purple);
-            filter: blur(80px);
-            opacity: .12;
-        }
-
-        .project-number {
-            color: #686a75;
-            font-family: "Space Grotesk";
-            font-size: 13px;
-        }
-
-        .project-icon {
-            font-size: 38px;
-            margin: 35px 0 20px;
-        }
-
-        .project h3 {
-            font-family: "Space Grotesk";
-            font-size: 27px;
-            margin-bottom: 12px;
-        }
-
-        .project p {
-            color: var(--muted);
-            line-height: 1.7;
-            max-width: 450px;
-        }
-
-        .project-link {
-            position: absolute;
-            bottom: 28px;
-
-            color: white;
-            text-decoration: none;
-
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* TIMELINE */
-
-        .timeline {
-            border-left: 1px solid var(--line);
-            margin-left: 10px;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding: 0 0 55px 40px;
-        }
-
-        .timeline-item::before {
-            content: "";
-            position: absolute;
-            width: 9px;
-            height: 9px;
-
-            background: var(--pink);
-            border-radius: 50%;
-
-            left: -5px;
-            top: 5px;
-
-            box-shadow: 0 0 15px var(--pink);
-        }
-
-        .timeline-date {
-            color: var(--pink);
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .timeline h3 {
-            font-family: "Space Grotesk";
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .timeline p {
-            color: var(--muted);
-        }
-
-        /* CONTACT */
-
-        .contact-box {
-            position: relative;
-            padding: 70px 40px;
-            text-align: center;
-
-            border: 1px solid var(--line);
-            border-radius: 30px;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(139,92,246,.15),
-                    transparent 60%
-                );
-        }
-
-        .contact-box h2 {
-            font-family: "Space Grotesk";
-            font-size: clamp(40px, 6vw, 70px);
-            letter-spacing: -3px;
-            margin-bottom: 20px;
-        }
-
-        .contact-box p {
-            color: var(--muted);
-            margin-bottom: 30px;
-        }
-
-        /* FOOTER */
-
-        footer {
-            max-width: 1100px;
-            margin: auto;
-
-            padding: 30px;
-
-            border-top: 1px solid var(--line);
-
-            display: flex;
-            justify-content: space-between;
-
-            color: #686a75;
-            font-size: 13px;
-        }
-
-        /* MOBILE */
-
-        @media(max-width: 750px) {
-
-            nav ul {
-                display: none;
-            }
-
-            .hero {
-                padding-top: 170px;
-            }
-
-            .hero h1 {
-                letter-spacing: -4px;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .projects {
-                grid-template-columns: 1fr;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-
-        /* FILE DIRECTORY HOMEPAGE */
-        body.directory-home > *:not(#root-directory) {
-            display: none;
-        }
-
-        #root-directory {
-            display: block;
-            min-height: 100vh;
-            padding: 56px 24px;
-            background: #f4f1ea;
-            color: #20211f;
-            font-family: Georgia, serif;
-        }
-
-        .directory-shell {
-            max-width: 980px;
-            margin: 0 auto;
-        }
-
-        .directory-kicker {
-            color: #9a4c2d;
-            font: 700 12px Arial, sans-serif;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .directory-heading {
-            max-width: 620px;
-            margin: 12px 0 10px;
-            font-size: clamp(42px, 8vw, 82px);
-            line-height: .95;
-        }
-
-        .directory-intro {
-            max-width: 540px;
-            margin-bottom: 44px;
-            color: #686762;
-            font: 17px/1.6 Arial, sans-serif;
-        }
-
-        .directory-label {
-            margin-bottom: 14px;
-            color: #686762;
-            font: 700 12px Arial, sans-serif;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .directory-folders {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-        }
-
-        .directory-link {
-            display: block;
-            min-height: 116px;
-            padding: 22px;
-            border: 1px solid #d8d1c4;
-            border-radius: 8px;
-            background: #fffdf8;
-            color: #20211f;
-            text-decoration: none;
-            transition: transform .2s, border-color .2s, box-shadow .2s;
-        }
-
-        .directory-link:hover {
-            border-color: #9a4c2d;
-            box-shadow: 0 10px 24px rgba(67, 52, 35, .12);
-            transform: translateY(-3px);
-        }
-
-        .directory-icon {
-            display: block;
-            margin-bottom: 18px;
-            color: #9a4c2d;
-            font: 28px Arial, sans-serif;
-        }
-
-        .directory-link strong {
-            display: block;
-            font-size: 20px;
-        }
-
-        .directory-link span {
-            display: block;
-            margin-top: 8px;
-            color: #77746c;
-            font: 13px Arial, sans-serif;
-        }
-
-        .directory-website {
-            max-width: 360px;
-            margin-top: 14px;
-        }
-
-        @media (max-width: 760px) {
-            #root-directory {
-                padding: 36px 18px;
-            }
-
-            .directory-folders {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 430px) {
-            .directory-folders {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Portfolio refresh */
-        :root {
-            --bg: #f4f6ef;
-            --card: #fffefa;
-            --text: #172520;
-            --muted: #69756e;
-            --line: rgba(23, 37, 32, .14);
-            --pink: #f06449;
-            --purple: #176e67;
-            --blue: #176e67;
-            --green: #c9e86a;
-        }
-
+            --paper: #eef3f9;
+            --grid: #d3deec;
+            --sheet: #fbfdff;
+            --ink: #1b2b5b;
+            --pencil: #5b6475;
+            --margin: #e0566b;
+            --yellow: #ffe66d;
+            --pink: #ffc6d3;
+            --mint: #c6ecd8;
+            --hand: "Kalam", "Segoe Print", "Bradley Hand", cursive;
+            --body: "Literata", Georgia, serif;
+        }
+
+        * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: "DM Sans", sans-serif;
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font: 400 1.06rem/1.75 var(--body);
+            background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 28px 28px;
         }
-        #root-directory, .cursor-glow, .orb { display: none; }
-        .grid {
-            z-index: -1;
-            opacity: .22;
-            background-image: linear-gradient(rgba(23,37,32,.045) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(23,37,32,.045) 1px, transparent 1px);
-            background-size: 44px 44px;
-            mask-image: linear-gradient(to bottom, black, transparent 75%);
-        }
-        nav {
-            width: min(1160px, calc(100% - 40px));
-            top: 16px;
-            padding: 10px 12px 10px 20px;
-            background: rgba(255, 254, 250, .92);
-            border: 1px solid rgba(23,37,32,.12);
-            border-radius: 8px;
-            box-shadow: 0 8px 28px rgba(23,37,32,.07);
-        }
-        .brand, h1, h2, h3, .section-title, .visual-title { font-family: "Space Grotesk", sans-serif; }
-        .brand span { color: #e6553e; }
-        nav ul { gap: 22px; }
-        nav a { color: #53635b; }
-        nav a:hover { color: #176e67; }
-        .nav-button {
-            padding: 10px 16px;
-            border-radius: 6px;
-            background: #172520;
-            color: #f4f6ef !important;
-        }
-        main {
-            display: flex;
-            flex-direction: column;
-        }
-        main > .hero { order: -3; }
-        main > .marquee { order: -2; }
-        main > #folders { order: -1; }
-        section { max-width: 1160px; padding: 100px 32px; }
-        .hero {
-            width: 100%;
-            max-width: none;
-            min-height: 720px;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(340px, .85fr);
-            align-items: center;
-            gap: 7vw;
-            padding: 150px max(6vw, calc((100vw - 1160px) / 2)) 100px;
-            background: #17342d;
-            color: #f4f6ef;
-            overflow: hidden;
-        }
-        .hero-content { max-width: 620px; position: relative; z-index: 1; }
-        .availability {
-            margin-bottom: 28px;
-            padding: 8px 12px;
-            border-color: rgba(244,246,239,.2);
-            border-radius: 5px;
-            background: rgba(244,246,239,.06);
-            color: #d7e0d8;
-            font-size: 12px;
-            letter-spacing: .4px;
-        }
-        .dot { background: #c9e86a; box-shadow: 0 0 12px rgba(201,232,106,.6); }
-        .hero h1 {
-            margin-bottom: 24px;
-            font-size: 84px;
-            line-height: .98;
-            letter-spacing: 0;
-        }
-        .hero .gradient-text {
-            color: #c9e86a;
-            background: none;
-            -webkit-text-fill-color: currentColor;
-            animation: none;
-        }
-        .hero-description {
-            max-width: 530px;
-            margin-bottom: 30px;
-            color: #b9c8be;
-            font-size: 17px;
-            line-height: 1.75;
-        }
-        .hero-buttons { gap: 10px; }
-        .primary, .secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 14px;
-            min-height: 48px;
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 700;
-        }
-        .primary { background: #c9e86a; color: #172520; }
-        .primary:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,.16); }
-        .secondary { border-color: rgba(244,246,239,.25); color: #f4f6ef; }
-        .secondary:hover { background: rgba(244,246,239,.08); }
-        .hero-visual {
-            position: relative;
-            display: flex;
-            min-height: 440px;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 22px;
-            overflow: hidden;
-            border: 1px solid rgba(23,37,32,.12);
-            border-radius: 8px;
-            background: #e7a18a;
-            color: #17342d;
-            box-shadow: 18px 18px 0 rgba(201,232,106,.16);
-            transform: rotate(2deg);
-        }
-        .visual-topline, .visual-bottomline {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .visual-live { display: inline-flex; align-items: center; gap: 6px; }
-        .visual-live i { width: 7px; height: 7px; border-radius: 50%; background: #176e67; }
-        .visual-title {
-            position: relative;
-            z-index: 1;
-            font-size: 35px;
-            line-height: 1.02;
-        }
-        .visual-title span { color: #f4f6ef; }
-        .visual-orbit { position: absolute; inset: 70px 0 55px; display: grid; place-items: center; }
-        .orbit {
-            position: absolute;
-            width: 220px;
-            aspect-ratio: 1;
-            border: 1px solid rgba(23,52,45,.4);
-            border-radius: 50%;
-        }
-        .orbit-one { transform: scaleY(.48) rotate(-32deg); }
-        .orbit-two { transform: scaleY(.48) rotate(32deg); }
-        .orbit-core {
-            display: grid;
-            width: 118px;
-            aspect-ratio: 1;
-            place-items: center;
-            border-radius: 50%;
-            background: #17342d;
-            color: #c9e86a;
-            font: 700 54px/1 "Space Grotesk", sans-serif;
-        }
-        .orbit-tag {
-            position: absolute;
-            display: grid;
-            width: 38px;
-            aspect-ratio: 1;
-            place-items: center;
-            border: 1px solid rgba(23,52,45,.25);
-            border-radius: 50%;
-            background: #f4f6ef;
-            font-weight: 700;
-        }
-        .tag-code { top: 20%; right: 22%; }
-        .tag-play { bottom: 15%; left: 23%; font-size: 20px; }
-        .visual-bottomline { font-size: 9px; }
-        .visual-bottomline b { color: #f4f6ef; }
-        .marquee {
-            padding: 15px 0;
-            border-color: var(--line);
-            color: #176e67;
-            font-size: 12px;
-            letter-spacing: 1.5px;
-        }
-        .directory { padding-top: 78px; padding-bottom: 55px; }
-        .section-label {
-            color: #d7543c;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-        }
-        .section-title {
-            margin-bottom: 38px;
-            font-size: 54px;
-            line-height: 1.02;
-            letter-spacing: 0;
-        }
-        .section-title .gradient-text {
-            color: #176e67;
-            background: none;
-            animation: none;
-        }
-        .directory-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
-        .directory-card {
-            min-height: 118px;
-            padding: 17px;
-            border-color: var(--line);
-            border-radius: 6px;
-            background: #fffefa;
-            color: var(--text);
-        }
-        .directory-card:hover { border-color: #176e67; }
-        .directory-card strong { font-size: 14px; }
-        .directory-card span { font-size: 12px; }
-        .about-grid { gap: 64px; }
-        .about-text { color: var(--muted); font-size: 17px; line-height: 1.8; }
-        .about-text strong { color: #176e67; }
-        .stat { border: 0; border-left: 2px solid #e7a18a; border-radius: 0; background: transparent; padding: 8px 18px; }
-        .stat-number { color: #17342d; }
-        .skill { border-color: var(--line); border-radius: 5px; background: #fffefa; color: #33463d; }
-        .skill:hover { border-color: #176e67; color: #176e67; }
-        .project {
-            min-height: 300px;
-            padding: 26px;
-            border-color: var(--line);
-            border-radius: 7px;
-            background: #fffefa;
-        }
-        .project::after { display: none; }
-        .project:hover { border-color: #176e67; transform: translateY(-4px); }
-        .project-number { color: #d7543c; }
-        .project-icon { font-size: 32px; }
-        .project h3 { color: #17342d; }
-        .project p, .timeline p { color: var(--muted); }
-        .project-link { color: #176e67; }
-        .timeline { border-color: #bdc9be; }
-        .timeline-item::before { background: #e7a18a; box-shadow: 0 0 0 5px var(--bg); }
-        .timeline-date { color: #d7543c; }
-        .timeline h3 { color: #17342d; }
-        .contact-box {
-            padding: 62px 32px;
-            border-color: var(--line);
-            border-radius: 8px;
-            background: #17342d;
-        }
-        .contact-box h2 { color: #f4f6ef; font-size: 54px; letter-spacing: 0; }
-        .contact-box p { color: #bdcbc1; }
-        footer { border-color: var(--line); color: var(--muted); }
-        :focus-visible { outline: 3px solid #d7543c; outline-offset: 4px; }
-        @media (max-width: 900px) {
-            .hero { grid-template-columns: minmax(0, 1fr) minmax(280px, .8fr); gap: 32px; }
-            .hero h1 { font-size: 66px; }
-            .directory-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        }
-        @media (max-width: 700px) {
-            nav { width: calc(100% - 24px); top: 10px; }
-            nav ul { display: none; }
-            .hero {
-                min-height: 0;
-                grid-template-columns: 1fr;
-                gap: 42px;
-                padding: 128px 24px 64px;
-            }
-            .hero h1 { font-size: 58px; }
-            .hero-visual { min-height: 350px; transform: none; }
-            section { padding: 72px 24px; }
-            .directory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .section-title { font-size: 44px; }
-            .contact-box h2 { font-size: 42px; }
-        }
-        @media (max-width: 430px) {
-            .hero h1 { font-size: 46px; }
-            .hero-buttons { align-items: stretch; flex-direction: column; }
-            .hero-buttons a { justify-content: space-between; }
-            .directory-grid { grid-template-columns: 1fr; }
-            .directory-card { min-height: 90px; }
-            .visual-title { font-size: 30px; }
-            .about-grid { gap: 32px; }
-            .projects { grid-template-columns: 1fr; }
+        a { color: var(--ink); }
+        :focus-visible { outline: 3px solid var(--margin); outline-offset: 3px; border-radius: 4px; }
+        .page { position: relative; max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem 4.6rem; }
+        .page::before { position: absolute; top: 0; bottom: 0; left: 3.3rem; width: 2px; background: var(--margin); opacity: .55; content: ""; }
+        .holes { position: absolute; top: 0; bottom: 0; left: 1rem; width: 1.4rem; background: radial-gradient(circle,var(--paper) 0 .5rem,#9fb0c8 .5rem .58rem,transparent .6rem) 0 0/1.4rem 7rem repeat-y; }
+        h1, h2, h3 { margin: 0; font-family: var(--hand); font-weight: 700; line-height: 1.15; }
+        h1 { font-size: clamp(2.6rem, 8vw, 4.6rem); }
+        h2 { margin-bottom: .6rem; font-size: clamp(1.8rem, 4.5vw, 2.3rem); }
+        section { padding: 3.2rem 0 .5rem; }
+        p { max-width: 62ch; margin: .6rem 0; }
+        .note { color: var(--pencil); font: 1.05rem/1.5 var(--hand); }
+        .top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 1rem; font-family: var(--hand); }
+        .top nav { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; }
+        .top a { border-bottom: 2px solid transparent; text-decoration: none; }
+        .top a:hover { border-color: var(--yellow); background: linear-gradient(transparent 55%,var(--yellow) 55%); }
+        .hero { padding-top: 4rem; }
+        .status { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; margin: 1.2rem 0 0; font: 1.3rem var(--hand); }
+        .strike { position: relative; color: var(--pencil); }
+        .strike::after { position: absolute; top: 55%; left: -2%; width: 104%; height: 3px; transform: scaleX(0); transform-origin: left; border-radius: 2px; background: var(--margin); content: ""; rotate: -2deg; animation: draw .7s .9s ease-out forwards; }
+        .fresh { opacity: 0; animation: show .01s 1.6s forwards; }
+        .hero:not(.in) .strike::after, .hero:not(.in) .fresh { animation-play-state: paused; }
+        @keyframes draw { to { transform: scaleX(1); } }
+        @keyframes show { to { opacity: 1; } }
+        .hero .lede { margin-top: 1.4rem; font-size: 1.2rem; }
+        .stickies { display: flex; flex-wrap: wrap; gap: 1rem 1.1rem; margin: 1.2rem 0 0; padding: 0; list-style: none; }
+        .stickies li { min-width: 7.5rem; padding: .9rem 1.1rem 1rem; background: var(--yellow); box-shadow: 2px 3px 0 #1b2b5b2e; text-align: center; font: 1.15rem var(--hand); }
+        .stickies li:nth-child(3n+2) { background: var(--pink); }
+        .stickies li:nth-child(3n) { background: var(--mint); }
+        .stickies li:nth-child(1) { rotate: -2.5deg; }
+        .stickies li:nth-child(2) { rotate: 1.5deg; }
+        .stickies li:nth-child(3) { rotate: -1deg; }
+        .stickies li:nth-child(4) { rotate: 2.5deg; }
+        .stickies li:nth-child(5) { rotate: -2deg; }
+        .stickies li:nth-child(6) { rotate: 1deg; }
+        .stickies li:nth-child(7) { rotate: -1.5deg; }
+        .stickies li:nth-child(8) { rotate: 2deg; }
+        .stickies li:nth-child(9) { rotate: -.5deg; }
+        .shelf { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.2rem 0 0; padding: 0 0 0 .4rem; }
+        .shelf button { position: relative; top: 2px; padding: .45rem 1rem; border: 2px solid var(--ink); border-bottom: 0; border-radius: 10px 10px 0 0; background: var(--sheet); color: var(--ink); cursor: pointer; font: 700 1.05rem var(--hand); }
+        .shelf button[aria-selected="true"] { background: var(--yellow); }
+        .shelf button:hover { background: #fff6b8; }
+        .sheet { padding: 1.4rem 1.5rem 1.6rem; border: 2px solid var(--ink); background: var(--sheet); box-shadow: 5px 6px 0 #1b2b5b29; }
+        .sheet h3 { font-size: 1.5rem; }
+        .tasks { display: grid; grid-template-columns: repeat(auto-fill,minmax(14rem,1fr)); gap: .3rem 1.5rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+        .tasks a { display: flex; align-items: baseline; gap: .7rem; padding: .35rem 0; border-bottom: 1.5px dashed var(--grid); text-decoration: none; }
+        .tasks a:hover .what { background: linear-gradient(transparent 60%,var(--yellow) 60%); }
+        .tick { position: relative; top: .15rem; flex: none; width: 1.05rem; height: 1.05rem; border: 2px solid var(--ink); border-radius: 3px; }
+        .tick::after { position: absolute; top: -4px; left: 2px; width: 6px; height: 11px; transform: rotate(40deg); border: solid var(--margin); border-width: 0 3px 3px 0; content: ""; }
+        .tasks b { font-family: var(--hand); }
+        .what { color: var(--pencil); font-size: .95rem; }
+        .openall { display: inline-block; margin-top: 1.1rem; font: 700 1.05rem var(--hand); }
+        .list { margin: 1.2rem 0 0; padding: 0; list-style: none; }
+        .list li { display: grid; grid-template-columns: 2.6rem 1fr; gap: .2rem .9rem; padding: 1rem 0; border-bottom: 2px dashed var(--grid); }
+        .list .emo { grid-row: span 2; font-size: 1.7rem; line-height: 1.3; }
+        .list h3 { font-size: 1.35rem; }
+        .list p { margin: .1rem 0; }
+        .stamp { display: inline-block; margin-left: .6rem; padding: 0 .5rem; transform: rotate(-3deg); border: 2px solid var(--margin); border-radius: 6px; color: var(--margin); vertical-align: middle; font: .95rem var(--hand); }
+        .path { margin: 1.2rem 0 0; padding: 0 0 0 1.7rem; border-left: 3px dotted var(--ink); list-style: none; }
+        .path li { position: relative; padding: 0 0 1.4rem; }
+        .path li::before { position: absolute; top: .55rem; left: -2.15rem; width: .85rem; height: .85rem; border: 2px solid var(--ink); border-radius: 50%; background: var(--yellow); content: ""; }
+        .path h3 { font-size: 1.3rem; }
+        .path .when { color: var(--margin); font-family: var(--hand); }
+        .contact { font-size: 1.1rem; }
+        .contact a.btn { display: inline-block; margin-top: .8rem; padding: .5rem 1.4rem; transform: translate(0,0); border: 2px solid var(--ink); background: var(--yellow); box-shadow: 4px 4px 0 var(--ink); font: 700 1.3rem var(--hand); text-decoration: none; transition: transform .15s,box-shadow .15s; }
+        .contact a.btn:hover { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
+        footer { margin-top: 3rem; color: var(--pencil); font-family: var(--hand); }
+        @media (max-width: 560px) {
+            .page { padding-right: 1rem; padding-left: 3.2rem; }
+            .page::before { left: 2.4rem; }
+            .holes { left: .4rem; }
+            .sheet { padding: 1.1rem; }
+            .shelf { gap: .45rem; }
+            .shelf button { padding-right: .7rem; padding-left: .7rem; font-size: .95rem; }
         }
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; }
-        }
-
-        /* Single-page dark archive */
-        body > *:not(#root-directory) { display: none !important; }
-        #root-directory {
-            display: block;
-            min-height: 100vh;
-            padding: clamp(28px, 7vw, 88px) 24px;
-            background: #101411;
-            background-image: linear-gradient(rgba(230,242,227,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(230,242,227,.025) 1px, transparent 1px);
-            background-size: 48px 48px;
-            color: #e8eee7;
-            font-family: "Manrope", sans-serif;
-        }
-        .directory-shell { max-width: 1080px; margin: 0 auto; }
-        .directory-kicker {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #b9d66b;
-            font: 500 11px "DM Mono", monospace;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .directory-kicker::before { width: 22px; height: 1px; background: #b9d66b; content: ""; }
-        .directory-heading {
-            max-width: 760px;
-            margin: 22px 0 12px;
-            font: 700 clamp(48px, 8vw, 88px)/.98 "Space Grotesk", sans-serif;
-            letter-spacing: 0;
-        }
-        .directory-heading span { color: #b9d66b; }
-        .directory-intro { max-width: 540px; margin: 0 0 48px; color: #a0aaa0; font: 15px/1.7 "Manrope", sans-serif; }
-        .directory-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            color: #87938a;
-            font: 10px "DM Mono", monospace;
-            letter-spacing: .8px;
-            text-transform: uppercase;
-        }
-        .directory-folders { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-        .directory-link {
-            position: relative;
-            display: flex;
-            min-height: 158px;
-            flex-direction: column;
-            padding: 18px;
-            border: 1px solid #343d35;
-            border-radius: 5px;
-            background: #1a201b;
-            color: #e8eee7;
-            text-decoration: none;
-            transition: background .2s ease, border-color .2s ease, transform .2s ease;
-        }
-        .directory-link:hover { transform: translateY(-3px); border-color: #809647; background: #202920; }
-        .directory-link:focus-visible { outline: 3px solid #c9ed6a; outline-offset: 3px; }
-        .directory-icon { margin-bottom: auto; color: #b9d66b; font: 11px "DM Mono", monospace; }
-        .directory-icon::after { float: right; color: #7d8b7d; content: "↗"; font: 18px/1 "Manrope", sans-serif; }
-        .directory-link strong { font: 700 17px "Manrope", sans-serif; }
-        .directory-link span:last-child { margin-top: 6px; color: #99a39a; font: 11px "DM Mono", monospace; }
-        .directory-link.directory-website { border-color: #665040; background: #241e19; }
-        .directory-link.directory-website .directory-icon { color: #f39a76; }
-        .directory-link.directory-website:hover { border-color: #d88362; background: #2b221d; }
-        .directory-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 15px; border-top: 1px solid #343d35; color: #778279; font: 9px "DM Mono", monospace; letter-spacing: .5px; }
-        @media (max-width: 700px) {
-            .directory-folders { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .directory-intro { margin-bottom: 34px; }
-        }
-        @media (max-width: 440px) {
-            #root-directory { padding: 30px 17px; }
-            .directory-folders { grid-template-columns: 1fr; }
-            .directory-link { min-height: 126px; }
-            .directory-footer { flex-direction: column; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .directory-link { transition: none; }
-            .directory-link:hover { transform: none; }
+            html { scroll-behavior: auto; }
+            .strike::after { animation: none; transform: none; }
+            .fresh { animation: none; opacity: 1; }
+            .contact a.btn { transition: none; }
         }
     </style>
 </head>
 
 <body>
 
-    <div id="root-directory">
-        <main class="directory-shell">
-            <div class="directory-kicker">Sabhyata Chhetri / Learning archive</div>
-            <h1 class="directory-heading">Work in<br><span>progress.</span></h1>
-            <p class="directory-intro">I'm Sabhyata, a Computer Science student who learns by making. I enjoy building for the web, trying ideas out in code, and finding out what I can create next.</p>
-
-            <section aria-labelledby="folders-heading">
-                <div class="directory-label"><span id="folders-heading">Collections</span><span>2026 / 06 folders</span></div>
-                <div class="directory-folders">
-                <a class="directory-link" href="week2(mon)/index.html">
-                    <span class="directory-icon">COLLECTION 01 / MON</span>
-                    <strong>Week 2 Monday</strong>
-                    <span>8 task files</span>
-                </a>
-                <a class="directory-link" href="week2%20fri/index.html">
-                    <span class="directory-icon">COLLECTION 02 / FRI</span>
-                    <strong>Week 2 Friday</strong>
-                    <span>8 task files</span>
-                </a>
-                <a class="directory-link" href="week3(mon)/index.html">
-                    <span class="directory-icon">COLLECTION 03 / MON</span>
-                    <strong>Week 3 Monday</strong>
-                    <span>8 task files</span>
-                </a>
-                <a class="directory-link" href="week3(fri)/index.html">
-                    <span class="directory-icon">COLLECTION 04 / FRI</span>
-                    <strong>Week 3 Friday</strong>
-                    <span>7 task files</span>
-                </a>
-                <a class="directory-link" href="week4(mon).html/index.html">
-                    <span class="directory-icon">COLLECTION 05 / MON</span>
-                    <strong>Week 4 Monday</strong>
-                    <span>4 task files</span>
-                </a>
-                <a class="directory-link directory-website" href="my%20projects/index.html">
-                    <span class="directory-icon">SIDE PROJECT / 01</span>
-                    <strong>My Projects</strong>
-                    <span>Portfolio and experiments</span>
-                </a>
-                </div>
+    <div class="page">
+        <div class="holes" aria-hidden="true"></div>
+        <header class="top">
+            <strong>sabhyata.</strong>
+            <nav aria-label="Sections">
+                <a href="#notebooks">Notebooks</a><a href="#top">Hello</a><a href="#about">About</a>
+                <a href="#toolbox">Skills</a><a href="#projects">Projects</a><a href="#journey">Journey</a><a href="#contact">Say hi</a>
+            </nav>
+        </header>
+        <main>
+            <section id="notebooks" aria-labelledby="notebooks-title">
+                <h2 id="notebooks-title">My notebooks</h2>
+                <p>One notebook per week. Pick a tab, then open any task.</p>
+                <div class="shelf" role="tablist" aria-label="Weekly notebooks"></div>
+                <div class="sheet" id="sheet" role="tabpanel" aria-live="polite"></div>
             </section>
-            <footer class="directory-footer"><span>WEB PROGRAMMING / PERSONAL ARCHIVE</span><span>BUILT WHILE LEARNING</span></footer>
+            <section class="hero" id="top">
+                <h1>Hi, I'm Sabhyata.</h1>
+                <p class="status"><span class="strike">Work in progress.</span><span class="fresh">Still learning. On purpose.</span></p>
+                <p class="lede">I'm a Computer Science student who learns by making things. This page is my notebook: every week of web programming, the experiments, and what I'm building next.</p>
+                <p class="note">(27° 42' N, learn + make + repeat)</p>
+            </section>
+            <section id="about">
+                <h2>A little about me</h2>
+                <p>I like understanding how things work, then trying to build them myself. My interests run from <strong>web development</strong> and <strong>Python</strong> to data structures, algorithms and creative digital experiences.</p>
+                <p>I care about thoughtful interfaces and the small details that make software feel human. I'm still learning, and that's what makes building interesting.</p>
+            </section>
+            <section id="toolbox">
+                <h2>What's on my desk</h2>
+                <ul class="stickies"><li>Python</li><li>CSS</li><li>JavaScript</li><li>Git</li><li>GitHub</li><li>Data Structures</li><li>Algorithms</li><li>OpenCV</li><li>Problem Solving</li></ul>
+            </section>
+            <section id="projects">
+                <h2>Things I've been building</h2>
+                <ul class="list">
+                    <li><span class="emo" aria-hidden="true">🚗</span><h3>Parking Management</h3><p>A parking system built on stacks, queues and linked lists, to manage vehicles the way a real lot would.<span class="stamp">write-up soon</span></p></li>
+                    <li><span class="emo" aria-hidden="true">🌐</span><h3>Web Programming</h3><p>My web experiments, assignments and interactive HTML projects. <a href="week2%20fri/index.html">Open the project</a></p></li>
+                    <li><span class="emo" aria-hidden="true">🌻</span><h3>Image Processing</h3><p>An OpenCV experiment in image enhancement and histogram equalization.<span class="stamp">write-up soon</span></p></li>
+                    <li><span class="emo" aria-hidden="true">✦</span><h3>My personal website</h3><p>The separate portfolio site I'm building. <a href="my%20projects/index.html">Open my website</a></p></li>
+                </ul>
+            </section>
+            <section id="journey">
+                <h2>Where I'm heading</h2>
+                <ol class="path">
+                    <li><span class="when">Now</span><h3>Computer Science</h3><p>Programming, data structures, algorithms and software development.</p></li>
+                    <li><span class="when">Learning</span><h3>Web development</h3><p>Building interactive websites with HTML, CSS and JavaScript.</p></li>
+                    <li><span class="when">Next</span><h3>Bigger things</h3><p>Turning small experiments into larger, useful projects.</p></li>
+                </ol>
+            </section>
+            <section id="contact" class="contact">
+                <h2>Have an idea?</h2>
+                <p>Tell me about it. I'd like to help turn it into something real.</p>
+                <a class="btn" href="mailto:your-email@example.com">Say hello</a>
+            </section>
         </main>
+        <footer>© 2026 Sabhyata Chhetri. Built with curiosity and code.</footer>
     </div>
-
-    <div class="cursor-glow"></div>
-
-    <div class="grid"></div>
-
-    <div class="orb one"></div>
-    <div class="orb two"></div>
-
-
-    <!-- NAVIGATION -->
-
-    <nav aria-label="Main navigation">
-
-        <div class="brand">
-            sabhyata<span>.</span>
-        </div>
-
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#folders">Coursework</a></li>
-            <li><a href="#journey">Journey</a></li>
-        </ul>
-
-        <a href="#contact" class="nav-button">
-            Let's talk
-        </a>
-
-    </nav>
-
-
-    <!-- HERO -->
-
-    <main>
-
-        <section class="directory" id="folders">
-
-            <div class="section-label">
-                01 — Project folders
-            </div>
-
-            <h2 class="section-title">
-                Open a<br>
-                <span class="gradient-text">folder.</span>
-            </h2>
-
-            <div class="directory-grid">
-                <a class="directory-card" href="week2(mon)/index.html">
-                    <strong>Week 2 Monday</strong>
-                    <span>Open folder and files</span>
-                </a>
-                <a class="directory-card" href="week2%20fri/index.html">
-                    <strong>Week 2 Friday</strong>
-                    <span>Open folder and files</span>
-                </a>
-                <a class="directory-card" href="week3(mon)/index.html">
-                    <strong>Week 3 Monday</strong>
-                    <span>Open folder and files</span>
-                </a>
-                <a class="directory-card" href="week3(fri)/index.html">
-                    <strong>Week 3 Friday</strong>
-                    <span>Open folder and files</span>
-                </a>
-                <a class="directory-card" href="week4(mon).html/index.html">
-                    <strong>Week 4 Monday</strong>
-                    <span>Four interactive exercises</span>
-                </a>
-            </div>
-
-            <a class="directory-card directory-site" href="my%20projects/index.html">
-                <strong>My Website</strong>
-                <span>Open the separate portfolio website</span>
-            </a>
-
-        </section>
-
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <div class="availability">
-                    <span class="dot"></span>
-                    Curious by default · Building every day
-                </div>
-
-                <h1>
-                    Ideas into<br>
-                    <span class="gradient-text">interfaces.</span>
-                </h1>
-
-                <p class="hero-description">
-                    I'm Sabhyata, a Computer Science student making useful,
-                    expressive things with code. I like thoughtful interfaces,
-                    curious experiments, and the details that make software feel human.
-                </p>
-
-                <div class="hero-buttons">
-
-                    <a href="#projects" class="primary">
-                        Explore selected work <span aria-hidden="true">↘</span>
-                    </a>
-
-                    <a
-                        href="#folders"
-                        class="secondary">
-                        Browse coursework <span aria-hidden="true">↘</span>
-                    </a>
-
-                </div>
-
-            </div>
-
-            <aside class="hero-visual" aria-label="Current creative focus">
-                <div class="visual-topline">
-                    <span>FIELD NOTES / 2026</span>
-                    <span class="visual-live"><i></i> IN PROGRESS</span>
-                </div>
-                <div class="visual-title">Curiosity<br>in motion<span>.</span></div>
-                <div class="visual-orbit" aria-hidden="true">
-                    <span class="orbit orbit-one"></span>
-                    <span class="orbit orbit-two"></span>
-                    <span class="orbit-core">S</span>
-                    <span class="orbit-tag tag-code">&lt;/&gt;</span>
-                    <span class="orbit-tag tag-play">✳</span>
-                </div>
-                <div class="visual-bottomline">
-                    <span>LEARN <b>+</b> MAKE <b>+</b> REPEAT</span>
-                    <span>27° 42' N</span>
-                </div>
-            </aside>
-
-        </section>
-
-
-        <!-- MARQUEE -->
-
-        <div class="marquee">
-
-            <div class="marquee-inner">
-
-                CODE ✦ CREATE ✦ LEARN ✦ BUILD ✦
-                EXPERIMENT ✦ REPEAT ✦
-                CODE ✦ CREATE ✦ LEARN ✦ BUILD ✦
-                EXPERIMENT ✦ REPEAT ✦
-
-            </div>
-
-        </div>
-
-
-        <!-- ABOUT -->
-
-        <section id="about">
-
-            <div class="section-label">
-                01 — About
-            </div>
-
-            <h2 class="section-title">
-                A little bit<br>
-                about me.
-            </h2>
-
-            <div class="about-grid">
-
-                <div class="about-text">
-
-                    <p>
-                        I'm <strong>Sabhyata Chhetri</strong>, a Computer
-                        Science student who enjoys understanding how things
-                        work and then trying to build them myself.
-                    </p>
-
-                    <br>
-
-                    <p>
-                        My interests range from
-                        <strong>web development</strong> and
-                        <strong>Python</strong> to data structures,
-                        algorithms and creative digital experiences.
-                    </p>
-
-                    <br>
-
-                    <p>
-                        I'm still learning — but that's exactly what makes
-                        building things interesting.
-                    </p>
-
-                </div>
-
-                <div class="stats">
-
-                    <div class="stat">
-                        <div class="stat-number">CS</div>
-                        <div class="stat-label">
-                            Computer Science
-                        </div>
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-number">∞</div>
-                        <div class="stat-label">
-                            Things I want to learn
-                        </div>
-                    </div>
-
-                    <div class="stat">
-                        <div class="stat-number">01</div>
-                        <div class="stat-label">
-                            Step at a time
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- SKILLS -->
-
-        <section id="skills">
-
-            <div class="section-label">
-                02 — Toolbox
-            </div>
-
-            <h2 class="section-title">
-                Things I<br>
-                <span class="gradient-text">work with.</span>
-            </h2>
-
-            <div class="skills">
-
-                <div class="skill">Python</div>
-                <div class="skill">CSS</div>
-                <div class="skill">JavaScript</div>
-                <div class="skill">Git</div>
-                <div class="skill">GitHub</div>
-                <div class="skill">Data Structures</div>
-                <div class="skill">Algorithms</div>
-                <div class="skill">OpenCV</div>
-                <div class="skill">Problem Solving</div>
-
-            </div>
-
-        </section>
-
-
-        <!-- TASKS -->
-
-        <section id="tasks">
-
-            <div class="section-label">
-                03 — Full task navigation
-            </div>
-
-            <h2 class="section-title">
-                All project<br>
-                <span class="gradient-text">task pages.</span>
-            </h2>
-
-            <div class="projects">
-
-                <article class="project">
-                    <div class="project-number">FOLDER 01</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Week 2 Monday</h3>
-                    <p>Open the folder and choose any task file.</p>
-                    <a href="week2(mon)/index.html" class="project-link">Open folder →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">FOLDER 02</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Week 2 Friday</h3>
-                    <p>Open the folder and choose any task file.</p>
-                    <a href="week2%20fri/index.html" class="project-link">Open folder →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">FOLDER 03</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Week 3 Monday</h3>
-                    <p>Open the folder and choose any task file.</p>
-                    <a href="week3(mon)/index.html" class="project-link">Open folder →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">FOLDER 04</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Week 3 Friday</h3>
-                    <p>Open the folder and choose any task file.</p>
-                    <a href="week3(fri)/index.html" class="project-link">Open folder →</a>
-                </article>
-
-            </div>
-
-            <div class="section-label">
-                WEBSITE OPTION
-            </div>
-
-            <h2 class="section-title">
-                My personal<br>
-                <span class="gradient-text">website.</span>
-            </h2>
-
-            <div class="projects">
-
-                <article class="project">
-                    <div class="project-number">MY WEBSITE</div>
-                    <div class="project-icon">🌐</div>
-                    <h3>My Website</h3>
-                    <p>The portfolio website you are editing in VS Code.</p>
-                    <a href="my%20projects/index.html" class="project-link">Open folder →</a>
-                </article>
-
-            </div>
-
-            <div class="projects">
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 1</h3>
-                    <p>Intro task</p>
-                    <a href="week2(mon)/task%201.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 2</h3>
-                    <p>Assignment page</p>
-                    <a href="week2(mon)/Task%202.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 3</h3>
-                    <p>HTML/CSS task</p>
-                    <a href="week2(mon)/Task%203.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 4</h3>
-                    <p>Structure task</p>
-                    <a href="week2(mon)/Task%204.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 5</h3>
-                    <p>Layout task</p>
-                    <a href="week2(mon)/Task%205.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 6</h3>
-                    <p>Content task</p>
-                    <a href="week2(mon)/Task%206.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 7</h3>
-                    <p>Practice task</p>
-                    <a href="week2(mon)/Task%207.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 8</h3>
-                    <p>Final Monday task</p>
-                    <a href="week2(mon)/Task%208.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 1</h3>
-                    <p>Friday task</p>
-                    <a href="week2%20fri/task1.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 2</h3>
-                    <p>Friday assignment</p>
-                    <a href="week2%20fri/Task2.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 3</h3>
-                    <p>Practice page</p>
-                    <a href="week2%20fri/Task%203.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 4</h3>
-                    <p>Form/style page</p>
-                    <a href="week2%20fri/Task%204.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 5</h3>
-                    <p>Build task</p>
-                    <a href="week2%20fri/Task%205.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 6</h3>
-                    <p>Friday task</p>
-                    <a href="week2%20fri/Taask%206.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 7</h3>
-                    <p>Practice build</p>
-                    <a href="week2%20fri/Task%207.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 2 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 8</h3>
-                    <p>Final Friday task</p>
-                    <a href="week2%20fri/Task%208.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 1</h3>
-                    <p>Heading task</p>
-                    <a href="week3(mon)/task1-heading.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 2</h3>
-                    <p>Difference task</p>
-                    <a href="week3(mon)/task2-difference.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 3</h3>
-                    <p>Color task</p>
-                    <a href="week3(mon)/task3-color.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 4</h3>
-                    <p>Box model task</p>
-                    <a href="week3(mon)/task4-boxmodel.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 5</h3>
-                    <p>Fix code task</p>
-                    <a href="week3(mon)/task5-fixcode.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 6</h3>
-                    <p>Flexbox task</p>
-                    <a href="week3(mon)/task6-flexbox.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 7</h3>
-                    <p>Profile task</p>
-                    <a href="week3(mon)/task7-profile.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 MONDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 8</h3>
-                    <p>Full style task</p>
-                    <a href="week3(mon)/task8-fullstyle.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 1</h3>
-                    <p>Friday project</p>
-                    <a href="week3(fri)/task1.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 2</h3>
-                    <p>Layout exercise</p>
-                    <a href="week3(fri)/task2.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 3</h3>
-                    <p>Page build</p>
-                    <a href="week3(fri)/task3.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 4</h3>
-                    <p>Design task</p>
-                    <a href="week3(fri)/task4.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 5</h3>
-                    <p>Assignment page</p>
-                    <a href="week3(fri)/task5.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 6</h3>
-                    <p>CSS practice</p>
-                    <a href="week3(fri)/task6.html" class="project-link">Open task →</a>
-                </article>
-
-                <article class="project">
-                    <div class="project-number">WEEK 3 FRIDAY</div>
-                    <div class="project-icon">📁</div>
-                    <h3>Task 7</h3>
-                    <p>Final Friday page</p>
-                    <a href="week3(fri)/task7.html" class="project-link">Open task →</a>
-                </article>
-
-            </div>
-
-        </section>
-
-        <!-- PROJECTS -->
-
-        <section id="projects">
-
-            <div class="section-label">
-                03 — Selected work
-            </div>
-
-            <h2 class="section-title">
-                Things I've<br>
-                <span class="gradient-text">been building.</span>
-            </h2>
-
-            <div class="projects">
-
-                <article class="project">
-
-                    <div class="project-number">
-                        PROJECT / 01
-                    </div>
-
-                    <div class="project-icon">
-                        🚗
-                    </div>
-
-                    <h3>
-                        Parking Management
-                    </h3>
-
-                    <p>
-                        A data-structure based parking system exploring
-                        stacks, queues and linked lists for real-world
-                        vehicle management.
-                    </p>
-
-                    <a href="#" class="project-link">
-                        View project →
-                    </a>
-
-                </article>
-
-
-                <article class="project">
-
-                    <div class="project-number">
-                        PROJECT / 02
-                    </div>
-
-                    <div class="project-icon">
-                        🌐
-                    </div>
-
-                    <h3>
-                        Web Programming
-                    </h3>
-
-                    <p>
-                        A collection of web development experiments,
-                        assignments and interactive HTML projects.
-                    </p>
-
-                    <a
-                        href="week2%20fri/"
-                        class="project-link">
-                        Explore project →
-                    </a>
-
-                </article>
-
-
-                <article class="project">
-
-                    <div class="project-number">
-                        PROJECT / 03
-                    </div>
-
-                    <div class="project-icon">
-                        🌻
-                    </div>
-
-                    <h3>
-                        Image Processing
-                    </h3>
-
-                    <p>
-                        An OpenCV experiment exploring image enhancement
-                        and histogram equalization.
-                    </p>
-
-                    <a href="#" class="project-link">
-                        View project →
-                    </a>
-
-                </article>
-
-
-                <article class="project">
-
-                    <div class="project-number">
-                        PROJECT / 04
-                    </div>
-
-                    <div class="project-icon">
-                        ✦
-                    </div>
-
-                    <h3>
-                        What's next?
-                    </h3>
-
-                    <p>
-                        More experiments, ideas and projects are currently
-                        making their way from my brain into code.
-                    </p>
-
-                    <a href="#contact" class="project-link">
-                        Stay tuned →
-                    </a>
-
-                </article>
-
-            </div>
-
-        </section>
-
-
-        <!-- JOURNEY -->
-
-        <section id="journey">
-
-            <div class="section-label">
-                04 — Journey
-            </div>
-
-            <h2 class="section-title">
-                Currently<br>
-                <span class="gradient-text">leveling up.</span>
-            </h2>
-
-            <div class="timeline">
-
-                <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        NOW
-                    </div>
-
-                    <h3>
-                        Computer Science
-                    </h3>
-
-                    <p>
-                        Exploring programming, data structures,
-                        algorithms and software development.
-                    </p>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        LEARNING
-                    </div>
-
-                    <h3>
-                        Web Development
-                    </h3>
-
-                    <p>
-                        Building interactive websites with HTML,
-                        CSS and JavaScript.
-                    </p>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        NEXT
-                    </div>
-
-                    <h3>
-                        Build bigger things
-                    </h3>
-
-                    <p>
-                        Turning small experiments into larger,
-                        useful projects.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- CONTACT -->
-
-        <section id="contact">
-
-            <div class="contact-box">
-
-                <div class="section-label">
-                    05 — Contact
-                </div>
-
-                <h2>
-                    Have an idea?
-                </h2>
-
-                <p>
-                    Let's turn it into something interesting.
-                </p>
-
-                <a
-                    href="mailto:your-email@example.com"
-                    class="primary">
-                    Say hello →
-                </a>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <span>
-            © 2026 Sabhyata Chhetri
-        </span>
-
-        <span>
-            Built with curiosity & code.
-        </span>
-
-    </footer>
-
-
     <script>
-
-        /* CURSOR EFFECT */
-
-        const glow = document.querySelector(".cursor-glow");
-
-        document.addEventListener("mousemove", function(e) {
-
-            glow.style.left = e.clientX + "px";
-            glow.style.top = e.clientY + "px";
-
+        const weeks = [
+            { id: "w2m", tab: "Week 2 Mon", name: "Week 2 Monday", dir: "week2(mon)/", tasks: [["task%201.html", "Intro task"], ["Task%202.html", "Assignment page"], ["Task%203.html", "HTML/CSS task"], ["Task%204.html", "Structure task"], ["Task%205.html", "Layout task"], ["Task%206.html", "Content task"], ["Task%207.html", "Practice task"], ["Task%208.html", "Final Monday task"]] },
+            { id: "w2f", tab: "Week 2 Fri", name: "Week 2 Friday", dir: "week2%20fri/", tasks: [["task1.html", "Friday task"], ["Task2.html", "Friday assignment"], ["Task%203.html", "Practice page"], ["Task%204.html", "Form/style page"], ["Task%205.html", "Build task"], ["Taask%206.html", "Friday task"], ["Task%207.html", "Practice build"], ["Task%208.html", "Final Friday task"]] },
+            { id: "w3m", tab: "Week 3 Mon", name: "Week 3 Monday", dir: "week3(mon)/", tasks: [["task1-heading.html", "Heading task"], ["task2-difference.html", "Difference task"], ["task3-color.html", "Color task"], ["task4-boxmodel.html", "Box model task"], ["task5-fixcode.html", "Fix code task"], ["task6-flexbox.html", "Flexbox task"], ["task7-profile.html", "Profile task"], ["task8-fullstyle.html", "Full style task"]] },
+            { id: "w3f", tab: "Week 3 Fri", name: "Week 3 Friday", dir: "week3(fri)/", tasks: [["task1.html", "Friday project"], ["task2.html", "Layout exercise"], ["task3.html", "Page build"], ["task4.html", "Design task"], ["task5.html", "Assignment page"], ["task6.html", "CSS practice"], ["task7.html", "Final Friday page"]] },
+            { id: "w4m", tab: "Week 4 Mon", name: "Week 4 Monday", dir: "week4(mon).html/", tasks: [["task1.html", "Rocket launch"], ["task2.html", "Profile card"], ["task3.html", "To-do list"], ["task4.html", "Student directory"]] }
+        ];
+        const shelf = document.querySelector(".shelf");
+        const sheet = document.getElementById("sheet");
+        function show(index) {
+            const week = weeks[index];
+            [...shelf.children].forEach((button, buttonIndex) => {
+                const selected = buttonIndex === index;
+                button.setAttribute("aria-selected", String(selected));
+                button.tabIndex = selected ? 0 : -1;
+            });
+            sheet.setAttribute("aria-labelledby", `tab-${week.id}`);
+            const items = week.tasks.map((task, taskIndex) => `<li><a href="${week.dir}${task[0]}"><span class="tick" aria-hidden="true"></span><span><b>Task ${taskIndex + 1}</b> <span class="what">${task[1]}</span></span></a></li>`).join("");
+            sheet.innerHTML = `<h3>${week.name}</h3><ul class="tasks">${items}</ul><a class="openall" href="${week.dir}index.html">Open the whole folder</a>`;
+        }
+        weeks.forEach((week, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.setAttribute("role", "tab");
+            button.setAttribute("aria-controls", "sheet");
+            button.id = `tab-${week.id}`;
+            button.textContent = week.tab;
+            button.addEventListener("click", () => show(index));
+            button.addEventListener("keydown", event => {
+                if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+                    event.preventDefault();
+                    const nextIndex = (index + (event.key === "ArrowRight" ? 1 : weeks.length - 1)) % weeks.length;
+                    show(nextIndex);
+                    shelf.children[nextIndex].focus();
+                }
+            });
+            shelf.appendChild(button);
         });
-
-
-        /* REVEAL ANIMATION */
-
-        const observer =
-            new IntersectionObserver(
-                entries => {
-
-                    entries.forEach(entry => {
-
-                        if (entry.isIntersecting) {
-
-                            entry.target.style.opacity = "1";
-                            entry.target.style.transform =
-                                "translateY(0)";
-
-                        }
-
-                    });
-
-                },
-                { threshold: 0.12 }
-            );
-
-
-        document.querySelectorAll(
-            ".project, .skill, .stat, .timeline-item"
-        ).forEach(element => {
-
-            element.style.opacity = "0";
-            element.style.transform = "translateY(25px)";
-            element.style.transition = "all .7s ease";
-
-            observer.observe(element);
-
-        });
-
+        show(0);
+        const hero = document.querySelector(".hero");
+        if ("IntersectionObserver" in window) {
+            new IntersectionObserver((entries, observer) => {
+                if (entries[0].isIntersecting) {
+                    hero.classList.add("in");
+                    observer.disconnect();
+                }
+            }, { threshold: .5 }).observe(hero);
+        } else {
+            hero.classList.add("in");
+        }
     </script>
-
 </body>
 </html>
 
