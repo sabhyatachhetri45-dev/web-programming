@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Card</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      background-color: #f1f5f9;
+    }
+
+    .profile-card {
+      width: 350px;
+      padding: 30px;
+      background-color: white;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #16a34a;
+      color: white;
+      border-radius: 50%;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1e293b;
+    }
+
+    .role {
+      margin: 8px 0 20px;
+      color: #64748b;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 20px 0;
+    }
+
+    .skills {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .skill {
+      padding: 8px 15px;
+      background-color: #16a34a;
+      color: white;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="profile-card">
+
+    <div class="avatar">S</div>
+
+    <h1 class="name">Sabhyata Chhetri</h1>
+
+    <p class="role">Computer Science Student</p>
+
+    <hr>
+
+    <div class="skills">
+      <span class="skill">HTML</span>
+      <span class="skill">CSS</span>
+      <span class="skill">Python</span>
+      <span class="skill">Git</span>
+    </div>
+
+  </div>
+
+</body>
+</html>
