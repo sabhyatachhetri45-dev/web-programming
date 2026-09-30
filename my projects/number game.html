@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find the cookie</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff8e7;color:#1a1a1a;font:18px/1.5 "Trebuchet MS",Verdana,sans-serif}
+.box{max-width:560px;margin:0 auto;padding:1.2rem 1rem 3rem}
+a{color:#1a1a1a}
+h1{font-size:2.3rem;margin:1.2rem 0 .2rem;line-height:1.1}
+p{margin:.4rem 0}
+#msg{font-weight:bold;min-height:3.2rem;margin:1rem 0 .8rem;padding:.6rem .8rem;background:#fff;border:3px solid #1a1a1a;border-radius:4px 14px 4px 14px}
+#grid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+#grid button{aspect-ratio:1;font:bold clamp(.65rem,2.8vw,.95rem) "Trebuchet MS",Verdana,sans-serif;background:#fff;border:2px solid #1a1a1a;
+  border-radius:5px;cursor:pointer;padding:0;color:#1a1a1a}
+#grid button:nth-child(3n){transform:rotate(-1.2deg)}
+#grid button:nth-child(4n+1){transform:rotate(1deg)}
+#grid button:nth-child(7n){transform:rotate(1.8deg)}
+#grid button:hover:not(:disabled){background:#ffe27a}
+#grid button:disabled{cursor:default}
+.t1{background:#8ec9f2!important}.t2{background:#c4e2f5!important}.t3{background:#e9efc8!important}
+.t4{background:#ffd98a!important}.t5{background:#ff9d66!important}.t6{background:#ff5d50!important;color:#fff!important}
+#grid button.found{background:#7ed68b!important;font-size:1.3rem}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:1rem}
+.row button{font:bold 1rem "Trebuchet MS",Verdana,sans-serif;background:#ffb703;border:3px solid #1a1a1a;border-radius:6px;padding:.4rem .9rem;cursor:pointer;box-shadow:3px 3px 0 #1a1a1a}
+.row button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #1a1a1a}
+.row button:disabled{opacity:.4;cursor:default}
+.key{display:flex;gap:2px;margin-top:1rem;font-size:.8rem}
+.key span{flex:1;text-align:center;padding:2px;border:1px solid #1a1a1a}
+.small{font-size:.85rem;color:#555}
+</style>
+</head>
+<body>
+<div class="box">
+<a href="index.html">← back</a>
+<h1>Find the cookie 🍪</h1>
+<p>I hid a cookie under one of these 100 tiles. Click one. It changes color to tell you how close you are.</p>
+
+<div id="msg" aria-live="polite"></div>
+<div id="grid"></div>
+<div class="key" aria-hidden="true">
+  <span class="t1">freezing</span><span class="t2">cold</span><span class="t3">cool</span><span class="t4">warm</span><span class="t5">hot</span><span class="t6">so close</span>
+</div>
+<div class="row">
+  <button id="hint">Give me a hint (+1 try)</button>
+  <button id="again">Hide it again</button>
+  <span id="count"></span>
+</div>
+<p class="small" id="best"></p>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let secret,tries,last,over,hinted,best=null;
+try{best=JSON.parse(localStorage.getItem("cookiebest"))}catch(e){}
+
+function setup(){
+  secret=1+Math.floor(Math.random()*100);tries=0;last=null;over=false;hinted=false;
+  $("grid").innerHTML="";
+  for(let i=1;i<=100;i++){
+    const b=document.createElement("button");
+    b.textContent=i;b.setAttribute("aria-label","tile "+i);
+    b.onclick=()=>pick(i,b);$("grid").append(b);
+  }
+  $("hint").disabled=false;
+  say("okay, it's hidden. go ahead, pick any tile.");
+  stats();
+}
+function say(t){$("msg").textContent=t}
+function stats(){
+  $("count").textContent=tries?"tries: "+tries:"";
+  $("best").textContent=best?"your best: "+best+" tries":"";
+}
+function band(d){return d<=2?6:d<=5?5:d<=10?4:d<=20?3:d<=40?2:1}
+const names=["","freezing","cold","cool","warm","hot","so close"];
+
+function pick(n,b){
+  if(over)return;
+  tries++;
+  if(n===secret){
+    over=true;b.className="found";b.textContent="🍪";
+    [...$("grid").children].forEach(x=>x.disabled=true);$("hint").disabled=true;
+    if(!best||tries<best){best=tries;try{localStorage.setItem("cookiebest",best)}catch(e){}}
+    say(tries===1?"first try?? okay that's just luck. it was "+n+"."
+      :tries<=7?"found it, number "+n+"! only "+tries+" tries. you're good at this."
+      :"there it is, number "+n+"! took "+tries+" tries, but you got it.");
+    stats();return;
+  }
+  const d=Math.abs(n-secret),t=band(d);
+  b.className="t"+t;b.disabled=true;b.setAttribute("aria-label","tile "+n+", "+names[t]);
+  let s=names[t]+".";
+  if(last!==null){
+    if(d<last)s+=" warmer than before.";
+    else if(d>last)s+=" colder than before.";
+    else s+=" same as before, weird.";
+  }
+  if(t===6)s+=" you're right on top of it!";
+  if(tries===12)s+=" (try following the red tiles!)";
+  last=d;say(s);stats();
+}
+$("hint").onclick=()=>{
+  if(over||hinted)return;
+  hinted=true;tries++;$("hint").disabled=true;
+  say("hint: the cookie is under an "+(secret%2?"odd":"even")+" number.");stats();
+};
+$("again").onclick=setup;
+setup();
+</script>
+</body>
+</html>
