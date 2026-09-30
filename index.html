@@ -1,231 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Sabhyata Chhetri — Developer Portfolio</title>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap');
-
-        :root {
-            --paper: #eef3f9;
-            --grid: #d3deec;
-            --sheet: #fbfdff;
-            --ink: #1b2b5b;
-            --pencil: #5b6475;
-            --margin: #e0566b;
-            --yellow: #ffe66d;
-            --pink: #ffc6d3;
-            --mint: #c6ecd8;
-            --hand: "Kalam", "Segoe Print", "Bradley Hand", cursive;
-            --body: "Literata", Georgia, serif;
-        }
-
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            margin: 0;
-            background: var(--paper);
-            color: var(--ink);
-            font: 400 1.06rem/1.75 var(--body);
-            background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-            background-size: 28px 28px;
-        }
-        a { color: var(--ink); }
-        :focus-visible { outline: 3px solid var(--margin); outline-offset: 3px; border-radius: 4px; }
-        .page { position: relative; max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem 4.6rem; }
-        .page::before { position: absolute; top: 0; bottom: 0; left: 3.3rem; width: 2px; background: var(--margin); opacity: .55; content: ""; }
-        .holes { position: absolute; top: 0; bottom: 0; left: 1rem; width: 1.4rem; background: radial-gradient(circle,var(--paper) 0 .5rem,#9fb0c8 .5rem .58rem,transparent .6rem) 0 0/1.4rem 7rem repeat-y; }
-        h1, h2, h3 { margin: 0; font-family: var(--hand); font-weight: 700; line-height: 1.15; }
-        h1 { font-size: clamp(2.6rem, 8vw, 4.6rem); }
-        h2 { margin-bottom: .6rem; font-size: clamp(1.8rem, 4.5vw, 2.3rem); }
-        section { padding: 3.2rem 0 .5rem; }
-        p { max-width: 62ch; margin: .6rem 0; }
-        .note { color: var(--pencil); font: 1.05rem/1.5 var(--hand); }
-        .top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 1rem; font-family: var(--hand); }
-        .top nav { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; }
-        .top a { border-bottom: 2px solid transparent; text-decoration: none; }
-        .top a:hover { border-color: var(--yellow); background: linear-gradient(transparent 55%,var(--yellow) 55%); }
-        .hero { padding-top: 4rem; }
-        .status { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; margin: 1.2rem 0 0; font: 1.3rem var(--hand); }
-        .strike { position: relative; color: var(--pencil); }
-        .strike::after { position: absolute; top: 55%; left: -2%; width: 104%; height: 3px; transform: scaleX(0); transform-origin: left; border-radius: 2px; background: var(--margin); content: ""; rotate: -2deg; animation: draw .7s .9s ease-out forwards; }
-        .fresh { opacity: 0; animation: show .01s 1.6s forwards; }
-        .hero:not(.in) .strike::after, .hero:not(.in) .fresh { animation-play-state: paused; }
-        @keyframes draw { to { transform: scaleX(1); } }
-        @keyframes show { to { opacity: 1; } }
-        .hero .lede { margin-top: 1.4rem; font-size: 1.2rem; }
-        .stickies { display: flex; flex-wrap: wrap; gap: 1rem 1.1rem; margin: 1.2rem 0 0; padding: 0; list-style: none; }
-        .stickies li { min-width: 7.5rem; padding: .9rem 1.1rem 1rem; background: var(--yellow); box-shadow: 2px 3px 0 #1b2b5b2e; text-align: center; font: 1.15rem var(--hand); }
-        .stickies li:nth-child(3n+2) { background: var(--pink); }
-        .stickies li:nth-child(3n) { background: var(--mint); }
-        .stickies li:nth-child(1) { rotate: -2.5deg; }
-        .stickies li:nth-child(2) { rotate: 1.5deg; }
-        .stickies li:nth-child(3) { rotate: -1deg; }
-        .stickies li:nth-child(4) { rotate: 2.5deg; }
-        .stickies li:nth-child(5) { rotate: -2deg; }
-        .stickies li:nth-child(6) { rotate: 1deg; }
-        .stickies li:nth-child(7) { rotate: -1.5deg; }
-        .stickies li:nth-child(8) { rotate: 2deg; }
-        .stickies li:nth-child(9) { rotate: -.5deg; }
-        .shelf { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.2rem 0 0; padding: 0 0 0 .4rem; }
-        .shelf button { position: relative; top: 2px; padding: .45rem 1rem; border: 2px solid var(--ink); border-bottom: 0; border-radius: 10px 10px 0 0; background: var(--sheet); color: var(--ink); cursor: pointer; font: 700 1.05rem var(--hand); }
-        .shelf button[aria-selected="true"] { background: var(--yellow); }
-        .shelf button:hover { background: #fff6b8; }
-        .sheet { padding: 1.4rem 1.5rem 1.6rem; border: 2px solid var(--ink); background: var(--sheet); box-shadow: 5px 6px 0 #1b2b5b29; }
-        .sheet h3 { font-size: 1.5rem; }
-        .tasks { display: grid; grid-template-columns: repeat(auto-fill,minmax(14rem,1fr)); gap: .3rem 1.5rem; margin: 1rem 0 0; padding: 0; list-style: none; }
-        .tasks a { display: flex; align-items: baseline; gap: .7rem; padding: .35rem 0; border-bottom: 1.5px dashed var(--grid); text-decoration: none; }
-        .tasks a:hover .what { background: linear-gradient(transparent 60%,var(--yellow) 60%); }
-        .tick { position: relative; top: .15rem; flex: none; width: 1.05rem; height: 1.05rem; border: 2px solid var(--ink); border-radius: 3px; }
-        .tick::after { position: absolute; top: -4px; left: 2px; width: 6px; height: 11px; transform: rotate(40deg); border: solid var(--margin); border-width: 0 3px 3px 0; content: ""; }
-        .tasks b { font-family: var(--hand); }
-        .what { color: var(--pencil); font-size: .95rem; }
-        .openall { display: inline-block; margin-top: 1.1rem; font: 700 1.05rem var(--hand); }
-        .list { margin: 1.2rem 0 0; padding: 0; list-style: none; }
-        .list li { display: grid; grid-template-columns: 2.6rem 1fr; gap: .2rem .9rem; padding: 1rem 0; border-bottom: 2px dashed var(--grid); }
-        .list .emo { grid-row: span 2; font-size: 1.7rem; line-height: 1.3; }
-        .list h3 { font-size: 1.35rem; }
-        .list p { margin: .1rem 0; }
-        .stamp { display: inline-block; margin-left: .6rem; padding: 0 .5rem; transform: rotate(-3deg); border: 2px solid var(--margin); border-radius: 6px; color: var(--margin); vertical-align: middle; font: .95rem var(--hand); }
-        .path { margin: 1.2rem 0 0; padding: 0 0 0 1.7rem; border-left: 3px dotted var(--ink); list-style: none; }
-        .path li { position: relative; padding: 0 0 1.4rem; }
-        .path li::before { position: absolute; top: .55rem; left: -2.15rem; width: .85rem; height: .85rem; border: 2px solid var(--ink); border-radius: 50%; background: var(--yellow); content: ""; }
-        .path h3 { font-size: 1.3rem; }
-        .path .when { color: var(--margin); font-family: var(--hand); }
-        .contact { font-size: 1.1rem; }
-        .contact a.btn { display: inline-block; margin-top: .8rem; padding: .5rem 1.4rem; transform: translate(0,0); border: 2px solid var(--ink); background: var(--yellow); box-shadow: 4px 4px 0 var(--ink); font: 700 1.3rem var(--hand); text-decoration: none; transition: transform .15s,box-shadow .15s; }
-        .contact a.btn:hover { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
-        footer { margin-top: 3rem; color: var(--pencil); font-family: var(--hand); }
-        @media (max-width: 560px) {
-            .page { padding-right: 1rem; padding-left: 3.2rem; }
-            .page::before { left: 2.4rem; }
-            .holes { left: .4rem; }
-            .sheet { padding: 1.1rem; }
-            .shelf { gap: .45rem; }
-            .shelf button { padding-right: .7rem; padding-left: .7rem; font-size: .95rem; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            html { scroll-behavior: auto; }
-            .strike::after { animation: none; transform: none; }
-            .fresh { animation: none; opacity: 1; }
-            .contact a.btn { transition: none; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7f3">
+  <title>Sabhyata Chhetri | Software Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f7f3;
+      --surface: #fff;
+      --ink: #202a24;
+      --muted: #626d65;
+      --line: #dce3dc;
+      --green: #28664f;
+      --green-soft: #e5efe8;
+      --orange: #c9684d;
+      --mono: "DM Mono", monospace;
+      --sans: "Manrope", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 400 15px/1.7 var(--sans); }
+    a { color: var(--green); }
+    a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+    .wrap { width: min(1040px, calc(100% - 40px)); margin-inline: auto; }
+    .navbar { border-bottom: 1px solid var(--line); background: rgba(255,255,255,.84); }
+    .nav-container { display: flex; min-height: 66px; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { color: var(--ink); font-size: 14px; font-weight: 800; text-decoration: none; }
+    .nav-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
+    .nav-links a { color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: none; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-links .nav-cta { padding: 8px 12px; border: 1px solid var(--green); border-radius: 5px; color: var(--green); }
+    .hero { padding: 76px 0 70px; border-bottom: 1px solid var(--line); }
+    .hero-label, .eyebrow, .card-meta, .path-text, .folder-label, .footer-note { font: 10px/1.5 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+    .hero-label { margin: 0 0 18px; color: var(--green); }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1 { max-width: 730px; margin-bottom: 18px; font-size: clamp(38px, 7vw, 68px); font-weight: 700; line-height: 1.06; letter-spacing: 0; }
+    .hero-subtext { max-width: 630px; margin-bottom: 25px; color: var(--muted); font-size: 16px; }
+    .hero-actions, .card-actions, .chip-group, .social-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .btn { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; padding: 9px 14px; border: 1px solid var(--green); border-radius: 5px; font-size: 12px; font-weight: 800; text-decoration: none; }
+    .btn-primary { background: var(--green); color: white; }
+    .btn-primary:hover { background: #205640; }
+    .btn-outline { color: var(--green); }
+    .btn-outline:hover { background: var(--green-soft); }
+    .section { padding: 58px 0; }
+    .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+    .section-header h2 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: 0; }
+    .section-divider { height: 1px; flex: 1; background: var(--line); }
+    .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; color: var(--muted); }
+    .about-content p { max-width: 60ch; margin: 0; }
+    .bg-light { background: #edf1ec; border-block: 1px solid var(--line); }
+    .section-intro { margin: -10px 0 24px; color: var(--muted); }
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .project-card { min-width: 0; padding: 21px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+    .project-card.featured { grid-column: 1 / -1; border-top: 3px solid var(--green); }
+    .card-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 13px; color: var(--muted); }
+    .status-badge { display: inline-flex; align-items: center; gap: 7px; color: var(--green); }
+    .status-badge::before { width: 7px; height: 7px; border-radius: 50%; background: #78a77a; content: ""; }
+    .status-active { color: var(--orange); }
+    .status-active::before { background: var(--orange); }
+    .path-text { overflow-wrap: anywhere; color: #849087; text-transform: none; }
+    .project-card h3 { margin-bottom: 9px; font-size: 18px; font-weight: 800; line-height: 1.35; }
+    .project-card p { margin-bottom: 15px; color: var(--muted); font-size: 13px; }
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 17px; padding: 0; list-style: none; }
+    .tech-stack li { padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; color: #4b5e51; font: 10px var(--mono); }
+    .card-actions a, .chip-group a { color: var(--green); font-size: 11px; font-weight: 800; text-decoration: none; }
+    .card-actions a:hover, .chip-group a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .link-secondary { color: var(--muted) !important; }
+    .folder-links { display: grid; grid-template-columns: 1fr; gap: 7px; }
+    .folder-label { color: var(--muted); }
+    .chip-group { gap: 7px; }
+    .chip-group a { padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; background: #fbfcfa; }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .skill-category { padding: 17px 0; border-top: 2px solid var(--green); }
+    .skill-category h3 { margin-bottom: 10px; font-size: 14px; font-weight: 800; }
+    .skill-category ul { display: grid; gap: 6px; margin: 0; padding-left: 18px; color: var(--muted); font-size: 12px; }
+    .bg-dark { background: #202a24; color: #f3f5f1; }
+    .text-white { color: #f3f5f1; }
+    .text-center { text-align: center; }
+    .bg-dark .section-header { justify-content: center; }
+    .bg-dark .section-divider { max-width: 80px; background: #536158; }
+    .contact-lead { color: #c1cbc2; }
+    .contact-actions { margin: 22px 0; }
+    .social-links { justify-content: center; color: #aab6ab; font-size: 12px; }
+    .social-links a { color: #dce7dc; }
+    .social-links .dot { color: #7f8c81; }
+    .footer { margin-top: 35px; padding-top: 17px; border-top: 1px solid #465248; color: #aab6ab; font-size: 11px; }
+    .footer p { margin: 0; }
+    @media (max-width: 700px) {
+      .nav-container { align-items: flex-start; flex-direction: column; justify-content: center; gap: 8px; padding-block: 13px; }
+      .nav-links { gap: 5px 15px; }
+      .hero { padding: 55px 0; }
+      .about-content, .skills-grid { grid-template-columns: 1fr; gap: 15px; }
+    }
+    @media (max-width: 520px) {
+      .wrap { width: min(100% - 30px, 1040px); }
+      .nav-links { gap: 4px 12px; }
+      .nav-links a { font-size: 11px; }
+      .section { padding: 42px 0; }
+      .project-grid { grid-template-columns: 1fr; }
+      .project-card.featured { grid-column: auto; }
+      .project-card { padding: 17px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
 </head>
-
 <body>
-
-    <div class="page">
-        <div class="holes" aria-hidden="true"></div>
-        <header class="top">
-            <strong>sabhyata.</strong>
-            <nav aria-label="Sections">
-                <a href="#notebooks">Notebooks</a><a href="#top">Hello</a><a href="#about">About</a>
-                <a href="#toolbox">Skills</a><a href="#projects">Projects</a><a href="#journey">Journey</a><a href="#contact">Say hi</a>
-            </nav>
-        </header>
-        <main>
-            <section id="notebooks" aria-labelledby="notebooks-title">
-                <h2 id="notebooks-title">My notebooks</h2>
-                <p>One notebook per week. Pick a tab, then open any task.</p>
-                <div class="shelf" role="tablist" aria-label="Weekly notebooks"></div>
-                <div class="sheet" id="sheet" role="tabpanel" aria-live="polite"></div>
-            </section>
-            <section class="hero" id="top">
-                <h1>Hi, I'm Sabhyata.</h1>
-                <p class="status"><span class="strike">Work in progress.</span><span class="fresh">Still learning. On purpose.</span></p>
-                <p class="lede">I'm a Computer Science student who learns by making things. This page is my notebook: every week of web programming, the experiments, and what I'm building next.</p>
-                <p class="note">(27° 42' N, learn + make + repeat)</p>
-            </section>
-            <section id="about">
-                <h2>A little about me</h2>
-                <p>I like understanding how things work, then trying to build them myself. My interests run from <strong>web development</strong> and <strong>Python</strong> to data structures, algorithms and creative digital experiences.</p>
-                <p>I care about thoughtful interfaces and the small details that make software feel human. I'm still learning, and that's what makes building interesting.</p>
-            </section>
-            <section id="toolbox">
-                <h2>What's on my desk</h2>
-                <ul class="stickies"><li>Python</li><li>CSS</li><li>JavaScript</li><li>Git</li><li>GitHub</li><li>Data Structures</li><li>Algorithms</li><li>OpenCV</li><li>Problem Solving</li></ul>
-            </section>
-            <section id="projects">
-                <h2>Things I've been building</h2>
-                <ul class="list">
-                    <li><span class="emo" aria-hidden="true">🚗</span><h3>Parking Management</h3><p>A parking system built on stacks, queues and linked lists, to manage vehicles the way a real lot would.<span class="stamp">write-up soon</span></p></li>
-                    <li><span class="emo" aria-hidden="true">🌐</span><h3>Web Programming</h3><p>My web experiments, assignments and interactive HTML projects. <a href="week2%20fri/index.html">Open the project</a></p></li>
-                    <li><span class="emo" aria-hidden="true">🌻</span><h3>Image Processing</h3><p>An OpenCV experiment in image enhancement and histogram equalization.<span class="stamp">write-up soon</span></p></li>
-                    <li><span class="emo" aria-hidden="true">✦</span><h3>My personal website</h3><p>The separate portfolio site I'm building. <a href="my%20projects/index.html">Open my website</a></p></li>
-                </ul>
-            </section>
-            <section id="journey">
-                <h2>Where I'm heading</h2>
-                <ol class="path">
-                    <li><span class="when">Now</span><h3>Computer Science</h3><p>Programming, data structures, algorithms and software development.</p></li>
-                    <li><span class="when">Learning</span><h3>Web development</h3><p>Building interactive websites with HTML, CSS and JavaScript.</p></li>
-                    <li><span class="when">Next</span><h3>Bigger things</h3><p>Turning small experiments into larger, useful projects.</p></li>
-                </ol>
-            </section>
-            <section id="contact" class="contact">
-                <h2>Have an idea?</h2>
-                <p>Tell me about it. I'd like to help turn it into something real.</p>
-                <a class="btn" href="mailto:your-email@example.com">Say hello</a>
-            </section>
-        </main>
-        <footer>© 2026 Sabhyata Chhetri. Built with curiosity and code.</footer>
+  <header class="navbar">
+    <div class="nav-container wrap">
+      <a href="#top" class="brand">Sabhyata Chhetri</a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#projects">Projects &amp; Modules</a>
+        <a href="#skills">Technical Stack</a>
+        <a href="#contact" class="nav-cta">Contact</a>
+      </nav>
     </div>
-    <script>
-        const weeks = [
-            { id: "w2m", tab: "Week 2 Mon", name: "Week 2 Monday", dir: "week2(mon)/", tasks: [["task%201.html", "Intro task"], ["Task%202.html", "Assignment page"], ["Task%203.html", "HTML/CSS task"], ["Task%204.html", "Structure task"], ["Task%205.html", "Layout task"], ["Task%206.html", "Content task"], ["Task%207.html", "Practice task"], ["Task%208.html", "Final Monday task"]] },
-            { id: "w2f", tab: "Week 2 Fri", name: "Week 2 Friday", dir: "week2%20fri/", tasks: [["task1.html", "Friday task"], ["Task2.html", "Friday assignment"], ["Task%203.html", "Practice page"], ["Task%204.html", "Form/style page"], ["Task%205.html", "Build task"], ["Taask%206.html", "Friday task"], ["Task%207.html", "Practice build"], ["Task%208.html", "Final Friday task"]] },
-            { id: "w3m", tab: "Week 3 Mon", name: "Week 3 Monday", dir: "week3(mon)/", tasks: [["task1-heading.html", "Heading task"], ["task2-difference.html", "Difference task"], ["task3-color.html", "Color task"], ["task4-boxmodel.html", "Box model task"], ["task5-fixcode.html", "Fix code task"], ["task6-flexbox.html", "Flexbox task"], ["task7-profile.html", "Profile task"], ["task8-fullstyle.html", "Full style task"]] },
-            { id: "w3f", tab: "Week 3 Fri", name: "Week 3 Friday", dir: "week3(fri)/", tasks: [["task1.html", "Friday project"], ["task2.html", "Layout exercise"], ["task3.html", "Page build"], ["task4.html", "Design task"], ["task5.html", "Assignment page"], ["task6.html", "CSS practice"], ["task7.html", "Final Friday page"]] },
-            { id: "w4m", tab: "Week 4 Mon", name: "Week 4 Monday", dir: "week4(mon).html/", tasks: [["task1.html", "Rocket launch"], ["task2.html", "Profile card"], ["task3.html", "To-do list"], ["task4.html", "Student directory"]] }
-        ];
-        const shelf = document.querySelector(".shelf");
-        const sheet = document.getElementById("sheet");
-        function show(index) {
-            const week = weeks[index];
-            [...shelf.children].forEach((button, buttonIndex) => {
-                const selected = buttonIndex === index;
-                button.setAttribute("aria-selected", String(selected));
-                button.tabIndex = selected ? 0 : -1;
-            });
-            sheet.setAttribute("aria-labelledby", `tab-${week.id}`);
-            const items = week.tasks.map((task, taskIndex) => `<li><a href="${week.dir}${task[0]}"><span class="tick" aria-hidden="true"></span><span><b>Task ${taskIndex + 1}</b> <span class="what">${task[1]}</span></span></a></li>`).join("");
-            sheet.innerHTML = `<h3>${week.name}</h3><ul class="tasks">${items}</ul><a class="openall" href="${week.dir}index.html">Open the whole folder</a>`;
-        }
-        weeks.forEach((week, index) => {
-            const button = document.createElement("button");
-            button.type = "button";
-            button.setAttribute("role", "tab");
-            button.setAttribute("aria-controls", "sheet");
-            button.id = `tab-${week.id}`;
-            button.textContent = week.tab;
-            button.addEventListener("click", () => show(index));
-            button.addEventListener("keydown", event => {
-                if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-                    event.preventDefault();
-                    const nextIndex = (index + (event.key === "ArrowRight" ? 1 : weeks.length - 1)) % weeks.length;
-                    show(nextIndex);
-                    shelf.children[nextIndex].focus();
-                }
-            });
-            shelf.appendChild(button);
-        });
-        show(0);
-        const hero = document.querySelector(".hero");
-        if ("IntersectionObserver" in window) {
-            new IntersectionObserver((entries, observer) => {
-                if (entries[0].isIntersecting) {
-                    hero.classList.add("in");
-                    observer.disconnect();
-                }
-            }, { threshold: .5 }).observe(hero);
-        } else {
-            hero.classList.add("in");
-        }
-    </script>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="container wrap">
+        <p class="hero-label">Computer Science student · Learning by building</p>
+        <h1>Small projects. Solid foundations.</h1>
+        <p class="hero-subtext">I like figuring out how things work, then making a version of my own. Here are a few projects and the weekly exercises I’ve been working through.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">Browse my work</a>
+          <a href="#contact" class="btn btn-outline">Find me on GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container wrap">
+        <div class="section-header"><h2>About</h2><span class="section-divider"></span></div>
+        <div class="about-content">
+          <p>I’m Sabhyata, a Computer Science student. I enjoy web development, Python, and the puzzle of turning an idea into something that works.</p>
+          <p>Most of what’s here is part of learning: trying a concept, making mistakes, and coming back to improve it. I’m especially interested in data structures and thoughtful interfaces.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section bg-light">
+      <div class="container wrap">
+        <div class="section-header"><h2>Projects &amp; Coursework</h2><span class="section-divider"></span></div>
+        <p class="section-intro">A few things I’ve built, plus the folders where the practice lives.</p>
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="card-meta"><span class="status-badge">Coursework</span><span class="path-text">Web programming</span></div>
+            <h3>Weekly exercises</h3>
+            <p>HTML, CSS and JavaScript exercises, from page structure and layout to small interactive pages.</p>
+            <div class="folder-links">
+              <span class="folder-label">Open a week</span>
+              <div class="chip-group">
+                <a href="week2(mon)/index.html">Week 2 Mon</a>
+                <a href="week2%20fri/index.html">Week 2 Fri</a>
+                <a href="week3(mon)/index.html">Week 3 Mon</a>
+                <a href="week3(fri)/index.html">Week 3 Fri</a>
+                <a href="week4(mon).html/index.html">Week 4 Mon</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="card-meta"><span class="status-badge">Small project</span><span class="path-text">JavaScript game</span></div>
+            <h3>Find the cookie</h3>
+            <p>Guess where the cookie is hidden. The tiles get warmer as you get closer.</p>
+            <div class="card-actions"><a href="my%20projects/number%20game.html">Play the game &rarr;</a></div>
+          </article>
+
+          <article class="project-card">
+            <div class="card-meta"><span class="status-badge">Personal site</span><span class="path-text">Portfolio</span></div>
+            <h3>My website</h3>
+            <p>A separate portfolio page I made to practice building and styling a complete website.</p>
+            <div class="card-actions"><a href="my%20projects/my%20website.html">Visit my website &rarr;</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="container wrap">
+        <div class="section-header"><h2>Things I use and learn</h2><span class="section-divider"></span></div>
+        <div class="skills-grid">
+          <div class="skill-category"><h3>Languages &amp; web</h3><ul><li>Python</li><li>JavaScript</li><li>HTML and CSS</li></ul></div>
+          <div class="skill-category"><h3>Foundations</h3><ul><li>Data structures</li><li>Algorithms</li><li>Problem solving</li></ul></div>
+          <div class="skill-category"><h3>Tools &amp; interests</h3><ul><li>Git and GitHub</li><li>Visual Studio Code</li><li>OpenCV</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section bg-dark text-white">
+      <div class="container wrap text-center">
+        <div class="section-header"><h2>Say hello</h2><span class="section-divider"></span></div>
+        <p class="contact-lead">I’m always glad to talk about a project or something new I’m learning.</p>
+        <div class="social-links"><a href="https://github.com/sabhyatachhetri45-dev" target="_blank" rel="noopener noreferrer">GitHub profile</a></div>
+        <footer class="footer"><p>&copy; 2026 Sabhyata Chhetri</p></footer>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
 
