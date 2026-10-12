@@ -9,47 +9,82 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --paper: #f6f3ea;
-      --ink: #26241f;
-      --muted: #67635a;
-      --blue: #2b4a78;
-      --marker: #f1dd7e;
-      --pencil: #b04a30;
+      --paper: #f4efe2;
+      --ink: #2b2620;
+      --muted: #655d51;
+      --marker: #f2d95c;
+      --butter: #f7e7a1;
+      --sage: #d3dfc3;
+      --peach: #f4cfb4;
+      --clay: #a84d2b;
+      --blue: #2d4a7a;
+      --hand: "Caveat", "Comic Sans MS", cursive;
+      --text: Georgia, "Times New Roman", serif;
     }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font: 18px/1.65 Georgia, "Times New Roman", serif;
-    }
-    .page { max-width: 36rem; margin: 0 0 0 clamp(20px, 12vw, 190px); padding: 44px 20px 80px 0; }
-    a { color: var(--blue); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 21px/1.6 var(--text); }
+    a { color: var(--blue); text-underline-offset: 4px; }
     a:hover { background: var(--marker); text-decoration: none; }
-    a:focus-visible { outline: 2px solid var(--pencil); outline-offset: 3px; }
+    a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
+    .page { width: min(1000px, 100% - 48px); margin: 0 auto; padding: 28px 0 70px; }
 
-    .top { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-bottom: 64px; font-size: 16px; }
-    .top .me { margin-right: auto; color: var(--ink); font-weight: bold; text-decoration: none; }
+    /* top bar */
+    .top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 28px; font: 700 28px/1.2 var(--hand); }
+    .top .me { margin-right: auto; color: var(--ink); font-size: 32px; text-decoration: none; }
+    .top a { color: var(--ink); }
 
-    h1 { margin: 0 0 18px; font: normal 34px/1.25 Georgia, serif; }
-    h2 { margin: 56px 0 14px; font: normal bold 20px/1.3 Georgia, serif; }
-    p { margin: 0 0 16px; }
-    .note { display: inline-block; margin-left: 6px; color: var(--pencil); font: 500 22px/1 "Caveat", "Comic Sans MS", cursive; transform: rotate(-2deg); }
+    /* hero */
+    .hero { position: relative; padding: 64px 0 40px; }
+    h1 { margin: 0; font: 700 clamp(60px, 11vw, 120px)/.95 var(--hand); }
+    h1 .name { position: relative; display: inline-block; padding: 0 8px; background: linear-gradient(transparent 55%, var(--marker) 55% 92%, transparent 92%); }
+    .squiggle { display: block; width: min(360px, 70%); margin: 4px 0 0 8px; }
+    .intro { max-width: 30em; margin: 26px 0 0; font-size: 24px; }
+    .arrow { position: absolute; right: 6%; top: 215px; width: 150px; color: var(--clay); transform: rotate(8deg); }
+    .arrow-text { position: absolute; right: 8%; top: 172px; font: 500 30px var(--hand); color: var(--clay); transform: rotate(-4deg); }
 
-    ol.work { margin: 0; padding-left: 22px; }
-    ol.work li { margin-bottom: 20px; padding-left: 4px; }
-    ol.work li::marker { color: var(--muted); }
-    .weeks { display: block; margin-top: 4px; font-size: 16px; color: var(--muted); }
+    h2 { margin: 70px 0 22px; font: 700 clamp(44px, 6vw, 64px)/1 var(--hand); }
+    h2 span { padding: 0 6px; background: linear-gradient(transparent 60%, var(--sage) 60%); }
 
-    .small { color: var(--muted); font-size: 15px; }
-    footer { margin-top: 64px; padding-top: 14px; border-top: 1px solid #cfc9b8; color: var(--muted); font-size: 14px; }
+    /* pinned notes */
+    .notes { display: flex; flex-wrap: wrap; gap: 34px 4%; align-items: flex-start; }
+    .note { position: relative; padding: 34px 30px 28px; box-shadow: 2px 5px 0 rgba(43,38,32,.16); transition: transform .2s; }
+    .note:hover { transform: rotate(0) translateY(-4px); }
+    .note::before { content: ""; position: absolute; top: -14px; left: 50%; width: 110px; height: 30px; margin-left: -55px; background: rgba(214,196,140,.7); transform: rotate(-3deg); }
+    .note h3 { margin: 0 0 8px; font: 700 40px/1.05 var(--hand); }
+    .note p { margin: 0 0 12px; }
+    .n1 { width: 100%; background: var(--butter); transform: rotate(-.8deg); border-radius: 3px 8px 4px 6px; }
+    .n2 { width: 48%; background: var(--sage); transform: rotate(1.6deg); border-radius: 6px 3px 8px 4px; }
+    .n3 { width: 48%; margin-top: 30px; background: var(--peach); transform: rotate(-1.8deg); border-radius: 4px 7px 3px 8px; }
+    .n2::before { transform: rotate(4deg); }
+    .n3::before { transform: rotate(-6deg); }
+    .go { display: inline-block; margin-top: 4px; font: 700 30px var(--hand); }
+    .cookie { position: absolute; right: 18px; top: 16px; width: 74px; transform: rotate(14deg); }
+    .weeks { display: flex; flex-wrap: wrap; gap: 10px 12px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .weeks a { display: block; padding: 2px 14px 4px; border: 2px solid var(--ink); border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; background: rgba(255,255,255,.55); color: var(--ink); font: 700 28px/1.2 var(--hand); text-decoration: none; }
+    .weeks a:hover { background: var(--marker); }
 
-    @media (max-width: 560px) {
-      body { font-size: 17px; }
-      .page { margin-left: 20px; padding-right: 20px; }
-      h1 { font-size: 29px; }
-      .top { margin-bottom: 44px; }
+    /* notebook page */
+    .notebook { max-width: 760px; padding: 6px 24px 0 74px; background: #fffdf6 repeating-linear-gradient(transparent 0 39px, #c3d3e3 39px 40px); border: 1px solid #d8d1bd; border-left: 3px double #d98a7c; box-shadow: 2px 5px 0 rgba(43,38,32,.12); transform: rotate(.5deg); }
+    .notebook p { margin: 0; font: 500 30px/40px var(--hand); }
+    .notebook b { color: var(--clay); font-weight: 700; }
+    .about-text { max-width: 30em; margin: 0 0 30px; }
+
+    .contact { position: relative; padding-bottom: 20px; }
+    .big-link { font: 700 clamp(46px, 8vw, 88px)/1 var(--hand); }
+    .big-link a { color: var(--ink); text-decoration-color: var(--clay); text-decoration-thickness: 4px; }
+    .big-link a:hover { color: var(--ink); }
+    footer { margin-top: 60px; color: var(--muted); font-size: 17px; }
+
+    @media (max-width: 720px) {
+      body { font-size: 19px; }
+      .page { width: calc(100% - 32px); }
+      .arrow, .arrow-text { display: none; }
+      .n2, .n3 { width: 100%; }
+      .notebook { padding-left: 54px; }
+      .notebook p { font-size: 26px; }
+      .cookie { width: 56px; }
     }
+    @media (prefers-reduced-motion: reduce) { .note { transition: none; } }
   </style>
 </head>
 <body>
@@ -62,40 +97,58 @@
     </nav>
 
     <main id="top">
-      <h1>Hi, I’m Sabhyata.</h1>
-      <p>I’m a Computer Science student. I like figuring out how things work and then making my own version of it. This page is where I keep the things I’m building while I learn.</p>
+      <section class="hero">
+        <h1>Hi, I’m <span class="name">Sabhyata.</span></h1>
+        <svg class="squiggle" viewBox="0 0 360 20" fill="none" stroke="#a84d2b" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M4 12 Q 22 2 40 12 T 76 12 T 112 12 T 148 12 T 184 12 T 220 12 T 256 12 T 292 12 T 328 12 T 356 10"/></svg>
+        <p class="intro">I’m a Computer Science student. I like figuring out how things work and then making my own version of it. This page is where I keep the things I’m building while I learn.</p>
+        <span class="arrow-text">scroll, there’s a game!</span>
+        <svg class="arrow" viewBox="0 0 150 110" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8 C 70 0, 130 30, 120 92"/><path d="M98 74 L120 94 L138 68"/></svg>
+      </section>
 
-      <h2 id="work">Things I made</h2>
-      <ol class="work">
-        <li>
-          <strong>Weekly web programming exercises</strong> &ndash; HTML, CSS and JavaScript, from page structure and layout to small interactive pages.
-          <span class="weeks">
-            <a href="week2(mon)/index.html">week 2 mon</a>,
-            <a href="week2%20fri/index.html">week 2 fri</a>,
-            <a href="week3(mon)/index.html">week 3 mon</a>,
-            <a href="week3(fri)/index.html">week 3 fri</a>,
-            <a href="week4(mon).html/index.html">week 4 mon</a>
-          </span>
-        </li>
-        <li>
-          <a href="my%20projects/number%20game.html">Find the cookie</a> &ndash; a little JavaScript game. Guess where the cookie is hidden; the tiles get warmer as you get closer.
-          <span class="note">play it!</span>
-        </li>
-        <li>
-          <a href="my%20projects/my%20website.html">My other website</a> &ndash; a separate page I made to practice building and styling a whole site.
-        </li>
-      </ol>
+      <h2 id="work"><span>Things I made</span></h2>
+      <div class="notes">
+        <article class="note n1">
+          <h3>Weekly exercises</h3>
+          <p>HTML, CSS and JavaScript for my web programming class, from page structure and layout to small interactive pages. Pick a week:</p>
+          <ul class="weeks">
+            <li><a href="week2(mon)/index.html">Week 2 Mon</a></li>
+            <li><a href="week2%20fri/index.html">Week 2 Fri</a></li>
+            <li><a href="week3(mon)/index.html">Week 3 Mon</a></li>
+            <li><a href="week3(fri)/index.html">Week 3 Fri</a></li>
+            <li><a href="week4(mon).html/index.html">Week 4 Mon</a></li>
+          </ul>
+        </article>
 
-      <h2 id="about">About</h2>
-      <p>Most of what’s here is me trying an idea, getting it wrong, and coming back to fix it. I’m especially interested in data structures and in making interfaces that feel considered.</p>
-      <p class="small">I mostly use Python, JavaScript, HTML and CSS. I also use Git and GitHub, Visual Studio Code, and I’ve been playing with OpenCV. I also keep practising algorithms and problem solving.</p>
+        <article class="note n2">
+          <svg class="cookie" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="34" fill="#d9a35f" stroke="#2b2620" stroke-width="3.5"/><g fill="#5a3a22"><circle cx="28" cy="30" r="5"/><circle cx="50" cy="26" r="4.5"/><circle cx="52" cy="48" r="5.5"/><circle cx="30" cy="52" r="4.5"/><circle cx="42" cy="38" r="3.5"/></g></svg>
+          <h3>Find the cookie</h3>
+          <p>A little JavaScript game. Guess where the cookie is hidden; the tiles get warmer as you get closer.</p>
+          <a class="go" href="my%20projects/number%20game.html">play it &rarr;</a>
+        </article>
 
-      <h2 id="contact">Contact</h2>
-      <p>If you want to talk about a project or something new you’re learning, find me on <a href="https://github.com/sabhyatachhetri45-dev" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+        <article class="note n3">
+          <h3>My other website</h3>
+          <p>A separate page I made to practice building and styling a whole website.</p>
+          <a class="go" href="my%20projects/my%20website.html">visit it &rarr;</a>
+        </article>
+      </div>
+
+      <h2 id="about"><span>About</span></h2>
+      <p class="about-text">Most of what’s here is me trying an idea, getting it wrong, and coming back to fix it. I’m especially interested in data structures and in making interfaces that feel considered.</p>
+      <div class="notebook">
+        <p><b>Languages &amp; web:</b> Python, JavaScript, HTML and CSS</p>
+        <p><b>Foundations:</b> data structures, algorithms, problem solving</p>
+        <p><b>Tools &amp; interests:</b> Git and GitHub, Visual Studio Code, OpenCV</p>
+      </div>
+
+      <h2 id="contact"><span>Say hello</span></h2>
+      <div class="contact">
+        <p>If you want to talk about a project or something new you’re learning, find me here:</p>
+        <p class="big-link"><a href="https://github.com/sabhyatachhetri45-dev" target="_blank" rel="noopener noreferrer">my GitHub &rarr;</a></p>
+      </div>
 
       <footer>&copy; 2026 Sabhyata Chhetri</footer>
     </main>
   </div>
 </body>
 </html>
-
