@@ -3,207 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f7f3">
-  <title>Sabhyata Chhetri | Software Developer</title>
+  <title>Sabhyata Chhetri</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: light;
-      --paper: #f5f7f3;
-      --surface: #fff;
-      --ink: #202a24;
-      --muted: #626d65;
-      --line: #dce3dc;
-      --green: #28664f;
-      --green-soft: #e5efe8;
-      --orange: #c9684d;
-      --mono: "DM Mono", monospace;
-      --sans: "Manrope", sans-serif;
+      --paper: #f6f3ea;
+      --ink: #26241f;
+      --muted: #67635a;
+      --blue: #2b4a78;
+      --marker: #f1dd7e;
+      --pencil: #b04a30;
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--paper); color: var(--ink); font: 400 15px/1.7 var(--sans); }
-    a { color: var(--green); }
-    a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
-    .wrap { width: min(1040px, calc(100% - 40px)); margin-inline: auto; }
-    .navbar { border-bottom: 1px solid var(--line); background: rgba(255,255,255,.84); }
-    .nav-container { display: flex; min-height: 66px; align-items: center; justify-content: space-between; gap: 24px; }
-    .brand { color: var(--ink); font-size: 14px; font-weight: 800; text-decoration: none; }
-    .nav-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
-    .nav-links a { color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: none; }
-    .nav-links a:hover { color: var(--green); }
-    .nav-links .nav-cta { padding: 8px 12px; border: 1px solid var(--green); border-radius: 5px; color: var(--green); }
-    .hero { padding: 76px 0 70px; border-bottom: 1px solid var(--line); }
-    .hero-label, .eyebrow, .card-meta, .path-text, .folder-label, .footer-note { font: 10px/1.5 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
-    .hero-label { margin: 0 0 18px; color: var(--green); }
-    h1, h2, h3, h4, p { margin-top: 0; }
-    h1 { max-width: 730px; margin-bottom: 18px; font-size: clamp(38px, 7vw, 68px); font-weight: 700; line-height: 1.06; letter-spacing: 0; }
-    .hero-subtext { max-width: 630px; margin-bottom: 25px; color: var(--muted); font-size: 16px; }
-    .hero-actions, .card-actions, .chip-group, .social-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-    .btn { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; padding: 9px 14px; border: 1px solid var(--green); border-radius: 5px; font-size: 12px; font-weight: 800; text-decoration: none; }
-    .btn-primary { background: var(--green); color: white; }
-    .btn-primary:hover { background: #205640; }
-    .btn-outline { color: var(--green); }
-    .btn-outline:hover { background: var(--green-soft); }
-    .section { padding: 58px 0; }
-    .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
-    .section-header h2 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: 0; }
-    .section-divider { height: 1px; flex: 1; background: var(--line); }
-    .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; color: var(--muted); }
-    .about-content p { max-width: 60ch; margin: 0; }
-    .bg-light { background: #edf1ec; border-block: 1px solid var(--line); }
-    .section-intro { margin: -10px 0 24px; color: var(--muted); }
-    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-    .project-card { min-width: 0; padding: 21px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
-    .project-card.featured { grid-column: 1 / -1; border-top: 3px solid var(--green); }
-    .card-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 13px; color: var(--muted); }
-    .status-badge { display: inline-flex; align-items: center; gap: 7px; color: var(--green); }
-    .status-badge::before { width: 7px; height: 7px; border-radius: 50%; background: #78a77a; content: ""; }
-    .status-active { color: var(--orange); }
-    .status-active::before { background: var(--orange); }
-    .path-text { overflow-wrap: anywhere; color: #849087; text-transform: none; }
-    .project-card h3 { margin-bottom: 9px; font-size: 18px; font-weight: 800; line-height: 1.35; }
-    .project-card p { margin-bottom: 15px; color: var(--muted); font-size: 13px; }
-    .tech-stack { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 17px; padding: 0; list-style: none; }
-    .tech-stack li { padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; color: #4b5e51; font: 10px var(--mono); }
-    .card-actions a, .chip-group a { color: var(--green); font-size: 11px; font-weight: 800; text-decoration: none; }
-    .card-actions a:hover, .chip-group a:hover { text-decoration: underline; text-underline-offset: 3px; }
-    .link-secondary { color: var(--muted) !important; }
-    .folder-links { display: grid; grid-template-columns: 1fr; gap: 7px; }
-    .folder-label { color: var(--muted); }
-    .chip-group { gap: 7px; }
-    .chip-group a { padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; background: #fbfcfa; }
-    .skills-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-    .skill-category { padding: 17px 0; border-top: 2px solid var(--green); }
-    .skill-category h3 { margin-bottom: 10px; font-size: 14px; font-weight: 800; }
-    .skill-category ul { display: grid; gap: 6px; margin: 0; padding-left: 18px; color: var(--muted); font-size: 12px; }
-    .bg-dark { background: #202a24; color: #f3f5f1; }
-    .text-white { color: #f3f5f1; }
-    .text-center { text-align: center; }
-    .bg-dark .section-header { justify-content: center; }
-    .bg-dark .section-divider { max-width: 80px; background: #536158; }
-    .contact-lead { color: #c1cbc2; }
-    .contact-actions { margin: 22px 0; }
-    .social-links { justify-content: center; color: #aab6ab; font-size: 12px; }
-    .social-links a { color: #dce7dc; }
-    .social-links .dot { color: #7f8c81; }
-    .footer { margin-top: 35px; padding-top: 17px; border-top: 1px solid #465248; color: #aab6ab; font-size: 11px; }
-    .footer p { margin: 0; }
-    @media (max-width: 700px) {
-      .nav-container { align-items: flex-start; flex-direction: column; justify-content: center; gap: 8px; padding-block: 13px; }
-      .nav-links { gap: 5px 15px; }
-      .hero { padding: 55px 0; }
-      .about-content, .skills-grid { grid-template-columns: 1fr; gap: 15px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 18px/1.65 Georgia, "Times New Roman", serif;
     }
-    @media (max-width: 520px) {
-      .wrap { width: min(100% - 30px, 1040px); }
-      .nav-links { gap: 4px 12px; }
-      .nav-links a { font-size: 11px; }
-      .section { padding: 42px 0; }
-      .project-grid { grid-template-columns: 1fr; }
-      .project-card.featured { grid-column: auto; }
-      .project-card { padding: 17px; }
+    .page { max-width: 36rem; margin: 0 0 0 clamp(20px, 12vw, 190px); padding: 44px 20px 80px 0; }
+    a { color: var(--blue); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a:hover { background: var(--marker); text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--pencil); outline-offset: 3px; }
+
+    .top { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-bottom: 64px; font-size: 16px; }
+    .top .me { margin-right: auto; color: var(--ink); font-weight: bold; text-decoration: none; }
+
+    h1 { margin: 0 0 18px; font: normal 34px/1.25 Georgia, serif; }
+    h2 { margin: 56px 0 14px; font: normal bold 20px/1.3 Georgia, serif; }
+    p { margin: 0 0 16px; }
+    .note { display: inline-block; margin-left: 6px; color: var(--pencil); font: 500 22px/1 "Caveat", "Comic Sans MS", cursive; transform: rotate(-2deg); }
+
+    ol.work { margin: 0; padding-left: 22px; }
+    ol.work li { margin-bottom: 20px; padding-left: 4px; }
+    ol.work li::marker { color: var(--muted); }
+    .weeks { display: block; margin-top: 4px; font-size: 16px; color: var(--muted); }
+
+    .small { color: var(--muted); font-size: 15px; }
+    footer { margin-top: 64px; padding-top: 14px; border-top: 1px solid #cfc9b8; color: var(--muted); font-size: 14px; }
+
+    @media (max-width: 560px) {
+      body { font-size: 17px; }
+      .page { margin-left: 20px; padding-right: 20px; }
+      h1 { font-size: 29px; }
+      .top { margin-bottom: 44px; }
     }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="nav-container wrap">
-      <a href="#top" class="brand">Sabhyata Chhetri</a>
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#about">About</a>
-        <a href="#projects">Projects &amp; Modules</a>
-        <a href="#skills">Technical Stack</a>
-        <a href="#contact" class="nav-cta">Contact</a>
-      </nav>
-    </div>
-  </header>
+  <div class="page">
+    <nav class="top" aria-label="Main navigation">
+      <a class="me" href="#top">Sabhyata Chhetri</a>
+      <a href="#work">things I made</a>
+      <a href="#about">about</a>
+      <a href="#contact">contact</a>
+    </nav>
 
-  <main>
-    <section class="hero" id="top">
-      <div class="container wrap">
-        <p class="hero-label">Computer Science student · Learning by building</p>
-        <h1>Small projects. Solid foundations.</h1>
-        <p class="hero-subtext">I like figuring out how things work, then making a version of my own. Here are a few projects and the weekly exercises I’ve been working through.</p>
-        <div class="hero-actions">
-          <a href="#projects" class="btn btn-primary">Browse my work</a>
-          <a href="#contact" class="btn btn-outline">Find me on GitHub</a>
-        </div>
-      </div>
-    </section>
+    <main id="top">
+      <h1>Hi, I’m Sabhyata.</h1>
+      <p>I’m a Computer Science student. I like figuring out how things work and then making my own version of it. This page is where I keep the things I’m building while I learn.</p>
 
-    <section id="about" class="section">
-      <div class="container wrap">
-        <div class="section-header"><h2>About</h2><span class="section-divider"></span></div>
-        <div class="about-content">
-          <p>I’m Sabhyata, a Computer Science student. I enjoy web development, Python, and the puzzle of turning an idea into something that works.</p>
-          <p>Most of what’s here is part of learning: trying a concept, making mistakes, and coming back to improve it. I’m especially interested in data structures and thoughtful interfaces.</p>
-        </div>
-      </div>
-    </section>
+      <h2 id="work">Things I made</h2>
+      <ol class="work">
+        <li>
+          <strong>Weekly web programming exercises</strong> &ndash; HTML, CSS and JavaScript, from page structure and layout to small interactive pages.
+          <span class="weeks">
+            <a href="week2(mon)/index.html">week 2 mon</a>,
+            <a href="week2%20fri/index.html">week 2 fri</a>,
+            <a href="week3(mon)/index.html">week 3 mon</a>,
+            <a href="week3(fri)/index.html">week 3 fri</a>,
+            <a href="week4(mon).html/index.html">week 4 mon</a>
+          </span>
+        </li>
+        <li>
+          <a href="my%20projects/number%20game.html">Find the cookie</a> &ndash; a little JavaScript game. Guess where the cookie is hidden; the tiles get warmer as you get closer.
+          <span class="note">play it!</span>
+        </li>
+        <li>
+          <a href="my%20projects/my%20website.html">My other website</a> &ndash; a separate page I made to practice building and styling a whole site.
+        </li>
+      </ol>
 
-    <section id="projects" class="section bg-light">
-      <div class="container wrap">
-        <div class="section-header"><h2>Projects &amp; Coursework</h2><span class="section-divider"></span></div>
-        <p class="section-intro">A few things I’ve built, plus the folders where the practice lives.</p>
-        <div class="project-grid">
-          <article class="project-card">
-            <div class="card-meta"><span class="status-badge">Coursework</span><span class="path-text">Web programming</span></div>
-            <h3>Weekly exercises</h3>
-            <p>HTML, CSS and JavaScript exercises, from page structure and layout to small interactive pages.</p>
-            <div class="folder-links">
-              <span class="folder-label">Open a week</span>
-              <div class="chip-group">
-                <a href="week2(mon)/index.html">Week 2 Mon</a>
-                <a href="week2%20fri/index.html">Week 2 Fri</a>
-                <a href="week3(mon)/index.html">Week 3 Mon</a>
-                <a href="week3(fri)/index.html">Week 3 Fri</a>
-                <a href="week4(mon).html/index.html">Week 4 Mon</a>
-              </div>
-            </div>
-          </article>
+      <h2 id="about">About</h2>
+      <p>Most of what’s here is me trying an idea, getting it wrong, and coming back to fix it. I’m especially interested in data structures and in making interfaces that feel considered.</p>
+      <p class="small">I mostly use Python, JavaScript, HTML and CSS. I also use Git and GitHub, Visual Studio Code, and I’ve been playing with OpenCV. I also keep practising algorithms and problem solving.</p>
 
-          <article class="project-card">
-            <div class="card-meta"><span class="status-badge">Small project</span><span class="path-text">JavaScript game</span></div>
-            <h3>Find the cookie</h3>
-            <p>Guess where the cookie is hidden. The tiles get warmer as you get closer.</p>
-            <div class="card-actions"><a href="my%20projects/number%20game.html">Play the game &rarr;</a></div>
-          </article>
+      <h2 id="contact">Contact</h2>
+      <p>If you want to talk about a project or something new you’re learning, find me on <a href="https://github.com/sabhyatachhetri45-dev" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
 
-          <article class="project-card">
-            <div class="card-meta"><span class="status-badge">Personal site</span><span class="path-text">Portfolio</span></div>
-            <h3>My website</h3>
-            <p>A separate portfolio page I made to practice building and styling a complete website.</p>
-            <div class="card-actions"><a href="my%20projects/my%20website.html">Visit my website &rarr;</a></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="skills" class="section">
-      <div class="container wrap">
-        <div class="section-header"><h2>Things I use and learn</h2><span class="section-divider"></span></div>
-        <div class="skills-grid">
-          <div class="skill-category"><h3>Languages &amp; web</h3><ul><li>Python</li><li>JavaScript</li><li>HTML and CSS</li></ul></div>
-          <div class="skill-category"><h3>Foundations</h3><ul><li>Data structures</li><li>Algorithms</li><li>Problem solving</li></ul></div>
-          <div class="skill-category"><h3>Tools &amp; interests</h3><ul><li>Git and GitHub</li><li>Visual Studio Code</li><li>OpenCV</li></ul></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="section bg-dark text-white">
-      <div class="container wrap text-center">
-        <div class="section-header"><h2>Say hello</h2><span class="section-divider"></span></div>
-        <p class="contact-lead">I’m always glad to talk about a project or something new I’m learning.</p>
-        <div class="social-links"><a href="https://github.com/sabhyatachhetri45-dev" target="_blank" rel="noopener noreferrer">GitHub profile</a></div>
-        <footer class="footer"><p>&copy; 2026 Sabhyata Chhetri</p></footer>
-      </div>
-    </section>
-  </main>
+      <footer>&copy; 2026 Sabhyata Chhetri</footer>
+    </main>
+  </div>
 </body>
 </html>
-
 
