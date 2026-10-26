@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Repos</title>
+  <style>
+    :root { --bg: #f4f6f8; --card: #fff; --text: #1d2433; --muted: #5d677a; --accent: #3156a5; --accent-text: #fff; --border: #dde2ea; --error: #b3261e; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #12151c; --card: #1b2030; --text: #e6e9f0; --muted: #98a2b8; --accent: #6f93e6; --accent-text: #0e1320; --border: #2c3348; --error: #ff8a80; }
+    }
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 24px 16px; }
+    main { max-width: 800px; margin: 0 auto; background: var(--card); padding: 24px; border-radius: 12px; }
+    h1 { margin-top: 0; }
+    a { color: var(--accent); font-weight: bold; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
+    input { flex: 1 1 220px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); color: var(--text); font-size: 1rem; }
+    button { padding: 10px 15px; cursor: pointer; background: var(--accent); color: var(--accent-text); border: 0; border-radius: 6px; font-size: 1rem; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    #status { color: var(--muted); min-height: 1.4em; }
+    #status.error { color: var(--error); }
+    ul { list-style: none; padding: 0; }
+    li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .meta { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>💻 GitHub Repos</h1>
+    <form class="row" id="form">
+      <input id="input" value="sabhyatachhetri45-dev" aria-label="GitHub username" required>
+      <button type="submit">Load repos</button>
+    </form>
+    <p id="status" role="status" aria-live="polite"></p>
+    <ul id="list"></ul>
+  </main>
+
+  <script>
+    const form = document.getElementById("form");
+    const statusEl = document.getElementById("status");
+    const list = document.getElementById("list");
+    const button = form.querySelector("button");
+
+    function setStatus(msg, isError = false) {
+      statusEl.textContent = msg;
+      statusEl.classList.toggle("error", isError);
+    }
+
+    async function loadRepos(user) {
+      button.disabled = true;
+      setStatus("Loading repositories…");
+      try {
+        const res = await fetch(
+          `https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=updated&per_page=8`
+        );
+        // Give specific messages for the common failures
+        if (res.status === 404) throw new Error(`User “${user}” not found`);
+        if (res.status === 403) throw new Error("GitHub rate limit reached (about 60 requests/hour). Try again later.");
+        if (!res.ok) throw new Error(`Request failed (${res.status})`);
+
+        const repos = await res.json();
+        if (repos.length === 0) {
+          list.replaceChildren();
+          setStatus("This user has no public repositories.");
+          return;
+        }
+
+        list.replaceChildren(...repos.map(repo => {
+          const li = document.createElement("li");
+
+          const link = document.createElement("a");
+          link.href = repo.html_url;
+          link.textContent = repo.name;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+
+          const meta = document.createElement("div");
+          meta.className = "meta";
+          meta.textContent =
+            `${repo.description ?? "No description"} · ${repo.language ?? "n/a"} · ★ ${repo.stargazers_count} · updated ${new Date(repo.updated_at).toLocaleDateString()}`;
+
+          li.append(link, meta);
+          return li;
+        }));
+        setStatus(`Showing ${repos.length} most recently updated repos.`);
+      } catch (err) {
+        list.replaceChildren();
+        setStatus(`Error: ${err.message}`, true);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      loadRepos(document.getElementById("input").value.trim());
+    });
+    form.requestSubmit();
+  </script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlobePulse // Multi-Domain Country Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030d12;
+      --card-bg: rgba(6, 24, 30, 0.78);
+      --card-border: rgba(45, 212, 191, 0.16);
+      --accent: #10b981;
+      --accent-cyan: #2dd4bf;
+      --accent-blue: #38bdf8;
+      --accent-purple: #a855f7;
+      --danger: #f43f5e;
+      --text-main: #f0fdf4;
+      --text-muted: #94a3b8;
+      --font-display: 'Bricolage Grotesque', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2.5rem 1rem;
+    }
+    .container {
+      width: 100%;
+      max-width: 760px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(28px);
+      border-radius: 24px;
+      padding: 2.25rem;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65);
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .tagline {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent-cyan);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    h1 { font-family: var(--font-display); font-size: 2.2rem; line-height: 1.1; margin-top: 0.2rem; }
+
+    /* Navigation Tabs */
+    .tabs-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      background: rgba(3, 16, 20, 0.85);
+      padding: 0.35rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 1.25rem;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.6rem 0.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(45, 212, 191, 0.2));
+      color: var(--accent-cyan);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+    }
+    .tab-btn:hover:not(.active) {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .search-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .search-input {
+      flex: 1;
+      background: rgba(3, 16, 20, 0.75);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    .country-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .country-list::-webkit-scrollbar { width: 6px; }
+    .country-list::-webkit-scrollbar-thumb { background: rgba(45, 212, 191, 0.2); border-radius: 4px; }
+
+    .country-card {
+      background: rgba(3, 16, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .country-card:hover {
+      border-color: rgba(45, 212, 191, 0.35);
+      transform: translateY(-1px);
+    }
+    .country-header { display: flex; align-items: center; gap: 0.85rem; }
+    .country-flag { font-size: 2rem; line-height: 1; }
+    .country-name { font-weight: 700; font-size: 1.05rem; }
+    .country-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-top: 0.15rem;
+    }
+
+    .domain-stats {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.3rem;
+    }
+    .primary-metric {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .badges-row { display: flex; gap: 0.4rem; }
+    .metric-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .badge-cyan { background: rgba(45, 212, 191, 0.15); color: var(--accent-cyan); }
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+    .badge-green { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
+    .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+
+    .status-box { text-align: center; padding: 2.5rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <div>
+        <div class="tagline">Global Macro Data & Indicators</div>
+        <h1>GlobePulse</h1>
+      </div>
+    </div>
+
+    <!-- Multi-Domain Switching -->
+    <div class="tabs-nav" role="tablist">
+      <button class="tab-btn active" onclick="switchCategory('demographics')">👥 Demographics</button>
+      <button class="tab-btn" onclick="switchCategory('economics')">📈 Economics</button>
+      <button class="tab-btn" onclick="switchCategory('tech')">⚡ Tech & Web</button>
+      <button class="tab-btn" onclick="switchCategory('energy')">🌱 Eco & Energy</button>
+    </div>
+
+    <div class="search-row">
+      <input
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="Filter by country, capital, or currency..."
+        oninput="handleSearch()"
+      />
+    </div>
+
+    <div id="countriesContainer" class="country-list" aria-live="polite"></div>
+  </div>
+
+  <script>
+    // Comprehensive Global Country Data across 4 Domains
+    const globalCountries = [
+      {
+        name: "United States", code: "USA", flag: "🇺🇸", capital: "Washington, D.C.", region: "Americas",
+        demographics: { population: 334914895, density: 36, medianAge: 38.5, urbanPct: "83%" },
+        economics: { gdp: "$27.36 T", perCapita: "$81,695", currency: "USD ($)" },
+        tech: { internetPenetration: "93.4%", mobilePer100: "110", rAndDShare: "3.4% GDP" },
+        energy: { co2PerCap: "14.4 t", renewableShare: "22.5%" }
+      },
+      {
+        name: "South Korea", code: "KOR", flag: "🇰🇷", capital: "Seoul", region: "East Asia",
+        demographics: { population: 51741963, density: 516, medianAge: 44.8, urbanPct: "81%" },
+        economics: { gdp: "$1.71 T", perCapita: "$33,147", currency: "KRW (₩)" },
+        tech: { internetPenetration: "97.6%", mobilePer100: "142", rAndDShare: "4.9% GDP" },
+        energy: { co2PerCap: "11.6 t", renewableShare: "9.2%" }
+      },
+      {
+        name: "India", code: "IND", flag: "🇮🇳", capital: "New Delhi", region: "South Asia",
+        demographics: { population: 1428627663, density: 435, medianAge: 28.7, urbanPct: "36%" },
+        economics: { gdp: "$3.73 T", perCapita: "$2,612", currency: "INR (₹)" },
+        tech: { internetPenetration: "52.4%", mobilePer100: "84", rAndDShare: "0.7% GDP" },
+        energy: { co2PerCap: "2.0 t", renewableShare: "21.4%" }
+      },
+      {
+        name: "Germany", code: "DEU", flag: "🇩🇪", capital: "Berlin", region: "Europe",
+        demographics: { population: 84482267, density: 236, medianAge: 45.7, urbanPct: "77%" },
+        economics: { gdp: "$4.46 T", perCapita: "$52,824", currency: "EUR (€)" },
+        tech: { internetPenetration: "94.0%", mobilePer100: "128", rAndDShare: "3.1% GDP" },
+        energy: { co2PerCap: "7.7 t", renewableShare: "51.8%" }
+      },
+      {
+        name: "Japan", code: "JPN", flag: "🇯🇵", capital: "Tokyo", region: "East Asia",
+        demographics: { population: 124516650, density: 330, medianAge: 48.6, urbanPct: "92%" },
+        economics: { gdp: "$4.21 T", perCapita: "$33,806", currency: "JPY (¥)" },
+        tech: { internetPenetration: "93.3%", mobilePer100: "155", rAndDShare: "3.3% GDP" },
+        energy: { co2PerCap: "8.1 t", renewableShare: "22.7%" }
+      },
+      {
+        name: "Nepal", code: "NPL", flag: "🇳🇵", capital: "Kathmandu", region: "South Asia",
+        demographics: { population: 30547580, density: 207, medianAge: 25.3, urbanPct: "22%" },
+        economics: { gdp: "$40.8 B", perCapita: "$1,336", currency: "NPR (₨)" },
+        tech: { internetPenetration: "49.6%", mobilePer100: "125", rAndDShare: "0.3% GDP" },
+        energy: { co2PerCap: "0.5 t", renewableShare: "94.2%" }
+      },
+      {
+        name: "Brazil", code: "BRA", flag: "🇧🇷", capital: "Brasília", region: "Americas",
+        demographics: { population: 216422446, density: 25, medianAge: 33.5, urbanPct: "87%" },
+        economics: { gdp: "$2.17 T", perCapita: "$10,043", currency: "BRL (R$)" },
+        tech: { internetPenetration: "84.3%", mobilePer100: "105", rAndDShare: "1.2% GDP" },
+        energy: { co2PerCap: "2.1 t", renewableShare: "83.0%" }
+      },
+      {
+        name: "United Kingdom", code: "GBR", flag: "🇬🇧", capital: "London", region: "Europe",
+        demographics: { population: 67736802, density: 279, medianAge: 40.6, urbanPct: "84%" },
+        economics: { gdp: "$3.33 T", perCapita: "$49,150", currency: "GBP (£)" },
+        tech: { internetPenetration: "97.0%", mobilePer100: "119", rAndDShare: "2.9% GDP" },
+        energy: { co2PerCap: "4.7 t", renewableShare: "44.0%" }
+      }
+    ];
+
+    let activeCategory = 'demographics';
+
+    function switchCategory(category) {
+      activeCategory = category;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(category));
+      });
+      renderList(getFilteredData());
+    }
+
+    function getFilteredData() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      if (!q) return globalCountries;
+      return globalCountries.filter(c =>
+        c.name.toLowerCase().includes(q) ||
+        c.capital.toLowerCase().includes(q) ||
+        c.region.toLowerCase().includes(q) ||
+        c.economics.currency.toLowerCase().includes(q)
+      );
+    }
+
+    function handleSearch() {
+      renderList(getFilteredData());
+    }
+
+    function renderList(countries) {
+      const container = document.getElementById('countriesContainer');
+      container.replaceChildren();
+
+      if (!countries || countries.length === 0) {
+        container.innerHTML = `<div class="status-box"><p>No country records match your filter.</p></div>`;
+        return;
+      }
+
+      countries.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'country-card';
+
+        let statsHTML = '';
+
+        if (activeCategory === 'demographics') {
+          statsHTML = `
+            <div class="primary-metric">👥 ${c.demographics.population.toLocaleString()}</div>
+            <div class="badges-row">
+              <span class="metric-badge badge-cyan">${c.demographics.density}/km²</span>
+              <span class="metric-badge badge-blue">Age ${c.demographics.medianAge}</span>
+              <span class="metric-badge badge-green">Urban ${c.demographics.urbanPct}</span>
+            </div>
+          `;
+        } else if (activeCategory === 'economics') {
+          statsHTML = `
+            <div class="primary-metric">💰 ${c.economics.gdp}</div>
+            <div class="badges-row">
+              <span class="metric-badge badge-green">${c.economics.perCapita} / cap</span>
+              <span class="metric-badge badge-cyan">${c.economics.currency}</span>
+            </div>
+          `;
+        } else if (activeCategory === 'tech') {
+          statsHTML = `
+            <div class="primary-metric">🌐 ${c.tech.internetPenetration} Online</div>
+            <div class="badges-row">
+              <span class="metric-badge badge-blue">${c.tech.mobilePer100} Mob/100</span>
+              <span class="metric-badge badge-purple">${c.tech.rAndDShare} R&D</span>
+            </div>
+          `;
+        } else if (activeCategory === 'energy') {
+          statsHTML = `
+            <div class="primary-metric">⚡ ${c.energy.renewableShare} Clean</div>
+            <div class="badges-row">
+              <span class="metric-badge badge-purple">CO₂ ${c.energy.co2PerCap}</span>
+              <span class="metric-badge badge-green">Renewables</span>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="country-header">
+            <div class="country-flag">${c.flag}</div>
+            <div>
+              <div class="country-name">${c.name}</div>
+              <div class="country-meta">${c.capital} • ${c.region}</div>
+            </div>
+          </div>
+          <div class="domain-stats">
+            ${statsHTML}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Initial render
+    renderList(globalCountries);
+  </script>
+</body>
+</html>
