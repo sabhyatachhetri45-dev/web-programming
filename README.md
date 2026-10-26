@@ -21,6 +21,9 @@ Open [`index.html`](index.html) in a browser, or visit the live site:
 - [Week 3 Monday](<week3(mon)/index.html>)
 - [Week 3 Friday](<week3(fri)/index.html>)
 - [Week 4 Monday](<week4(mon).html/index.html>)
+- [Week 5 — JavaScript Basics](<week5/index.html>)
+- [Week 6 — Random Joke Generator](<week6/task1.html>)
+- [Week 7 — Complete Book Search](<week%207/task6.html>)
 
 ## Built with
 
