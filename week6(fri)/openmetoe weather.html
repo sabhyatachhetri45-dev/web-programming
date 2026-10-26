@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroCast // Open-Meteo Weather</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Bricolage+Grotesque:wght@700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030d12;
+      --card-bg: rgba(6, 24, 30, 0.72);
+      --card-border: rgba(45, 212, 191, 0.16);
+      --accent: #10b981;
+      --accent-cyan: #2dd4bf;
+      --accent-amber: #f59e0b;
+      --text-main: #f0fdf4;
+      --text-muted: #94a3b8;
+      --font-display: 'Bricolage Grotesque', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.25rem;
+      position: relative;
+      overflow-x: hidden;
+      font-size: 16px;
+    }
+
+    .aurora-mesh {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(130px);
+      opacity: 0.22;
+      animation: drift 16s infinite alternate ease-in-out;
+    }
+
+    .blob-1 {
+      width: 500px;
+      height: 500px;
+      background: #059669;
+      top: -15%;
+      left: 10%;
+    }
+
+    .blob-2 {
+      width: 520px;
+      height: 520px;
+      background: #0d9488;
+      bottom: -15%;
+      right: 10%;
+      animation-delay: -6s;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 30px) scale(1.12); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 680px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(28px);
+      border-radius: var(--radius);
+      padding: 2.75rem;
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      gap: 1rem;
+    }
+
+    .tagline {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .tagline::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .controls-deck {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .city-select {
+      flex: 1;
+      min-width: 180px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 0.85rem 1.15rem;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .city-select:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+    }
+
+    .city-select option {
+      background: #041419;
+      color: var(--text-main);
+    }
+
+    .btn-fetch {
+      background: linear-gradient(135deg, var(--accent), var(--accent-cyan));
+      color: #031412;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      padding: 0.85rem 1.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-fetch:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px -6px rgba(16, 185, 129, 0.45);
+    }
+
+    .btn-fetch:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .weather-card {
+      background: rgba(3, 16, 20, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .primary-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .temp-large {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .temp-unit {
+      font-size: 2rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .condition-desc {
+      font-size: 1.15rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 0.4rem;
+    }
+
+    .weather-icon-bubble {
+      font-size: 3.5rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 16px rgba(45, 212, 191, 0.3));
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .metric-cell {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem;
+    }
+
+    .metric-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+    }
+
+    .metric-val {
+      font-family: var(--font-mono);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .status-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      padding-top: 0.5rem;
+    }
+
+    .status-panel {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .spinner {
+      width: 38px;
+      height: 38px;
+      border: 3px solid rgba(16, 185, 129, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 1.75rem; }
+      .header-bar { flex-direction: column; }
+      .temp-large { font-size: 3.2rem; }
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="aurora-mesh">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <main class="container">
+    <div class="header-bar">
+      <div>
+        <div class="tagline">Live Telemetry</div>
+        <h1>AeroCast</h1>
+      </div>
+    </div>
+
+    <div class="controls-deck">
+      <select id="citySelect" class="city-select">
+        <option value="37.5665,126.9780,Seoul,Asia/Seoul">Seoul, KR</option>
+        <option value="37.3595,127.1054,Seongnam,Asia/Seoul">Seongnam, KR</option>
+        <option value="35.6895,139.6917,Tokyo,Asia/Tokyo">Tokyo, JP</option>
+        <option value="40.7128,-74.0060,New York,America/New_York">New York, US</option>
+        <option value="51.5074,-0.1278,London,Europe/London">London, UK</option>
+        <option value="27.7172,85.3240,Kathmandu,Asia/Kathmandu">Kathmandu, NP</option>
+      </select>
+      <button id="fetchBtn" class="btn-fetch" onclick="getWeather()">
+        <span>Get Weather</span>
+      </button>
+    </div>
+
+    <div id="weather" aria-live="polite">
+      <div class="status-panel">
+        <span style="font-size: 2.5rem;">🌍</span>
+        <p>Select a location and click "Get Weather" to read meteorological metrics.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const weatherCodes = {
+      0: { text: "Clear Sky", icon: "☀️" },
+      1: { text: "Mainly Clear", icon: "🌤️" },
+      2: { text: "Partly Cloudy", icon: "⛅" },
+      3: { text: "Overcast", icon: "☁️" },
+      45: { text: "Fog", icon: "🌫️" },
+      48: { text: "Depositing Rime Fog", icon: "🌫️" },
+      51: { text: "Light Drizzle", icon: "🌦️" },
+      53: { text: "Moderate Drizzle", icon: "🌦️" },
+      55: { text: "Dense Drizzle", icon: "🌧️" },
+      61: { text: "Slight Rain", icon: "🌧️" },
+      63: { text: "Moderate Rain", icon: "🌧️" },
+      65: { text: "Heavy Rain", icon: "🌧️" },
+      71: { text: "Slight Snow", icon: "🌨️" },
+      73: { text: "Moderate Snow", icon: "🌨️" },
+      75: { text: "Heavy Snow", icon: "❄️" },
+      80: { text: "Slight Showers", icon: "🌦️" },
+      81: { text: "Moderate Showers", icon: "🌧️" },
+      82: { text: "Violent Showers", icon: "⛈️" },
+      95: { text: "Thunderstorm", icon: "⛈️" }
+    };
+
+    let controller = null;
+
+    async function getWeather() {
+      const output = document.getElementById("weather");
+      const btn = document.getElementById("fetchBtn");
+      const cityData = document.getElementById("citySelect").value.split(",");
+      const [lat, lon, cityName, timezone] = cityData;
+
+      if (controller) controller.abort();
+      controller = new AbortController();
+
+      btn.disabled = true;
+      btn.innerHTML = `<span>Updating…</span>`;
+      output.innerHTML = `
+        <div class="status-panel">
+          <div class="spinner"></div>
+          <p>Requesting observation data for ${escapeHtml(cityName)}…</p>
+        </div>
+      `;
+
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,apparent_temperature&timezone=${encodeURIComponent(timezone)}`;
+        const response = await fetch(url, { signal: controller.signal });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const data = await response.json();
+        const current = data.current;
+        const condition = weatherCodes[current.weather_code] || { text: "Fair Weather", icon: "🌤️" };
+
+        output.innerHTML = `
+          <div class="weather-card">
+            <div class="primary-display">
+              <div>
+                <div class="tagline" style="margin-bottom:0.6rem;">${escapeHtml(cityName)}</div>
+                <div class="temp-large">${Math.round(current.temperature_2m)}<span class="temp-unit">°C</span></div>
+                <div class="condition-desc">${escapeHtml(condition.text)}</div>
+              </div>
+              <div class="weather-icon-bubble">${condition.icon}</div>
+            </div>
+
+            <div class="metrics-grid">
+              <div class="metric-cell">
+                <div class="metric-label">Relative Humidity</div>
+                <div class="metric-val">${current.relative_humidity_2m}%</div>
+              </div>
+              <div class="metric-cell">
+                <div class="metric-label">Wind Velocity</div>
+                <div class="metric-val">${current.wind_speed_10m} <span style="font-size:0.9rem; color:var(--text-muted);">km/h</span></div>
+              </div>
+              <div class="metric-cell">
+                <div class="metric-label">Thermal Sensation</div>
+                <div class="metric-val">${Math.round(current.apparent_temperature)}°C</div>
+              </div>
+              <div class="metric-cell">
+                <div class="metric-label">Wind Direction / Code</div>
+                <div class="metric-val">Code ${current.weather_code}</div>
+              </div>
+            </div>
+
+            <div class="status-footer">
+              <span>Timestamp: ${escapeHtml(current.time.replace("T", " "))}</span>
+              <span style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 0.78rem;">LIVE LINK ACTIVE</span>
+            </div>
+          </div>
+        `;
+      } catch (error) {
+        if (error.name === "AbortError") return;
+        output.innerHTML = `
+          <div class="status-panel" style="color: #f43f5e;">
+            <span style="font-size: 2.5rem;">⚠️</span>
+            <p>Connection Error: ${escapeHtml(error.message)}</p>
+          </div>
+        `;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Get Weather</span>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Auto-trigger on page load
+    getWeather();
+  </script>
+</body>
+</html>
