@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse all six steps of the Week 7 Open Library book search project.">
+  <title>Week 7 | Book Search Tasks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f19;
+      --surface: #151d30;
+      --surface-hover: #1e2942;
+      --border: #233354;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --accent: #818cf8;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+    }
+
+    .crumbbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem max(1.25rem, calc((100vw - 960px) / 2));
+      background: rgba(11, 15, 25, 0.9);
+      border-bottom: 1px solid var(--border);
+    }
+
+    a { color: inherit; }
+
+    .crumbbar a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .crumbbar a:hover, .task-card:hover h2 { color: var(--primary); }
+
+    main {
+      width: min(100% - 2rem, 900px);
+      margin: 0 auto;
+      padding: 3.5rem 0;
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1, h2 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      line-height: 1.15;
+    }
+
+    h1 {
+      margin: 0.45rem 0;
+      font-size: clamp(2.2rem, 7vw, 3.5rem);
+      letter-spacing: -0.04em;
+    }
+
+    .intro {
+      max-width: 620px;
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    .task-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 1rem;
+      margin-top: 2.25rem;
+    }
+
+    .task-card {
+      display: block;
+      min-height: 145px;
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .task-card:hover {
+      transform: translateY(-2px);
+      background: var(--surface-hover);
+      border-color: var(--primary);
+    }
+
+    .task-number {
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .task-card h2 {
+      margin: 0.55rem 0 0.35rem;
+      font-size: 1.25rem;
+      transition: color 0.2s ease;
+    }
+
+    .task-card p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="crumbbar" aria-label="Breadcrumb">
+    <a href="../index.html">Web Programming</a>
+    <a href="../index.html#exercisesHeader">All exercises</a>
+  </nav>
+
+  <main>
+    <span class="eyebrow">Week 07 · Six tasks</span>
+    <h1>Book Search</h1>
+    <p class="intro">Explore each step of the book search project, from the first search page to the complete Open Library experience.</p>
+
+    <section class="task-list" aria-label="Week 7 tasks">
+      <a class="task-card" href="task%201.html">
+        <span class="task-number">Task 01</span>
+        <h2>Book Search</h2>
+        <p>Start the book search experience.</p>
+      </a>
+      <a class="task-card" href="task2.html">
+        <span class="task-number">Task 02</span>
+        <h2>Book Search</h2>
+        <p>Continue building the Open Library search.</p>
+      </a>
+      <a class="task-card" href="task3.html">
+        <span class="task-number">Task 03</span>
+        <h2>Book Search</h2>
+        <p>Add search behavior and book results.</p>
+      </a>
+      <a class="task-card" href="task4.html">
+        <span class="task-number">Task 04</span>
+        <h2>Book Search</h2>
+        <p>Improve the search and results experience.</p>
+      </a>
+      <a class="task-card" href="task5.html">
+        <span class="task-number">Task 05</span>
+        <h2>Book Search</h2>
+        <p>Refine the interactive search flow.</p>
+      </a>
+      <a class="task-card" href="task6.html">
+        <span class="task-number">Task 06</span>
+        <h2>Complete Book Search</h2>
+        <p>Explore books, authors, and subjects.</p>
+      </a>
+    </section>
+  </main>
+</body>
+</html>
