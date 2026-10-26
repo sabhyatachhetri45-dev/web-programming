@@ -23,9 +23,7 @@ Open [`index.html`](index.html) in a browser, or visit the live site:
 - [Week 4 Monday](<week4(mon).html/index.html>)
 - [Week 5 — JavaScript Basics](<week5/index.html>)
 - [Week 6 Monday — Random Joke Generator](<week6(mon)/task1.html>)
-- [Week 6 Friday — API Data Stream Explorer](<week6(fri)/jsoonplaceholder.html>)
-- [Week 6 Friday — Weather Tracker](<week6(fri)/openmetoe%20weather.html>)
-- [Week 6 Friday — Cryptocurrency Tracker](<week6(fri)/cryptocurrency%20trackerr.html>)
+- [Week 6 Friday — API Projects](<week6(fri)/index.html>)
 - [Week 7 — Book Search Tasks](<week%207/index.html>)
 
 ## Built with
