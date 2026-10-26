@@ -25,6 +25,7 @@ Open [`index.html`](index.html) in a browser, or visit the live site:
 - [Week 6 Monday — Random Joke Generator](<week6(mon)/task1.html>)
 - [Week 6 Friday — API Projects](<week6(fri)/index.html>)
 - [Week 7 — Book Search Tasks](<week%207/index.html>)
+- [Week 8 — Forms](<week%208/index.html>)
 
 ## Built with
 
