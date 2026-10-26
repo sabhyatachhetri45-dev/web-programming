@@ -26,12 +26,7 @@ Open [`index.html`](index.html) in a browser, or visit the live site:
 - [Week 6 Friday — API Data Stream Explorer](<week6(fri)/jsoonplaceholder.html>)
 - [Week 6 Friday — Weather Tracker](<week6(fri)/openmetoe%20weather.html>)
 - [Week 6 Friday — Cryptocurrency Tracker](<week6(fri)/cryptocurrency%20trackerr.html>)
-- [Week 7 Task 1 — Book Search](<week%207/task%201.html>)
-- [Week 7 Task 2 — Book Search](<week%207/task2.html>)
-- [Week 7 Task 3 — Book Search](<week%207/task3.html>)
-- [Week 7 Task 4 — Book Search](<week%207/task4.html>)
-- [Week 7 Task 5 — Book Search](<week%207/task5.html>)
-- [Week 7 Task 6 — Complete Book Search](<week%207/task6.html>)
+- [Week 7 — Book Search Tasks](<week%207/index.html>)
 
 ## Built with
 
