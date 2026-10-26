@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 7 Task 3 | Book Search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #131c2e;
+      --surface-hover: #1c2840;
+      --border: #23324d;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --danger: #f43f5e;
+      --warning: #fbbf24;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Breadcrumb Navigation */
+    .crumbbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .crumbbar a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .crumbbar a:hover {
+      color: var(--primary);
+    }
+
+    .crumbbar .back {
+      background: var(--surface);
+      padding: 0.35rem 0.9rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .crumbbar .back:hover {
+      background: var(--surface-hover);
+      border-color: var(--primary);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 2.75rem 1.5rem 1.25rem;
+    }
+
+    .hero h1 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 40%, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .panel {
+      background: rgba(19, 28, 46, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-header {
+      margin-bottom: 1.75rem;
+      text-align: center;
+    }
+
+    .panel-header h2 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.85rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .panel-header p {
+      color: var(--text-muted);
+    }
+
+    /* Form & Input Elements */
+    .search-box-wrapper {
+      max-width: 620px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .input-field {
+      flex: 1;
+      padding: 0.85rem 1.25rem;
+      font-size: 1rem;
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .input-field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    .input-field.input-error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2);
+      animation: shake 0.35s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .search-button {
+      padding: 0.85rem 1.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      background: var(--primary);
+      color: #090d16;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .search-button:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .search-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .feedback-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+      color: var(--text-muted);
+      min-height: 1.4rem;
+      transition: var(--transition);
+    }
+
+    .feedback-hint.is-error {
+      color: var(--danger);
+      font-weight: 500;
+    }
+
+    /* Results Header */
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .results-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .results-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Books Card Grid */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .book {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+    }
+
+    .book:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.6);
+    }
+
+    .book-cover {
+      width: 100%;
+      height: 250px;
+      background: #0d1422;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .book-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .book:hover .book-cover img {
+      transform: scale(1.04);
+    }
+
+    .placeholder-cover {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .placeholder-cover span {
+      font-size: 2.25rem;
+    }
+
+    .book-content {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .book-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .book-authors {
+      font-size: 0.875rem;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .book-meta {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.775rem;
+      color: var(--text-muted);
+    }
+
+    /* Dynamic Status Messages */
+    .status-panel {
+      text-align: center;
+      padding: 3.5rem 1rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .status-panel .icon {
+      font-size: 2.5rem;
+    }
+
+    .status-panel.error-state {
+      color: #fda4af;
+    }
+
+    .status-panel.warning-state {
+      color: #fde047;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(56, 189, 248, 0.2);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .panel { padding: 1.25rem; }
+      .search-form { flex-direction: column; }
+      .hero h1 { font-size: 2.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="crumbbar">
+  <div>
+    <a href="../index.html">Web Programming</a> &nbsp; / &nbsp;
+    <a href="../index.html#exercisesHeader">Week 7</a> &nbsp; / &nbsp; Task 3
+  </div>
+  <a class="back" href="../index.html#exercisesHeader">Back</a>
+</div>
+
+<header class="hero">
+  <h1>Step 3</h1>
+  <p>Add input validation and helpful messages.</p>
+</header>
+
+<main>
+  <div class="panel">
+    <div class="panel-header">
+      <h2>📚 Book Search</h2>
+      <p>Discover books by title using the Open Library Search API.</p>
+    </div>
+
+    <div class="search-box-wrapper">
+      <form class="search-form" id="searchForm" novalidate>
+        <input
+          id="query"
+          class="input-field"
+          type="search"
+          placeholder="Search by title (e.g., The Hobbit, 1984)..."
+          aria-label="Book title"
+          aria-describedby="hint"
+          autocomplete="off"
+        >
+        <button id="searchButton" class="search-button" type="submit">
+          <span>Search</span>
+        </button>
+      </form>
+      <p class="feedback-hint" id="hint">Search for your favorite books!</p>
+    </div>
+
+    <div class="results-header">
+      <h2 class="results-title">Results</h2>
+      <span class="results-meta" id="resultsMeta"></span>
+    </div>
+
+    <div class="results" id="results" aria-live="polite">
+      <div class="status-panel">
+        <span class="icon">🔍</span>
+        <p>Enter a book title to get started.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>Created by Pandey Aayush | Student ID: 202537201</footer>
+
+<script>
+  const searchForm = document.getElementById('searchForm');
+  const queryInput = document.getElementById('query');
+  const searchButton = document.getElementById('searchButton');
+  const hint = document.getElementById('hint');
+  const resultsContainer = document.getElementById('results');
+  const resultsMeta = document.getElementById('resultsMeta');
+
+  let activeAbortController = null;
+
+  // Clear validation styling when typing
+  queryInput.addEventListener('input', () => {
+    const val = queryInput.value.trim();
+    if (val.length === 0) {
+      setHint('Search for your favorite books!');
+      queryInput.classList.remove('input-error');
+      queryInput.removeAttribute('aria-invalid');
+    } else if (val.length < 2) {
+      setHint('Keep typing... titles need at least 2 characters', false);
+    } else {
+      setHint('Press Enter or click Search', false);
+      queryInput.classList.remove('input-error');
+      queryInput.removeAttribute('aria-invalid');
+    }
+  });
+
+  searchForm.addEventListener('submit', event => {
+    event.preventDefault();
+    searchBooks();
+  });
+
+  async function searchBooks() {
+    const query = queryInput.value.trim();
+    resultsContainer.replaceChildren();
+
+    // Step 3 Validation: Require at least 2 characters
+    if (query.length < 2) {
+      queryInput.classList.add('input-error');
+      queryInput.setAttribute('aria-invalid', 'true');
+      setHint('Please type at least 2 characters.', true);
+      resultsMeta.textContent = '';
+
+      resultsContainer.innerHTML = `
+        <div class="status-panel warning-state">
+          <span class="icon">⚠️</span>
+          <p>Please type at least 2 characters.</p>
+        </div>
+      `;
+      queryInput.focus();
+      return;
+    }
+
+    // Reset error styling
+    queryInput.classList.remove('input-error');
+    queryInput.removeAttribute('aria-invalid');
+    setHint('Searching Open Library...', false);
+
+    // Cancel prior requests
+    if (activeAbortController) {
+      activeAbortController.abort();
+    }
+    activeAbortController = new AbortController();
+
+    // Loading State
+    searchButton.disabled = true;
+    resultsMeta.textContent = 'Searching...';
+    resultsContainer.innerHTML = `
+      <div class="status-panel">
+        <div class="spinner"></div>
+        <p>Searching for "<strong>${escapeHtml(query)}</strong>"…</p>
+      </div>
+    `;
+
+    try {
+      const response = await fetch(
+        `https://openlibrary.org/search.json?title=${encodeURIComponent(query)}&limit=10`,
+        { signal: activeAbortController.signal }
+      );
+
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
+
+      const data = await response.json();
+      const docs = data.docs || [];
+
+      resultsContainer.replaceChildren();
+
+      // Empty Results State
+      if (!docs.length) {
+        setHint('No matches found. Try another search.', false);
+        resultsMeta.textContent = '0 results';
+        resultsContainer.innerHTML = `
+          <div class="status-panel">
+            <span class="icon">📚</span>
+            <p>No results. Try a different title.</p>
+          </div>
+        `;
+        return;
+      }
+
+      setHint(`Found ${docs.length} matching titles`, false);
+      resultsMeta.textContent = `Showing ${docs.length} of ${data.numFound.toLocaleString()} results`;
+
+      const grid = document.createElement('div');
+      grid.className = 'results-grid';
+
+      docs.forEach(book => {
+        const item = document.createElement('article');
+        item.className = 'book';
+
+        const title = book.title || 'Untitled';
+        const authors = (book.author_name || ['Not listed']).slice(0, 3).join(', ');
+        const remainder = (book.author_name && book.author_name.length > 3)
+          ? ` (+${book.author_name.length - 3} more)`
+          : '';
+        const authorDisplay = authors + remainder;
+
+        const publishYear = book.first_publish_year ? `Year: ${book.first_publish_year}` : 'Year: N/A';
+        const editions = book.edition_count ? `${book.edition_count} ed.` : '';
+
+        const coverHtml = book.cover_i
+          ? `<img src="https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg" alt="${escapeHtml(title)} cover" loading="lazy">`
+          : `<div class="placeholder-cover"><span>📖</span><span>No Cover</span></div>`;
+
+        item.innerHTML = `
+          <div class="book-cover">
+            ${coverHtml}
+          </div>
+          <div class="book-content">
+            <h3 class="book-title" title="${escapeHtml(title)}">${escapeHtml(title)}</h3>
+            <p class="book-authors" title="${escapeHtml(authorDisplay)}">Author(s): ${escapeHtml(authorDisplay)}</p>
+            <div class="book-meta">
+              <span>${escapeHtml(publishYear)}</span>
+              <span>${escapeHtml(editions)}</span>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(item);
+      });
+
+      resultsContainer.appendChild(grid);
+
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+      console.error(e);
+      setHint('Connection error', true);
+      resultsMeta.textContent = '';
+      resultsContainer.innerHTML = `
+        <div class="status-panel error-state">
+          <span class="icon">🔌</span>
+          <p>Could not connect to the book service. Please try again.</p>
+        </div>
+      `;
+    } finally {
+      searchButton.disabled = false;
+    }
+  }
+
+  function setHint(message, isError = false) {
+    hint.textContent = message;
+    if (isError) {
+      hint.classList.add('is-error');
+    } else {
+      hint.classList.remove('is-error');
+    }
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+</script>
+</body>
+</html>
