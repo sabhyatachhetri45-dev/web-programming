@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Work through the Week 8 Friday form lessons in order, then complete the registration homework.">
+  <title>Week 8 Friday | Forms and Registration</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7fb;
+      --surface: #fff;
+      --border: #dce5ef;
+      --text: #172033;
+      --muted: #59677d;
+      --accent: #2563eb;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 system-ui, sans-serif;
+    }
+
+    a { color: inherit; }
+
+    .crumbbar {
+      padding: 1rem max(1.25rem, calc((100vw - 900px) / 2));
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .crumbbar a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    main {
+      width: min(100% - 2rem, 900px);
+      margin: 0 auto;
+      padding: 3rem 0;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0.4rem 0;
+      font-size: clamp(2rem, 6vw, 3rem);
+      line-height: 1.15;
+    }
+
+    .intro {
+      max-width: 640px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    ol {
+      display: grid;
+      gap: 0.8rem;
+      margin: 2rem 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: lessons;
+    }
+
+    li { counter-increment: lessons; }
+
+    .lesson {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      align-items: center;
+      gap: 1rem;
+      min-height: 5rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      text-decoration: none;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .lesson:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .lesson::before {
+      display: grid;
+      width: 2.5rem;
+      height: 2.5rem;
+      place-items: center;
+      border-radius: 50%;
+      background: #eaf1ff;
+      color: var(--accent);
+      content: counter(lessons, decimal-leading-zero);
+      font-weight: 700;
+    }
+
+    .lesson span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="crumbbar" aria-label="Breadcrumb">
+    <a href="../index.html">Web Programming</a>
+  </nav>
+
+  <main>
+    <span class="eyebrow">Week 08 · Friday</span>
+    <h1>Forms and Registration</h1>
+    <p class="intro">Follow these lessons in order to learn about HTML forms, then try the registration homework.</p>
+
+    <ol aria-label="Week 8 Friday lessons">
+      <li><a class="lesson" href="why%20forms.html"><div>Why Forms?<span>Learn what forms do and when to use them.</span></div></a></li>
+      <li><a class="lesson" href="the%20element.html"><div>The Form Element<span>Build a form with the correct structure.</span></div></a></li>
+      <li><a class="lesson" href="input%20types.html"><div>Input Types<span>Choose controls for different kinds of data.</span></div></a></li>
+      <li><a class="lesson" href="grouping%20fields.html"><div>Grouping Fields<span>Organize related controls into fieldsets.</span></div></a></li>
+      <li><a class="lesson" href="labels_%26_accessibility.html"><div>Labels and Accessibility<span>Make form controls clear and accessible.</span></div></a></li>
+      <li><a class="lesson" href="validation%20attributes.html"><div>Validation Attributes<span>Use HTML attributes to validate entries.</span></div></a></li>
+      <li><a class="lesson" href="css_validation_pseudo_classes.html"><div>CSS Validation Pseudo-Classes<span>Style valid and invalid form controls.</span></div></a></li>
+      <li><a class="lesson" href="homework%20registration.html"><div>Registration Homework<span>Apply the lessons in a complete registration form.</span></div></a></li>
+    </ol>
+  </main>
+</body>
+</html>
