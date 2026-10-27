@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 04 | HTML5 Validation Attributes</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 32px 16px; max-width: 540px; margin: 0 auto; color: #1e293b; background: #f4f6fb; }
+    main { background: #fff; padding: 28px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+    h1 { color: #1a56db; margin-top: 0; }
+    .field { margin-bottom: 14px; }
+    label { display: block; font-weight: 600; font-size: .88rem; margin-bottom: 4px; }
+    .hint { font-weight: normal; color: #64748b; font-size: 0.8rem; }
+    input { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; }
+    button { width: 100%; margin-top: 14px; padding: 12px; background: #1a56db; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .back { display: inline-block; margin-top: 24px; color: #1a56db; text-decoration: none; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Topic 04: Validation Attributes</h1>
+    <p>HTML5 provides declarative validation attributes that prevent invalid submissions without writing any JavaScript.</p>
+
+    <form>
+      <!-- required & minlength -->
+      <div class="field">
+        <label for="name">Name <span class="hint">(required, minlength="3")</span></label>
+        <input type="text" id="name" required minlength="3" placeholder="At least 3 characters">
+      </div>
+
+      <!-- pattern regex: 9 digits -->
+      <div class="field">
+        <label for="sid">Student ID <span class="hint">(pattern="\d{9}")</span></label>
+        <input type="text" id="sid" required pattern="\d{9}" placeholder="9-digit ID (e.g. 202112345)" title="Must be exactly 9 digits">
+      </div>
+
+      <!-- min & max limits -->
+      <div class="field">
+        <label for="grade">Course Score <span class="hint">(type="number" min="0" max="100")</span></label>
+        <input type="number" id="grade" min="0" max="100" placeholder="0 - 100">
+      </div>
+
+      <button type="submit">Test HTML5 Constraints</button>
+    </form>
+
+    <a class="back" href="index.html">← Back to Index</a>
+  </main>
+</body>
+</html>
