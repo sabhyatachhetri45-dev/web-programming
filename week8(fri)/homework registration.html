@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether Academic Terminal | Student Identity & Registration</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            },
+            cyber: {
+              emerald: '#10b981',
+              cyan: '#06b6d4',
+              violet: '#8b5cf6',
+              amber: '#f59e0b',
+              rose: '#f43f5e',
+            }
+          },
+          animation: {
+            'glow-pulse': 'glow 3s ease-in-out infinite alternate',
+            'float-slow': 'float 5s ease-in-out infinite',
+          },
+          keyframes: {
+            glow: {
+              '0%': { filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.3))' },
+              '100%': { filter: 'drop-shadow(0 0 24px rgba(16, 185, 129, 0.4))' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-6px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 9999px; }
+
+    /* Frosted Glass Panels */
+    .glass-surface {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.08);
+    }
+    .dark .glass-surface {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Live ARIA validation styling required by homework specification */
+    input[aria-invalid="false"], select[aria-invalid="false"] {
+      border-color: #10b981 !important;
+      background-color: rgba(16, 185, 129, 0.03) !important;
+    }
+    input[aria-invalid="true"], select[aria-invalid="true"] {
+      border-color: #f43f5e !important;
+      background-color: rgba(244, 63, 94, 0.04) !important;
+    }
+
+    /* 3D Student ID Card Hologram Tilt */
+    .id-card-wrapper {
+      perspective: 1000px;
+    }
+    .id-card-body {
+      transition: transform 0.15s ease-out, box-shadow 0.2s ease;
+      transform-style: preserve-3d;
+    }
+
+    #confetti-canvas {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+    }
+
+    /* Custom range slider styling */
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 9999px;
+      background: #cbd5e1;
+      outline: none;
+    }
+    .dark input[type=range] {
+      background: #334155;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #2563eb;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+      border: 2px solid white;
+      transition: transform 0.15s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #printable-id-card, #printable-id-card * { visibility: visible; }
+      #printable-id-card {
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        transform: translate(-50%, -20%) !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 dark:bg-[#070b14] dark:text-slate-100 font-sans transition-colors duration-300 relative flex flex-col justify-between selection:bg-brand-500 selection:text-white pb-12">
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Ambient Animated Lighting Grid -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10" aria-hidden="true">
+    <div class="absolute -top-40 -left-40 w-[32rem] h-[32rem] bg-brand-500/15 dark:bg-brand-600/15 rounded-full blur-[110px] animate-pulse"></div>
+    <div class="absolute top-1/2 -right-40 w-[30rem] h-[30rem] bg-cyber-emerald/10 dark:bg-cyber-cyan/15 rounded-full blur-[120px]"></div>
+    <div class="absolute -bottom-40 left-1/3 w-[35rem] h-[35rem] bg-cyber-violet/10 dark:bg-purple-900/15 rounded-full blur-[110px]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+  </div>
+
+  <!-- Header Bar with Terminal Info -->
+  <header class="w-full max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-cyber-cyan p-0.5 shadow-lg shadow-brand-500/20">
+        <div class="w-full h-full bg-white dark:bg-slate-900 rounded-[10px] flex items-center justify-center text-brand-600 dark:text-brand-400 font-black text-lg">
+          Ω
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-extrabold text-base tracking-tight text-slate-900 dark:text-white">ACADEMIC<span class="text-brand-600 dark:text-brand-400">NET</span></span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> ONLINE
+          </span>
+        </div>
+        <p class="text-[11px] font-mono text-slate-500 dark:text-slate-400">Node: Gachon-East-Alpha &bull; <span id="live-clock">--:--:--</span></p>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-2">
+      <!-- SFX Toggle -->
+      <button id="sfx-toggle" type="button" aria-label="Toggle Sound Effects" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500" title="Sound Synthesizer (On/Off)">
+        <svg id="sfx-on-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/></svg>
+        <svg id="sfx-off-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /><path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+      </button>
+
+      <!-- Theme Switcher -->
+      <button id="theme-toggle" type="button" aria-label="Toggle Dark/Light Mode" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+        <svg id="sun-icon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg id="moon-icon" class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="w-full max-w-2xl mx-auto px-4 py-2 flex-1">
+
+    <!-- Top Overall Completion Status Pill -->
+    <div id="progress-container" class="mb-5 glass-surface rounded-2xl p-3.5 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div id="progress-circle" class="relative w-9 h-9 flex items-center justify-center font-mono text-xs font-bold text-brand-600 dark:text-brand-400">
+          <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+            <path class="text-slate-200 dark:text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path id="progress-stroke" class="text-brand-500 transition-all duration-300" stroke-dasharray="0, 100" stroke-linecap="round" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <span id="progress-pct" class="absolute inset-0 flex items-center justify-center text-[10px]">0%</span>
+        </div>
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">Registration Completeness</h2>
+          <p id="progress-desc" class="text-[11px] text-slate-500 dark:text-slate-400">Fill all mandatory fields to unlock the cryptographic terminal.</p>
+        </div>
+      </div>
+      <div id="form-status-badge" class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+        PENDING
+      </div>
+    </div>
+
+    <!-- Registration Card -->
+    <div class="glass-surface rounded-3xl p-6 sm:p-9 relative overflow-hidden transition-all duration-300">
+
+      <!-- Ambient Card Highlight -->
+      <div class="absolute -top-24 -right-24 w-48 h-48 bg-brand-500/10 dark:bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Main Form Section -->
+      <div id="form-wrapper">
+        <div class="mb-6">
+          <div class="flex items-center justify-between">
+            <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+              Student Registration
+            </h1>
+            <span class="text-xs font-mono text-brand-600 dark:text-brand-400 font-semibold bg-brand-50 dark:bg-brand-950/60 px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">
+              JS-VALIDATE V2.6
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Complete the academic profile. Real-time parity listeners active across all input vectors.
+          </p>
+        </div>
+
+        <!-- THE FORM: Strictly obeys `novalidate` specification -->
+        <form id="register-form" novalidate class="space-y-6">
+
+          <!-- FIELDSET 1: PERSONAL INFORMATION -->
+          <fieldset class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 bg-slate-50/50 dark:bg-slate-900/40 space-y-4">
+            <legend class="font-bold text-xs font-mono uppercase tracking-wider text-brand-600 dark:text-brand-400 px-2.5 py-1 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+              01 // Personal Info
+            </legend>
+
+            <!-- Full Name -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <label for="full-name" class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  Full Name <span class="text-rose-500">*</span>
+                </label>
+                <span id="name-avatar-preview" class="text-xs font-mono font-medium text-slate-400">Avatar: [?]</span>
+              </div>
+              <div class="relative">
+                <input type="text" id="full-name" name="full_name" required minlength="2" placeholder="Kim Minjun"
+                       aria-describedby="full-name-error"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-900 dark:text-white placeholder:text-slate-400">
+                <span class="field-feedback-icon absolute right-3 top-3 text-sm pointer-events-none"></span>
+              </div>
+              <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="full-name-error" aria-live="polite"></span>
+            </div>
+
+            <!-- Student ID (9 digits) -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <label for="student-id" class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  Student ID <span class="text-rose-500">*</span>
+                </label>
+                <span id="student-id-counter" class="text-[11px] font-mono text-slate-400">0 / 9 digits</span>
+              </div>
+              <div class="relative">
+                <input type="text" id="student-id" name="student_id" required pattern="\d{9}" inputmode="numeric" maxlength="9" placeholder="202112345"
+                       aria-describedby="student-id-error"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 text-sm font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-900 dark:text-white placeholder:text-slate-400">
+                <span class="field-feedback-icon absolute right-3 top-3 text-sm pointer-events-none"></span>
+              </div>
+              <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="student-id-error" aria-live="polite"></span>
+            </div>
+
+            <!-- Date of Birth & Smart Age Calculation -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <label for="dob" class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  Date of Birth <span class="text-slate-400 font-normal lowercase">(optional, &le; 2010)</span>
+                </label>
+                <span id="dob-age-badge" class="hidden text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">--</span>
+              </div>
+              <div class="relative">
+                <input type="date" id="dob" name="dob" max="2010-12-31"
+                       aria-describedby="dob-error"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-900 dark:text-white">
+                <span class="field-feedback-icon absolute right-3 top-3 text-sm pointer-events-none"></span>
+              </div>
+              <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="dob-error" aria-live="polite"></span>
+            </div>
+
+            <!-- Major Selection with Quick Chips -->
+            <div class="space-y-2">
+              <label for="major" class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 block">
+                Academic Major <span class="text-rose-500">*</span>
+              </label>
+
+              <!-- Quick select chips -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                <button type="button" class="major-chip py-2 px-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-left hover:border-brand-500 transition-all bg-white dark:bg-slate-800" data-value="cs">
+                  <span class="block font-bold">💻 CS</span>
+                  <span class="text-[10px] text-slate-400">Comp Sci</span>
+                </button>
+                <button type="button" class="major-chip py-2 px-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-left hover:border-brand-500 transition-all bg-white dark:bg-slate-800" data-value="sw">
+                  <span class="block font-bold">⚡ SW</span>
+                  <span class="text-[10px] text-slate-400">Software</span>
+                </button>
+                <button type="button" class="major-chip py-2 px-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-left hover:border-brand-500 transition-all bg-white dark:bg-slate-800" data-value="ai">
+                  <span class="block font-bold">🧠 AI</span>
+                  <span class="text-[10px] text-slate-400">Intelligence</span>
+                </button>
+                <button type="button" class="major-chip py-2 px-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-left hover:border-brand-500 transition-all bg-white dark:bg-slate-800" data-value="ds">
+                  <span class="block font-bold">📊 DS</span>
+                  <span class="text-[10px] text-slate-400">Data Sci</span>
+                </button>
+              </div>
+
+              <select id="major" name="major" required aria-describedby="major-error"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-900 dark:text-white">
+                <option value="">-- Choose your major --</option>
+                <option value="cs">Computer Science</option>
+                <option value="sw">Software Engineering</option>
+                <option value="ai">Artificial Intelligence</option>
+                <option value="ds">Data Science</option>
+              </select>
+              <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="major-error" aria-live="polite"></span>
+            </div>
+
+          </fieldset>
+
+
+          <!-- FIELDSET 2: ACCOUNT & SECURITY -->
+          <fieldset class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 bg-slate-50/50 dark:bg-slate-900/40 space-y-4">
+            <legend class="font-bold text-xs font-mono uppercase tracking-wider text-brand-600 dark:text-brand-400 px-2.5 py-1 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              02 // Account Security & Coding
+            </legend>
+
+            <!-- Email & Domain Presets -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <label for="email" class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  Institutional Email <span class="text-rose-500">*</span>
+                </label>
+                <!-- Quick Domain buttons -->
+                <div class="flex gap-1 text-[10px] font-mono">
+                  <button type="button" class="domain-btn px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 hover:bg-brand-500 hover:text-white transition-all text-slate-600 dark:text-slate-300" data-domain="@gachon.ac.kr">@gachon</button>
+                  <button type="button" class="domain-btn px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 hover:bg-brand-500 hover:text-white transition-all text-slate-600 dark:text-slate-300" data-domain="@snu.ac.kr">@snu</button>
+                  <button type="button" class="domain-btn px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 hover:bg-brand-500 hover:text-white transition-all text-slate-600 dark:text-slate-300" data-domain="@kaist.ac.kr">@kaist</button>
+                </div>
+              </div>
+              <div class="relative">
+                <input type="email" id="email" name="email" required placeholder="name@gachon.ac.kr"
+                       aria-describedby="email-error"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-900 dark:text-white placeholder:text-slate-400">
+                <span class="field-feedback-icon absolute right-3 top-3 text-sm pointer-events-none"></span>
+              </div>
+              <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="email-error" aria-live="polite"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <label for="password" class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  Password <span class="hint font-normal text-slate-400 lowercase">(&ge; 8 characters) *</span>
+                </label>
+                <button type="button" id="btn-quick-generate" class="text-[11px] font-mono text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1 font-semibold">
+                  ⚡ Auto-Gen Secure
+                </button>
+              </div>
+              <div class="relative">
+                <input type="password" id="password" name="password" required minlength="8" placeholder="At least 8 characters"
+                       aria-describedby="password-error"
+                       class="w-full px-3.5 py-2.5 pr-20 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 text-sm font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-900 dark:text-white placeholder:text-slate-400">
+                <div class="absolute right-2 top-2 flex items-center gap-1">
+                  <button type="button" id="toggle-pwd" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors" title="Toggle Visibility">
+                    <svg id="eye-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <span class="field-feedback-icon text-sm pointer-events-none mr-1"></span>
+                </div>
+              </div>
+
+              <!-- Password Strength Bar -->
+              <div class="pt-1.5 space-y-1">
+                <div class="flex justify-between text-[10px] font-mono font-semibold">
+                  <span class="text-slate-500">ENTROPY GAUGE:</span>
+                  <span id="entropy-text" class="text-slate-400">None</span>
+                </div>
+                <div class="grid grid-cols-4 gap-1.5 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
+                  <div id="pwd-bar-1" class="h-full rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></div>
+                  <div id="pwd-bar-2" class="h-full rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></div>
+                  <div id="pwd-bar-3" class="h-full rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></div>
+                  <div id="pwd-bar-4" class="h-full rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></div>
+                </div>
+              </div>
+
+              <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="password-error" aria-live="polite"></span>
+            </div>
+
+            <!-- Confirm Password (Validated with setCustomValidity) -->
+            <div class="space-y-1">
+              <label for="confirm-password" class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 block">
+                Confirm Password <span class="text-rose-500">*</span>
+              </label>
+              <div class="relative">
+                <input type="password" id="confirm-password" name="confirm_password" required placeholder="Type it again"
+                       aria-describedby="confirm-password-error"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 text-sm font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-900 dark:text-white placeholder:text-slate-400">
+                <span class="field-feedback-icon absolute right-3 top-3 text-sm pointer-events-none"></span>
+              </div>
+              <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="confirm-password-error" aria-live="polite"></span>
+            </div>
+
+            <!-- Phone (Auto masked 010-XXXX-XXXX) -->
+            <div class="space-y-1">
+              <label for="phone" class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 block">
+                Contact Phone <span class="hint font-normal text-slate-400 lowercase">(optional, 010-1234-5678)</span>
+              </label>
+              <div class="relative">
+                <input type="tel" id="phone" name="phone" pattern="\d{3}-\d{4}-\d{4}" maxlength="13" placeholder="010-1234-5678"
+                       aria-describedby="phone-error"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-900 dark:text-white placeholder:text-slate-400">
+                <span class="field-feedback-icon absolute right-3 top-3 text-sm pointer-events-none"></span>
+              </div>
+              <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="phone-error" aria-live="polite"></span>
+            </div>
+
+            <!-- Coding Experience Interactive Slider with Dynamic Tier -->
+            <div class="pt-2 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <label for="experience" class="font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  Years of Coding Experience
+                </label>
+                <div class="flex items-center gap-2">
+                  <span id="exp-tier-tag" class="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Novice</span>
+                  <output id="experience-value" for="experience" class="font-mono font-extrabold text-brand-600 dark:text-brand-400 text-xs">0 years</output>
+                </div>
+              </div>
+              <div class="range-row flex items-center gap-3">
+                <input type="range" id="experience" name="experience" min="0" max="10" value="0" class="w-full cursor-pointer">
+              </div>
+              <div class="flex justify-between text-[10px] font-mono text-slate-400">
+                <span>0 yrs (Hello World)</span>
+                <span>5 yrs (Full-Stack)</span>
+                <span>10+ yrs (Architect)</span>
+              </div>
+            </div>
+
+          </fieldset>
+
+          <!-- FIELDSET 3: LEGAL CONSENT -->
+          <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40">
+            <div class="checkbox-row flex items-start gap-3">
+              <input type="checkbox" id="terms" name="terms" required aria-describedby="terms-error"
+                     class="mt-1 w-4 h-4 rounded text-brand-600 focus:ring-brand-500 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer">
+              <div>
+                <label for="terms" class="text-xs text-slate-700 dark:text-slate-300 font-medium select-none cursor-pointer">
+                  I agree to the <a href="javascript:void(0)" id="open-terms-modal" class="text-brand-600 dark:text-brand-400 underline font-semibold hover:text-brand-500">Academic Code of Honor & Network Terms</a>.
+                </label>
+                <span class="error text-xs font-medium text-rose-500 dark:text-rose-400 block min-h-[1.2rem] pt-0.5" id="terms-error" aria-live="polite"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button Container with Bonus Disabled Tooltip -->
+          <div class="relative group pt-1">
+            <button type="submit" id="submit-button" disabled
+                    class="w-full py-3.5 px-6 rounded-2xl font-bold text-sm tracking-wide text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-brand-600 via-indigo-600 to-cyber-cyan hover:opacity-95 active:scale-[0.99] disabled:hover:scale-100 disabled:shadow-none">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>REGISTER IDENTITY</span>
+            </button>
+            <!-- Hover status tooltip when button is disabled -->
+            <div id="submit-tooltip" class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 dark:bg-slate-800 text-white text-[11px] font-mono rounded-lg shadow-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap border border-slate-700 z-10">
+              Form incomplete: Please fix highlighted errors.
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- SUCCESS OUTPUT SCREEN (Digital Student ID Pass) -->
+      <div id="success-screen" class="hidden text-center space-y-6 animate-[fadeIn_0.4s_ease-out]">
+
+        <!-- Success Alert Header -->
+        <div id="success" class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-sm font-semibold flex items-center justify-center gap-2 shadow-sm" role="status">
+          <!-- Text injected dynamically -->
+        </div>
+
+        <!-- 3D Interactive Tilt Digital Student ID Pass -->
+        <div class="id-card-wrapper max-w-sm mx-auto py-2">
+          <div id="printable-id-card" class="id-card-body relative rounded-3xl p-6 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-2xl border border-white/20 text-left overflow-hidden select-none cursor-pointer">
+            <!-- Dynamic Holographic Sheen Layer -->
+            <div id="card-sheen" class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none opacity-40"></div>
+
+            <div class="relative z-10 flex flex-col justify-between h-full space-y-5">
+
+              <!-- Card Header -->
+              <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-brand-500/30 border border-brand-400/40 flex items-center justify-center font-bold font-mono text-cyan-300 text-sm">
+                    GA
+                  </div>
+                  <div>
+                    <h3 class="text-xs font-black tracking-wider uppercase">GACHON UNIVERSITY</h3>
+                    <p class="text-[9px] font-mono text-slate-400 tracking-tight">ACADEMIC CYBER TERMINAL</p>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">
+                  ACTIVE
+                </span>
+              </div>
+
+              <!-- Card Body: Avatar & Student Core Info -->
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-3xl shadow-lg border border-white/20 flex-shrink-0" id="pass-avatar">
+                  🎓
+                </div>
+                <div class="min-w-0">
+                  <h4 id="pass-fullname" class="font-extrabold text-lg text-white tracking-tight truncate">Kim Minjun</h4>
+                  <p id="pass-major" class="text-xs font-semibold text-cyan-300 uppercase tracking-wider truncate">Computer Science</p>
+                  <p id="pass-tier" class="text-[10px] font-mono text-indigo-300 mt-0.5">Exp: 0 Yrs (Novice)</p>
+                </div>
+              </div>
+
+              <!-- Metadata Grid -->
+              <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-white/10">
+                <div>
+                  <span class="text-slate-400 block text-[9px] font-sans">STUDENT ID</span>
+                  <span id="pass-id" class="font-bold text-slate-100 tracking-wider">202112345</span>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[9px] font-sans">VALIDATED</span>
+                  <span id="pass-timestamp" class="font-bold text-slate-100">OCT 2026</span>
+                </div>
+                <div class="col-span-2">
+                  <span class="text-slate-400 block text-[9px] font-sans">NET CHANNEL</span>
+                  <span id="pass-email" class="text-[11px] text-slate-300 truncate block">minjun@gachon.ac.kr</span>
+                </div>
+              </div>
+
+              <!-- Barcode / QR Matrix & Hologram Stamp -->
+              <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                <div class="space-y-0.5">
+                  <span class="text-[9px] font-mono text-slate-400 block">AUTHENTICATION KEY</span>
+                  <span id="pass-auth-hash" class="text-[9px] font-mono text-emerald-400 tracking-wider block">#AETH-9831-SEC256</span>
+                </div>
+                <!-- Inline SVG Matrix Barcode Representation -->
+                <div class="p-1 bg-white rounded-md shadow flex items-center justify-center">
+                  <svg class="w-8 h-8 text-slate-950" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2 2h6v6H2zM4 4v2h2V4zM16 2h6v6h-6zM18 4v2h2V4zM2 16h6v6H2zM4 18v2h2v-2zM10 2h4v2h-4zM10 6h2v2h-2zM6 10h2v4H6zM12 10h4v2h-4zM10 14h2v4h-2zM14 14h2v2h-2zM16 10h2v4h-2zM18 16h4v2h-4zM16 20h2v2h-2zM20 20h2v2h-2z"/>
+                  </svg>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-500 dark:text-slate-400 italic">Tip: Move your mouse or touch the ID pass to rotate the 3D hologram.</p>
+
+        <!-- Pass Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <button type="button" id="btn-print-pass" class="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold text-xs hover:bg-slate-100 dark:hover:bg-slate-700 transition-all flex items-center gap-2 shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            <span>Print Student Pass</span>
+          </button>
+
+          <button type="button" id="btn-copy-card" class="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold text-xs hover:bg-slate-100 dark:hover:bg-slate-700 transition-all flex items-center gap-2 shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+            <span id="copy-card-label">Copy Data Digest</span>
+          </button>
+
+          <button type="button" id="btn-register-another" class="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-lg shadow-brand-500/25 transition-all">
+            + Register Another Student
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Terms & Honor Code Modal -->
+  <div id="terms-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-surface max-w-md w-full rounded-3xl p-6 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-700 animate-[fadeIn_0.2s_ease-out]">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <span>📜</span> Academic Code of Honor
+        </h3>
+        <button type="button" id="close-terms-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg font-bold">&times;</button>
+      </div>
+      <div class="text-xs text-slate-600 dark:text-slate-300 space-y-2 max-h-60 overflow-y-auto pr-1">
+        <p>1. <strong>Intellectual Integrity:</strong> All submissions, projects, and coursework must strictly be the authentic creation of the registered student.</p>
+        <p>2. <strong>Network Compliance:</strong> Access to academic compute clusters and terminal APIs must adhere to safety benchmarks and zero unauthorized scraping policies.</p>
+        <p>3. <strong>Identity Security:</strong> Student IDs and generated cryptographic passes are non-transferable. Tampering or spoofing credentials triggers immediate disciplinary inquiry.</p>
+      </div>
+      <div class="flex justify-end pt-2">
+        <button type="button" id="modal-agree-btn" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs">
+          I Understand & Comply
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full max-w-4xl mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-600 pt-6">
+    <span>Academic Terminal Engine &bull; Validated with Standard HTML5 Constraints API &bull; Self-contained &bull; Oct 2026</span>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT LOGIC IMPLEMENTATION                          -->
+  <!-- ======================================================== -->
+  <script>
+    // --- 1. PROCEDURAL SOUND SYNTHESIZER ---
+    class TerminalAudio {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContextClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playTone(freq, type = 'sine', duration = 0.08, gainVal = 0.04) {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) {
+          // Audio fallback for autoplay policies
+        }
+      }
+      typingTick() {
+        this.playTone(600 + Math.random() * 150, 'triangle', 0.03, 0.015);
+      }
+      validPing() {
+        this.playTone(880, 'sine', 0.1, 0.035);
+      }
+      errorBuzz() {
+        this.playTone(180, 'sawtooth', 0.16, 0.04);
+      }
+      celebrate() {
+        if (!this.enabled) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => this.playTone(freq, 'sine', 0.28, 0.06), idx * 110);
+        });
+      }
+    }
+    const sound = new TerminalAudio();
+
+    // --- 2. DOM ELEMENT REFERENCES ---
+    const form = document.querySelector('#register-form');
+    const submitButton = document.querySelector('#submit-button');
+    const submitTooltip = document.querySelector('#submit-tooltip');
+    const success = document.querySelector('#success');
+    const password = document.querySelector('#password');
+    const confirmPassword = document.querySelector('#confirm-password');
+    const slider = document.querySelector('#experience');
+    const sliderValue = document.querySelector('#experience-value');
+    const expTierTag = document.querySelector('#exp-tier-tag');
+    const formWrapper = document.querySelector('#form-wrapper');
+    const successScreen = document.querySelector('#success-screen');
+
+    // Every field that has an error span (found through aria-describedby) as per homework
+    const fields = [...form.querySelectorAll('[aria-describedby]')];
+
+    // Specific messages for each field, read from the validity API
+    const messages = {
+      'full-name': {
+        valueMissing: 'Please enter your full name.',
+        tooShort: 'Name must be at least 2 characters.'
+      },
+      'student-id': {
+        valueMissing: 'Student ID is required.',
+        patternMismatch: 'Student ID must be exactly 9 digits.'
+      },
+      'dob': {
+        rangeOverflow: 'Date of birth must be in 2010 or earlier.'
+      },
+      'major': {
+        valueMissing: 'Please choose your major.'
+      },
+      'email': {
+        valueMissing: 'Email is required.',
+        typeMismatch: 'Enter a valid email, like name@gachon.ac.kr.'
+      },
+      'password': {
+        valueMissing: 'Password is required.',
+        tooShort: 'Password must be at least 8 characters.'
+      },
+      'confirm-password': {
+        valueMissing: 'Please confirm your password.'
+      },
+      'phone': {
+        patternMismatch: 'Use the format 010-1234-5678.'
+      },
+      'terms': {
+        valueMissing: 'You must agree to the terms.'
+      }
+    };
+
+    // --- 3. VALIDATION FUNCTIONS ---
+    function getMessage(field) {
+      const v = field.validity;
+      if (v.customError) return field.validationMessage; // from setCustomValidity()
+      const fieldMessages = messages[field.id] || {};
+      const flag = Object.keys(fieldMessages).find((name) => v[name]);
+      return flag ? fieldMessages[flag] : 'Please check this field.';
+    }
+
+    // Password confirm: a rule HTML attributes can't express
+    function checkPasswordsMatch() {
+      if (confirmPassword.value && confirmPassword.value !== password.value) {
+        confirmPassword.setCustomValidity('Passwords do not match.');
+      } else {
+        confirmPassword.setCustomValidity('');
+      }
+    }
+
+    function showFieldState(field) {
+      const error = document.getElementById(field.getAttribute('aria-describedby'));
+      const ok = field.checkValidity();
+
+      // Update ARIA attribute
+      field.setAttribute('aria-invalid', String(!ok));
+      if (error) {
+        error.textContent = ok ? '' : getMessage(field);
+      }
+
+      // Update feedback badge icon next to input
+      const container = field.closest('.space-y-1, .space-y-2');
+      if (container) {
+        const icon = container.querySelector('.field-feedback-icon');
+        if (icon) {
+          if (field.value.length === 0 && !field.required) {
+            icon.textContent = '';
+          } else if (ok) {
+            icon.innerHTML = '<span class="text-emerald-500 font-bold">✓</span>';
+          } else {
+            icon.innerHTML = '<span class="text-rose-500 font-bold">✕</span>';
+          }
+        }
+      }
+    }
+
+    // Dynamic progress bar calculation
+    function updateProgressMeter() {
+      let validCount = 0;
+      fields.forEach(f => {
+        if (f.checkValidity() && (f.value.length > 0 || f.checked || !f.required)) {
+          validCount++;
+        }
+      });
+      const pct = Math.round((validCount / fields.length) * 100);
+      document.querySelector('#progress-pct').textContent = `${pct}%`;
+      document.querySelector('#progress-stroke').setAttribute('stroke-dasharray', `${pct}, 100`);
+
+      const statusBadge = document.querySelector('#form-status-badge');
+      if (pct === 100 && form.checkValidity()) {
+        statusBadge.textContent = 'READY';
+        statusBadge.className = 'px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+        document.querySelector('#progress-desc').textContent = 'All requirements satisfied. Terminal unlocked.';
+      } else {
+        statusBadge.textContent = `${pct}% INCOMPLETE`;
+        statusBadge.className = 'px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20';
+        document.querySelector('#progress-desc').textContent = 'Fill all mandatory fields to unlock the cryptographic terminal.';
+      }
+    }
+
+    // Bonus: only enable Register when the whole form is valid
+    function updateSubmitButton() {
+      const isValid = form.checkValidity();
+      submitButton.disabled = !isValid;
+
+      if (isValid) {
+        submitTooltip.textContent = 'Ready to compile student pass!';
+      } else {
+        // Find which field is missing to guide the user in tooltip
+        const missingField = fields.find(f => !f.checkValidity());
+        if (missingField) {
+          submitTooltip.textContent = `Pending: ${missingField.previousElementSibling?.textContent?.split('*')[0]?.trim() || missingField.id}`;
+        } else {
+          submitTooltip.textContent = 'Form incomplete: Please fix highlighted errors.';
+        }
+      }
+      updateProgressMeter();
+    }
+
+    // --- 4. ADVANCED ENHANCEMENTS: LIVE LISTENERS & HELPERS ---
+
+    // Password Entropy & Strength Meter
+    function calculatePasswordStrength(pwd) {
+      let score = 0;
+      if (pwd.length >= 8) score++;
+      if (/[A-Z]/.test(pwd)) score++;
+      if (/[0-9]/.test(pwd)) score++;
+      if (/[^A-Za-z0-9]/.test(pwd)) score++;
+
+      const entropyLabel = document.querySelector('#entropy-text');
+      const colors = ['bg-rose-500', 'bg-amber-500', 'bg-sky-500', 'bg-emerald-500'];
+      const labels = ['Weak', 'Moderate', 'Strong', 'Cryptographic'];
+
+      const bars = [
+        document.querySelector('#pwd-bar-1'),
+        document.querySelector('#pwd-bar-2'),
+        document.querySelector('#pwd-bar-3'),
+        document.querySelector('#pwd-bar-4')
+      ];
+
+      bars.forEach((bar, idx) => {
+        bar.className = 'h-full rounded-full transition-all duration-300';
+        if (pwd.length === 0) {
+          bar.classList.add('bg-slate-300', 'dark:bg-slate-700');
+          entropyLabel.textContent = 'None';
+          entropyLabel.className = 'text-slate-400';
+        } else if (idx < score) {
+          bar.classList.add(colors[score - 1]);
+          entropyLabel.textContent = labels[score - 1];
+          entropyLabel.className = `font-bold ${score >= 3 ? 'text-emerald-500' : 'text-amber-500'}`;
+        } else {
+          bar.classList.add('bg-slate-300', 'dark:bg-slate-700');
+        }
+      });
+    }
+
+    // Live Student ID Counter
+    const studentIdInput = document.querySelector('#student-id');
+    const studentIdCounter = document.querySelector('#student-id-counter');
+    studentIdInput.addEventListener('input', () => {
+      // Clean non-digits
+      studentIdInput.value = studentIdInput.value.replace(/\D/g, '');
+      const len = studentIdInput.value.length;
+      studentIdCounter.textContent = `${len} / 9 digits`;
+      studentIdCounter.className = len === 9
+        ? 'text-[11px] font-mono font-bold text-emerald-500'
+        : 'text-[11px] font-mono text-slate-400';
+    });
+
+    // Date of Birth: Smart Age Calculator Badge
+    const dobInput = document.querySelector('#dob');
+    const dobAgeBadge = document.querySelector('#dob-age-badge');
+    dobInput.addEventListener('input', () => {
+      if (dobInput.value) {
+        const birthDate = new Date(dobInput.value);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        if (age >= 0 && !isNaN(age)) {
+          dobAgeBadge.textContent = `${age} yrs old`;
+          dobAgeBadge.classList.remove('hidden');
+        } else {
+          dobAgeBadge.classList.add('hidden');
+        }
+      } else {
+        dobAgeBadge.classList.add('hidden');
+      }
+    });
+
+    // Full Name Avatar Preview generator
+    const nameInput = document.querySelector('#full-name');
+    const nameAvatarPreview = document.querySelector('#name-avatar-preview');
+    nameInput.addEventListener('input', () => {
+      const val = nameInput.value.trim();
+      if (val.length > 0) {
+        const initial = val.charAt(0).toUpperCase();
+        nameAvatarPreview.textContent = `Badge: [${initial}]`;
+        nameAvatarPreview.className = 'text-xs font-mono font-bold text-brand-500';
+      } else {
+        nameAvatarPreview.textContent = 'Avatar: [?]';
+        nameAvatarPreview.className = 'text-xs font-mono font-medium text-slate-400';
+      }
+    });
+
+    // Major Quick Select Chips
+    const majorSelect = document.querySelector('#major');
+    const majorChips = document.querySelectorAll('.major-chip');
+    majorChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const val = chip.getAttribute('data-value');
+        majorSelect.value = val;
+        majorChips.forEach(c => c.classList.remove('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950'));
+        chip.classList.add('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950');
+        showFieldState(majorSelect);
+        updateSubmitButton();
+        sound.validPing();
+      });
+    });
+    majorSelect.addEventListener('change', () => {
+      majorChips.forEach(c => {
+        const match = c.getAttribute('data-value') === majorSelect.value;
+        c.classList.toggle('border-brand-500', match);
+        c.classList.toggle('bg-brand-50', match);
+        c.classList.toggle('dark:bg-brand-950', match);
+      });
+    });
+
+    // Email Domain Buttons
+    document.querySelectorAll('.domain-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const domain = btn.getAttribute('data-domain');
+        const emailField = document.querySelector('#email');
+        const currentPrefix = emailField.value.split('@')[0] || 'student';
+        emailField.value = `${currentPrefix}${domain}`;
+        showFieldState(emailField);
+        updateSubmitButton();
+        sound.validPing();
+      });
+    });
+
+    // Auto-formatting Korean Phone (010-XXXX-XXXX)
+    const phoneInput = document.querySelector('#phone');
+    phoneInput.addEventListener('input', () => {
+      let nums = phoneInput.value.replace(/\D/g, '');
+      if (nums.length > 11) nums = nums.slice(0, 11);
+      if (nums.length > 7) {
+        phoneInput.value = `${nums.slice(0, 3)}-${nums.slice(3, 7)}-${nums.slice(7)}`;
+      } else if (nums.length > 3) {
+        phoneInput.value = `${nums.slice(0, 3)}-${nums.slice(3)}`;
+      } else {
+        phoneInput.value = nums;
+      }
+    });
+
+    // Password Visibility Toggle
+    const togglePwd = document.querySelector('#toggle-pwd');
+    togglePwd.addEventListener('click', () => {
+      const isPassword = password.type === 'password';
+      password.type = isPassword ? 'text' : 'password';
+      sound.validPing();
+    });
+
+    // Quick Secure Password Generator
+    document.querySelector('#btn-quick-generate').addEventListener('click', () => {
+      const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%&*";
+      let autoPwd = "";
+      for (let i = 0; i < 12; i++) {
+        autoPwd += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      password.value = autoPwd;
+      confirmPassword.value = autoPwd;
+      calculatePasswordStrength(autoPwd);
+      checkPasswordsMatch();
+      showFieldState(password);
+      showFieldState(confirmPassword);
+      updateSubmitButton();
+      sound.celebrate();
+    });
+
+    // Coding Experience Slider with Dynamic Tiers
+    slider.addEventListener('input', () => {
+      const years = Number(slider.value);
+      sliderValue.textContent = years + (years === 1 ? ' year' : ' years');
+
+      // Update skill tier tag
+      if (years === 0) {
+        expTierTag.textContent = 'Novice';
+        expTierTag.className = 'px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+      } else if (years <= 3) {
+        expTierTag.textContent = 'Builder';
+        expTierTag.className = 'px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30';
+      } else if (years <= 6) {
+        expTierTag.textContent = 'Full-Stack Adept';
+        expTierTag.className = 'px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30';
+      } else {
+        expTierTag.textContent = 'System Architect';
+        expTierTag.className = 'px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
+      }
+      sound.typingTick();
+    });
+
+    // --- 5. REAL-TIME INPUT EVENT LISTENERS (Strict Homework Requirement) ---
+    fields.forEach((field) => {
+      field.addEventListener('input', () => {
+        sound.typingTick();
+        if (field === password) {
+          calculatePasswordStrength(password.value);
+        }
+        if (field === password || field === confirmPassword) {
+          checkPasswordsMatch();
+          // Changing one password can fix or break the other one
+          if (confirmPassword.value) showFieldState(confirmPassword);
+        }
+        showFieldState(field);
+        success.hidden = true;
+        updateSubmitButton();
+      });
+      // Also listen to change event for selects & checkboxes
+      field.addEventListener('change', () => {
+        showFieldState(field);
+        updateSubmitButton();
+      });
+    });
+
+    // --- 6. SUBMISSION FLOW (Strict Homework Compliance) ---
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // run our checks; never reload the page
+      checkPasswordsMatch();
+      fields.forEach(showFieldState);
+
+      const firstInvalid = fields.find((field) => !field.checkValidity());
+      if (firstInvalid) {
+        firstInvalid.focus();
+        sound.errorBuzz();
+        return;
+      }
+
+      // Populate Digital Student ID Pass
+      const name = document.querySelector('#full-name').value.trim();
+      const studentId = document.querySelector('#student-id').value.trim();
+      const majorVal = document.querySelector('#major').value;
+      const majorText = document.querySelector('#major option:checked')?.textContent || majorVal;
+      const emailVal = document.querySelector('#email').value.trim();
+      const years = Number(slider.value);
+
+      // Injected success banner
+      success.innerHTML = `
+        <span class="text-xl">🎉</span>
+        <span>Registration complete! Welcome to the Gachon Terminal, <strong>${name}</strong>.</span>
+      `;
+      success.hidden = false;
+
+      // Populate ID Card Components
+      document.querySelector('#pass-fullname').textContent = name;
+      document.querySelector('#pass-major').textContent = majorText;
+      document.querySelector('#pass-id').textContent = studentId;
+      document.querySelector('#pass-email').textContent = emailVal;
+      document.querySelector('#pass-tier').textContent = `Exp: ${years} ${years === 1 ? 'Yr' : 'Yrs'} (${expTierTag.textContent})`;
+
+      // Dynamic avatar emoji based on major
+      const avatarMap = { cs: '💻', sw: '⚡', ai: '🧠', ds: '📊' };
+      document.querySelector('#pass-avatar').textContent = avatarMap[majorVal] ||
