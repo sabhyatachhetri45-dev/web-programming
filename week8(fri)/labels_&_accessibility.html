@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic 05 | Labels & Accessibility</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 32px 16px; max-width: 540px; margin: 0 auto; color: #1e293b; background: #f4f6fb; }
+    main { background: #fff; padding: 28px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+    h1 { color: #1a56db; margin-top: 0; }
+    .box { border: 1px solid #cbd5e1; padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+    label { font-weight: 600; cursor: pointer; }
+    .input-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+    input[type="text"] { width: 100%; box-sizing: border-box; padding: 9px 12px; border: 2px solid #cbd5e1; border-radius: 8px; }
+    .back { display: inline-block; margin-top: 24px; color: #1a56db; text-decoration: none; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Topic 05: Labels & Accessibility (a11y)</h1>
+    <p>Using <code>&lt;label for="id"&gt;</code> ensures screen readers identify controls and expands the clickable target area for users.</p>
+
+    <!-- Method A: Explicit linking via for and id -->
+    <div class="box">
+      <label for="explicit-input">Method 1: Explicit <code>for</code> / <code>id</code> linking</label>
+      <input type="text" id="explicit-input" placeholder="Clicking the label focuses this input" style="margin-top: 6px;">
+    </div>
+
+    <!-- Method B: Implicit wrapping (often used with checkboxes) -->
+    <div class="box">
+      <strong>Method 2: Implicit wrapping</strong>
+      <div class="input-row">
+        <label>
+          <input type="checkbox" id="newsletter">
+          Clicking anywhere on this text checks the box
+        </label>
+      </div>
+    </div>
+
+    <a class="back" href="index.html">← Back to Index</a>
+  </main>
+</body>
+</html>
