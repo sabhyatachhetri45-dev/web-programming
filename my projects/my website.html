@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Sabhyata Chhetri — Developer Portfolio</title>
+    <meta name="description" content="Sabhyata Chhetri's developer portfolio showcasing computer science skills, projects, and learning journey.">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -13,8 +15,8 @@
             --bg: #07070a;
             --card: #101116;
             --text: #f5f5f7;
-            --muted: #9698a3;
-            --line: rgba(255,255,255,0.09);
+            --muted: #b0b2bd;
+            --line: rgba(255,255,255,0.15);
             --pink: #ff4ecd;
             --purple: #8b5cf6;
             --blue: #38bdf8;
@@ -33,9 +35,36 @@
             color: var(--text);
             font-family: "DM Sans", sans-serif;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* CURSOR GLOW */
+        /* ACCESSIBILITY: SKIP LINK */
+
+        .skip-link {
+            position: fixed;
+            top: -100px;
+            left: 12px;
+            z-index: 2000;
+            padding: 12px 16px;
+            background: #ffffff;
+            color: #07070a;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .skip-link:focus {
+            top: 12px;
+        }
+
+        /* ACCESSIBILITY: VISIBLE KEYBOARD FOCUS */
+
+        a:focus-visible {
+            outline: 3px solid #67e8f9;
+            outline-offset: 4px;
+        }
+
+        /* DECORATIVE BACKGROUND */
 
         .cursor-glow {
             position: fixed;
@@ -52,25 +81,16 @@
             z-index: 0;
         }
 
-        /* BACKGROUND */
-
         .grid {
             position: fixed;
             inset: 0;
             z-index: -2;
             opacity: .22;
-
             background-image:
                 linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-
             background-size: 70px 70px;
-
-            mask-image: linear-gradient(
-                to bottom,
-                black,
-                transparent 80%
-            );
+            mask-image: linear-gradient(to bottom, black, transparent 80%);
         }
 
         .orb {
@@ -79,6 +99,7 @@
             filter: blur(100px);
             opacity: .18;
             z-index: -1;
+            pointer-events: none;
         }
 
         .orb.one {
@@ -97,35 +118,30 @@
             top: 35%;
         }
 
-        /* NAVBAR */
+        /* NAVIGATION */
 
         nav {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-
             width: min(900px, 92%);
-
             display: flex;
             justify-content: space-between;
             align-items: center;
-
+            gap: 16px;
             padding: 13px 18px;
-
-            background: rgba(12,12,16,.72);
-            backdrop-filter: blur(18px);
-
+            background: rgba(12,12,16,.92);
             border: 1px solid var(--line);
             border-radius: 18px;
-
             z-index: 1000;
         }
 
         .brand {
-            font-family: "Space Grotesk";
+            font-family: "Space Grotesk", sans-serif;
             font-weight: 700;
             font-size: 19px;
+            white-space: nowrap;
         }
 
         .brand span {
@@ -134,7 +150,7 @@
 
         nav ul {
             display: flex;
-            gap: 26px;
+            gap: 22px;
             list-style: none;
         }
 
@@ -142,7 +158,7 @@
             color: var(--muted);
             text-decoration: none;
             font-size: 14px;
-            transition: .25s;
+            transition: color .25s;
         }
 
         nav a:hover {
@@ -155,6 +171,7 @@
             padding: 8px 14px;
             border-radius: 10px;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         /* HERO */
@@ -163,10 +180,8 @@
             min-height: 100vh;
             max-width: 1200px;
             margin: auto;
-
             display: flex;
             align-items: center;
-
             padding: 150px 30px 100px;
         }
 
@@ -178,16 +193,12 @@
             display: inline-flex;
             align-items: center;
             gap: 9px;
-
             border: 1px solid var(--line);
             background: rgba(255,255,255,.035);
-
             padding: 8px 13px;
             border-radius: 30px;
-
-            color: #c9cad2;
+            color: #d4d5dd;
             font-size: 13px;
-
             margin-bottom: 25px;
         }
 
@@ -196,38 +207,27 @@
             height: 8px;
             background: #4ade80;
             border-radius: 50%;
-            box-shadow: 0 0 15px #4ade80;
         }
 
         .hero h1 {
-            font-family: "Space Grotesk";
+            font-family: "Space Grotesk", sans-serif;
             font-size: clamp(60px, 9vw, 115px);
-            line-height: .92;
-            letter-spacing: -6px;
+            line-height: 1;
+            letter-spacing: -5px;
             margin-bottom: 30px;
         }
 
         .gradient-text {
             background: linear-gradient(
                 90deg,
-                #fff,
-                #b9a7ff,
-                #ff6ed1,
+                #ffffff,
+                #c7b8ff,
+                #ff8add,
                 #67e8f9
             );
-
-            background-size: 300%;
-
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
-
-            animation: gradient 8s ease infinite;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0%; }
-            50% { background-position: 100%; }
-            100% { background-position: 0%; }
         }
 
         .hero-description {
@@ -244,32 +244,29 @@
             flex-wrap: wrap;
         }
 
-        .primary {
-            background: white;
-            color: black;
+        .primary,
+        .secondary {
+            display: inline-block;
             padding: 14px 21px;
             border-radius: 12px;
             text-decoration: none;
             font-weight: 700;
-            transition: .25s;
+            transition: transform .25s;
         }
 
-        .primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255,255,255,.12);
+        .primary {
+            background: white;
+            color: black;
         }
 
         .secondary {
             color: white;
             border: 1px solid var(--line);
-            padding: 14px 21px;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: .25s;
         }
 
+        .primary:hover,
         .secondary:hover {
-            background: rgba(255,255,255,.06);
+            transform: translateY(-3px);
         }
 
         /* MARQUEE */
@@ -277,38 +274,22 @@
         .marquee {
             border-top: 1px solid var(--line);
             border-bottom: 1px solid var(--line);
-
             overflow: hidden;
-            white-space: nowrap;
-
             padding: 18px 0;
-
-            color: #686a75;
-            font-family: "Space Grotesk";
+            color: #b0b2bd;
+            font-family: "Space Grotesk", sans-serif;
             font-size: 14px;
             letter-spacing: 2px;
+            text-align: center;
         }
 
-        .marquee-inner {
-            display: inline-block;
-            animation: scroll 20s linear infinite;
-        }
-
-        @keyframes scroll {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-        /* SECTIONS */
+        /* CONTENT SECTIONS */
 
         section {
             max-width: 1100px;
             margin: auto;
-            padding: 130px 30px;
+            padding: 110px 30px;
+            scroll-margin-top: 100px;
         }
 
         .section-label {
@@ -320,10 +301,11 @@
         }
 
         .section-title {
-            font-family: "Space Grotesk";
+            font-family: "Space Grotesk", sans-serif;
             font-size: clamp(38px, 6vw, 65px);
+            line-height: 1.1;
             letter-spacing: -3px;
-            margin-bottom: 60px;
+            margin-bottom: 45px;
         }
 
         /* ABOUT */
@@ -336,7 +318,7 @@
 
         .about-text {
             color: var(--muted);
-            font-size: 19px;
+            font-size: 18px;
             line-height: 1.9;
         }
 
@@ -357,7 +339,7 @@
         }
 
         .stat-number {
-            font-family: "Space Grotesk";
+            font-family: "Space Grotesk", sans-serif;
             font-size: 34px;
             font-weight: 700;
         }
@@ -379,18 +361,9 @@
         .skill {
             border: 1px solid var(--line);
             background: rgba(255,255,255,.025);
-
             padding: 12px 17px;
             border-radius: 100px;
-
-            color: #c7c8d0;
-            transition: .25s;
-        }
-
-        .skill:hover {
-            border-color: rgba(255,255,255,.3);
-            color: white;
-            transform: translateY(-3px);
+            color: #d4d5dd;
         }
 
         /* PROJECTS */
@@ -404,58 +377,35 @@
         .project {
             position: relative;
             min-height: 330px;
-
             padding: 30px;
-
             border: 1px solid var(--line);
             border-radius: 24px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255,255,255,.06),
-                    rgba(255,255,255,.015)
-                );
-
-            overflow: hidden;
-
-            transition: .4s;
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,.06),
+                rgba(255,255,255,.015)
+            );
+            transition: transform .3s, border-color .3s;
         }
 
         .project:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255,255,255,.2);
-        }
-
-        .project::after {
-            content: "";
-            position: absolute;
-            width: 200px;
-            height: 200px;
-
-            right: -80px;
-            bottom: -80px;
-
-            border-radius: 50%;
-
-            background: var(--purple);
-            filter: blur(80px);
-            opacity: .12;
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,.3);
         }
 
         .project-number {
-            color: #686a75;
-            font-family: "Space Grotesk";
+            color: #b0b2bd;
+            font-family: "Space Grotesk", sans-serif;
             font-size: 13px;
         }
 
         .project-icon {
             font-size: 38px;
-            margin: 35px 0 20px;
+            margin: 30px 0 18px;
         }
 
         .project h3 {
-            font-family: "Space Grotesk";
+            font-family: "Space Grotesk", sans-serif;
             font-size: 27px;
             margin-bottom: 12px;
         }
@@ -463,21 +413,19 @@
         .project p {
             color: var(--muted);
             line-height: 1.7;
-            max-width: 450px;
+            margin-bottom: 45px;
         }
 
         .project-link {
-            position: absolute;
-            bottom: 28px;
-
+            display: inline-block;
             color: white;
-            text-decoration: none;
-
+            text-decoration: underline;
+            text-underline-offset: 4px;
             font-size: 14px;
             font-weight: 600;
         }
 
-        /* TIMELINE */
+        /* JOURNEY */
 
         .timeline {
             border-left: 1px solid var(--line);
@@ -486,7 +434,7 @@
 
         .timeline-item {
             position: relative;
-            padding: 0 0 55px 40px;
+            padding: 0 0 45px 35px;
         }
 
         .timeline-item::before {
@@ -494,14 +442,10 @@
             position: absolute;
             width: 9px;
             height: 9px;
-
             background: var(--pink);
             border-radius: 50%;
-
             left: -5px;
             top: 5px;
-
-            box-shadow: 0 0 15px var(--pink);
         }
 
         .timeline-date {
@@ -511,7 +455,7 @@
         }
 
         .timeline h3 {
-            font-family: "Space Grotesk";
+            font-family: "Space Grotesk", sans-serif;
             font-size: 24px;
             margin-bottom: 8px;
         }
@@ -523,25 +467,21 @@
         /* CONTACT */
 
         .contact-box {
-            position: relative;
-            padding: 70px 40px;
+            padding: 65px 30px;
             text-align: center;
-
             border: 1px solid var(--line);
             border-radius: 30px;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(139,92,246,.15),
-                    transparent 60%
-                );
+            background: radial-gradient(
+                circle at center,
+                rgba(139,92,246,.15),
+                transparent 70%
+            );
         }
 
         .contact-box h2 {
-            font-family: "Space Grotesk";
-            font-size: clamp(40px, 6vw, 70px);
-            letter-spacing: -3px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(38px, 6vw, 70px);
+            letter-spacing: -2px;
             margin-bottom: 20px;
         }
 
@@ -555,64 +495,77 @@
         footer {
             max-width: 1100px;
             margin: auto;
-
             padding: 30px;
-
             border-top: 1px solid var(--line);
-
             display: flex;
             justify-content: space-between;
-
-            color: #686a75;
+            gap: 15px;
+            color: #b0b2bd;
             font-size: 13px;
         }
 
         /* MOBILE */
 
-        @media(max-width: 750px) {
+        @media (max-width: 750px) {
+            nav {
+                top: 10px;
+                width: 95%;
+                padding: 12px;
+            }
 
             nav ul {
                 display: none;
             }
 
             .hero {
-                padding-top: 170px;
+                padding-top: 150px;
             }
 
             .hero h1 {
-                letter-spacing: -4px;
+                letter-spacing: -3px;
             }
 
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-
+            .about-grid,
             .projects {
                 grid-template-columns: 1fr;
             }
 
+            section {
+                padding: 80px 22px;
+            }
+
             footer {
                 flex-direction: column;
-                gap: 10px;
+            }
+        }
+
+        /* ACCESSIBILITY: REDUCED MOTION */
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
 
 <body>
+    <!-- Accessibility improvement 1: Skip link -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <div class="cursor-glow"></div>
+    <!-- Decorative elements are hidden from screen readers -->
+    <div class="cursor-glow" aria-hidden="true"></div>
+    <div class="grid" aria-hidden="true"></div>
+    <div class="orb one" aria-hidden="true"></div>
+    <div class="orb two" aria-hidden="true"></div>
 
-    <div class="grid"></div>
-
-    <div class="orb one"></div>
-    <div class="orb two"></div>
-
-
-    <!-- NAVIGATION -->
-
-    <nav>
-
+    <!-- Accessibility improvement 2: Labelled navigation -->
+    <nav aria-label="Main navigation">
         <div class="brand">
             sabhyata<span>.</span>
         </div>
@@ -624,154 +577,98 @@
             <li><a href="#journey">Journey</a></li>
         </ul>
 
-        <a href="#contact" class="nav-button">
-            Let's talk
-        </a>
-
+        <a href="#contact" class="nav-button">Let's talk</a>
     </nav>
 
-
-    <!-- HERO -->
-
-    <main>
-
+    <!-- Accessibility improvement 3: Main content has an ID for the skip link -->
+    <main id="main-content" tabindex="-1">
         <section class="hero">
-
             <div class="hero-content">
-
                 <div class="availability">
-                    <span class="dot"></span>
-                    Building & learning
+                    <span class="dot" aria-hidden="true"></span>
+                    Building &amp; learning
                 </div>
 
                 <h1>
                     Hi, I'm<br>
-                    <span class="gradient-text">
-                        Sabhyata.
-                    </span>
+                    <span class="gradient-text">Sabhyata.</span>
                 </h1>
 
                 <p class="hero-description">
                     A Computer Science student exploring the intersection
-                    of code, creativity and problem solving.
-                    I build things for the web, experiment with technology,
-                    and occasionally fight with semicolons.
+                    of code, creativity and problem solving. I build things
+                    for the web, experiment with technology, and occasionally
+                    fight with semicolons.
                 </p>
 
                 <div class="hero-buttons">
-
-                    <a href="#projects" class="primary">
-                        Explore my work ↓
-                    </a>
-
+                    <a href="#projects" class="primary">Explore my work ↓</a>
                     <a
                         href="https://github.com/sabhyatachhetri45-dev"
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="secondary">
-                        GitHub ↗
+                        GitHub ↗ (opens in a new tab)
                     </a>
-
                 </div>
-
             </div>
-
         </section>
 
-
-        <!-- MARQUEE -->
-
-        <div class="marquee">
-
-            <div class="marquee-inner">
-
-                CODE ✦ CREATE ✦ LEARN ✦ BUILD ✦
-                EXPERIMENT ✦ REPEAT ✦
-                CODE ✦ CREATE ✦ LEARN ✦ BUILD ✦
-                EXPERIMENT ✦ REPEAT ✦
-
-            </div>
-
+        <div class="marquee" aria-hidden="true">
+            CODE ✦ CREATE ✦ LEARN ✦ BUILD ✦ EXPERIMENT ✦ REPEAT ✦
         </div>
 
-
         <!-- ABOUT -->
-
         <section id="about">
-
-            <div class="section-label">
-                01 — About
-            </div>
+            <div class="section-label">01 — About</div>
 
             <h2 class="section-title">
-                A little bit<br>
-                about me.
+                A little bit<br>about me.
             </h2>
 
             <div class="about-grid">
-
                 <div class="about-text">
-
                     <p>
                         I'm <strong>Sabhyata Chhetri</strong>, a Computer
                         Science student who enjoys understanding how things
                         work and then trying to build them myself.
                     </p>
-
                     <br>
-
                     <p>
                         My interests range from
                         <strong>web development</strong> and
                         <strong>Python</strong> to data structures,
                         algorithms and creative digital experiences.
                     </p>
-
                     <br>
-
                     <p>
                         I'm still learning — but that's exactly what makes
                         building things interesting.
                     </p>
-
                 </div>
 
                 <div class="stats">
-
                     <div class="stat">
                         <div class="stat-number">CS</div>
-                        <div class="stat-label">
-                            Computer Science
-                        </div>
+                        <div class="stat-label">Computer Science</div>
                     </div>
 
                     <div class="stat">
                         <div class="stat-number">∞</div>
-                        <div class="stat-label">
-                            Things I want to learn
-                        </div>
+                        <div class="stat-label">Things I want to learn</div>
                     </div>
 
                     <div class="stat">
                         <div class="stat-number">01</div>
-                        <div class="stat-label">
-                            Step at a time
-                        </div>
+                        <div class="stat-label">Step at a time</div>
                     </div>
-
                 </div>
-
             </div>
-
         </section>
 
-
         <!-- SKILLS -->
-
         <section id="skills">
-
-            <div class="section-label">
-                02 — Toolbox
-            </div>
+            <div class="section-label">02 — Toolbox</div>
 
             <h2 class="section-title">
                 Things I<br>
@@ -779,8 +676,8 @@
             </h2>
 
             <div class="skills">
-
                 <div class="skill">Python</div>
+                <div class="skill">HTML</div>
                 <div class="skill">CSS</div>
                 <div class="skill">JavaScript</div>
                 <div class="skill">Git</div>
@@ -789,19 +686,12 @@
                 <div class="skill">Algorithms</div>
                 <div class="skill">OpenCV</div>
                 <div class="skill">Problem Solving</div>
-
             </div>
-
         </section>
 
-
         <!-- PROJECTS -->
-
         <section id="projects">
-
-            <div class="section-label">
-                03 — Selected work
-            </div>
+            <div class="section-label">03 — Selected work</div>
 
             <h2 class="section-title">
                 Things I've<br>
@@ -809,20 +699,11 @@
             </h2>
 
             <div class="projects">
-
                 <article class="project">
+                    <div class="project-number">PROJECT / 01</div>
+                    <div class="project-icon" aria-hidden="true">🚗</div>
 
-                    <div class="project-number">
-                        PROJECT / 01
-                    </div>
-
-                    <div class="project-icon">
-                        🚗
-                    </div>
-
-                    <h3>
-                        Parking Management
-                    </h3>
+                    <h3>Parking Management</h3>
 
                     <p>
                         A data-structure based parking system exploring
@@ -830,52 +711,32 @@
                         vehicle management.
                     </p>
 
-                    <a href="#" class="project-link">
-                        View project →
+                    <a href="#contact" class="project-link">
+                        Ask me about this project
                     </a>
-
                 </article>
 
-
                 <article class="project">
+                    <div class="project-number">PROJECT / 02</div>
+                    <div class="project-icon" aria-hidden="true">🌻</div>
 
-                    <div class="project-number">
-                        PROJECT / 03
-                    </div>
-
-                    <div class="project-icon">
-                        🌻
-                    </div>
-
-                    <h3>
-                        Image Processing
-                    </h3>
+                    <h3>Image Processing</h3>
 
                     <p>
                         An OpenCV experiment exploring image enhancement
                         and histogram equalization.
                     </p>
 
-                    <a href="#" class="project-link">
-                        View project →
+                    <a href="#contact" class="project-link">
+                        Ask me about this project
                     </a>
-
                 </article>
 
-
                 <article class="project">
+                    <div class="project-number">PROJECT / 03</div>
+                    <div class="project-icon" aria-hidden="true">✦</div>
 
-                    <div class="project-number">
-                        PROJECT / 04
-                    </div>
-
-                    <div class="project-icon">
-                        ✦
-                    </div>
-
-                    <h3>
-                        What's next?
-                    </h3>
+                    <h3>What's next?</h3>
 
                     <p>
                         More experiments, ideas and projects are currently
@@ -885,21 +746,13 @@
                     <a href="#contact" class="project-link">
                         Stay tuned →
                     </a>
-
                 </article>
-
             </div>
-
         </section>
 
-
         <!-- JOURNEY -->
-
         <section id="journey">
-
-            <div class="section-label">
-                04 — Journey
-            </div>
+            <div class="section-label">04 — Journey</div>
 
             <h2 class="section-title">
                 Currently<br>
@@ -907,162 +760,70 @@
             </h2>
 
             <div class="timeline">
-
                 <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        NOW
-                    </div>
-
-                    <h3>
-                        Computer Science
-                    </h3>
-
+                    <div class="timeline-date">NOW</div>
+                    <h3>Computer Science</h3>
                     <p>
                         Exploring programming, data structures,
                         algorithms and software development.
                     </p>
-
                 </div>
 
-
                 <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        LEARNING
-                    </div>
-
-                    <h3>
-                        Web Development
-                    </h3>
-
+                    <div class="timeline-date">LEARNING</div>
+                    <h3>Web Development</h3>
                     <p>
-                        Building interactive websites with CSS
-                        and JavaScript.
+                        Building interactive websites with HTML,
+                        CSS and JavaScript.
                     </p>
-
                 </div>
 
-
                 <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        NEXT
-                    </div>
-
-                    <h3>
-                        Build bigger things
-                    </h3>
-
+                    <div class="timeline-date">NEXT</div>
+                    <h3>Build bigger things</h3>
                     <p>
                         Turning small experiments into larger,
                         useful projects.
                     </p>
-
                 </div>
-
             </div>
-
         </section>
 
-
         <!-- CONTACT -->
-
         <section id="contact">
-
             <div class="contact-box">
+                <div class="section-label">05 — Contact</div>
 
-                <div class="section-label">
-                    05 — Contact
-                </div>
-
-                <h2>
-                    Have an idea?
-                </h2>
+                <h2>Have an idea?</h2>
 
                 <p>
                     Let's turn it into something interesting.
                 </p>
 
-                <a
-                    href="mailto:your-email@example.com"
-                    class="primary">
+                <!-- Replace the example address with your real email -->
+                <a href="mailto:your-email@example.com" class="primary">
                     Say hello →
                 </a>
-
             </div>
-
         </section>
-
     </main>
 
-
-    <!-- FOOTER -->
-
     <footer>
-
-        <span>
-            © 2026 Sabhyata Chhetri
-        </span>
-
-        <span>
-            Built with curiosity & code.
-        </span>
-
+        <span>© 2026 Sabhyata Chhetri</span>
+        <span>Built with curiosity &amp; code.</span>
     </footer>
 
-
     <script>
-
-        /* CURSOR EFFECT */
-
+        /* Decorative cursor glow */
         const glow = document.querySelector(".cursor-glow");
 
-        document.addEventListener("mousemove", function(e) {
-
-            glow.style.left = e.clientX + "px";
-            glow.style.top = e.clientY + "px";
-
-        });
-
-
-        /* REVEAL ANIMATION */
-
-        const observer =
-            new IntersectionObserver(
-                entries => {
-
-                    entries.forEach(entry => {
-
-                        if (entry.isIntersecting) {
-
-                            entry.target.style.opacity = "1";
-                            entry.target.style.transform =
-                                "translateY(0)";
-
-                        }
-
-                    });
-
-                },
-                { threshold: 0.12 }
-            );
-
-
-        document.querySelectorAll(
-            ".project, .skill, .stat, .timeline-item"
-        ).forEach(element => {
-
-            element.style.opacity = "0";
-            element.style.transform = "translateY(25px)";
-            element.style.transition = "all .7s ease";
-
-            observer.observe(element);
-
-        });
-
+        if (glow && window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener("mousemove", function(event) {
+                glow.style.left = event.clientX + "px";
+                glow.style.top = event.clientY + "px";
+            });
+        }
     </script>
-
 </body>
 </html>
 
