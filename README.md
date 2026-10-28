@@ -27,6 +27,7 @@ Open [`index.html`](index.html) in a browser, or visit the live site:
 - [Week 7 — Book Search Tasks](<week%207/index.html>)
 - [Week 8 Monday — Forms](<week8(mon)/index.html>)
 - [Week 8 Friday — Registration lessons and homework](<week8(fri)/index.html>)
+- [Week 9 — Accessibility task](<week9/accessibility-task.html>)
 
 ## Built with
 
