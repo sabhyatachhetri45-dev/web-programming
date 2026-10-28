@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Audit Report</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.7;
+            color: #222;
+            background: #f5f7fa;
+        }
+
+        h1, h2 {
+            color: #174a7e;
+        }
+
+        section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+
+        code {
+            background: #eee;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+
+        a:focus-visible {
+            outline: 3px solid #174a7e;
+            outline-offset: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Website Accessibility Audit Report</h1>
+
+    <section>
+        <h2>1. Introduction</h2>
+        <p>
+            I used Google Lighthouse to evaluate the accessibility
+            of my personal website. The initial accessibility score
+            was 90 out of 100. After making accessibility improvements,
+            I ran the audit again and achieved a score of 100 out of 100.
+        </p>
+    </section>
+
+    <section>
+        <h2>2. Before the Improvements</h2>
+        <p>Initial Lighthouse accessibility score: 90/100.</p>
+        <img src="screenshots/accessibility_before.png"
+             alt="Screenshot showing the initial Lighthouse accessibility score of 90 out of 100">
+    </section>
+
+    <section>
+        <h2>3. After the Improvements</h2>
+        <p>Final Lighthouse accessibility score: 100/100.</p>
+        <img src="screenshots/accessibility_after.png"
+             alt="Screenshot showing the improved Lighthouse accessibility score of 100 out of 100">
+    </section>
+
+    <section>
+        <h2>4. Three Accessibility Improvements</h2>
+
+        <h3>Fix 1: Skip Link</h3>
+        <p>
+            I added a skip link that allows keyboard users to skip
+            repeated navigation links and move directly to the main
+            content. This makes the website easier to navigate.
+        </p>
+        <p>HTML example: <code>&lt;a href="#main-content"&gt;Skip to main content&lt;/a&gt;</code></p>
+
+        <h3>Fix 2: Accessible Navigation</h3>
+        <p>
+            I added an accessible label to the navigation element.
+            The label helps screen reader users understand the purpose
+            of the navigation menu.
+        </p>
+        <p>HTML example: <code>&lt;nav aria-label="Main navigation"&gt;</code></p>
+
+        <h3>Fix 3: Keyboard Focus Indicator</h3>
+        <p>
+            I added a visible outline when a link receives keyboard
+            focus. This helps keyboard users identify which link is
+            currently selected.
+        </p>
+        <p>CSS example: <code>a:focus-visible { outline: 3px solid #67e8f9; }</code></p>
+    </section>
+
+    <section>
+        <h2>5. Conclusion</h2>
+        <p>
+            These improvements make my website more accessible to
+            keyboard users and people who use screen readers.
+            The Lighthouse accessibility score increased from 90
+            to 100 out of 100 after the improvements.
+        </p>
+    </section>
+
+    <p>
+        <a href="my%20projects/my%20website.html">
+            Return to My Personal Website
+        </a>
+    </p>
+</body>
+</html>
