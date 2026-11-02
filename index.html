@@ -1,12 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sabhyata Chhetri — Web Programming Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #f8fafc;
@@ -15,7 +12,7 @@
       --border-focus: #3b82f6;
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --text-light: #94a3b8;
+      --text-light: #64748b;
       --blue: #2563eb;
       --blue-light: #eff6ff;
       --blue-border: #bfdbfe;
@@ -25,10 +22,10 @@
       --emerald-border: #a7f3d0;
       --purple: #8b5cf6;
       --purple-light: #f5f3ff;
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 4px 8px -2px rgba(0, 0, 0, 0.03);
-      --shadow-glow: 0 0 25px rgba(37, 99, 235, 0.15);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.03);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,.06), 0 2px 4px -2px rgba(0,0,0,.04);
+      --shadow-lg: 0 12px 24px -4px rgba(0,0,0,.08), 0 4px 8px -2px rgba(0,0,0,.03);
+      --shadow-glow: 0 0 25px rgba(37,99,235,.15);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 20px;
@@ -41,17 +38,50 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       background-image:
-        radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(37,99,235,.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(6,182,212,.08) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(139,92,246,.05) 0px, transparent 50%);
       color: var(--text-main);
       line-height: 1.6;
       min-height: 100vh;
       padding: 32px 16px 80px;
+    }
+
+    a {
+      color: var(--blue);
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 4px;
+      border-radius: 6px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 16px;
+      z-index: 2000;
+      padding: 12px 16px;
+      background: var(--text-main);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .skip-link:focus {
+      top: 16px;
     }
 
     .container {
@@ -59,7 +89,7 @@
       margin: 0 auto;
     }
 
-    /* Header & Hero */
+    /* Header and hero */
     .hero {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -88,7 +118,7 @@
       background: var(--emerald-light);
       border: 1px solid var(--emerald-border);
       color: #065f46;
-      font-size: 0.8rem;
+      font-size: .8rem;
       font-weight: 700;
       padding: 5px 12px;
       border-radius: 999px;
@@ -98,7 +128,7 @@
     .status-dot {
       width: 7px;
       height: 7px;
-      background-color: var(--emerald);
+      background: var(--emerald);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--emerald);
     }
@@ -106,12 +136,13 @@
     .hero-title {
       font-size: 2.6rem;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -.03em;
       line-height: 1.15;
       margin-bottom: 12px;
       background: linear-gradient(135deg, #0f172a 60%, #2563eb 100%);
+      background-clip: text;
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: transparent;
     }
 
     .hero-description {
@@ -131,32 +162,33 @@
     .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: .9rem;
       font-weight: 600;
       padding: 10px 18px;
       border-radius: var(--radius-md);
       text-decoration: none;
       border: 1px solid transparent;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all .2s ease;
     }
 
     .btn-primary {
       background: var(--blue);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      color: white;
+      box-shadow: 0 4px 12px rgba(37,99,235,.25);
     }
 
     .btn-primary:hover {
       background: #1d4ed8;
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 6px 16px rgba(37,99,235,.35);
     }
 
     .btn-secondary {
-      background: #ffffff;
+      background: white;
       border-color: var(--border);
       color: var(--text-main);
     }
@@ -167,7 +199,7 @@
       color: var(--blue);
     }
 
-    /* Search & Filter Toolbar */
+    /* Search and filters */
     .toolbar {
       display: flex;
       flex-direction: column;
@@ -191,21 +223,20 @@
 
     .search-input {
       width: 100%;
-      background: var(--bg-card);
+      background: white;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 12px 14px 12px 42px;
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: .95rem;
       color: var(--text-main);
       box-shadow: var(--shadow-sm);
-      outline: none;
-      transition: all 0.2s;
+      transition: all .2s;
     }
 
     .search-input:focus {
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.15);
     }
 
     .search-icon {
@@ -221,21 +252,21 @@
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding: 4px;
     }
 
     .filter-btn {
-      background: var(--bg-card);
+      background: white;
       border: 1px solid var(--border);
       color: var(--text-muted);
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: .85rem;
       font-weight: 600;
       padding: 8px 16px;
       border-radius: 999px;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.2s;
+      transition: all .2s;
     }
 
     .filter-btn:hover {
@@ -246,11 +277,11 @@
     .filter-btn.active {
       background: var(--blue);
       border-color: var(--blue);
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+      color: white;
+      box-shadow: 0 2px 8px rgba(37,99,235,.25);
     }
 
-    /* Section Titles */
+    /* Section headings */
     .section-header {
       display: flex;
       align-items: center;
@@ -269,14 +300,14 @@
     }
 
     .section-count {
-      font-size: 0.8rem;
+      font-size: .8rem;
       background: #e2e8f0;
       color: var(--text-muted);
       padding: 2px 8px;
       border-radius: 999px;
     }
 
-    /* Grid & Cards */
+    /* Project cards */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -285,7 +316,7 @@
     }
 
     .project-card {
-      background: var(--bg-card);
+      background: white;
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 24px;
@@ -293,7 +324,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: all .25s ease;
       position: relative;
     }
 
@@ -311,10 +342,10 @@
     }
 
     .tag {
-      font-size: 0.72rem;
+      font-size: .72rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: .05em;
       padding: 4px 10px;
       border-radius: 6px;
     }
@@ -345,15 +376,15 @@
     }
 
     .card-desc {
-      font-size: 0.9rem;
+      font-size: .9rem;
       color: var(--text-muted);
       margin-bottom: 20px;
       flex-grow: 1;
     }
 
     .card-path {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: .75rem;
       color: var(--text-light);
       background: #f8fafc;
       padding: 6px 10px;
@@ -370,15 +401,14 @@
 
     .card-actions .btn {
       flex: 1;
-      justify-content: center;
       padding: 8px 12px;
-      font-size: 0.82rem;
+      font-size: .82rem;
     }
 
-    /* Empty state */
+    /* Empty search result */
     .empty-state {
       display: none;
-      background: var(--bg-card);
+      background: white;
       border: 1px dashed var(--border);
       border-radius: var(--radius-lg);
       padding: 48px 24px;
@@ -393,11 +423,11 @@
       margin-bottom: 6px;
     }
 
-    /* Modal / Drawer Preview */
+    /* Preview modal */
     .preview-modal {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15,23,42,.6);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
@@ -405,8 +435,12 @@
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transition: opacity .25s ease;
       padding: 16px;
+    }
+
+    .preview-modal[hidden] {
+      display: none;
     }
 
     .preview-modal.active {
@@ -415,17 +449,17 @@
     }
 
     .preview-window {
-      background: #ffffff;
+      background: white;
       border-radius: var(--radius-lg);
       width: 100%;
       max-width: 960px;
       height: 85vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,.25);
       overflow: hidden;
-      transform: scale(0.96);
-      transition: transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+      transform: scale(.96);
+      transition: transform .25s ease;
     }
 
     .preview-modal.active .preview-window {
@@ -439,6 +473,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
     }
 
     .preview-title-box {
@@ -449,7 +484,7 @@
 
     .preview-title {
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: .95rem;
       color: var(--text-main);
     }
 
@@ -457,7 +492,7 @@
       flex: 1;
       width: 100%;
       border: none;
-      background: #ffffff;
+      background: white;
     }
 
     .close-btn {
@@ -476,21 +511,21 @@
       background: #e2e8f0;
     }
 
-    /* Toast */
+    /* Toast notification */
     .toast {
       position: fixed;
       bottom: 24px;
       right: 24px;
       background: #0f172a;
-      color: #ffffff;
+      color: white;
       padding: 10px 18px;
       border-radius: var(--radius-md);
-      font-size: 0.85rem;
+      font-size: .85rem;
       font-weight: 600;
       box-shadow: var(--shadow-lg);
       transform: translateY(100px);
       opacity: 0;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all .3s ease;
       z-index: 1001;
     }
 
@@ -499,13 +534,12 @@
       opacity: 1;
     }
 
-    /* Footer */
     footer {
       border-top: 1px solid var(--border);
       padding-top: 24px;
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: .85rem;
     }
 
     footer a {
@@ -516,349 +550,422 @@
     footer a:hover {
       text-decoration: underline;
     }
+
+    /* Keyboard focus and reduced motion */
+    :focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 12px 48px;
+      }
+
+      .hero {
+        padding: 32px 22px;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card-actions {
+        flex-wrap: wrap;
+      }
+
+      .preview-window {
+        height: 90vh;
+      }
+    }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <div class="container">
+  <main class="container" id="main-content">
 
     <!-- Hero Section -->
     <header class="hero">
       <div class="status-badge">
-        <span class="status-dot"></span>
+        <span class="status-dot" aria-hidden="true"></span>
         Portfolio &amp; Coursework Active
       </div>
+
       <h1 class="hero-title">Sabhyata Chhetri</h1>
+
       <p class="hero-description">
-        A personal portfolio created with HTML, CSS, and JavaScript featuring interactive web games, responsive designs, and weekly web programming coursework exercises.
+        A personal portfolio created with HTML, CSS, and JavaScript featuring
+        interactive web games, responsive designs, and weekly web programming
+        coursework exercises.
       </p>
 
       <div class="hero-actions">
-        <a href="https://sabhyatachhetri45-dev.github.io/web-programming/" target="_blank" rel="noopener" class="btn btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        <a href="https://sabhyatachhetri45-dev.github.io/web-programming/"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="btn btn-primary">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
           Visit Live Site
         </a>
-        <button class="btn btn-secondary" id="btnCopyLive">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+
+        <button type="button" class="btn btn-secondary" id="btnCopyLive">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
           Copy URL
         </button>
-        <button class="btn btn-secondary" id="btnCopyGit">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+
+        <button type="button" class="btn btn-secondary" id="btnCopyGit">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
           Clone Repository
         </button>
       </div>
     </header>
 
-    <!-- Toolbar: Search & Category Filter -->
-    <section class="toolbar">
+    <!-- Search and filters -->
+    <section class="toolbar" aria-label="Search and filter projects">
       <div class="search-wrapper">
-        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg class="search-icon" aria-hidden="true" width="18" height="18"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input
-          type="text"
-          id="searchInput"
-          class="search-input"
-          placeholder="Filter projects, labs, or topics..."
-          aria-label="Filter items"
-        />
+
+        <input type="search"
+               id="searchInput"
+               class="search-input"
+               placeholder="Filter projects, labs, or topics..."
+               aria-label="Search projects and weekly exercises">
       </div>
 
-      <div class="filter-pills" role="tablist">
-        <button class="filter-btn active" data-filter="all">All Items</button>
-        <button class="filter-btn" data-filter="project">Featured Projects</button>
-        <button class="filter-btn" data-filter="exercise">Weekly Exercises</button>
+      <div class="filter-pills" role="group" aria-label="Filter items">
+        <button type="button" class="filter-btn active"
+                data-filter="all" aria-pressed="true">All Items</button>
+        <button type="button" class="filter-btn"
+                data-filter="project" aria-pressed="false">Featured Projects</button>
+        <button type="button" class="filter-btn"
+                data-filter="exercise" aria-pressed="false">Weekly Exercises</button>
       </div>
     </section>
 
-    <!-- Projects Section -->
-    <div class="section-header" id="projectsHeader">
-      <h2 class="section-title">
-        Featured Projects
-        <span class="section-count" id="projectsCount">2</span>
-      </h2>
-    </div>
+    <!-- Featured projects -->
+    <section aria-labelledby="projectsTitle">
+      <div class="section-header" id="projectsHeader">
+        <h2 class="section-title" id="projectsTitle">
+          Featured Projects
+          <span class="section-count" id="projectsCount">2</span>
+        </h2>
+      </div>
 
-    <div class="projects-grid" id="featuredGrid">
+      <div class="projects-grid" id="featuredGrid">
 
-      <!-- Card: Find the Cookie -->
-      <article class="project-card" data-category="project" data-keywords="game cookie javascript fun interactive score">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-game">Mini Game</span>
+        <article class="project-card" data-category="project"
+                 data-keywords="game cookie javascript fun interactive score">
+          <div>
+            <div class="card-top">
+              <span class="tag tag-game">Mini Game</span>
+            </div>
+            <h3 class="card-title">Find the Cookie</h3>
+            <p class="card-desc">
+              An interactive number-guessing game built with JavaScript logic,
+              state checks, and DOM interaction.
+            </p>
+            <div class="card-path">my projects/number game.html</div>
           </div>
-          <h3 class="card-title">Find the Cookie</h3>
-          <p class="card-desc">An interactive number-guessing game built with JavaScript logic, state checks, and DOM interaction.</p>
-          <div class="card-path">my projects/number game.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Find the Cookie" data-url="my%20projects/number%20game.html">Quick View</button>
-          <a href="my%20projects/number%20game.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
 
-      <!-- Card: My other website -->
-      <article class="project-card" data-category="project" data-keywords="design website html css showcase creative layout">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-design">Web Design</span>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn"
+                    data-title="Find the Cookie"
+                    data-url="my%20projects/number%20game.html">Quick View</button>
+            <a href="my%20projects/number%20game.html"
+               class="btn btn-primary"
+               target="_blank" rel="noopener noreferrer">Open Full</a>
           </div>
-          <h3 class="card-title">My Other Website</h3>
-          <p class="card-desc">A separate multi-page website created for creative layout experiments, typography, and responsive CSS styling.</p>
-          <div class="card-path">my projects/my website.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="My Other Website" data-url="my%20projects/my%20website.html">Quick View</button>
-          <a href="my%20projects/my%20website.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
+        </article>
 
-    </div>
-
-    <!-- Weekly Web Programming Exercises Section -->
-    <div class="section-header" id="exercisesHeader">
-      <h2 class="section-title">
-        Weekly Web Programming Exercises
-        <span class="section-count" id="exercisesCount">11</span>
-      </h2>
-    </div>
-
-    <div class="projects-grid" id="exercisesGrid">
-
-      <!-- Week 2 Monday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 2 monday fundamentals html tags structure">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 02</span>
+        <article class="project-card" data-category="project"
+                 data-keywords="design website html css showcase creative layout">
+          <div>
+            <div class="card-top">
+              <span class="tag tag-design">Web Design</span>
+            </div>
+            <h3 class="card-title">My Other Website</h3>
+            <p class="card-desc">
+              A separate multi-page website created for creative layout
+              experiments, typography, and responsive CSS styling.
+            </p>
+            <div class="card-path">my projects/my website.html</div>
           </div>
-          <h3 class="card-title">Week 2 Monday</h3>
-          <p class="card-desc">Initial exploration of foundational HTML markup, semantics, text styling, and document flow.</p>
-          <div class="card-path">week2(mon)/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 2 Monday" data-url="week2(mon)/index.html">Quick View</button>
-          <a href="week2(mon)/index.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
 
-      <!-- Week 2 Friday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 2 friday css selectors styling colors">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 02</span>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn"
+                    data-title="My Other Website"
+                    data-url="my%20projects/my%20website.html">Quick View</button>
+            <a href="my%20projects/my%20website.html"
+               class="btn btn-primary"
+               target="_blank" rel="noopener noreferrer">Open Full</a>
           </div>
-          <h3 class="card-title">Week 2 Friday</h3>
-          <p class="card-desc">Practical exercise covering CSS layout fundamentals, basic box-model properties, and typography.</p>
-          <div class="card-path">week2 fri/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 2 Friday" data-url="week2%20fri/index.html">Quick View</button>
-          <a href="week2%20fri/index.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
+        </article>
 
-      <!-- Week 3 Monday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 3 monday forms lists tables flexbox">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 03</span>
+      </div>
+    </section>
+
+    <!-- Weekly exercises -->
+    <section aria-labelledby="exercisesTitle">
+      <div class="section-header" id="exercisesHeader">
+        <h2 class="section-title" id="exercisesTitle">
+          Weekly Web Programming Exercises
+          <span class="section-count" id="exercisesCount">11</span>
+        </h2>
+      </div>
+
+      <div class="projects-grid" id="exercisesGrid">
+
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 2 monday fundamentals html tags structure">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 02</span></div>
+            <h3 class="card-title">Week 2 Monday</h3>
+            <p class="card-desc">Initial exploration of foundational HTML markup, semantics, text styling, and document flow.</p>
+            <div class="card-path">week2(mon)/index.html</div>
           </div>
-          <h3 class="card-title">Week 3 Monday</h3>
-          <p class="card-desc">Working with forms, user input fields, semantic containers, and responsive container alignment.</p>
-          <div class="card-path">week3(mon)/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 3 Monday" data-url="week3(mon)/index.html">Quick View</button>
-          <a href="week3(mon)/index.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
-
-      <!-- Week 3 Friday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 3 friday flexbox grid responsive cards">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 03</span>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 2 Monday" data-url="week2(mon)/index.html">Quick View</button>
+            <a href="week2(mon)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
           </div>
-          <h3 class="card-title">Week 3 Friday</h3>
-          <p class="card-desc">Advanced CSS layout practice focusing on multi-column arrangements, card patterns, and spacing rules.</p>
-          <div class="card-path">week3(fri)/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 3 Friday" data-url="week3(fri)/index.html">Quick View</button>
-          <a href="week3(fri)/index.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
+        </article>
 
-      <!-- Week 4 Monday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 4 monday javascript dom events functions">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 04</span>
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 2 friday css selectors styling colors">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 02</span></div>
+            <h3 class="card-title">Week 2 Friday</h3>
+            <p class="card-desc">Practical exercise covering CSS layout fundamentals, basic box-model properties, and typography.</p>
+            <div class="card-path">week2 fri/index.html</div>
           </div>
-          <h3 class="card-title">Week 4 Monday</h3>
-          <p class="card-desc">Introduction to DOM manipulation, event handling, button triggers, and dynamic HTML modification.</p>
-          <div class="card-path">week4(mon).html/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 4 Monday" data-url="week4(mon).html/index.html">Quick View</button>
-          <a href="week4(mon).html/index.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
-
-      <!-- Week 5 -->
-      <article class="project-card" data-category="exercise" data-keywords="week 5 javascript basics dom input conditions loops arrays localstorage">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 05</span>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 2 Friday" data-url="week2%20fri/index.html">Quick View</button>
+            <a href="week2%20fri/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
           </div>
-          <h3 class="card-title">Week 5 - JavaScript Basics</h3>
-          <p class="card-desc">Practice with DOM updates, user input, conditions, loops, arrays, and localStorage.</p>
-          <div class="card-path">week5/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 5 - JavaScript Basics" data-url="week5/index.html">Quick View</button>
-          <a href="week5/index.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
+        </article>
 
-      <!-- Week 6 Monday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 6 random joke generator api fetch favourites localstorage">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 06</span>
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 3 monday forms lists tables flexbox">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 03</span></div>
+            <h3 class="card-title">Week 3 Monday</h3>
+            <p class="card-desc">Working with forms, user input fields, semantic containers, and responsive container alignment.</p>
+            <div class="card-path">week3(mon)/index.html</div>
           </div>
-          <h3 class="card-title">Week 6 Monday - Random Joke Generator</h3>
-          <p class="card-desc">Fetch random jokes from an API and save favourites in the browser.</p>
-          <div class="card-path">week6(mon)/task1.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 6 Monday - Random Joke Generator" data-url="week6(mon)/task1.html">Quick View</button>
-          <a href="week6(mon)/task1.html" class="btn btn-primary" target="_blank">Open Full</a>
-        </div>
-      </article>
-
-      <!-- Week 6 Friday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 6 friday projects api explorer weather cryptocurrency tracker">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 06</span>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 3 Monday" data-url="week3(mon)/index.html">Quick View</button>
+            <a href="week3(mon)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
           </div>
-          <h3 class="card-title">Week 6 Friday - API Projects</h3>
-          <p class="card-desc">Explore the API data explorer, weather tracker, and cryptocurrency tracker.</p>
-          <div class="card-path">week6(fri)/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 6 Friday - API Projects" data-url="week6(fri)/index.html">Quick View</button>
-          <a href="week6(fri)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
-        </div>
-      </article>
+        </article>
 
-      <!-- Week 7 -->
-      <article class="project-card" data-category="exercise" data-keywords="week 7 book search tasks open library api authors subjects">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 07</span>
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 3 friday flexbox grid responsive cards">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 03</span></div>
+            <h3 class="card-title">Week 3 Friday</h3>
+            <p class="card-desc">Advanced CSS layout practice focusing on multi-column arrangements, card patterns, and spacing rules.</p>
+            <div class="card-path">week3(fri)/index.html</div>
           </div>
-          <h3 class="card-title">Week 7 - Book Search</h3>
-          <p class="card-desc">Explore all six steps of the Open Library book search project.</p>
-          <div class="card-path">week 7/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 7 - Book Search" data-url="week%207/index.html">Quick View</button>
-          <a href="week%207/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
-        </div>
-      </article>
-
-      <!-- Week 8 Monday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 8 forms contact email message student registration">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 08 Monday</span>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 3 Friday" data-url="week3(fri)/index.html">Quick View</button>
+            <a href="week3(fri)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
           </div>
-          <h3 class="card-title">Week 8 Monday - Forms</h3>
-          <p class="card-desc">Explore the contact form and student registration form exercises.</p>
-          <div class="card-path">week8(mon)/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 8 Monday - Forms" data-url="week8(mon)/index.html">Quick View</button>
-          <a href="week8(mon)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
-        </div>
-      </article>
+        </article>
 
-      <!-- Week 8 Friday -->
-      <article class="project-card" data-category="exercise" data-keywords="week 8 friday forms registration homework validation accessibility">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 08 Friday</span>
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 4 monday javascript dom events functions">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 04</span></div>
+            <h3 class="card-title">Week 4 Monday</h3>
+            <p class="card-desc">Introduction to DOM manipulation, event handling, button triggers, and dynamic HTML modification.</p>
+            <div class="card-path">week4(mon).html/index.html</div>
           </div>
-          <h3 class="card-title">Week 8 Friday - Registration</h3>
-          <p class="card-desc">Follow the form lessons in order, then open the registration homework.</p>
-          <div class="card-path">week8(fri)/index.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 8 Friday - Registration" data-url="week8(fri)/index.html">Quick View</button>
-          <a href="week8(fri)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
-        </div>
-      </article>
-
-      <!-- Week 9 Accessibility -->
-      <article class="project-card" data-category="exercise" data-keywords="week 9 accessibility contrast keyboard focus color usability testing">
-        <div>
-          <div class="card-top">
-            <span class="tag tag-lab">Week 09</span>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 4 Monday" data-url="week4(mon).html/index.html">Quick View</button>
+            <a href="week4(mon).html/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
           </div>
-          <h3 class="card-title">Week 9 - Accessibility Audit</h3>
-          <p class="card-desc">Review the accessibility task, compare before and after improvements, and learn the core UX fixes.</p>
-          <div class="card-path">week9/accessibility-task.html</div>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-secondary quick-preview-btn" data-title="Week 9 - Accessibility Audit" data-url="week9/accessibility-task.html">Quick View</button>
-          <a href="week9/accessibility-task.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
-        </div>
-      </article>
+        </article>
 
-    </div>
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 5 javascript basics dom input conditions loops arrays localstorage">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 05</span></div>
+            <h3 class="card-title">Week 5 - JavaScript Basics</h3>
+            <p class="card-desc">Practice with DOM updates, user input, conditions, loops, arrays, and localStorage.</p>
+            <div class="card-path">week5/index.html</div>
+          </div>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 5 - JavaScript Basics" data-url="week5/index.html">Quick View</button>
+            <a href="week5/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
+          </div>
+        </article>
 
-    <!-- Empty Search State -->
-    <div class="empty-state" id="emptyState">
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 6 random joke generator api fetch favourites localstorage">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 06</span></div>
+            <h3 class="card-title">Week 6 Monday - Random Joke Generator</h3>
+            <p class="card-desc">Fetch random jokes from an API and save favourites in the browser.</p>
+            <div class="card-path">week6(mon)/task1.html</div>
+          </div>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 6 Monday - Random Joke Generator" data-url="week6(mon)/task1.html">Quick View</button>
+            <a href="week6(mon)/task1.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 6 friday projects api explorer weather cryptocurrency tracker">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 06</span></div>
+            <h3 class="card-title">Week 6 Friday - API Projects</h3>
+            <p class="card-desc">Explore the API data explorer, weather tracker, and cryptocurrency tracker.</p>
+            <div class="card-path">week6(fri)/index.html</div>
+          </div>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 6 Friday - API Projects" data-url="week6(fri)/index.html">Quick View</button>
+            <a href="week6(fri)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 7 book search tasks open library api authors subjects">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 07</span></div>
+            <h3 class="card-title">Week 7 - Book Search</h3>
+            <p class="card-desc">Explore all six steps of the Open Library book search project.</p>
+            <div class="card-path">week 7/index.html</div>
+          </div>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 7 - Book Search" data-url="week%207/index.html">Quick View</button>
+            <a href="week%207/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 8 forms contact email message student registration">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 08 Monday</span></div>
+            <h3 class="card-title">Week 8 Monday - Forms</h3>
+            <p class="card-desc">Explore the contact form and student registration form exercises.</p>
+            <div class="card-path">week8(mon)/index.html</div>
+          </div>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 8 Monday - Forms" data-url="week8(mon)/index.html">Quick View</button>
+            <a href="week8(mon)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 8 friday forms registration homework validation accessibility">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 08 Friday</span></div>
+            <h3 class="card-title">Week 8 Friday - Registration</h3>
+            <p class="card-desc">Follow the form lessons in order, then open the registration homework.</p>
+            <div class="card-path">week8(fri)/index.html</div>
+          </div>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 8 Friday - Registration" data-url="week8(fri)/index.html">Quick View</button>
+            <a href="week8(fri)/index.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="exercise"
+                 data-keywords="week 9 accessibility contrast keyboard focus color usability testing">
+          <div>
+            <div class="card-top"><span class="tag tag-lab">Week 09</span></div>
+            <h3 class="card-title">Week 9 - Accessibility Audit</h3>
+            <p class="card-desc">Review the accessibility task, compare before and after improvements, and learn the core UX fixes.</p>
+            <div class="card-path">week9/accessibility-task.html</div>
+          </div>
+          <div class="card-actions">
+            <button type="button" class="btn btn-secondary quick-preview-btn" data-title="Week 9 - Accessibility Audit" data-url="week9/accessibility-task.html">Quick View</button>
+            <a href="week9/accessibility-task.html" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Full</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <div class="empty-state" id="emptyState" role="status" aria-live="polite">
       <h3>No matches found</h3>
       <p>Try searching for a different keyword like "cookie", "week", "css", or "javascript".</p>
     </div>
 
-    <!-- Footer -->
     <footer>
-      <p>Built with HTML, CSS, and JavaScript &bull; Hosted on <a href="https://github.com/sabhyatachhetri45-dev/web-programming" target="_blank">GitHub Pages</a></p>
+      <p>Built with HTML, CSS, and JavaScript &bull; Hosted on
+        <a href="https://github.com/sabhyatachhetri45-dev/web-programming"
+           target="_blank" rel="noopener noreferrer">GitHub Pages</a>
+      </p>
     </footer>
+  </main>
 
-  </div>
-
-  <!-- Preview Modal / Drawer -->
-  <div class="preview-modal" id="previewModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <!-- Accessible preview modal -->
+  <div class="preview-modal" id="previewModal" role="dialog"
+       aria-modal="true" aria-labelledby="previewModalTitle"
+       aria-hidden="true" hidden>
     <div class="preview-window">
       <div class="preview-header">
         <div class="preview-title-box">
           <span class="preview-title" id="previewModalTitle">Project Preview</span>
         </div>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <a id="previewExternalLink" href="#" target="_blank" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem;">
+        <div class="preview-controls">
+          <a id="previewExternalLink" href="#" target="_blank"
+             rel="noopener noreferrer" class="btn btn-secondary">
             Open Tab ↗
           </a>
-          <button class="close-btn" id="closeModalBtn" aria-label="Close preview">&times;</button>
+          <button type="button" class="close-btn" id="closeModalBtn"
+                  aria-label="Close preview">&times;</button>
         </div>
       </div>
-      <iframe class="preview-frame" id="previewIframe" src="about:blank"></iframe>
+      <iframe class="preview-frame" id="previewIframe"
+              src="about:blank" title="Selected project preview"
+              loading="lazy" referrerpolicy="no-referrer"></iframe>
     </div>
   </div>
 
-  <!-- Toast Element -->
-  <div class="toast" id="toastNotification">Copied to clipboard!</div>
+  <div class="toast" id="toastNotification"
+       role="status" aria-live="polite" aria-atomic="true">
+    Copied to clipboard!
+  </div>
 
   <script>
     (function () {
       'use strict';
 
-      // --- Search & Filtering Logic ---
+      // Search and filtering
       const searchInput = document.getElementById('searchInput');
       const filterButtons = document.querySelectorAll('.filter-btn');
       const cards = document.querySelectorAll('.project-card');
@@ -882,12 +989,19 @@
           const keywords = card.getAttribute('data-keywords') || '';
           const category = card.getAttribute('data-category');
 
-          const matchesQuery = !query || title.includes(query) || desc.includes(query) || keywords.includes(query);
-          const matchesCategory = currentFilter === 'all' || category === currentFilter;
+          const matchesQuery =
+            !query ||
+            title.includes(query) ||
+            desc.includes(query) ||
+            keywords.includes(query);
+
+          const matchesCategory =
+            currentFilter === 'all' || category === currentFilter;
 
           if (matchesQuery && matchesCategory) {
             card.style.display = 'flex';
             visibleCount++;
+
             if (category === 'project') featuredVisible++;
             if (category === 'exercise') exercisesVisible++;
           } else {
@@ -895,92 +1009,150 @@
           }
         });
 
-        // Hide headers if no items in section
-        projectsHeader.style.display = featuredVisible > 0 ? 'flex' : 'none';
-        featuredGrid.style.display = featuredVisible > 0 ? 'grid' : 'none';
+        projectsHeader.style.display =
+          featuredVisible > 0 ? 'flex' : 'none';
+        featuredGrid.style.display =
+          featuredVisible > 0 ? 'grid' : 'none';
 
-        exercisesHeader.style.display = exercisesVisible > 0 ? 'flex' : 'none';
-        exercisesGrid.style.display = exercisesVisible > 0 ? 'grid' : 'none';
+        exercisesHeader.style.display =
+          exercisesVisible > 0 ? 'flex' : 'none';
+        exercisesGrid.style.display =
+          exercisesVisible > 0 ? 'grid' : 'none';
 
-        // Toggle empty message
-        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        emptyState.style.display =
+          visibleCount === 0 ? 'block' : 'none';
       }
 
       searchInput.addEventListener('input', applyFilter);
 
       filterButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
-          filterButtons.forEach((b) => b.classList.remove('active'));
+          filterButtons.forEach((button) => {
+            button.classList.remove('active');
+            button.setAttribute('aria-pressed', 'false');
+          });
+
           btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
           currentFilter = btn.dataset.filter;
           applyFilter();
         });
       });
 
-      // --- Quick View Modal ---
+      // Quick View modal
       const previewModal = document.getElementById('previewModal');
       const previewIframe = document.getElementById('previewIframe');
       const previewModalTitle = document.getElementById('previewModalTitle');
       const previewExternalLink = document.getElementById('previewExternalLink');
       const closeModalBtn = document.getElementById('closeModalBtn');
 
-      function openModal(title, url) {
+      let lastFocusedElement = null;
+
+      function openModal(title, url, trigger) {
+        lastFocusedElement = trigger || document.activeElement;
+
         previewModalTitle.textContent = title;
         previewIframe.src = url;
         previewExternalLink.href = url;
+
+        previewModal.hidden = false;
         previewModal.classList.add('active');
         previewModal.setAttribute('aria-hidden', 'false');
+
+        closeModalBtn.focus();
       }
 
       function closeModal() {
         previewModal.classList.remove('active');
         previewModal.setAttribute('aria-hidden', 'true');
         previewIframe.src = 'about:blank';
+        previewModal.hidden = true;
+
+        if (lastFocusedElement) {
+          lastFocusedElement.focus();
+        }
       }
 
       document.querySelectorAll('.quick-preview-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
-          const title = btn.getAttribute('data-title');
-          const url = btn.getAttribute('data-url');
-          openModal(title, url);
+          openModal(
+            btn.getAttribute('data-title'),
+            btn.getAttribute('data-url'),
+            btn
+          );
         });
       });
 
       closeModalBtn.addEventListener('click', closeModal);
 
-      previewModal.addEventListener('click', (e) => {
-        if (e.target === previewModal) closeModal();
-      });
-
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && previewModal.classList.contains('active')) {
+      previewModal.addEventListener('click', (event) => {
+        if (event.target === previewModal) {
           closeModal();
         }
       });
 
-      // --- Toast Notification & Copy Actions ---
+      window.addEventListener('keydown', (event) => {
+        if (!previewModal.classList.contains('active')) return;
+
+        if (event.key === 'Escape') {
+          closeModal();
+          return;
+        }
+
+        if (event.key === 'Tab') {
+          const focusable = previewModal.querySelectorAll(
+            'a[href], button:not([disabled]), iframe'
+          );
+
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        }
+      });
+
+      // Copy buttons and toast
       const toast = document.getElementById('toastNotification');
       let toastTimer = null;
 
       function showToast(message) {
         toast.textContent = message;
         toast.classList.add('show');
+
         clearTimeout(toastTimer);
+
         toastTimer = setTimeout(() => {
           toast.classList.remove('show');
         }, 2500);
       }
 
+      async function copyText(text, successMessage) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast(successMessage);
+        } catch (error) {
+          showToast('Copy failed. Please copy the link manually.');
+        }
+      }
+
       document.getElementById('btnCopyLive').addEventListener('click', () => {
-        navigator.clipboard.writeText('https://sabhyatachhetri45-dev.github.io/web-programming/')
-          .then(() => showToast('Live site link copied!'))
-          .catch(() => showToast('Failed to copy link.'));
+        copyText(
+          'https://sabhyatachhetri45-dev.github.io/web-programming/',
+          'Live site link copied!'
+        );
       });
 
       document.getElementById('btnCopyGit').addEventListener('click', () => {
-        navigator.clipboard.writeText('https://github.com/sabhyatachhetri45-dev/web-programming.git')
-          .then(() => showToast('Git clone command copied!'))
-          .catch(() => showToast('Failed to copy.'));
+        copyText(
+          'https://github.com/sabhyatachhetri45-dev/web-programming.git',
+          'Git clone link copied!'
+        );
       });
 
     })();
