@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Website Improvements | Sabhyata Chhetri</title>
+
+    <meta name="description"
+          content="A report explaining the performance, accessibility, and SEO improvements made to Sabhyata Chhetri's portfolio website.">
+
+    <meta name="author" content="Sabhyata Chhetri">
+
+    <meta name="robots" content="index, follow">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 45px 30px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        section {
+            background: white;
+            padding: 28px;
+            margin-bottom: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #172554;
+            margin-bottom: 15px;
+            font-size: 23px;
+        }
+
+        h3 {
+            margin-top: 18px;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        ul {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 9px;
+        }
+
+        .result {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin-top: 18px;
+            border-radius: 5px;
+        }
+
+        .score {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .score-card {
+            flex: 1;
+            min-width: 180px;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .score-card h3 {
+            margin-top: 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 20px;
+        }
+
+        .comparison-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+        }
+
+        .comparison-card .card-label {
+            display: block;
+            padding: 12px 16px;
+            font-weight: 700;
+            color: #0f172a;
+            background: #e0f2fe;
+            border-bottom: 1px solid #bae6fd;
+        }
+
+        .comparison-card img {
+            display: block;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        a {
+            color: #1d4ed8;
+        }
+
+        a:focus-visible {
+            outline: 3px solid #2563eb;
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 25px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-card img {
+                height: 220px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="#main-content" class="skip-link"
+       style="position:absolute; left:-9999px; top:10px;
+       background:white; padding:10px; z-index:100;">
+        Skip to main content
+    </a>
+
+    <div class="container">
+
+        <header>
+            <h1>Website Improvements Report</h1>
+            <p>Performance, Accessibility and SEO Optimization</p>
+            <p>Created by: Sabhyata Chhetri</p>
+        </header>
+
+        <main id="main-content">
+
+            <section>
+                <h2>Introduction</h2>
+
+                <p>
+                    I worked on improving my personal portfolio website
+                    by focusing on three important areas: Performance,
+                    Accessibility, and Search Engine Optimization (SEO).
+                    My main goal was to make the website more accessible
+                    and easier to use while maintaining its original
+                    design and functionality.
+                </p>
+            </section>
+
+            <section>
+                <h2>1. Performance Improvements</h2>
+
+                <p>
+                    I reviewed my website's code and made several
+                    optimizations to reduce unnecessary loading and
+                    improve the overall experience.
+                </p>
+
+                <h3>Changes I Made</h3>
+
+                <ul>
+                    <li>
+                        Replaced external Google Fonts with system fonts
+                        to reduce external network requests.
+                    </li>
+
+                    <li>
+                        Added lazy loading to the iframe so that it
+                        loads only when needed.
+                    </li>
+
+                    <li>
+                        Reviewed the HTML and CSS to avoid unnecessary
+                        code and keep the page lightweight.
+                    </li>
+
+                    <li>
+                        Added reduced-motion support for users who
+                        prefer fewer animations.
+                    </li>
+                </ul>
+
+                <div class="result">
+                    <strong>Result:</strong>
+                    My Lighthouse Performance score remained the same
+                    after the changes. However, I made code-level
+                    optimizations intended to reduce unnecessary
+                    requests and improve the loading experience.
+                </div>
+            </section>
+
+            <section>
+                <h2>2. Accessibility Improvements</h2>
+
+                <p>
+                    Accessibility was an important part of this task.
+                    I made changes to help keyboard users, screen reader
+                    users, and people with different accessibility needs
+                    navigate my website more easily.
+                </p>
+
+                <h3>Changes I Made</h3>
+
+                <ul>
+                    <li>
+                        Added a skip navigation link to allow keyboard
+                        users to jump directly to the main content.
+                    </li>
+
+                    <li>
+                        Improved keyboard focus indicators so users
+                        can easily identify the currently selected
+                        element.
+                    </li>
+
+                    <li>
+                        Added accessible labels and ARIA attributes
+                        to interactive elements.
+                    </li>
+
+                    <li>
+                        Added aria-pressed to filter buttons to
+                        communicate their selected state to assistive
+                        technologies.
+                    </li>
+
+                    <li>
+                        Added a descriptive title to the iframe.
+                    </li>
+
+                    <li>
+                        Improved the Quick View modal with keyboard
+                        support, including Escape-key closing and
+                        keyboard focus management.
+                    </li>
+
+                    <li>
+                        Added reduced-motion support for users who
+                        prefer less animation.
+                    </li>
+                </ul>
+
+                <div class="result">
+                    <strong>Result:</strong>
+                    My Lighthouse Accessibility score improved
+                    after implementing these changes. The website
+                    became easier to navigate using a keyboard
+                    and assistive technologies.
+                </div>
+            </section>
+
+            <section>
+                <h2>3. SEO Improvements</h2>
+
+                <p>
+                    Search Engine Optimization helps search engines
+                    understand the content and structure of a website.
+                    I made improvements to provide clearer information
+                    about my portfolio.
+                </p>
+
+                <h3>Changes I Made</h3>
+
+                <ul>
+                    <li>
+                        Added a descriptive page title to identify
+                        the website.
+                    </li>
+
+                    <li>
+                        Added a meta description to summarize the
+                        content of the page.
+                    </li>
+
+                    <li>
+                        Added the author meta tag to identify
+                        the website creator.
+                    </li>
+
+                    <li>
+                        Added the robots meta tag to provide
+                        indexing instructions to search engines.
+                    </li>
+
+                    <li>
+                        Used semantic HTML elements such as
+                        header, main, section, and footer.
+                    </li>
+
+                    <li>
+                        Organized headings in a clear hierarchy
+                        to make the page structure easier to
+                        understand.
+                    </li>
+
+                    <li>
+                        Used descriptive text to explain the
+                        content of the website.
+                    </li>
+                </ul>
+
+                <div class="result">
+                    <strong>Result:</strong>
+                    These changes provide better page structure
+                    and metadata, helping search engines understand
+                    the website's content.
+                </div>
+            </section>
+
+            <section>
+                <h2>4. Before &amp; After Comparison</h2>
+
+                <p>
+                    These screenshots show the improvement in the visual
+                    layout and usability of the project after applying the
+                    accessibility and structure updates.
+                </p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <span class="card-label">Before</span>
+                        <img src="Screenshot%202026-11-02%20185052.png"
+                             alt="Website before the accessibility and performance improvements were applied">
+                    </div>
+
+                    <div class="comparison-card">
+                        <span class="card-label">After</span>
+                        <img src="Screenshot%202026-11-02%20202331.png"
+                             alt="Website after the accessibility and performance improvements were applied">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>5. Lighthouse Results</h2>
+
+                <p>
+                    After making the changes, I tested my website
+                    using Google Lighthouse to check its quality.
+                </p>
+
+                <div class="score">
+
+                    <div class="score-card">
+                        <h3>Performance</h3>
+                        <p>Score remained the same.</p>
+                    </div>
+
+                    <div class="score-card">
+                        <h3>Accessibility</h3>
+                        <p>Score improved.</p>
+                    </div>
+
+                    <div class="score-card">
+                        <h3>SEO</h3>
+                        <p>Code and metadata improved.</p>
+                    </div>
+
+                </div>
+
+                <p style="margin-top: 18px;">
+                    These results helped me understand that improving
+                    a website involves more than its visual appearance.
+                    Its performance, accessibility, and structure
+                    are also important.
+                </p>
+            </section>
+
+            <section>
+                <h2>6. Conclusion</h2>
+
+                <p>
+                    Through this task, I learned how to improve
+                    a website using HTML, CSS, semantic elements,
+                    and accessibility attributes. Although my
+                    Performance score did not increase, I made
+                    several optimizations to the code. My
+                    Accessibility score improved after implementing
+                    the changes. I also added SEO-related metadata
+                    and improved the page structure.
+                </p>
+
+                <p style="margin-top: 12px;">
+                    This task helped me understand the importance
+                    of building websites that are not only visually
+                    appealing but also accessible, efficient,
+                    and easy for search engines to understand.
+                </p>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>© 2026 Sabhyata Chhetri | Website Improvement Report</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
