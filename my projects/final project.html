@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeoulMate | Project Proposal</title>
+    <meta name="description" content="SeoulMate project proposal: bridging global travelers and Seoul locals through smart itinerary curation and authentic guiding.">
+
+    <style>
+        :root {
+            --bg-canvas: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-alt: #f1f5f9;
+            --border-subtle: #e2e8f0;
+            --border-hover: #cbd5e1;
+            
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-faint: #64748b;
+
+            --primary: #0f766e;
+            --primary-dark: #115e59;
+            --primary-light: #ccfbf1;
+            --accent: #d97706;
+            --accent-soft: #fef3c7;
+
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 12px 28px -6px rgba(15, 23, 42, 0.12);
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-canvas: #090d16;
+            --bg-surface: #111827;
+            --bg-surface-alt: #1a2234;
+            --border-subtle: #243049;
+            --border-hover: #374767;
+
+            --text-main: #f3f4f6;
+            --text-muted: #94a3b8;
+            --text-faint: #64748b;
+
+            --primary: #14b8a6;
+            --primary-dark: #0d9488;
+            --primary-light: rgba(20, 184, 166, 0.15);
+            --accent: #fbbf24;
+            --accent-soft: rgba(251, 191, 36, 0.15);
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            line-height: 1.7;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Reading Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        .container {
+            max-width: 1020px;
+            margin: auto;
+            padding: 40px 20px 80px;
+        }
+
+        /* Hero Header */
+        header {
+            background: linear-gradient(145deg, #0b253a, #134e5e);
+            color: white;
+            padding: 56px 44px;
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 24px;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.22), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        header h1 {
+            font-size: clamp(2.4rem, 5vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        header p.lead {
+            font-size: 1.15rem;
+            color: #d1e5e6;
+            max-width: 680px;
+            margin-bottom: 36px;
+            font-weight: 400;
+        }
+
+        .project-metadata {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .meta-item span {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #99d2cc;
+            font-weight: 600;
+        }
+
+        .meta-item strong {
+            font-size: 0.98rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Sticky Navigation */
+        nav {
+            position: sticky;
+            top: 16px;
+            background: var(--bg-surface);
+            padding: 12px 18px;
+            border-radius: var(--radius-md);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-subtle);
+            z-index: 900;
+        }
+
+        nav::-webkit-scrollbar {
+            height: 4px;
+        }
+        nav::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 4px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 16px;
+            top: -100px;
+            z-index: 2000;
+            background: var(--primary);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .skip-link:focus {
+            top: 16px;
+        }
+
+        .top-summary {
+            margin: 18px 0 14px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 18px 18px 12px;
+        }
+
+        .top-summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .top-summary h2 {
+            margin: 0;
+            border: none;
+            padding: 0;
+            font-size: 1rem;
+            color: white;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .top-summary p {
+            margin: 0;
+            color: #dfeaf4;
+            font-size: 0.95rem;
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .quick-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 38px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .quick-links a:first-child {
+            background: white;
+            color: var(--primary-dark);
+        }
+
+        .quick-links a:not(:first-child) {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .quick-links a:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-surface-alt);
+        }
+
+        /* Content Sections */
+        section {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            padding: 38px;
+            margin-bottom: 26px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        section:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-hover);
+        }
+
+        h2 {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-subtle);
+            padding-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        h2 .section-num {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 2px 9px;
+            border-radius: 6px;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 24px 0 10px;
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Highlight Callouts */
+        .callout {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 4px var(--radius-sm) var(--radius-sm) 4px;
+            margin: 22px 0;
+            color: var(--text-main);
+        }
+
+        .callout strong {
+            color: var(--primary-dark);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+
+        /* Pain Points Grid */
+        .pain-points-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .pain-card {
+            background: var(--bg-surface-alt);
+            border: 1px solid var(--border-subtle);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            border-top: 3px solid #ef4444;
+        }
+
+        .pain-card h4 {
+            font-size: 0.98rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .pain-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            color: var(--text-muted);
+        }
+
+        /* Feature Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-surface-alt);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* Interactive Persona Simulator */
+        .simulator-box {
+            background: var(--bg-surface-alt);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .persona-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .persona-tab {
+            padding: 8px 16px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .persona-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .persona-display {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+        }
+
+        .persona-display h4 {
+            color: var(--primary);
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        .persona-display p {
+            font-size: 0.92rem;
+            margin-bottom: 10px;
+        }
+
+        .persona-badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .pill {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            background: var(--bg-surface-alt);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+        }
+
+        /* Timeline Flow */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            margin: 24px 0 10px;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: var(--border-subtle);
+        }
+
+        .timeline-step {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-step::before {
+            content: "";
+            position: absolute;
+            left: -28px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 3px solid var(--primary);
+        }
+
+        .timeline-step h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+
+        .timeline-step p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* Tech Architecture Grid */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .tech-card {
+            background: var(--bg-surface-alt);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+        }
+
+        .tech-card span.category {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tech-card strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .tech-card p {
+            font-size: 0.82rem;
+            color: var(--text-faint);
+            margin-bottom: 0;
+            line-height: 1.4;
+        }
+
+        /* Action Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: var(--radius-sm);
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(15, 118, 110, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Accessibility focus state */
+        a:focus-visible, button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 10px;
+            color: var(--text-faint);
+            font-size: 0.88rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 36px 20px;
+            }
+            section {
+                padding: 24px 18px;
+            }
+            .project-metadata {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            #scroll-progress, nav, .theme-btn, .persona-tabs {
+                display: none !important;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+            section, header {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+            header {
+                background: #0f2c3d !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="scroll-progress" aria-hidden="true"></div>
+
+<div class="container">
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header>
+    <div class="header-top">
+        <span class="tag-pill">Academic Web Engineering Project</span>
+        <button class="theme-btn" id="theme-toggle" aria-label="Toggle dark/light theme">
+            <span id="theme-icon">🌙</span>
+            <span id="theme-text">Dark Mode</span>
+        </button>
+    </div>
+
+    <h1>SeoulMate</h1>
+    <p class="lead">
+        Bridging the gap between foreign tourists and Seoul's vibrant street pulse. 
+        A unified travel companion offering community tours, bilingual local experts, and intelligent single-day routing.
+    </p>
+
+    <div class="project-metadata">
+        <div class="meta-item">
+            <span>Platform Type</span>
+            <strong>Web Application</strong>
+        </div>
+        <div class="meta-item">
+            <span>Domain</span>
+            <strong>Travel & Cultural Tech</strong>
+        </div>
+        <div class="meta-item">
+            <span>Coverage</span>
+            <strong>Seoul Metropolitan Area</strong>
+        </div>
+        <div class="meta-item">
+            <span>Live Status</span>
+            <strong>Deployed on Vercel</strong>
+        </div>
+    </div>
+
+    <div class="top-summary" aria-label="Quick access summary">
+        <div class="top-summary-header">
+            <h2>Proposal at a glance</h2>
+            <a class="btn-secondary" href="#overview">Jump to overview</a>
+        </div>
+        <p>SeoulMate connects travelers, local guides, and trip planning into one accessible platform designed for culture-rich, smooth city exploration.</p>
+        <div class="quick-links" aria-label="Quick jump links">
+            <a href="#overview">Overview</a>
+            <a href="#features">Features</a>
+            <a href="#personas">Personas</a>
+            <a href="#tech">Tech</a>
+            <a href="#impact">Impact</a>
+        </div>
+    </div>
+</header>
+
+<nav aria-label="Proposal sections" id="main-nav">
+        <a href="#overview">1. Overview</a>
+        <a href="#problem">2. The Friction</a>
+        <a href="#solution">3. The Solution</a>
+        <a href="#features">4. Core Features</a>
+        <a href="#personas">5. User Experience</a>
+        <a href="#tech">6. Tech Stack</a>
+        <a href="#roadmap">7. Milestones</a>
+        <a href="#impact">8. Impact</a>
+    </nav>
+
+    <main id="main-content">
+
+        <!-- 1. Overview -->
+        <section id="overview">
+            <h2><span class="section-num">01</span> Project Overview & Context</h2>
+            <p>
+                Seoul is consistently ranked among the world's top travel destinations for its unique convergence of 
+                centuries-old palaces, thriving street gastronomy, high-tech infrastructure, and global pop culture. 
+                Yet for first-time or non-Korean-speaking travelers, turning curiosity into a smooth daily itinerary 
+                can feel overwhelming.
+            </p>
+            <p>
+                <strong>SeoulMate</strong> was conceived as a digital bridge. Instead of forcing travelers to juggle dozens of disjointed 
+                blog tabs, map snapshots, and translated booking engines, SeoulMate provides a single responsive hub: 
+                vetted local companions, curated small-group excursions, and a dynamic itinerary builder that plans realistic 
+                subway routes.
+            </p>
+
+            <div class="callout">
+                <strong>Our Core Philosophy</strong>
+                Travel is richer when experienced alongside someone who actually lives the city. We empower tourists to discover 
+                hidden alleyway eateries and nuanced heritage, while giving passionate locals an accessible avenue to share their culture.
+            </div>
+
+            <p style="margin-top: 18px;">
+                <a class="btn-primary" href="https://seoulmate-chi.vercel.app/en" target="_blank" rel="noopener noreferrer">
+                    Launch SeoulMate Web App ↗
+                </a>
+            </p>
+        </section>
+
+        <!-- 2. Problem Statement -->
+        <section id="problem">
+            <h2><span class="section-num">02</span> The Real Tourist Friction</h2>
+            <p>
+                While South Korea has world-class public infrastructure, international visitors consistently report a set of 
+                recurring logistical and social stumbling blocks when exploring independently:
+            </p>
+
+            <div class="pain-points-grid">
+                <div class="pain-card">
+                    <h4>The Mapping Disconnect</h4>
+                    <p>Standard global navigation apps provide limited transit and walking guidance within Korea, leaving travelers confused when trying to navigate multi-level metro stations.</p>
+                </div>
+                <div class="pain-card">
+                    <h4>The "Language Wall" at Local Gems</h4>
+                    <p>The best traditional dining experiences and back-alley food stalls rarely feature English signage or digital kiosks, creating anxiety for solo diners.</p>
+                </div>
+                <div class="pain-card">
+                    <h4>Information Overload</h4>
+                    <p>Travelers spend hours cross-referencing disparate TikTok clips, blogs, and review portals without knowing whether their day's schedule is geographically feasible.</p>
+                </div>
+                <div class="pain-card">
+                    <h4>Solo Travel Isolation</h4>
+                    <p>Solo wanderers eager to explore night markets or hanok clusters often want low-pressure company and safe group activities without booking expensive package tours.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. The Solution -->
+        <section id="solution">
+            <h2><span class="section-num">03</span> Our Unified Approach</h2>
+            <p>
+                SeoulMate solves this fragmentation by offering a flexible, three-tier exploration architecture. 
+                Whether a visitor wants total independence, friendly group vibes, or dedicated 1-on-1 local immersion, 
+                our platform accommodates their comfort level:
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-step">
+                    <h4>Tier A: Independent Day Planner</h4>
+                    <p>Select your bucket-list spots (from Gyeongbokgung to Seongsu-dong cafés). Our intelligent organizer sequences the spots chronologically and estimates transit legs to prevent burnout.</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>Tier B: Social Group Experiences</h4>
+                    <p>Join intimate, themed outings (e.g., "Euljiro Vintage Night Tour" or "Hongdae Indie Scene") hosted by verified guides. Transparent seat counters and fixed prices make joining hassle-free.</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>Tier C: Private Guides on Demand</h4>
+                    <p>Browse guide profiles by spoken languages (Korean, English, Japanese, Mandarin), neighborhood specialties, and hourly rates. Send structured booking requests and chat directly.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Main Features -->
+        <section id="features">
+            <h2><span class="section-num">04</span> Core Platform Functionality</h2>
+            <p>Designed around modern web standards, the platform is engineered for zero-friction mobile and desktop browsing.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div>
+                        <span class="feature-icon">🗺️</span>
+                        <h3>Smart Day Planner</h3>
+                        <p>Dynamic route sequencing with realistic transit buffers between districts like Gangnam, Hongdae, and Jongno.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div>
+                        <span class="feature-icon">👤</span>
+                        <h3>Verified Guide Profiles</h3>
+                        <p>Transparent credentials, verified language proficiencies, bio video snippets, and community reviews.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div>
+                        <span class="feature-icon">💳</span>
+                        <h3>Frictionless Checkout</h3>
+                        <p>Integrated Stripe payment gateway supporting global credit cards, transparent pricing, and instant confirmations.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div>
+                        <span class="feature-icon">⛅</span>
+                        <h3>Live Weather Advisory</h3>
+                        <p>Context-aware weather feeds alerting travelers to seasonal conditions like summer monsoon bursts or chilly winter spells.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div>
+                        <span class="feature-icon">🌐</span>
+                        <h3>Bilingual Localization</h3>
+                        <p>Seamless toggle between English and Korean, maintaining culturally coherent terminology for transit and menus.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div>
+                        <span class="feature-icon">⭐</span>
+                        <h3>Authentic Feedback Loop</h3>
+                        <p>Post-experience review and rating system ensuring high accountability and guide quality across all neighborhood tours.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. User Experience Simulator -->
+        <section id="personas">
+            <h2><span class="section-num">05</span> Interactive User Personas</h2>
+            <p>Click below to see how SeoulMate adapts to different travel styles and traveler pain points:</p>
+
+            <div class="simulator-box">
+                <div class="persona-tabs" role="tablist" aria-label="Traveler Personas">
+                    <button class="persona-tab active" data-persona="cultural" role="tab" aria-selected="true">Cultural First-Timer</button>
+                    <button class="persona-tab" data-persona="cafe" role="tab" aria-selected="false">Solo Café & Trends Hunter</button>
+                    <button class="persona-tab" data-persona="foodie" role="tab" aria-selected="false">Group Foodie Explorers</button>
+                </div>
+
+                <div class="persona-display" id="persona-content" role="tabpanel">
+                    <h4 id="persona-title">Alex (28) — First Trip to Asia</h4>
+                    <p id="persona-desc">Wants to see historical royal palaces and traditional markets, but is nervous about subway transfers and ordering lunch without knowing Korean.</p>
+                    <div class="persona-badge-row" id="persona-badges">
+                        <span class="pill">Selected Solution: Private Half-Day Guide (Jongno & Insadong)</span>
+                        <span class="pill">Outcome: Zero transit friction & custom food recommendations</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Technology Stack -->
+        <section id="tech">
+            <h2><span class="section-num">06</span> Engineering Architecture</h2>
+            <p>The SeoulMate application leverages a modular, cloud-hosted architecture optimized for global availability and high responsiveness:</p>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <span class="category">Frontend Interface</span>
+                    <strong>Next.js & React</strong>
+                    <p>Modern component architecture, client-side routing, and responsive mobile-first views.</p>
+                </div>
+                <div class="tech-card">
+                    <span class="category">Styling System</span>
+                    <strong>Tailwind CSS</strong>
+                    <p>Accessible color contrast, clean utility primitives, and seamless dark-mode adaptations.</p>
+                </div>
+                <div class="tech-card">
+                    <span class="category">Edge Hosting</span>
+                    <strong>Vercel Platform</strong>
+                    <p>Global CDN edge caching, SSL automated lifecycle, and continuous deployment workflows.</p>
+                </div>
+                <div class="tech-card">
+                    <span class="category">Payment Gateway</span>
+                    <strong>Stripe API</strong>
+                    <p>Secure global card processing, webhooks for order status, and instant digital receipting.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Milestones Roadmap -->
+        <section id="roadmap">
+            <h2><span class="section-num">07</span> Project Execution Timeline</h2>
+            <p>Our team structure maps the delivery lifecycle into six distinct, measurable milestones:</p>
+
+            <div class="timeline">
+                <div class="timeline-step">
+                    <h4>Sprint 1: Problem Discovery & User Research</h4>
+                    <p>Interview international exchange students, benchmark existing travel aggregators, and outline functional specs.</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>Sprint 2: Information Architecture & Wireframes</h4>
+                    <p>Map out user journeys for tourists and guides; design responsive UI layouts and WCAG-compliant design tokens.</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>Sprint 3: Core Implementation</h4>
+                    <p>Build responsive pages, itinerary selector engine, guide directory, and multi-language dictionary switching.</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>Sprint 4: Third-Party Service Integration</h4>
+                    <p>Implement secure payment checkout via Stripe and connect real-time weather feeds.</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>Sprint 5: End-to-End Testing & Polish</h4>
+                    <p>Cross-device performance audits, lighthouse accessibility testing, edge-case routing checks, and security review.</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>Sprint 6: Deployment & Academic Presentation</h4>
+                    <p>Production release on Vercel, team retrospective, documentation package, and project showcase presentation.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Impact & Vision -->
+        <section id="impact">
+            <h2><span class="section-num">08</span> Deliverables & Expected Impact</h2>
+            <p>
+                Upon project completion, SeoulMate delivers tangible value across two key stakeholder groups:
+            </p>
+            <ul style="padding-left: 20px; color: var(--text-muted); margin-bottom: 20px;">
+                <li style="margin-bottom: 8px;"><strong>For International Visitors:</strong> Transforms an intimidating foreign city into an approachable, memorable, and safe adventure with transparent local pricing.</li>
+                <li style="margin-bottom: 8px;"><strong>For Local Seoul Guides:</strong> Provides a dignified, flexible freelance platform to showcase regional cultural knowledge and engage in genuine cross-cultural dialogue.</li>
+            </ul>
+
+            <div class="callout">
+                <strong>Project Vision</strong>
+                Every traveler deserves to experience Seoul not just as a consumer of tourist sights, but as an invited guest into its everyday culture.
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p><strong>SeoulMate — University Engineering Proposal</strong></p>
+        <p>Crafted for Modern Web Systems | © 2026 SeoulMate Team</p>
+        <p style="margin-top: 8px;">
+            <a href="https://seoulmate-chi.vercel.app/en" target="_blank" rel="noopener noreferrer">
+                Experience the live deployment at seoulmate-chi.vercel.app ↗
+            </a>
+        </p>
+    </footer>
+
+</div>
+
+<script>
+    // --- 1. Reading Progress Bar ---
+    window.addEventListener('scroll', () => {
+        const docEl = document.documentElement;
+        const scrollTop = docEl.scrollTop || document.body.scrollTop;
+        const scrollHeight = docEl.scrollHeight - docEl.clientHeight;
+        const progress = (scrollTop / scrollHeight) * 100;
+        document.getElementById('scroll-progress').style.width = progress + '%';
+    });
+
+    // --- 2. Dark/Light Mode Toggle with Persistence ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const themeText = document.getElementById('theme-text');
+
+    const savedTheme = localStorage.getItem('seoulmate_theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Light Mode';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('seoulmate_theme', 'light');
+            themeIcon.textContent = '🌙';
+            themeText.textContent = 'Dark Mode';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('seoulmate_theme', 'dark');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light Mode';
+        }
+    });
+
+    // --- 3. Interactive Persona Selector ---
+    const personas = {
+        cultural: {
+            title: "Alex (28) — First-Time Heritage Explorer",
+            desc: "Eager to experience Gyeongbokgung and authentic Bukchon Hanok heritage, but worried about navigating transfer stations and finding certified English-speaking guides.",
+            badge1: "Recommended: Guided Morning Heritage & Hanbok Walk",
+            badge2: "Key Benefit: Cultural historical context + stress-free subway transfers"
+        },
+        cafe: {
+            title: "Maya (23) — Solo Aesthetic & Lifestyle Seeker",
+            desc: "Interested in visiting specialty roasteries in Seongsu-dong, K-beauty boutiques, and indie vinyl shops without being locked into a rigid group tour.",
+            badge1: "Recommended: Automated Day Planner + Neighborhood Tips",
+            badge2: "Key Benefit: Micro-distance routing between photogenic spots"
+        },
+        foodie: {
+            title: "David & Marcus (31) — Street Gastronomy Lovers",
+            desc: "Seeking out genuine pojangmacha (tented stalls) and legendary Korean barbecue spots in Euljiro, but intimidated by menus without English translations.",
+            badge1: "Recommended: Evening Local Food Crawl with Bilingual Host",
+            badge2: "Key Benefit: Ordering guidance, etiquette tips, and curated pairings"
+        }
+    };
+
+    const tabs = document.querySelectorAll('.persona-tab');
+    const pTitle = document.getElementById('persona-title');
+    const pDesc = document.getElementById('persona-desc');
+    const pBadges = document.getElementById('persona-badges');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+
+            const key = tab.getAttribute('data-persona');
+            const data = personas[key];
+
+            pTitle.textContent = data.title;
+            pDesc.textContent = data.desc;
+            pBadges.innerHTML = `
+                <span class="pill">${data.badge1}</span>
+                <span class="pill">${data.badge2}</span>
+            `;
+        });
+    });
+
+    // --- 4. Active Scrollspy for Nav Links ---
+    const navLinks = document.querySelectorAll('#main-nav a');
+    const observedSections = document.querySelectorAll('section');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                });
+            }
+        });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    observedSections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
