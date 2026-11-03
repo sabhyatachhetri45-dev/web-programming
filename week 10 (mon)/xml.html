@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="SeoulMate helps you explore Seoul with local guides, memorable places, and a day plan made for you."
+    />
+    <title>SeoulMate — Seoul, with someone who knows it</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="SeoulMate home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>SeoulMate</span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+      >
+        <span class="menu-icon" aria-hidden="true">☰</span>
+        <span class="sr-only">Open navigation</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <a href="#discover">Discover</a>
+        <a href="#experiences">Experiences</a>
+        <a href="#planner">Plan a day</a>
+        <a class="nav-cta" href="https://seoulmate-chi.vercel.app/en/guide">
+          Find a guide
+        </a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span aria-hidden="true">✦</span> Meet Seoul beyond the guidebook
+          </p>
+          <h1 id="hero-title">Seoul, with someone who <em>knows it.</em></h1>
+          <p class="hero-text">
+            Find a local guide, share a small-group tour, or shape a day around
+            the places you love.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#planner">
+              Plan my Seoul day <span aria-hidden="true">→</span>
+            </a>
+            <a
+              class="text-link"
+              href="https://seoulmate-chi.vercel.app/en/guide"
+            >
+              Meet our local guides <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <div class="hero-proof">
+            <span class="avatar-stack" aria-hidden="true">
+              <i>민</i><i>J</i><i>A</i>
+            </span>
+            <p>
+              <strong>Local knowledge, shared warmly.</strong><br />
+              Small groups, thoughtful routes, Seoul at your pace.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="hero-art"
+          role="img"
+          aria-label="Illustrated Seoul skyline with Namsan Tower and traditional rooftops"
+        >
+          <div class="art-sun"></div>
+          <div class="tower"><span></span><i></i></div>
+          <div class="roof roof-back"><span></span><i></i></div>
+          <div class="roof roof-front"><span></span><i></i></div>
+          <div class="art-caption">
+            <span class="caption-dot"></span>
+            Your Seoul story starts here
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="intro section-wrap"
+        id="discover"
+        aria-labelledby="discover-title"
+      >
+        <div>
+          <p class="eyebrow">A city of little discoveries</p>
+          <h2 id="discover-title">Make room for the <em>unexpected.</em></h2>
+        </div>
+        <p class="section-lede">
+          A quiet tea house behind a busy street. The best dumplings near the
+          palace. A sunset walk your local friend never skips.
+        </p>
+      </section>
+
+      <section
+        class="experience-grid section-wrap"
+        id="experiences"
+        aria-label="Ways to explore Seoul"
+      >
+        <article class="experience-card card-palace">
+          <span class="card-number">01 / CULTURE</span>
+          <div class="card-icon" aria-hidden="true">⌂</div>
+          <h3>Old Seoul, new stories</h3>
+          <p>
+            Wander palace courtyards and hanok lanes with a guide who brings
+            their history to life.
+          </p>
+          <a href="https://seoulmate-chi.vercel.app/en/guide">
+            Explore local guides <span aria-hidden="true">→</span>
+          </a>
+        </article>
+
+        <article class="experience-card card-food">
+          <span class="card-number">02 / FLAVOUR</span>
+          <div class="card-icon" aria-hidden="true">✳</div>
+          <h3>Follow the good smells</h3>
+          <p>
+            From market snacks to late-night noodles, find the neighbourhood
+            favourites.
+          </p>
+          <a href="https://seoulmate-chi.vercel.app/en/guide">
+            Find a food walk <span aria-hidden="true">→</span>
+          </a>
+        </article>
+
+        <article class="experience-card card-neighbourhood">
+          <span class="card-number">03 / NEIGHBOURHOODS</span>
+          <div class="card-icon" aria-hidden="true">↗</div>
+          <h3>Take the scenic way</h3>
+          <p>
+            Discover art-filled alleys, riverside paths, and the spots locals
+            return to.
+          </p>
+          <a href="https://seoulmate-chi.vercel.app/en/guide">
+            See Seoul differently <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      </section>
+
+      <section
+        class="planner-section"
+        id="planner"
+        aria-labelledby="planner-title"
+      >
+        <div class="planner-copy">
+          <p class="eyebrow">A good day, your way</p>
+          <h2 id="planner-title">
+            What does your Seoul day <em>feel like?</em>
+          </h2>
+          <p>
+            Pick a date and a few interests. We’ll sketch a simple starting
+            point for your day.
+          </p>
+          <div class="planner-note">
+            <span aria-hidden="true">✦</span>
+            Just a little inspiration — no account needed.
+          </div>
+        </div>
+
+        <form class="planner-form" id="day-planner" novalidate>
+          <label for="visit-date">When are you visiting?</label>
+          <input id="visit-date" name="visitDate" type="date" required />
+
+          <fieldset>
+            <legend>Choose what you’re in the mood for</legend>
+            <div class="interest-options">
+              <label>
+                <input type="checkbox" name="interest" value="culture" />
+                <span>Culture</span>
+              </label>
+              <label>
+                <input type="checkbox" name="interest" value="food" />
+                <span>Good food</span>
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="interest"
+                  value="neighbourhoods"
+                />
+                <span>Local streets</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <button class="button button-dark" type="submit">
+            Suggest a starting point <span aria-hidden="true">→</span>
+          </button>
+          <p
+            class="form-message"
+            id="planner-message"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>SeoulMate</span>
+      </a>
+      <p>Go gently. See more. Come back with stories.</p>
+      <a
+        class="footer-link"
+        href="https://seoulmate-chi.vercel.app/en/guide"
+      >
+        Visit the live SeoulMate website ↗
+      </a>
+      <small>
+        © <span id="current-year">2026</span> SeoulMate · Made for curious
+        travellers
+      </small>
+    </footer>
+  </body>
+</html>

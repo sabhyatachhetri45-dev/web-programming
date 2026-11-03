@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Week 10-1 summary of the SeoulMate HTML, CSS, and JavaScript project."
+    />
+    <title>Task 1 — SeoulMate Project</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #203139;
+        --muted: #617078;
+        --paper: #f7f5ef;
+        --card: #fffefa;
+        --coral: #bd553f;
+        --line: #e5e0d7;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 32px 16px;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.65;
+      }
+
+      main {
+        width: min(780px, 100%);
+        margin: 0 auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--card);
+        box-shadow: 0 14px 40px rgb(32 49 57 / 8%);
+      }
+
+      header {
+        padding: 38px clamp(22px, 6vw, 48px);
+        border-top: 6px solid var(--coral);
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--coral);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 6vw, 3rem);
+      }
+
+      h2 {
+        margin-bottom: 12px;
+        font-size: 1.3rem;
+      }
+
+      .intro {
+        color: var(--muted);
+      }
+
+      section {
+        padding: 24px clamp(22px, 6vw, 48px);
+        border-top: 1px solid var(--line);
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 22px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .button {
+        display: inline-block;
+        margin-top: 10px;
+        border-radius: 999px;
+        padding: 12px 19px;
+        background: var(--coral);
+        color: white;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .button:hover {
+        background: #9f432f;
+      }
+
+      .plain-link {
+        color: var(--coral);
+        overflow-wrap: anywhere;
+      }
+
+      .status {
+        border-left: 4px solid #d0a13d;
+        padding: 12px 15px;
+        background: #fff8e8;
+      }
+
+      footer {
+        padding: 18px clamp(22px, 6vw, 48px);
+        color: var(--muted);
+        font-size: .85rem;
+      }
+
+      a:focus-visible {
+        outline: 3px solid #e6b348;
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">University Assignment · Week 10-1</p>
+        <h1>SeoulMate Web Project</h1>
+        <p class="intro">
+          A small HTML, CSS, and JavaScript page introducing the SeoulMate team
+          project.
+        </p>
+
+        <a
+          class="button"
+          href="https://seoulmate-chi.vercel.app/en/guide"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open the live SeoulMate website ↗
+        </a>
+
+        <p>
+          <a
+            class="plain-link"
+            href="https://seoulmate-chi.vercel.app/en/guide"
+          >
+            https://seoulmate-chi.vercel.app/en/guide
+          </a>
+        </p>
+      </header>
+
+      <section aria-labelledby="changes">
+        <h2 id="changes">Changes made</h2>
+        <ul>
+          <li>
+            <strong>HTML:</strong> added a structured SeoulMate page with
+            navigation, an introduction, experience cards, a day planner, and
+            footer links.
+          </li>
+          <li>
+            <strong>CSS:</strong> added responsive styling for desktop and
+            mobile, including an illustrated Seoul skyline, cards, buttons, and
+            keyboard focus states.
+          </li>
+          <li>
+            <strong>JavaScript:</strong> added a mobile navigation toggle and an
+            interactive day planner that checks the date and interests before
+            showing a local suggestion.
+          </li>
+          <li>
+            The planner runs in the browser and does not send or save form data.
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="files">
+        <h2 id="files">Project files</h2>
+        <p>
+          The project files are in the same folder as this page. Open each file:
+        </p>
+        <ul>
+          <li>
+            <a class="plain-link" href="xml.html">
+              Open the SeoulMate HTML page
+            </a>
+          </li>
+          <li>
+            <a class="plain-link" href="styles.css">
+              Open the page CSS
+            </a>
+          </li>
+          <li>
+            <a class="plain-link" href="script.js">
+              Open the page JavaScript
+            </a>
+          </li>
+        </ul>
+
+        <p>
+          Repository:
+          <a
+            class="plain-link"
+            href="https://github.com/sabhyatachhetri45-dev/web-programming"
+          >
+            github.com/sabhyatachhetri45-dev/web-programming
+          </a>
+        </p>
+      </section>
+
+      <section aria-labelledby="git-status">
+        <h2 id="git-status">Git status</h2>
+        <div class="status">
+          The three source files have three separate commits on the local branch
+          <code>assignment/week-10-1</code>. The branch has not been pushed to
+          GitHub yet, so these changes are not confirmed on the live website.
+        </div>
+      </section>
+
+      <footer>Task 1 — SeoulMate HTML, CSS, and JavaScript assignment</footer>
+    </main>
+  </body>
+</html>
