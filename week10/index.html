@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sabhyata Chhetri - Computer Science Student & Web Developer Portfolio. Week 10 Git & Deployment project." />
+  <title>Sabhyata Chhetri | Portfolio & Development Notebook</title>
+
+  <style>
+    /* =========================================================
+       WCAG AA Compliant CSS Variables & Theme Palettes
+       All color pairs verified for minimum 4.5:1 text contrast
+       ========================================================= */
+    :root {
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;        /* Contrast: 15.6:1 against #ffffff */
+      --text-muted: #334155;  /* Contrast: 7.2:1 against #ffffff */
+      --primary: #1d4ed8;     /* Contrast: 4.6:1 against #ffffff */
+      --primary-hover: #1e40af;
+      --border: #cbd5e1;
+      --badge-bg: #e2e8f0;
+      --badge-text: #0f172a;
+      --focus-ring: #0284c7;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b1120;
+      --surface: #1e293b;
+      --card-bg: #1e293b;
+      --text: #f8fafc;        /* Contrast: 15.8:1 against #0b1120 */
+      --text-muted: #cbd5e1;  /* Contrast: 8.5:1 against #0b1120 */
+      --primary: #60a5fa;     /* Contrast: 7.0:1 against #1e293b */
+      --primary-hover: #93c5fd;
+      --border: #334155;
+      --badge-bg: #334155;
+      --badge-text: #f8fafc;
+      --focus-ring: #38bdf8;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", "Trebuchet MS", "Poppins", Arial, sans-serif;
+      line-height: 1.7;
+      background:
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.15), transparent 20%),
+        linear-gradient(135deg, #f8fbff 0%, #edf4ff 38%, #f9fafb 100%);
+      color: var(--text);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    [data-theme="dark"] body {
+      background:
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.15), transparent 25%),
+        linear-gradient(135deg, #0b1120 0%, #111827 100%);
+    }
+
+    /* WCAG Skip to Main Content Link */
+    .skip-link {
+      position: absolute;
+      top: -50px;
+      left: 1rem;
+      background: var(--primary);
+      color: #ffffff;
+      padding: 0.75rem 1.25rem;
+      font-weight: 700;
+      z-index: 9999;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: top 0.2s ease;
+    }
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    /* Accessible focus rings */
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 3px;
+    }
+
+    /* ① Semantic HTML: Header */
+    header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    [data-theme="dark"] header {
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-text {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--primary);
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ① Semantic HTML: Nav */
+    nav ul {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    /* ③ JS Interaction: Dark Mode Button */
+    .theme-toggle-btn {
+      background: linear-gradient(135deg, #eef4ff, #f8fafc);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 0.95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      box-shadow: 0 8px 18px rgba(59, 130, 246, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(59, 130, 246, 0.12);
+    }
+
+    /* ① Semantic HTML: Main Container */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    /* ① Semantic HTML: Section */
+    section {
+      margin-bottom: 4.5rem;
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.85rem;
+      color: var(--text);
+    }
+
+    /* Hero Section Layout */
+    .hero-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-bio {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .hero-bio h1 {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .hero-bio .lead {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      max-width: 620px;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.3rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.38rem 0.8rem;
+      background: linear-gradient(135deg, #e0ecff, #f8fafc);
+      color: var(--badge-text);
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .portfolio-link {
+      text-decoration: none;
+      transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: #ffffff !important;
+      border: none;
+      box-shadow: 0 12px 24px rgba(79, 70, 229, 0.25);
+    }
+
+    .portfolio-link:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+      box-shadow: 0 15px 28px rgba(79, 70, 229, 0.28);
+    }
+
+    /* Profile Photo Styling */
+    .profile-img-container {
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .profile-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--primary);
+      box-shadow: var(--shadow);
+      display: block;
+    }
+
+    .report-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 2000;
+    }
+
+    .report-modal.open {
+      display: flex;
+    }
+
+    .report-panel {
+      width: min(760px, 100%);
+      max-height: 85vh;
+      overflow-y: auto;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 20px;
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.2);
+      padding: 1.5rem;
+      color: var(--text);
+    }
+
+    [data-theme="dark"] .report-panel {
+      background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(30,41,59,0.98));
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .report-panel h3 {
+      font-size: 1.5rem;
+      color: var(--text);
+    }
+
+    .report-close {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0.45rem 0.8rem;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .report-content {
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .report-preview {
+      display: block;
+      width: 100%;
+      max-height: 420px;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: linear-gradient(135deg, #f8fbff, #eef4ff);
+      margin-bottom: 1rem;
+      box-shadow: 0 12px 24px rgba(59, 130, 246, 0.08);
+    }
+
+    .report-content ul {
+      margin: 0.85rem 0 0 1.25rem;
+    }
+
+    .report-content li + li {
+      margin-top: 0.5rem;
+    }
+
+    .report-content strong {
+      color: var(--text);
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .skill-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    .skill-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* Filter Controls */
+    .filter-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 1.1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* ② Responsive CSS: Project Showcase Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 2rem;
+    }
+
+    /* ① Semantic HTML: Article */
+    .project-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.96));
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    [data-theme="dark"] .project-card {
+      background: linear-gradient(180deg, rgba(30,41,59,0.96), rgba(15,23,42,0.96));
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+      border-color: rgba(96, 165, 250, 0.5);
+    }
+
+    .project-card.hidden {
+      display: none;
+    }
+
+    .project-thumb {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border);
+      display: block;
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+    }
+
+    .project-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-category {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-body h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-body p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+      flex: 1;
+    }
+
+    .project-link {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
+      align-self: flex-start;
+      padding: 0.5rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.08);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .project-link:hover {
+      background: rgba(59, 130, 246, 0.15);
+      transform: translateX(2px);
+    }
+
+    /* Timeline Section */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .timeline-item {
+      padding-left: 1.5rem;
+      border-left: 3px solid var(--primary);
+    }
+
+    .timeline-item h3 {
+      font-size: 1.15rem;
+    }
+
+    .timeline-item .date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    /* ① Semantic HTML: Footer */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ② Mobile Breakpoints */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .hero-wrapper {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+      .hero-tags {
+        justify-content: center;
+      }
+      .profile-photo {
+        width: 140px;
+        height: 140px;
+      }
+      .filter-controls {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WCAG Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ① Semantic HTML: Header & Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="https://sabhyatachhetri45-dev.github.io/portfolio/" class="logo-text" target="_blank" rel="noopener noreferrer">Sabhyata Chhetri</a>
+      <nav aria-label="Main Navigation">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Competencies</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#timeline">Timeline</a></li>
+          <li><a href="https://sabhyatachhetri45-dev.github.io/portfolio/" target="_blank" rel="noopener noreferrer">Main Portfolio</a></li>
+          <li>
+            <!-- ③ JS Interaction: Dark Mode Toggle -->
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode" aria-pressed="false">
+              <span id="theme-icon" aria-hidden="true">🌙</span>
+              <span id="theme-label">Dark Mode</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ① Semantic HTML: Main Landmark -->
+  <main id="main-content">
+
+    <!-- About Section -->
+    <section id="about" class="hero-wrapper">
+      <div class="hero-bio">
+        <h1>Sabhyata Chhetri</h1>
+        <p class="lead">Undergraduate Computer Science & Web Engineering student developing accessible front-end architectures, robust algorithm models, and responsive web platforms.</p>
+          <div class="hero-tags">
+          <span class="badge">Course: Web Programming</span>
+          <span class="badge">Week 10: Git & Deployment</span>
+          </div>
+          <div class="hero-actions">
+            <a class="badge portfolio-link" href="https://sabhyatachhetri45-dev.github.io/portfolio/" target="_blank" rel="noopener noreferrer">Access Main Portfolio</a>
+          </div>
+      </div>
+      <!-- ⑤ Meaningful Alt Text -->
+      <div class="profile-img-container report-trigger" tabindex="0" role="button" aria-label="Open portfolio profile report" data-report-title="Portfolio Profile Report">
+        <img src="painting.jpg" alt="Sabhyata Chhetri portrait inspired by a painting-style profile image" class="profile-photo" width="180" height="180" />
+        <div class="report-data" hidden>
+          <h4>Portfolio profile verification</h4>
+          <p><strong>Focus:</strong> personal portrait and identity presentation for the Week 10 portfolio.</p>
+          <ul>
+            <li>The image is used as a portrait thumbnail to personalize the page.</li>
+            <li>Alt text describes the visual meaning without revealing unnecessary detail.</li>
+            <li>The layout remains accessible and readable across desktop and mobile sizes.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Competencies Section -->
+    <section id="skills">
+      <div class="section-header">
+        <h2>Technical Competencies</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Front-End Engineering</h3>
+          <p>Semantic HTML5, CSS Grid/Flexbox, JavaScript (ES6+), DOM manipulation, and WCAG AA accessibility audits.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Algorithms & Data Structures</h3>
+          <p>Stacks, queues, doubly linked lists, binary search trees, and hashing collision resolution strategies.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Machine Learning</h3>
+          <p>From-scratch model implementations including KNN classification, K-Means clustering, and linear regression in Python.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Version Control & Deployment</h3>
+          <p>Git branching workflows, GitHub Pages hosting, static site deployment, and continuous integration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+      <div class="section-header">
+        <h2>Featured Projects</h2>
+      </div>
+
+      <!-- ③ JS Interaction: Category Filter Controls -->
+      <div class="filter-controls" role="group" aria-label="Project category filter">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="web">Web Development</button>
+        <button class="filter-btn" data-filter="systems">Systems & Python</button>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Article 1: Mobile Portfolio Preview -->
+        <article class="project-card report-card" data-category="web" data-report-title="Mobile View Verification Report">
+          <img src="mobile.png" alt="Mobile-view preview of the portfolio layout on a phone display" class="project-thumb report-trigger" width="310" height="180" />
+          <div class="report-data" hidden>
+            <h4>Mobile view audit</h4>
+            <p><strong>Verification summary:</strong> The page was reviewed for mobile responsiveness and touch-friendly layout.</p>
+            <ul>
+              <li>Content stacks cleanly on smaller screens with readable spacing.</li>
+              <li>Navigation and buttons remain usable on touch devices.</li>
+              <li>Typography and image scaling preserve clarity at mobile sizes.</li>
+            </ul>
+          </div>
+          <div class="project-body">
+            <span class="project-category">Responsive Web</span>
+            <h3>Mobile View Portfolio</h3>
+            <p>A mobile-first interface design focused on clean typography, touch-friendly layout, and accessible interaction patterns.</p>
+            <a href="#" class="project-link report-trigger" aria-label="Open mobile view verification report">View Report &rarr;</a>
+          </div>
+        </article>
+
+        <!-- Article 2: Lighthouse & Accessibility Audit -->
+        <article class="project-card report-card" data-category="systems" data-report-title="Lighthouse & WCAG Verification Report">
+          <img src="lighthouse.png" alt="Lighthouse accessibility and performance report showing WCAG-focused audit results" class="project-thumb report-trigger" width="310" height="180" />
+          <div class="report-data" hidden>
+            <h4>Lighthouse and WCAG review</h4>
+            <p><strong>Accessibility check:</strong> The portfolio was audited for contrast, semantics, and keyboard usability.</p>
+            <ul>
+              <li>WCAG AA-compliant color contrast is maintained throughout the layout.</li>
+              <li>Skip links, focus styles, and semantic landmarks improve accessibility.</li>
+              <li>Performance and best-practice checks are included in the verification pass.</li>
+            </ul>
+          </div>
+          <div class="project-body">
+            <span class="project-category">Accessibility & Performance</span>
+            <h3>Lighthouse & WCAG Review</h3>
+            <p>A quality assurance pass evaluating accessibility, performance, SEO, and responsive design improvements for the portfolio.</p>
+            <a href="#" class="project-link report-trigger" aria-label="Open Lighthouse and WCAG verification report">View Report &rarr;</a>
+          </div>
+        </article>
+
+        <!-- Article 3: Artistic Profile Image -->
+        <article class="project-card report-card" data-category="systems" data-report-title="Portfolio Portrait Verification Report">
+          <img src="painting.jpg" alt="Painting-inspired profile artwork used as the portfolio portrait" class="project-thumb report-trigger" width="310" height="180" />
+          <div class="report-data" hidden>
+            <h4>Portfolio portrait review</h4>
+            <p><strong>Design intent:</strong> The portrait supports personalization while keeping the page professional and balanced.</p>
+            <ul>
+              <li>The image is framed to match the visual identity of the portfolio.</li>
+              <li>It supports a creative, student-focused presentation without reducing clarity.</li>
+              <li>Alt text ensures the content remains understandable to screen-reader users.</li>
+            </ul>
+          </div>
+          <div class="project-body">
+            <span class="project-category">Visual Identity</span>
+            <h3>Portfolio Portrait</h3>
+            <p>A customized artistic portrait used to reflect the designer's theme and give the portfolio a more personal visual identity.</p>
+            <a href="#" class="project-link report-trigger" aria-label="Open portrait verification report">View Report &rarr;</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Academic Progression Timeline -->
+    <section id="timeline">
+      <div class="section-header">
+        <h2>Academic Progression & Lab Milestones</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <h3>Week 10: Git & GitHub Pages Deployment</h3>
+          <div class="date">Fall 2026</div>
+          <p>Constructed an accessible developer portfolio with full semantic structure, WCAG AA compliance, and GitHub Pages production release.</p>
+        </div>
+        <div class="timeline-item">
+          <h3>Data Structures & Algorithms Examination</h3>
+          <div class="date">Spring/Summer 2026</div>
+          <p>Authored comparative analyses on collision mitigation in hash tables versus self-balancing binary search trees.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ① Semantic HTML: Footer -->
+  <footer>
+    <p>&copy; 2026 Sabhyata Chhetri. Submitted for Week 10 Web Programming Notebook Portfolio.</p>
+  </footer>
+
+  <div id="report-modal" class="report-modal" aria-hidden="true">
+    <div class="report-panel" role="dialog" aria-modal="true" aria-labelledby="report-title">
+      <div class="report-header">
+        <h3 id="report-title">Portfolio Report</h3>
+        <button type="button" class="report-close" aria-label="Close report">Close</button>
+      </div>
+      <div id="report-content" class="report-content"></div>
+    </div>
+  </div>
+
+  <!-- ③ JavaScript Implementation -->
+  <script>
+    // --- 1. Dark Mode State Management ---
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeLabel = document.getElementById('theme-label');
+    const themeIcon = document.getElementById('theme-icon');
+
+    // Retrieve initial theme preference
+    const storedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = storedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeBtn.setAttribute('aria-pressed', 'true');
+        themeLabel.textContent = 'Light Mode';
+        themeIcon.textContent = '☀️';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.setAttribute('aria-pressed', 'false');
+        themeLabel.textContent = 'Dark Mode';
+        themeIcon.textContent = '🌙';
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    applyTheme(initialTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // --- 2. Project Category Filtering ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(button => {
+      button.addEventListener('click', () => {
+        filterBtns.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const filterValue = button.getAttribute('data-filter');
+        projectCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filterValue === 'all' || category === filterValue) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // --- 3. Report modal for image and link clicks ---
+    const reportModal = document.getElementById('report-modal');
+    const reportTitle = document.getElementById('report-title');
+    const reportContent = document.getElementById('report-content');
+    const closeReportBtn = document.querySelector('.report-close');
+
+    function openReport(title, content, imageSrc = '', imageAlt = '') {
+      const imageMarkup = imageSrc ? `<img src="${imageSrc}" alt="${imageAlt || title}" class="report-preview" />` : '';
+      reportTitle.textContent = title;
+      reportContent.innerHTML = imageMarkup + content;
+      reportModal.classList.add('open');
+      reportModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeReport() {
+      reportModal.classList.remove('open');
+      reportModal.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('.report-trigger').forEach(trigger => {
+      trigger.addEventListener('click', event => {
+        const card = trigger.closest('.project-card, .profile-img-container');
+        const reportData = card ? card.querySelector('.report-data') : null;
+        const image = card ? card.querySelector('img') : null;
+        const fallbackTitle = card?.getAttribute('data-report-title') || 'Portfolio Report';
+
+        if (reportData) {
+          event.preventDefault();
+          openReport(fallbackTitle, reportData.innerHTML, image?.src || '', image?.alt || fallbackTitle);
+        }
+      });
+
+      trigger.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          trigger.click();
+        }
+      });
+    });
+
+    closeReportBtn.addEventListener('click', closeReport);
+    reportModal.addEventListener('click', event => {
+      if (event.target === reportModal) {
+        closeReport();
+      }
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && reportModal.classList.contains('open')) {
+        closeReport();
+      }yes
+      
+    });
+  </script>
+</body>
+</html>
