@@ -537,6 +537,10 @@
         flex-direction: column;
         gap: 1rem;
       }
+      nav ul {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
       .hero-wrapper {
         flex-direction: column-reverse;
         text-align: center;
@@ -568,6 +572,7 @@
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Competencies</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#coursework">Earlier Coursework</a></li>
           <li><a href="#timeline">Timeline</a></li>
           <li><a href="https://sabhyatachhetri45-dev.github.io/portfolio/" target="_blank" rel="noopener noreferrer">Main Portfolio</a></li>
           <li>
@@ -714,6 +719,64 @@
       </div>
     </section>
 
+    <!-- Earlier Coursework -->
+    <section id="coursework">
+      <div class="section-header">
+        <h2>Work from Earlier Weeks</h2>
+        <p>Open selected assignments and projects from previous weeks.</p>
+      </div>
+      <div class="projects-grid" aria-label="Earlier coursework projects">
+        <article class="project-card">
+          <div class="project-body">
+            <span class="project-category">Week 3 · CSS</span>
+            <h3>Profile Card</h3>
+            <p>A styled profile card exploring layout, spacing, colors, and basic CSS.</p>
+            <a class="project-link" href="../week3(mon)/task7-profile.html">Open Profile Card &rarr;</a>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-body">
+            <span class="project-category">Week 6 · APIs</span>
+            <h3>CoinPulse Cryptocurrency Tracker</h3>
+            <p>An interactive cryptocurrency tracker built around live CoinGecko API data.</p>
+            <a class="project-link" href="../week6(fri)/cryptocurrency%20trackerr.html">Open CoinPulse &rarr;</a>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-body">
+            <span class="project-category">Week 7 · JavaScript</span>
+            <h3>Open Library Book Search</h3>
+            <p>A multi-step book search project for exploring books, authors, and subjects.</p>
+            <a class="project-link" href="../week%207/index.html">Open Week 7 Project &rarr;</a>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-body">
+            <span class="project-category">Week 8 · Forms</span>
+            <h3>Student Registration</h3>
+            <p>A student registration form demonstrating input types and validation.</p>
+            <a class="project-link" href="../week8(fri)/homework%20registration.html">Open Registration Form &rarr;</a>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-body">
+            <span class="project-category">Week 9 · Accessibility</span>
+            <h3>Accessibility Audit</h3>
+            <p>An audit report reviewing accessibility considerations in a web page.</p>
+            <a class="project-link" href="../week9%20fri/accessibility-task.html">Open Audit Report &rarr;</a>
+          </div>
+        </article>
+        <article class="project-card">
+          <div class="project-body">
+            <span class="project-category">Travel Project</span>
+            <h3>SeoulMate Project Proposal</h3>
+            <p>A proposal for connecting travelers with local guides and curated Seoul itineraries.</p>
+            <a class="project-link" href="../travel%20project/seoul%20tarvel.html">Open SeoulMate Proposal &rarr;</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <!-- Academic Progression Timeline -->
     <section id="timeline">
       <div class="section-header">
@@ -786,7 +849,7 @@
 
     // --- 2. Project Category Filtering ---
     const filterBtns = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.project-card');
+    const projectCards = document.querySelectorAll('#projects .project-card');
 
     filterBtns.forEach(button => {
       button.addEventListener('click', () => {
