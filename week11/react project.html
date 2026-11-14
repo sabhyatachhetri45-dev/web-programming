@@ -1,0 +1,143 @@
+import React, { useState } from 'react';
+
+function LivePreviewModal({ project, onClose }) {
+  const [cartCount, setCartCount] = useState(0);
+  const [city, setCity] = useState('Seoul');
+  const [studentName, setStudentName] = useState('');
+  const [students, setStudents] = useState(['Sabhyata Chhetri', 'Minjun Kim']);
+
+  if (!project) return null;
+
+  const handleAddStudent = (e) => {
+    e.preventDefault();
+    if (!studentName.trim()) return;
+    setStudents([...students, studentName.trim()]);
+    setStudentName('');
+  };
+
+  // Renders a different interactive website UI depending on the selected project
+  const renderWebsiteContent = () => {
+    switch (project.id) {
+      case 1:
+        return (
+          <div className="mini-site portfolio-theme">
+            <header className="mini-nav">
+              <strong>Sabhyata.dev</strong>
+              <span>About • Projects • Contact</span>
+            </header>
+            <div className="mini-hero">
+              <h2>Computer Science Student & Web Developer</h2>
+              <p>Building clean web applications, ML models, and intuitive UIs.</p>
+              <button className="mini-btn">Download Resume</button>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="mini-site sms-theme">
+            <header className="mini-nav">
+              <strong>Gachon Academic Portal</strong>
+              <span>Total Students: {students.length}</span>
+            </header>
+            <div className="mini-body">
+              <h3>Interactive Student Roster</h3>
+              <form onSubmit={handleAddStudent} className="mini-form">
+                <input
+                  type="text"
+                  placeholder="Enter student name..."
+                  value={studentName}
+                  onChange={(e) => setStudentName(e.target.value)}
+                />
+                <button type="submit" className="mini-btn">Add Student</button>
+              </form>
+              <ul className="mini-list">
+                {students.map((name, idx) => (
+                  <li key={idx}>🎓 {name} — CS Major</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        );
+
+      case 3:
+        const weatherData = {
+          Seoul: { temp: '14°C', condition: 'Clear Sky ☀️', humidity: '42%' },
+          Seongnam: { temp: '13°C', condition: 'Partly Cloudy ⛅', humidity: '45%' },
+          Busan: { temp: '17°C', condition: 'Sunny & Breezy 🌊', humidity: '50%' },
+        };
+        const current = weatherData[city];
+        return (
+          <div className="mini-site weather-theme">
+            <header className="mini-nav">
+              <strong>SkyPulse Weather</strong>
+              <div>
+                {Object.keys(weatherData).map((c) => (
+                  <button
+                    key={c}
+                    className={`city-pill ${city === c ? 'active' : ''}`}
+                    onClick={() => setCity(c)}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </header>
+            <div className="mini-hero">
+              <h2>{city}</h2>
+              <div className="temp-display">{current.temp}</div>
+              <p>{current.condition} • Humidity: {current.humidity}</p>
+            </div>
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="mini-site shop-theme">
+            <header className="mini-nav">
+              <strong>BlueCart Store</strong>
+              <span>🛒 Cart ({cartCount})</span>
+            </header>
+            <div className="mini-grid">
+              {['Mechanical Keyboard', 'Wireless Mouse', 'USB-C Hub'].map((item) => (
+                <div key={item} className="mini-product">
+                  <h4>{item}</h4>
+                  <p>$49.00</p>
+                  <button
+                    className="mini-btn"
+                    onClick={() => setCartCount(cartCount + 1)}
+                  >
+                    + Add to Cart
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      default:
+        return <p>Website preview unavailable.</p>;
+    }
+  };
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-window" onClick={(e) => e.stopPropagation()}>
+        <div className="browser-bar">
+          <div className="browser-dots">
+            <span className="dot red" onClick={onClose}></span>
+            <span className="dot yellow"></span>
+            <span className="dot green"></span>
+          </div>
+          <div className="browser-url">{project.demoLink}</div>
+          <button className="close-modal-btn" onClick={onClose}>
+            ✕ Close
+          </button>
+        </div>
+        <div className="browser-viewport">{renderWebsiteContent()}</div>
+      </div>
+    </div>
+  );
+}
+
+export default LivePreviewModal;

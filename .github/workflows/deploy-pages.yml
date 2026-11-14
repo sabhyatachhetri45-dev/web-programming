@@ -24,6 +24,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build Week 11 gallery
+        run: |
+          npm ci --prefix week11
+          npm run build --prefix week11
+          cp -R week11/app/dist/. week11/
+          rm -rf week11/app/dist
+          rm -rf week11/node_modules
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
