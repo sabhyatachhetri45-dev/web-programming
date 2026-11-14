@@ -562,14 +562,15 @@
   <!-- ① Semantic HTML: Header & Navigation -->
   <header>
     <div class="nav-container">
-      <a href="https://sabhyatachhetri45-dev.github.io/portfolio/" class="logo-text" target="_blank" rel="noopener noreferrer">Sabhyata Chhetri</a>
+      <a href="../" class="logo-text">Sabhyata Chhetri</a>
       <nav aria-label="Main Navigation">
         <ul>
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Competencies</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#deployment">Deployment</a></li>
           <li><a href="#timeline">Timeline</a></li>
-          <li><a href="https://sabhyatachhetri45-dev.github.io/portfolio/" target="_blank" rel="noopener noreferrer">Main Portfolio</a></li>
+          <li><a href="../#weekly">Other Tasks</a></li>
           <li>
             <!-- ③ JS Interaction: Dark Mode Toggle -->
             <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode" aria-pressed="false">
@@ -595,7 +596,7 @@
           <span class="badge">Week 10: Git & Deployment</span>
           </div>
           <div class="hero-actions">
-            <a class="badge portfolio-link" href="https://sabhyatachhetri45-dev.github.io/portfolio/" target="_blank" rel="noopener noreferrer">Access Main Portfolio</a>
+            <a class="badge portfolio-link" href="../#weekly">Browse Other Tasks</a>
           </div>
       </div>
       <!-- ⑤ Meaningful Alt Text -->
@@ -710,6 +711,29 @@
             <p>A customized artistic portrait used to reflect the designer's theme and give the portfolio a more personal visual identity.</p>
             <a href="#" class="project-link report-trigger" aria-label="Open portrait verification report">View Report &rarr;</a>
           </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="deployment" aria-labelledby="deployment-title">
+      <div class="section-header">
+        <h2 id="deployment-title">GitHub Pages Deployment</h2>
+      </div>
+      <div class="skills-grid">
+        <article class="skill-card">
+          <h3>Live Week 10 Site</h3>
+          <p>This page is published as part of the Web Programming GitHub Pages site.</p>
+          <a class="project-link" href="https://sabhyatachhetri45-dev.github.io/web-programming/week10/">Open the live Week 10 page</a>
+        </article>
+        <article class="skill-card">
+          <h3>Source Repository</h3>
+          <p>The Week 10 page and other weekly coursework are maintained in this repository.</p>
+          <a class="project-link" href="https://github.com/sabhyatachhetri45-dev/web-programming">View the GitHub repository</a>
+        </article>
+        <article class="skill-card">
+          <h3>Automatic Deployment</h3>
+          <p>GitHub Actions publishes the repository to Pages whenever changes are pushed to the master branch.</p>
+          <a class="project-link" href="https://github.com/sabhyatachhetri45-dev/web-programming/actions/workflows/deploy-pages.yml">View deployment workflow runs</a>
         </article>
       </div>
     </section>

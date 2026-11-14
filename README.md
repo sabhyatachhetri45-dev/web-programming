@@ -28,6 +28,7 @@ Open [`index.html`](index.html) in a browser, or visit the live site:
 - [Week 8 Monday — Forms](<week8(mon)/index.html>)
 - [Week 8 Friday — Registration lessons and homework](<week8(fri)/index.html>)
 - [Week 9 — Accessibility task](<week9/accessibility-task.html>)
+- [Week 10 — Git & Deployment](<week10/index.html>)
 - [Week 11 - Interactive React project gallery](<week11/>)
 
 To run Week 11 locally, open a terminal in `week11` and run `npm install` followed by `npm run dev`.
