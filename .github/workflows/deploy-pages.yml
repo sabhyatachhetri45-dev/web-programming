@@ -37,6 +37,14 @@ jobs:
           rm -rf week11/app/dist
           rm -rf week11/node_modules
 
+      - name: Build Week 12 shopping cart
+        run: |
+          npm ci --prefix week12
+          npm run build --prefix week12
+          cp -R week12/dist/. week12/
+          rm -rf week12/dist
+          rm -rf week12/node_modules
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
