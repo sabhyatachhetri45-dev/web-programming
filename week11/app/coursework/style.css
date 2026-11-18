@@ -1,0 +1,513 @@
+/* ==========================================================================
+   Week 11 React Lab — same paper-and-ink system as the gallery and the Week 12 shop.
+   ========================================================================== */
+
+:root {
+  --paper: #f6f1e9;
+  --surface: #fffdf9;
+  --sunk: #efe8dd;
+  --ink: #2a221c;
+  --ink-soft: #5c5249;
+  --muted: #8a7e72;
+  --line: #e7dfd3;
+  --line-strong: #d5c9b8;
+  --accent: #b4475e;
+  --accent-soft: #f7e1e5;
+  --sage: #3f7350;
+  --sage-soft: #e0ecdf;
+  --on-ink: #fffaf3;
+  --shadow: 0 1px 2px rgb(42 34 28 / 5%), 0 14px 32px -20px rgb(42 34 28 / 28%);
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --radius: 1.1rem;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #171310;
+    --surface: #211b17;
+    --sunk: #2a231d;
+    --ink: #f4ede3;
+    --ink-soft: #d2c7b9;
+    --muted: #a09385;
+    --line: #362d26;
+    --line-strong: #4a3f36;
+    --accent: #ec8fa2;
+    --accent-soft: #3d232a;
+    --sage: #94c6a1;
+    --sage-soft: #1e2e23;
+    --on-ink: #1b1612;
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 14px 32px -20px rgb(0 0 0 / 70%);
+
+    color-scheme: dark;
+  }
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.page {
+  width: min(100% - 2 * clamp(1rem, 4vw, 2.5rem), 72rem);
+  margin-inline: auto;
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: inline-flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.brand span {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.site-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.site-header nav a {
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 550;
+  color: var(--ink-soft);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.site-header nav a:hover {
+  color: var(--ink);
+  background: var(--sunk);
+}
+
+.site-header nav a[aria-current='page'] {
+  color: var(--on-ink);
+  background: var(--ink);
+}
+
+/* ---------- Intro ---------- */
+
+.intro {
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.intro h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.intro h1 span {
+  color: var(--accent);
+}
+
+.intro-copy {
+  max-width: 38rem;
+  margin: 1.25rem 0 0;
+  font-size: 1.0625rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ---------- Cards ---------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card {
+  min-width: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+/* Cards nested inside a card (the grade board) sit flat on a sunk background. */
+.card .card {
+  background: var(--sunk);
+  box-shadow: none;
+}
+
+.card h2 {
+  margin: 0.25rem 0 0.9rem;
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.card p {
+  margin: 0.35rem 0;
+}
+
+.card p:not(.eyebrow) {
+  color: var(--ink-soft);
+}
+
+.card strong {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.link-card {
+  display: flex;
+  min-height: 11rem;
+  flex-direction: column;
+  justify-content: space-between;
+  transition:
+    transform 220ms var(--ease),
+    border-color 220ms ease;
+}
+
+.link-card:hover {
+  border-color: var(--ink);
+  transform: translateY(-3px);
+}
+
+.more {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.profile {
+  border-top: 3px solid var(--accent);
+}
+
+/* p.price outranks ".card p:not(.eyebrow)" so the price stays full ink colour. */
+.card p.price {
+  font-size: 1.35rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+  display: inline-flex;
+  width: max-content;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.good {
+  color: var(--sage);
+  background: var(--sage-soft);
+}
+
+.bad {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.neutral {
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  background: var(--surface);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+/* ---------- Notes ---------- */
+
+.note {
+  margin: 1.5rem 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.note a {
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Form controls ---------- */
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 550;
+  color: var(--ink-soft);
+}
+
+.field input {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.75rem;
+  background: var(--paper);
+}
+
+.field input:hover {
+  border-color: var(--muted);
+}
+
+.preview {
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  margin-top: 1.25rem;
+  padding: 1.1rem;
+  border-radius: 0.9rem;
+  background: var(--sunk);
+}
+
+.preview span:last-child {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--on-ink);
+  background: var(--accent);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  height: 2.375rem;
+  padding: 0 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 550;
+  background: var(--surface);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.button:hover {
+  border-color: var(--ink);
+}
+
+.button.selected {
+  border-color: var(--ink);
+  color: var(--on-ink);
+  background: var(--ink);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.75rem;
+  color: var(--ink-soft);
+  background: var(--sunk);
+}
+
+.text-button {
+  flex: none;
+  padding: 0;
+  border: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+}
+
+.text-button:hover {
+  text-decoration: underline;
+}
+
+.check {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  margin: 0.6rem 0;
+  color: var(--ink-soft);
+}
+
+.check input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent);
+}
+
+.card .notice {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 0.6rem 0.6rem 0;
+  background: var(--accent-soft);
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  justify-content: space-between;
+  margin-top: 3.5rem;
+  padding: 1.75rem 0 2.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.footer a {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.footer a:hover {
+  color: var(--accent);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 50rem) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 35rem) {
+  .card-grid,
+  .two-col {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
