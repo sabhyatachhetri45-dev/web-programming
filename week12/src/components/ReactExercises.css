@@ -1,118 +1,213 @@
-/* ---------- Week 12 React practice exercises ---------- */
+/* Week 12 React state exercises; palette follows the shopping cart theme. */
 
-.week12-exercises {
+.state-exercises {
   max-width: 82rem;
   margin: 3rem auto 0;
-  padding: 3rem var(--gutter);
+  padding: 3rem var(--gutter) 0;
   border-top: 1px solid var(--line);
 }
 
-.week12-exercises__intro {
-  max-width: 42rem;
-  margin-bottom: 1.5rem;
+.state-page-header {
+  max-width: 48rem;
+  margin: 0 auto 2rem;
+  text-align: center;
 }
 
-.week12-exercises__eyebrow {
+.state-page-header__eyebrow {
   color: var(--accent);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 650;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-.week12-exercises__title {
-  margin-top: 0.35rem;
+.state-page-header h2 {
+  margin-top: 0.4rem;
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2.4rem, 6vw, 4rem);
   font-weight: 400;
-  line-height: 1.1;
+  line-height: 1;
 }
 
-.week12-exercises__description {
-  margin-top: 0.5rem;
+.state-page-header > p:last-child {
+  margin-top: 0.75rem;
   color: var(--ink-soft);
 }
 
-.week12-exercises__list {
+.state-exercises__stack {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  max-width: 54rem;
+  gap: 1.25rem;
+  margin-inline: auto;
 }
 
-.week12-exercise {
-  padding: 1.25rem;
+.state-card {
+  min-width: 0;
+  padding: clamp(1.1rem, 3vw, 1.75rem);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   background: var(--surface);
   box-shadow: var(--shadow-soft);
 }
 
-.week12-exercise__heading {
+.state-card__header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  justify-content: space-between;
 }
 
-.week12-exercise__number {
-  display: grid;
-  flex: none;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border-radius: 50%;
-  color: var(--on-ink);
-  background: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 650;
-}
-
-.week12-exercise__title {
-  font-size: 1.0625rem;
-  font-weight: 650;
-}
-
-.week12-exercise__content {
-  display: grid;
-  justify-items: start;
-  gap: 0.75rem;
-}
-
-.week12-exercise__button {
+.state-badge {
   display: inline-flex;
-  min-width: 2.5rem;
-  min-height: 2.5rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+}
+
+.state-card__title {
+  margin-top: 0.55rem;
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.state-card__subtitle {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.state-button {
+  display: inline-flex;
+  min-height: 2.65rem;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--line-strong);
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid transparent;
   border-radius: 999px;
-  background: var(--surface);
-  font-weight: 600;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
-.week12-exercise__button:hover {
+.state-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.state-button--primary {
+  color: var(--on-ink);
+  background: var(--ink);
+}
+
+.state-button--primary:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--ink) 86%, var(--accent));
+}
+
+.state-button--secondary {
+  border-color: var(--line-strong);
+  background: var(--surface);
+}
+
+.state-button--secondary:hover:not(:disabled),
+.state-button--ghost:hover:not(:disabled) {
   border-color: var(--ink);
   background: var(--surface-sunk);
 }
 
-.week12-exercise__text,
-.week12-exercise__hint {
+.state-button--ghost {
+  border-color: var(--line);
+  background: transparent;
+}
+
+.state-button--small {
+  min-height: 2.25rem;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.82rem;
+}
+
+.state-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.state-chevron {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+.state-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.state-accordion {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 260ms ease, margin-top 260ms ease;
+}
+
+.state-accordion.is-expanded {
+  grid-template-rows: 1fr;
+  margin-top: 1.1rem;
+}
+
+.state-accordion__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.state-detail-box {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.state-detail-box__text {
   color: var(--ink-soft);
-  font-size: 0.9rem;
 }
 
-.week12-task-form {
+.state-detail-box__footer {
   display: flex;
-  width: 100%;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
 }
 
-.week12-exercise__input {
+.state-hint,
+.state-stat {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.state-stat {
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: var(--surface-sunk);
+  font-weight: 600;
+}
+
+.state-task-form {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.state-input,
+.state-step-selector select {
   min-width: 0;
-  min-height: 2.5rem;
-  flex: 1;
-  padding: 0.5rem 0.75rem;
+  min-height: 2.65rem;
+  padding: 0.55rem 0.8rem;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
   color: var(--ink);
@@ -120,38 +215,231 @@
   font: inherit;
 }
 
-.week12-task-list {
-  display: grid;
-  width: 100%;
-  gap: 0.5rem;
+.state-task-form .state-input {
+  flex: 1;
 }
 
-.week12-task-list__item {
+.state-filter-bar {
   display: flex;
-  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.state-filter {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  background: transparent;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.state-filter:hover,
+.state-filter.is-active {
+  border-color: var(--line-strong);
+  color: var(--ink);
+  background: var(--surface-sunk);
+}
+
+.state-undo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.5rem 0.25rem;
-  border-bottom: 1px solid var(--line);
-  overflow-wrap: anywhere;
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  font-size: 0.88rem;
 }
 
-.week12-exercise__remove {
+.state-link-button {
+  padding: 0.15rem;
+  border: 0;
+  color: var(--accent);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.state-task-list {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.state-task {
+  display: flex;
+  min-width: 0;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.65rem 0.2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.state-task > input[type='checkbox'],
+.state-checkbox-label input {
+  width: 1.05rem;
+  height: 1.05rem;
   flex: none;
-  width: 2rem;
-  height: 2rem;
+  accent-color: var(--accent);
+}
+
+.state-task__text {
+  min-width: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+  cursor: text;
+}
+
+.state-task.is-completed .state-task__text {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.state-input--inline {
+  flex: 1;
+}
+
+.state-icon-button {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  place-items: center;
   border: 0;
   border-radius: 50%;
+  background: var(--surface-sunk);
+}
+
+.state-icon-button--danger {
   color: var(--accent);
+}
+
+.state-icon-button--danger:hover {
   background: var(--accent-soft);
 }
 
-.week12-exercise__remove:hover {
-  filter: brightness(0.96);
+.state-empty {
+  margin-top: 1rem;
+  color: var(--muted);
+  text-align: center;
 }
 
-.week12-visually-hidden {
+.state-score-toolbar,
+.state-step-selector,
+.state-player__header,
+.state-player__controls,
+.state-scoreboard-footer,
+.state-checkbox-label {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.state-step-selector {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.state-step-selector select {
+  min-height: 2.25rem;
+  padding-block: 0.3rem;
+}
+
+.state-players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 0.85rem;
+  margin-top: 1.2rem;
+}
+
+.state-player {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.state-player.is-leader {
+  border-color: var(--sage);
+  box-shadow: inset 0 0 0 1px var(--sage);
+}
+
+.state-player__header {
+  justify-content: space-between;
+}
+
+.state-player__name {
+  width: min(100%, 12rem);
+  min-width: 0;
+  padding: 0.25rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  font-weight: 650;
+}
+
+.state-leader-badge {
+  color: var(--sage);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.state-player__score {
+  margin: 0.85rem 0;
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  line-height: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.state-player__controls {
+  justify-content: center;
+}
+
+.state-scoreboard-footer {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.state-checkbox-label {
+  font-size: 0.88rem;
+}
+
+.state-total {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--sage-soft);
+  color: var(--sage);
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.state-total strong {
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.state-visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -163,32 +451,29 @@
   border: 0;
 }
 
-.week12-scoreboard {
-  display: grid;
-  width: 100%;
-  gap: 0.75rem;
+@media (max-width: 34rem) {
+  .state-card__header {
+    align-items: flex-start;
+  }
+
+  .state-task-form {
+    flex-wrap: wrap;
+  }
+
+  .state-task-form .state-input {
+    flex-basis: 100%;
+  }
+
+  .state-score-toolbar {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
-.week12-player-score {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.week12-player-score__name {
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.week12-player-score__controls {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.week12-scoreboard__total {
-  font-size: 1.125rem;
-  font-weight: 700;
+@media (prefers-reduced-motion: reduce) {
+  .state-button,
+  .state-chevron,
+  .state-accordion {
+    transition: none;
+  }
 }
