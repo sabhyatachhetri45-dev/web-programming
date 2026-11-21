@@ -6,6 +6,7 @@ import { CartSidebar } from './CartSidebar.jsx';
 import { MobileCartBar } from './MobileCartBar.jsx';
 import { ProductList } from './ProductList.jsx';
 import { ProductToolbar } from './ProductToolbar.jsx';
+import { ReactExercises } from './ReactExercises.jsx';
 import { StoreFooter } from './StoreFooter.jsx';
 import { StoreHeader } from './StoreHeader.jsx';
 import { StoreIntro } from './StoreIntro.jsx';
@@ -130,6 +131,8 @@ export function ShoppingCart() {
             }}
           />
         </div>
+
+        <ReactExercises />
       </main>
 
       <StoreFooter isInert={isPageInert} />

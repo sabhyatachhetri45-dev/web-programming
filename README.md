@@ -30,7 +30,7 @@ Open [`index.html`](index.html) in a browser, or visit the live site:
 - [Week 9 — Accessibility task](<week9/accessibility-task.html>)
 - [Week 10 — Git & Deployment](<week10/index.html>)
 - [Week 11 - Interactive React project gallery](<week11/>)
-- [Week 12 - Interactive React shopping cart](<week12/>)
+- [Week 12 - React exercises and interactive shopping cart](<week12/>)
 
 Weeks 11 and 12 are React apps built with Vite. To run one locally, open a terminal in `week11` or `week12` and run `npm install` followed by `npm run dev`.
 
