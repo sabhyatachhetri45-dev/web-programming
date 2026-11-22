@@ -2,31 +2,175 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fix Me!</title>
   <style>
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+    /*
+      The idea: a page from a 오답노트, the "wrong-answer notebook" Korean
+      students keep to rewrite their mistakes correctly. The broken CSS has
+      been fixed, so the page shows the corrected answer, red pen and all.
+    */
+
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
-      font-family: sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 3rem 1.25rem 6rem;
+      font-family: "Gowun Dodum", sans-serif;
+      /* the desk under the notebook */
       background-color: #f0fdf4;
+      background-image: radial-gradient(rgba(21, 128, 61, 0.12) 1px, transparent 1.5px);
+      background-size: 22px 22px;
+    }
+
+    .page { position: relative; width: min(40rem, 100%); }
+
+    /* The notebook page. */
+    .sheet {
+      position: relative;
+      width: 100%;
+      padding: 4.5rem 2rem 3rem 4.25rem;
+      background-color: #fffef8;
+      /* ruled lines + the red margin line, both drawn with gradients */
+      background-image:
+        linear-gradient(90deg, transparent 3.1rem, #f2a7a7 3.1rem, #f2a7a7 3.2rem, transparent 3.2rem),
+        repeating-linear-gradient(transparent 0 calc(2rem - 1px), #d7e6f3 calc(2rem - 1px) 2rem);
+      background-position: 0 0, 0 1.25rem;
+      border-radius: 4px 4px 4px 4px;
+      box-shadow: 0 1px 2px rgba(20, 60, 35, 0.12), 0 22px 40px -24px rgba(20, 60, 35, 0.45);
+      transform: rotate(-1deg);
+    }
+
+    /* A fold line across the page where it was once crumpled, now mended with tape. */
+    .sheet::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2.3rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(51, 65, 85, 0.14) 20%, rgba(51, 65, 85, 0.14) 80%, transparent);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    /* The printed tab at the top of each 오답노트 page. */
+    .sheet::before {
+      content: "오답노트";
+      position: absolute;
+      top: 1.1rem;
+      right: 1.5rem;
+      padding: 0.15rem 0.6rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: #15803d;
+      border: 1px solid currentColor;
+      border-radius: 3px;
+    }
+
+    /* Washi tape mending the tear. */
+    .tape {
+      position: absolute;
+      right: 2.5rem;
+      bottom: 1.6rem;
+      width: 7rem;
+      height: 1.6rem;
+      background: repeating-linear-gradient(45deg, rgba(134, 239, 172, 0.75) 0 6px, rgba(220, 252, 231, 0.75) 6px 12px);
+      transform: rotate(-4deg);
+      box-shadow: 0 1px 2px rgba(20, 60, 35, 0.15);
     }
 
     h1 {
+      position: relative;
+      width: fit-content;
+      margin: 0 auto 2rem;
+      font-family: "Gaegu", sans-serif;
       color: #15803d;
-      font-size: 2rem;
+      font-size: 3.25rem;
+      line-height: 2rem;
       text-align: center;
     }
 
+    /* The teacher's red-pen circle around the corrected heading. */
+    .circle {
+      position: absolute;
+      inset: -1.1rem -1.4rem -1rem -1.3rem;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .circle path {
+      fill: none;
+      stroke: #dc2626;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+      animation: draw 900ms 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
     p {
-      line-height: 1.7;
+      margin: 0;
+      font-size: 1.3rem;
+      /* line-height matches the ruled lines so the words sit on them */
+      line-height: 2rem;
       color: #334155;
     }
 
+    /* The fixed .highlight, now a real highlighter stroke. */
     .highlight {
+      padding: 0 0.2rem;
       background-color: #dcfce7;
+      background-image: linear-gradient(100deg, transparent 0.3rem, #bbf7d0 0.3rem, #bbf7d0 calc(100% - 0.3rem), transparent calc(100% - 0.3rem));
+      border-radius: 0.3rem 0.1rem 0.35rem 0.15rem;
+    }
+
+    /* A red-pen tick in the margin: this answer is right now. */
+    .tick {
+      position: absolute;
+      left: 0.9rem;
+      top: 4.2rem;
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+
+    .tick path { fill: none; stroke: #dc2626; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+    @media (max-width: 30rem) {
+      .sheet { padding: 4.25rem 1.25rem 3rem 3.75rem; }
+      .sheet { background-image:
+        linear-gradient(90deg, transparent 2.7rem, #f2a7a7 2.7rem, #f2a7a7 2.8rem, transparent 2.8rem),
+        repeating-linear-gradient(transparent 0 calc(2rem - 1px), #d7e6f3 calc(2rem - 1px) 2rem); }
+      .tick { left: 0.6rem; }
+      h1 { font-size: 2.6rem; }
+      p { font-size: 1.15rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .circle path { animation: none; stroke-dashoffset: 0; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 
 <body>
-  <h1>Fix Me!</h1>
-  <p>This paragraph has <span class="highlight">broken CSS</span> around it.</p>
+  <div class="page">
+  <main class="sheet">
+    <svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13l5 6L21 4"/></svg>
+    <h1>Fix Me!<svg class="circle" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M30 12C80 0 170 2 192 30c10 26-40 44-100 44S4 62 8 36 60 6 120 8"/></svg></h1>
+    <p>This paragraph has <span class="highlight">broken CSS</span> around it.</p>
+  </main>
+  <span class="tape" aria-hidden="true"></span>
+  </div>
 </body>
 </html>

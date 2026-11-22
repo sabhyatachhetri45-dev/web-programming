@@ -4,294 +4,258 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 7 Task 4 | Book Search</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
   <style>
+    /*
+      Step 4: the stacks. The search lives in a tall wooden bookcase at the back
+      of the library. Results are books on the hold shelf with paper hold slips
+      sticking out of them; the loading, empty and error states are things you
+      would really meet in the stacks (a librarian checking spines, an empty
+      shelf with a note taped to it, a "closed" sign hanging on the door).
+      Fonts and the reset come from ../assets/drawer/base.css.
+    */
     :root {
-      --bg: #0b0f19;
-      --surface: #151d30;
-      --surface-hover: #1e2942;
-      --border: #233354;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --primary: #38bdf8;
-      --primary-hover: #0ea5e9;
-      --danger: #f43f5e;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.55);
-      --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --ground: #1f352e;
+      --ink: #f3efe4;
+      --ink-soft: #cad6cd;
+      --back-panel: #2a1c14;
+      --wood: #7a4e2d;
+      --wood-light: #a06a3f;
+      --wood-dark: #4f321c;
+      --brass: #c99a3b;
+      --paper: #fffcf5;
+      --paper-ink: #2a2622;
+      --paper-soft: #5f574d;
+      --slip: #d64c4c;
+      --focus: #ffd98a;
+      --select: #3f6b5c;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      padding-bottom: 6rem;
+      background: var(--ground);
     }
 
-    /* Breadcrumbs */
+    /* ---------- wayfinding strip ---------- */
+
     .crumbbar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      gap: 0.5rem 1rem;
+      width: min(100% - 2rem, 68rem);
+      margin: 0 auto;
+      padding: 1rem 0;
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
     }
 
-    .crumbbar a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: var(--transition);
-    }
+    .crumbbar a { color: var(--ink); text-underline-offset: 3px; }
+    .crumbbar a:hover { color: var(--focus); }
 
-    .crumbbar a:hover {
-      color: var(--primary);
-    }
-
+    /* "Back" is a paper bookmark tucked into the strip. */
     .crumbbar .back {
-      background: var(--surface);
-      padding: 0.35rem 0.9rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 1.4rem 0 1rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.125rem;
+      text-decoration: none;
+      color: var(--paper-ink);
+      background: var(--paper);
+      clip-path: polygon(0 0, 100% 0, calc(100% - 0.7rem) 50%, 100% 100%, 0 100%);
     }
+    .crumbbar .back:hover { color: var(--paper-ink); background: #ffe9a8; }
 
-    .crumbbar .back:hover {
-      background: var(--surface-hover);
-      border-color: var(--primary);
-    }
+    /* ---------- heading ---------- */
 
-    /* Hero Header */
     .hero {
-      text-align: center;
-      padding: 2.75rem 1.5rem 1.25rem;
+      display: grid;
+      gap: 0.35rem;
+      width: min(100% - 2rem, 68rem);
+      margin: 1.25rem auto 1.75rem;
     }
 
     .hero h1 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 2.75rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 40%, var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2.75rem, 8vw, 4.5rem);
+      line-height: 1;
     }
 
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-    }
+    .hero p { font-size: 1.0625rem; color: var(--ink-soft); }
 
-    /* Main Container */
-    main {
-      flex: 1;
-      max-width: 1080px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 1.5rem;
-    }
+    main { width: min(100% - 2rem, 68rem); margin: 0 auto; }
+
+    /* ---------- the bookcase ---------- */
 
     .panel {
-      background: rgba(21, 29, 48, 0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2.25rem;
-      box-shadow: var(--shadow);
+      padding: clamp(1.25rem, 4vw, 2.5rem) clamp(0.9rem, 3.5vw, 2.25rem) 2.75rem;
+      border: 0.85rem solid transparent;
+      border-radius: 0.6rem;
+      background:
+        linear-gradient(var(--back-panel), #21160f) padding-box,
+        linear-gradient(90deg, var(--wood-dark), #8a5a33 10%, var(--wood) 50%, #8a5a33 90%, var(--wood-dark)) border-box;
+      box-shadow: 0 30px 50px -28px rgb(0 0 0 / 0.85), inset 0 0 0 1px rgb(0 0 0 / 0.35);
     }
 
-    .panel-header {
-      margin-bottom: 1.75rem;
-      text-align: center;
-    }
+    .panel-header { display: grid; justify-items: center; gap: 0.4rem; margin-bottom: 1.75rem; text-align: center; }
 
     .panel-header h2 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.85rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .panel-header p {
-      color: var(--text-muted);
-    }
-
-    /* Form Controls */
-    .search-box-wrapper {
-      max-width: 620px;
-      margin: 0 auto 1.5rem;
-    }
-
-    .search-form {
       display: flex;
-      gap: 0.75rem;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      line-height: 1.1;
     }
+
+    /* A drawn stack of books stands in for the emoji. */
+    .panel-header h2 .emoji { display: none; }
+    .panel-header h2::before {
+      content: "";
+      width: 2.4rem;
+      height: 2.4rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='6' y='27' width='28' height='7' rx='1.5' fill='%23d65f5f'/%3E%3Crect x='9' y='19' width='24' height='7' rx='1.5' fill='%23e8b04b'/%3E%3Crect x='7' y='11' width='26' height='7' rx='1.5' fill='%237fa6c9' transform='rotate(-5 20 14)'/%3E%3Cpath d='M11 30.5h18M13 22.5h16' stroke='%23ffffff' stroke-opacity='0.55' stroke-width='1.2'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .panel-header p { color: var(--ink-soft); }
+
+    /* ---------- the request slip ---------- */
+
+    .search-box-wrapper { max-width: 40rem; margin: 0 auto 2.25rem; }
+
+    .search-form { display: flex; gap: 0.75rem; }
 
     .input-field {
       flex: 1;
-      padding: 0.85rem 1.25rem;
-      font-size: 1rem;
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      outline: none;
-      transition: var(--transition);
+      min-width: 0;
+      min-height: 3.25rem;
+      padding: 0.75rem 1rem;
+      font: inherit;
+      font-size: 1.0625rem;
+      color: var(--paper-ink);
+      background:
+        linear-gradient(var(--slip), var(--slip)) left / 0.4rem 100% no-repeat,
+        var(--paper);
+      border: 0;
+      border-radius: 0.2rem;
+      box-shadow: 0 2px 0 #d8cfbf, 0 10px 18px -10px rgb(0 0 0 / 0.7);
     }
+    .input-field::placeholder { color: var(--paper-soft); }
+    .input-field:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
-    .input-field:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-    }
-
+    /* A brass stamp block. */
     .search-button {
-      padding: 0.85rem 1.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: var(--radius-md);
-      background: var(--primary);
-      color: #0b0f19;
-      border: none;
+      min-width: 8.75rem;
+      min-height: 3.25rem;
+      padding: 0 1.4rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #2a1d0e;
+      background: var(--brass);
+      border: 0;
+      border-radius: 0.45rem;
+      box-shadow: 0 4px 0 #8a6421, 0 10px 16px -8px rgb(0 0 0 / 0.7);
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      transition: var(--transition);
-      white-space: nowrap;
-      min-width: 135px;
+      transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out), background-color 140ms var(--ease-out);
     }
-
-    .search-button:hover:not(:disabled) {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    .search-button:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
-    }
+    .search-button:hover:not(:disabled) { background: #d8ab4c; }
+    .search-button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #8a6421, 0 4px 8px -6px rgb(0 0 0 / 0.7); }
+    .search-button:disabled { cursor: progress; background: #b89a5c; }
+    .search-button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
     .hint {
+      margin-top: 0.75rem;
       text-align: center;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-top: 0.6rem;
+      font-family: var(--font-hand);
+      font-size: 1.45rem;
+      line-height: 1.1;
+      color: var(--ink-soft);
     }
 
-    /* Results Header */
+    /* ---------- the hold shelf ---------- */
+
     .results-header {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
+      gap: 0.5rem 1rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px dashed rgb(243 239 228 / 0.25);
     }
 
+    /* Brass shelf-label holder. */
     .results-title {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.35rem;
+      padding: 0.15rem 0.9rem;
+      font-family: var(--font-display);
       font-weight: 700;
+      font-size: 1.35rem;
+      line-height: 1.3;
+      color: var(--paper-ink);
+      background: var(--paper);
+      border: 0.3rem solid var(--brass);
+      border-radius: 0.25rem;
     }
 
-    .results-meta {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+    .results-meta { font-family: var(--font-code); font-size: 0.8125rem; color: var(--ink-soft); }
 
-    /* Cards Grid */
     .results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(8.25rem, 1fr));
+      column-gap: 1.25rem;
+      row-gap: 3.5rem;
+      padding: 2.25rem 0.25rem 1.75rem;
     }
 
-    .book {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: var(--transition);
+    @media (min-width: 40rem) {
+      .results-grid { grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); column-gap: 1.75rem; }
     }
 
-    .book:hover {
-      transform: translateY(-4px);
-      border-color: var(--primary);
-      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.6);
+    .book { position: relative; display: flex; flex-direction: column; }
+
+    /* One plank under every book; side by side they make one long shelf. */
+    .book::after {
+      content: "";
+      position: absolute;
+      left: -1rem;
+      right: -1rem;
+      bottom: -1.15rem;
+      height: 0.85rem;
+      background: linear-gradient(var(--wood-light), var(--wood) 60%, var(--wood-dark));
+      box-shadow: 0 10px 12px -6px rgb(0 0 0 / 0.7);
     }
 
-    .book-cover {
-      width: 100%;
-      height: 250px;
-      background: #0d1424;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .book-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    .book:hover .book-cover img {
-      transform: scale(1.04);
-    }
-
-    .placeholder-cover {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      padding: 1.5rem;
-      text-align: center;
-    }
-
-    .placeholder-cover span {
-      font-size: 2.25rem;
-    }
-
+    /* The hold slip: a paper strip tucked into the book, sticking out the top. */
     .book-content {
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+      order: -1;
+      position: relative;
+      display: grid;
+      gap: 0.3rem;
+      margin: 0 0.55rem -1.75rem;
+      padding: 0.95rem 0.7rem 2.4rem;
+      color: var(--paper-ink);
+      background:
+        linear-gradient(var(--slip), var(--slip)) top / 100% 0.35rem no-repeat,
+        var(--paper);
+      border-radius: 0.15rem 0.15rem 0 0;
+      box-shadow: 0 6px 14px -8px rgb(0 0 0 / 0.8);
+      transform: rotate(var(--slip-tilt, -1.5deg));
+      transform-origin: bottom center;
     }
+    .book:nth-child(even) .book-content { --slip-tilt: 1.2deg; }
 
     .book-title {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.05rem;
+      font-family: var(--font-display);
       font-weight: 700;
-      line-height: 1.35;
-      margin-bottom: 0.4rem;
+      font-size: 1.1rem;
+      line-height: 1.15;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -299,9 +263,9 @@
     }
 
     .book-authors {
-      font-size: 0.875rem;
-      color: var(--primary);
-      margin-bottom: 0.75rem;
+      font-size: 0.8125rem;
+      line-height: 1.35;
+      color: var(--paper-soft);
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -309,69 +273,209 @@
     }
 
     .book-meta {
-      margin-top: auto;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
-      align-items: center;
-      font-size: 0.775rem;
-      color: var(--text-muted);
+      gap: 0 0.5rem;
+      padding-top: 0.3rem;
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      color: var(--paper-soft);
+      border-top: 1px dashed #cfc5b5;
     }
 
-    /* Status States */
-    .status-panel {
+    /* The book itself, standing on the shelf in front of its slip. */
+    .book-cover {
+      position: relative;
+      z-index: 1;
+      aspect-ratio: 2 / 3;
+      overflow: hidden;
+      background: var(--cloth, #3e6a8a);
+      border-radius: 2px 6px 6px 2px;
+      box-shadow: 0 12px 16px -10px rgb(0 0 0 / 0.85);
+      transition: transform 300ms var(--ease-out);
+    }
+    .book:nth-child(4n + 2) .book-cover { --cloth: #8c3b3b; }
+    .book:nth-child(4n + 3) .book-cover { --cloth: #4d6b3c; }
+    .book:nth-child(4n) .book-cover { --cloth: #7a5a2c; }
+
+    /* Spine shading and a little shine on every cover. */
+    .book-cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgb(0 0 0 / 0.35), transparent 7%, rgb(255 255 255 / 0.14) 9%, transparent 13%);
+      pointer-events: none;
+    }
+
+    .book:hover .book-cover { transform: translateY(-0.35rem); }
+
+    .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* No cover: a plain cloth binding with a stamped label. */
+    .placeholder-cover {
+      display: grid;
+      place-content: center;
+      height: 100%;
+      padding: 1rem;
       text-align: center;
-      padding: 3.5rem 1rem;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
+      background: repeating-linear-gradient(45deg, rgb(255 255 255 / 0.04) 0 2px, transparent 2px 5px);
+    }
+    .placeholder-cover span:first-child { display: none; }
+    .placeholder-cover span:last-child {
+      padding: 0.35rem 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #f6e7bf;
+      border: 2px solid #f6e7bf;
+      border-radius: 0.2rem;
     }
 
-    .status-panel .icon {
-      font-size: 2.5rem;
+    /* ---------- states ---------- */
+
+    .status-panel {
+      display: grid;
+      justify-items: center;
+      gap: 1rem;
+      padding: 2.5rem 1rem 1.5rem;
+      text-align: center;
     }
 
-    .status-panel.error-state {
-      color: #fda4af;
+    .status-panel .icon { display: none; }
+    .status-panel .status { max-width: 28rem; font-size: 1.0625rem; color: var(--ink); }
+    .status-panel strong { color: var(--focus); font-weight: 400; }
+
+    /* Before searching (and on an empty search): the book cart, waiting. */
+    .status-panel::before {
+      content: "";
+      width: 14rem;
+      height: 9rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 130'%3E%3Crect x='30' y='40' width='5' height='64' fill='%237a4e2d'/%3E%3Crect x='165' y='40' width='5' height='64' fill='%237a4e2d'/%3E%3Cpath d='M170 44 q16 -2 18 -18' stroke='%23c99a3b' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Crect x='40' y='20' width='13' height='28' rx='1.5' fill='%23d65f5f'/%3E%3Crect x='55' y='16' width='11' height='32' rx='1.5' fill='%23e8b04b'/%3E%3Crect x='68' y='24' width='15' height='24' rx='1.5' fill='%237fa6c9'/%3E%3Crect x='85' y='18' width='10' height='30' rx='1.5' fill='%239cc28a'/%3E%3Crect x='99' y='23' width='13' height='25' rx='1.5' fill='%23d98ab0' transform='rotate(16 112 48)'/%3E%3Crect x='44' y='62' width='16' height='26' rx='1.5' fill='%237fa6c9'/%3E%3Crect x='62' y='58' width='12' height='30' rx='1.5' fill='%23e8b04b'/%3E%3Crect x='128' y='60' width='14' height='28' rx='1.5' fill='%23d65f5f'/%3E%3Crect x='144' y='64' width='12' height='24' rx='1.5' fill='%239cc28a'/%3E%3Crect x='28' y='48' width='144' height='7' rx='2' fill='%23a06a3f'/%3E%3Crect x='28' y='88' width='144' height='7' rx='2' fill='%23a06a3f'/%3E%3Cpath d='M34 104h132' stroke='%237a4e2d' stroke-width='4'/%3E%3Ccircle cx='46' cy='112' r='9' fill='%232a2622' stroke='%23c99a3b' stroke-width='3'/%3E%3Ccircle cx='154' cy='112' r='9' fill='%232a2622' stroke='%23c99a3b' stroke-width='3'/%3E%3C/svg%3E") center / contain no-repeat;
     }
 
-    .status-panel.error-state p {
-      color: var(--text-muted);
-      max-width: 440px;
-    }
+    /* Loading: a librarian checking spines in the stacks. */
+    .status-panel:has(.spinner)::before { content: none; }
 
     .spinner {
-      width: 34px;
-      height: 34px;
-      border: 3px solid rgba(56, 189, 248, 0.2);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.75s linear infinite;
+      position: relative;
+      width: 11rem;
+      height: 6.1rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 144 80'%3E%3Crect x='6' y='20' width='12' height='46' rx='1.5' fill='%23d65f5f'/%3E%3Crect x='20' y='26' width='12' height='40' rx='1.5' fill='%237fa6c9'/%3E%3Crect x='48' y='22' width='14' height='44' rx='1.5' fill='%239cc28a'/%3E%3Crect x='64' y='28' width='10' height='38' rx='1.5' fill='%23d98ab0'/%3E%3Crect x='76' y='24' width='8' height='42' rx='1.5' fill='%23e8b04b'/%3E%3Crect x='101' y='20' width='13' height='46' rx='1.5' fill='%237fa6c9'/%3E%3Crect x='116' y='26' width='11' height='40' rx='1.5' fill='%23d65f5f'/%3E%3Crect x='129' y='22' width='10' height='44' rx='1.5' fill='%23e8b04b'/%3E%3Crect x='0' y='66' width='144' height='8' rx='1.5' fill='%23a06a3f'/%3E%3Crect x='0' y='74' width='144' height='3' fill='%234f321c'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .spinner::before,
+    .spinner::after {
+      content: "";
+      position: absolute;
+      bottom: calc(14 / 80 * 100%);
+      border-radius: 1.5px;
+      animation: check-spine 1.8s var(--ease-out) infinite;
     }
+    .spinner::before { left: calc(34 / 144 * 100%); width: calc(12 / 144 * 100%); height: calc(44 / 80 * 100%); background: #f2d48a; }
+    .spinner::after { left: calc(86 / 144 * 100%); width: calc(13 / 144 * 100%); height: calc(40 / 80 * 100%); background: #f4a6a6; animation-delay: 0.9s; }
+
+    @keyframes check-spine {
+      0%, 70%, 100% { transform: translateY(0); }
+      25%, 45% { transform: translateY(-1.35rem); }
+    }
+
+    /* No results: an empty shelf with a note taped to it. */
+    .results-header:has(.results-meta:not(:empty)) + .results .status-panel:not(.error-state):not(:has(.spinner))::before {
+      width: min(20rem, 100%);
+      height: 7.67rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 92'%3E%3Cpath d='M46 56 v24 h18' stroke='%234f321c' stroke-width='5' fill='none'/%3E%3Cpath d='M194 56 v24 h-18' stroke='%234f321c' stroke-width='5' fill='none'/%3E%3Cpath d='M150 48 V18 h6 V42 h16 v6Z' fill='%23c99a3b'/%3E%3Ccircle cx='92' cy='44' r='1.4' fill='%23f3efe4' fill-opacity='0.5'/%3E%3Ccircle cx='118' cy='42' r='1.1' fill='%23f3efe4' fill-opacity='0.4'/%3E%3Ccircle cx='70' cy='41' r='1' fill='%23f3efe4' fill-opacity='0.35'/%3E%3Crect x='18' y='48' width='204' height='10' rx='2' fill='%23a06a3f'/%3E%3Crect x='18' y='56' width='204' height='3' fill='%234f321c'/%3E%3C/svg%3E");
+    }
+    .results-header:has(.results-meta:not(:empty)) + .results .status-panel:not(.error-state):not(:has(.spinner)) .status {
+      position: relative;
+      /* Taped to the front edge of the shelf plank. */
+      max-width: 15rem;
+      margin-top: -3.9rem;
+      padding: 1rem 1.25rem 0.9rem;
+      font-family: var(--font-hand);
+      font-size: 1.6rem;
+      line-height: 1.1;
+      color: var(--paper-ink);
+      background: #ffe98a;
+      box-shadow: 0 8px 14px -8px rgb(0 0 0 / 0.7);
+      transform: rotate(2deg);
+    }
+    .results-header:has(.results-meta:not(:empty)) + .results .status-panel:not(.error-state):not(:has(.spinner)) .status::before {
+      content: "";
+      position: absolute;
+      top: -0.6rem;
+      left: 50%;
+      width: 4rem;
+      height: 1.2rem;
+      margin-left: -2rem;
+      background: rgb(255 255 255 / 0.55);
+      transform: rotate(-3deg);
+    }
+
+    /* Error: the "closed" sign hanging on the stacks door. */
+    .status-panel.error-state::before { content: none; }
+
+    .error-state h3 {
+      position: relative;
+      margin-top: 3.25rem;
+      padding: 0.7rem 1.75rem 0.8rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.75rem;
+      line-height: 1.1;
+      color: #fff8ee;
+      background: #a83232;
+      border: 3px solid #f3d9b0;
+      border-radius: 0.6rem;
+      box-shadow: 0 14px 20px -12px rgb(0 0 0 / 0.85);
+      transform: rotate(-3deg);
+      transform-origin: 50% -3rem;
+      animation: settle 1.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* The string and the nail it hangs from. */
+    .error-state h3::before {
+      content: "";
+      position: absolute;
+      bottom: calc(100% + 3px);
+      left: 50%;
+      width: 8rem;
+      height: 3rem;
+      margin-left: -4rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 48'%3E%3Cpath d='M64 6 L14 48 M64 6 L114 48' stroke='%23e9dcc4' stroke-width='2.5' fill='none'/%3E%3Ccircle cx='64' cy='6' r='5' fill='%23c99a3b'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    }
+
+    /* The sign was just hung up, so it is still swinging a little. */
+    @keyframes settle {
+      0% { transform: rotate(-12deg); }
+      100% { transform: rotate(-3deg); }
+    }
+
+    .error-state .status { color: var(--ink-soft); }
+
+    /* ---------- footer ---------- */
 
     footer {
+      width: min(100% - 2rem, 68rem);
+      margin: 3rem auto 0;
+      padding-top: 1.25rem;
       text-align: center;
-      padding: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      border-top: 1px dashed rgb(243 239 228 / 0.25);
     }
 
-    @media (max-width: 600px) {
-      .panel { padding: 1.25rem; }
+    @media (max-width: 37.5rem) {
       .search-form { flex-direction: column; }
       .search-button { width: 100%; }
-      .hero h1 { font-size: 2.1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner::before, .spinner::after, .error-state h3 { animation: none; }
+      .book-cover { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
 
@@ -391,7 +495,7 @@
 <main>
   <div class="panel">
     <div class="panel-header">
-      <h2>📚 Book Search</h2>
+      <h2><span class="emoji" aria-hidden="true">📚</span> Book Search</h2>
       <p>Discover books by title using the Open Library Search API.</p>
     </div>
 

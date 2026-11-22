@@ -4,323 +4,322 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AeroCast // Open-Meteo Weather</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Bricolage+Grotesque:wght@700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
+    /*
+      AeroCast as a kid's 그림일기 (picture diary) page: the weather is the
+      drawing in the picture box, the readings go in the 원고지 squares below,
+      and "Get Weather" is a round sticker you press.
+    */
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
     :root {
-      --bg: #030d12;
-      --card-bg: rgba(6, 24, 30, 0.72);
-      --card-border: rgba(45, 212, 191, 0.16);
-      --accent: #10b981;
-      --accent-cyan: #2dd4bf;
-      --accent-amber: #f59e0b;
-      --text-main: #f0fdf4;
-      --text-muted: #94a3b8;
-      --font-display: 'Bricolage Grotesque', sans-serif;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --radius: 24px;
+      --ground: #26406a;
+      --paper: #fffdf8;
+      --ink: #22324f;
+      --ink-soft: #55607a;
+      --crayon-red: #c2383f;
+      --sky: #d9ebff;
+      --grid: #3f8a68;
+      --sticker: #ffd66b;
+      /* Names the weather script's inline styles use. */
+      --text-muted: #55607a;
+      --accent-cyan: #1d6a85;
+      --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --font-hand: "Gaegu", "Gowun Dodum", sans-serif;
+      --font-body: "Gowun Dodum", system-ui, sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-body);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2.5rem 1.25rem;
-      position: relative;
-      overflow-x: hidden;
+      display: grid;
+      place-items: center;
+      padding: 3.5rem 1rem 6.5rem;
+      font-family: var(--font-body);
       font-size: 16px;
+      color: var(--ink);
+      background:
+        radial-gradient(60rem 30rem at 50% -10%, #3a5b8f, transparent 70%),
+        var(--ground);
     }
 
-    .aurora-mesh {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
+    :focus-visible { outline: 3px solid var(--sticker); outline-offset: 3px; }
 
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(130px);
-      opacity: 0.22;
-      animation: drift 16s infinite alternate ease-in-out;
-    }
-
-    .blob-1 {
-      width: 500px;
-      height: 500px;
-      background: #059669;
-      top: -15%;
-      left: 10%;
-    }
-
-    .blob-2 {
-      width: 520px;
-      height: 520px;
-      background: #0d9488;
-      bottom: -15%;
-      right: 10%;
-      animation-delay: -6s;
-    }
-
-    @keyframes drift {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(40px, 30px) scale(1.12); }
-    }
+    /* ---------- the diary page ---------- */
 
     .container {
       position: relative;
-      z-index: 1;
       width: 100%;
-      max-width: 680px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(28px);
-      border-radius: var(--radius);
-      padding: 2.75rem;
-      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.7);
+      max-width: 640px;
+      padding: 3rem 2.5rem 2.25rem;
+      background: var(--paper);
+      border-radius: 6px;
+      box-shadow: 0 2px 3px rgb(0 0 0 / 0.25), 0 30px 50px -24px rgb(0 0 0 / 0.7);
+      transform: rotate(-0.6deg);
+    }
+
+    /* The spiral binding along the top edge. */
+    .binding {
+      position: absolute;
+      top: -0.9rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 2rem;
+      background:
+        radial-gradient(circle at 50% 70%, var(--ground) 0 0.3rem, transparent 0.32rem) 0 0 / 1.6rem 100%,
+        radial-gradient(ellipse 0.35rem 0.95rem at 50% 50%, transparent 0 0.22rem, #c9ced8 0.24rem 0.34rem, transparent 0.36rem) 0 0 / 1.6rem 100%;
+      pointer-events: none;
     }
 
     .header-bar {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 2rem;
+      align-items: flex-end;
       gap: 1rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--ink);
     }
 
+    .header-bar > div { display: grid; justify-items: start; gap: 0.6rem; }
+
+    /* "Live Telemetry" pressed on like a teacher's rubber stamp. */
     .tagline {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .tagline::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
+      display: inline-block;
+      padding: 0.15rem 0.6rem 0.2rem;
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--crayon-red);
+      border: 2px solid currentColor;
+      border-radius: 0.35rem;
+      transform: rotate(-4deg);
     }
 
     h1 {
-      font-family: var(--font-display);
-      font-size: 2.3rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
+      font-family: var(--font-hand);
+      font-size: clamp(2.6rem, 9vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--ink);
     }
+
+    .weather-sun {
+      flex: none;
+      width: 4.25rem;
+      height: auto;
+      transform: rotate(8deg);
+    }
+
+    /* ---------- city + sticker button ---------- */
 
     .controls-deck {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      align-items: center;
+      gap: 1rem 1.25rem;
       margin-bottom: 2rem;
     }
 
     .city-select {
       flex: 1;
-      min-width: 180px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 0.85rem 1.15rem;
-      color: var(--text-main);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      outline: none;
+      min-width: 12rem;
+      padding: 0.45rem 2rem 0.45rem 0.25rem;
+      font-family: var(--font-hand);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--ink);
+      background:
+        linear-gradient(45deg, transparent 50%, var(--ink) 50%) right 0.85rem center / 0.45rem 0.45rem no-repeat,
+        linear-gradient(-45deg, transparent 50%, var(--ink) 50%) right 0.4rem center / 0.45rem 0.45rem no-repeat;
+      border: 0;
+      border-bottom: 2px dashed var(--ink-soft);
+      border-radius: 0;
+      appearance: none;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
-
-    .city-select:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
-    }
-
-    .city-select option {
-      background: #041419;
-      color: var(--text-main);
-    }
+    .city-select:focus-visible { outline-offset: 4px; border-bottom-color: var(--ink); }
+    .city-select option { font-family: var(--font-body); font-size: 1rem; }
 
     .btn-fetch {
-      background: linear-gradient(135deg, var(--accent), var(--accent-cyan));
-      color: #031412;
-      font-family: var(--font-display);
-      font-size: 1rem;
+      display: inline-grid;
+      place-items: center;
+      min-width: 8.5rem;
+      min-height: 3.25rem;
+      padding: 0.6rem 1.4rem;
+      font-family: var(--font-hand);
+      font-size: 1.35rem;
       font-weight: 700;
-      border: none;
-      border-radius: 14px;
-      padding: 0.85rem 1.75rem;
+      color: var(--ink);
+      background: var(--sticker);
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      box-shadow: 0 0 0 4px #fff, 0 4px 0 4px rgb(34 50 79 / 0.18);
+      transform: rotate(3deg);
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
-      white-space: nowrap;
+      transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
     }
+    .btn-fetch:hover:not(:disabled) { transform: rotate(0deg) translateY(-2px); }
+    .btn-fetch:active:not(:disabled) { transform: rotate(0deg) translateY(2px); box-shadow: 0 0 0 4px #fff, 0 1px 0 4px rgb(34 50 79 / 0.18); }
+    .btn-fetch:disabled { cursor: progress; background: #ffe7a6; }
+    .btn-fetch:focus-visible { outline-color: var(--ink); outline-offset: 7px; }
 
-    .btn-fetch:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px -6px rgba(16, 185, 129, 0.45);
-    }
+    /* ---------- the picture box and the readings ---------- */
 
-    .btn-fetch:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .weather-card {
-      background: rgba(3, 16, 20, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.75rem;
-    }
+    .weather-card { display: grid; gap: 1.5rem; }
 
     .primary-display {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 1rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--sky);
+      border: 3px solid var(--ink);
+      border-radius: 4px 10px 6px 12px;
     }
+
+    .primary-display .tagline { transform: rotate(-3deg); background: var(--paper); }
 
     .temp-large {
-      font-family: var(--font-display);
-      font-size: 4rem;
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -0.03em;
+      font-family: var(--font-hand);
+      font-size: 4.75rem;
+      font-weight: 700;
+      line-height: 0.95;
+      color: var(--ink);
     }
-
-    .temp-unit {
-      font-size: 2rem;
-      color: var(--accent-cyan);
-      font-weight: 600;
-    }
+    .temp-unit { font-size: 2rem; color: var(--crayon-red); }
 
     .condition-desc {
-      font-size: 1.15rem;
-      color: var(--accent);
-      font-weight: 600;
       margin-top: 0.4rem;
+      font-family: "Nanum Pen Script", var(--font-hand);
+      font-size: 1.9rem;
+      line-height: 1;
+      color: var(--ink);
     }
 
     .weather-icon-bubble {
-      font-size: 3.5rem;
+      display: grid;
+      place-items: center;
+      width: 6rem;
+      height: 6rem;
+      font-size: 3.6rem;
       line-height: 1;
-      filter: drop-shadow(0 0 16px rgba(45, 212, 191, 0.3));
+      background: var(--paper);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink);
+      transform: rotate(-6deg);
     }
 
+    /* Four 원고지 squares. */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 2px solid var(--grid);
+      border-left: 2px solid var(--grid);
     }
 
     .metric-cell {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 14px;
-      padding: 1.1rem 1.25rem;
+      padding: 0.85rem 1rem 0.9rem;
+      border-right: 2px solid var(--grid);
+      border-bottom: 2px solid var(--grid);
     }
 
-    .metric-label {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.35rem;
-    }
+    .metric-label { font-size: 0.875rem; color: var(--ink-soft); }
 
     .metric-val {
-      font-family: var(--font-mono);
-      font-size: 1.35rem;
-      font-weight: 600;
-      color: var(--text-main);
+      margin-top: 0.2rem;
+      font-family: var(--font-hand);
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--ink);
     }
 
     .status-footer {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      padding-top: 0.5rem;
+      gap: 0.5rem 1rem;
+      font-family: "Nanum Pen Script", var(--font-hand);
+      font-size: 1.35rem;
+      color: var(--ink-soft);
     }
+
+    /* ---------- waiting, loading and error ---------- */
 
     .status-panel {
+      display: grid;
+      justify-items: center;
+      gap: 0.85rem;
+      padding: 2.5rem 1.5rem;
       text-align: center;
-      padding: 3rem 1.5rem;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
+      font-size: 1.0625rem;
+      color: var(--ink-soft);
+      border: 2px dashed #b9c3d6;
+      border-radius: 8px;
     }
 
+    .status-globe { font-size: 2.5rem; line-height: 1; }
+
+    /* The script writes the error colour inline; darken it to read on paper. */
+    .status-panel[style] { color: var(--crayon-red) !important; border-color: currentColor; }
+
+    /* A little crayon sun turning while the forecast loads. */
     .spinner {
-      width: 38px;
-      height: 38px;
-      border: 3px solid rgba(16, 185, 129, 0.2);
-      border-top-color: var(--accent);
+      width: 2.75rem;
+      height: 2.75rem;
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      background: radial-gradient(circle, #f6b31b 0 42%, transparent 44%);
+      border: 4px dotted #f6b31b;
+      animation: spin 1.6s linear infinite;
     }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     @media (max-width: 600px) {
-      .container { padding: 1.75rem; }
-      .header-bar { flex-direction: column; }
-      .temp-large { font-size: 3.2rem; }
-      .metrics-grid { grid-template-columns: 1fr; }
+      body { padding-top: 2.5rem; }
+      .container { padding: 2.5rem 1.15rem 1.5rem; transform: none; }
+      .weather-sun { width: 3.25rem; }
+      .primary-display { padding: 1.1rem; }
+      .temp-large { font-size: 3.6rem; }
+      .weather-icon-bubble { width: 4.5rem; height: 4.5rem; font-size: 2.6rem; }
+      .metric-cell { padding: 0.7rem 0.65rem; }
+      .metric-val { font-size: 1.4rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner { animation-duration: 6s; }
+      .btn-fetch { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
 
-  <div class="aurora-mesh">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-  </div>
-
   <main class="container">
+    <span class="binding" aria-hidden="true"></span>
     <div class="header-bar">
       <div>
         <div class="tagline">Live Telemetry</div>
         <h1>AeroCast</h1>
       </div>
+      <svg class="weather-sun" viewBox="0 0 80 80" aria-hidden="true" focusable="false">
+        <g stroke="#f6b31b" stroke-width="5" stroke-linecap="round">
+          <path d="M40 6v10M40 64v10M6 40h10M64 40h10M16 16l7 7M57 57l7 7M16 64l7-7M57 23l7-7"/>
+        </g>
+        <circle cx="40" cy="40" r="17" fill="#ffd66b" stroke="#22324f" stroke-width="3"/>
+        <path d="M33 38q2-3 4 0M43 38q2-3 4 0M34 46q6 5 12 0" fill="none" stroke="#22324f" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
     </div>
 
     <div class="controls-deck">
-      <select id="citySelect" class="city-select">
+      <select id="citySelect" class="city-select" aria-label="City">
         <option value="37.5665,126.9780,Seoul,Asia/Seoul">Seoul, KR</option>
         <option value="37.3595,127.1054,Seongnam,Asia/Seoul">Seongnam, KR</option>
         <option value="35.6895,139.6917,Tokyo,Asia/Tokyo">Tokyo, JP</option>
@@ -335,7 +334,7 @@
 
     <div id="weather" aria-live="polite">
       <div class="status-panel">
-        <span style="font-size: 2.5rem;">🌍</span>
+        <span class="status-globe" aria-hidden="true">🌍</span>
         <p>Select a location and click "Get Weather" to read meteorological metrics.</p>
       </div>
     </div>

@@ -2,19 +2,152 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fixed Navigation Bar</title>
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial, sans-serif; background-color: #f8fafc; }
-    nav { position: fixed; top: 0; left: 0; width: 100%; background-color: #1e293b; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-    .logo { color: white; font-size: 22px; font-weight: bold; }
-    .links { display: flex; gap: 25px; }
-    .links a { color: white; text-decoration: none; font-size: 15px; }
-    .links a:hover { color: #14b8a6; }
-    .content { padding: 90px 40px 0; min-height: 1500px; }
-    .content h1 { color: #1e293b; }
-    .content p { line-height: 1.7; color: #475569; }
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+
+    :root {
+      --line: 2rem;        /* one ruled line on the notebook paper */
+      --ruler-h: 4.5rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Gowun Dodum", Arial, sans-serif;
+      background-color: #d9f3ec;
+    }
+
+    /* The nav is a clear teal ruler laid across the top of the page.
+       position: fixed keeps it in place while the notebook scrolls under it. */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: var(--ruler-h);
+      padding: 0.9rem clamp(1rem, 5vw, 2.5rem) 1.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem 1.5rem;
+      z-index: 1000;
+
+      background-color: rgba(204, 251, 241, 0.8);
+      /* Acrylic: you can just see the page through the ruler. */
+      -webkit-backdrop-filter: blur(5px) saturate(1.2);
+      backdrop-filter: blur(5px) saturate(1.2);
+      border-bottom: 1px solid rgba(15, 118, 110, 0.35);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 8px 18px -10px rgba(15, 80, 70, 0.45);
+    }
+
+    /* Tick marks along the ruler's bottom edge: small every 10px, tall every 50px. */
+    nav::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 0.8rem;
+      background:
+        repeating-linear-gradient(90deg, #0f766e 0 1px, transparent 1px 50px) 0 0 / 100% 100%,
+        repeating-linear-gradient(90deg, #0f766e 0 1px, transparent 1px 10px) 0 100% / 100% 45% no-repeat;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .logo {
+      color: #134e4a;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.6rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .links { display: flex; flex-wrap: wrap; gap: 0.2rem 1.4rem; }
+
+    .links a {
+      position: relative;
+      padding: 0.2rem 0;
+      color: #134e4a;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    /* Hover draws a highlighter stroke under the link. */
+    .links a::after {
+      content: "";
+      position: absolute;
+      left: -0.2rem;
+      right: -0.2rem;
+      bottom: 0.15rem;
+      height: 0.55rem;
+      background: #5eead4;
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+      z-index: -1;
+    }
+
+    .links a:hover::after,
+    .links a:focus-visible::after { transform: scaleX(1); }
+
+    .links a:focus-visible { outline: 2px solid #134e4a; outline-offset: 3px; border-radius: 2px; }
+
+    /* The notebook page that scrolls underneath. */
+    .content {
+      position: relative;
+      max-width: 46rem;
+      min-height: 1500px;
+      margin: 0 auto;
+      padding: calc(var(--ruler-h) + 2 * var(--line)) 1.5rem 8rem 4.5rem;
+      background-color: #fffdf7;
+      background-image:
+        linear-gradient(90deg, transparent 3.4rem, #f2a7a7 3.4rem, #f2a7a7 calc(3.4rem + 1px), transparent calc(3.4rem + 1px)),
+        repeating-linear-gradient(transparent 0 calc(var(--line) - 1px), #cfe4ee calc(var(--line) - 1px) var(--line));
+      background-position: 0 0, 0 0.45rem;
+      box-shadow: 0 0 0 1px rgba(15, 80, 70, 0.08), 0 30px 60px -30px rgba(15, 80, 70, 0.35);
+    }
+
+    /* Everything sits on the ruled lines: line-height and margins are whole lines. */
+    .content h1,
+    .content h2,
+    .content p { margin: 0 0 var(--line); line-height: var(--line); }
+
+    .content h1 {
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 2.2rem;
+      line-height: calc(var(--line) * 2);
+      color: #134e4a;
+    }
+
+    .content h2 {
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.5rem;
+      color: #0f766e;
+    }
+
+    .content p { color: #3f4a55; }
+
+    @media (max-width: 34rem) {
+      :root { --ruler-h: 6.5rem; }
+      nav { flex-direction: column; align-items: flex-start; }
+      .content { padding-left: 3.25rem; padding-right: 1rem; }
+      .content { background-image:
+        linear-gradient(90deg, transparent 2.4rem, #f2a7a7 2.4rem, #f2a7a7 calc(2.4rem + 1px), transparent calc(2.4rem + 1px)),
+        repeating-linear-gradient(transparent 0 calc(var(--line) - 1px), #cfe4ee calc(var(--line) - 1px) var(--line)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .links a::after { transition: none; }
+    }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
   <nav>

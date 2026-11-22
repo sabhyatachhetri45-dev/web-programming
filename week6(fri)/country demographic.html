@@ -4,181 +4,231 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GlobePulse // Multi-Domain Country Intelligence</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /*
+      GlobePulse as an open passport on a leather desk: the navy data band at
+      the top, coloured index tabs for the four categories, and every country
+      as an ink visa stamp on the patterned page.
+    */
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
     :root {
-      --bg: #030d12;
-      --card-bg: rgba(6, 24, 30, 0.78);
-      --card-border: rgba(45, 212, 191, 0.16);
-      --accent: #10b981;
-      --accent-cyan: #2dd4bf;
-      --accent-blue: #38bdf8;
-      --accent-purple: #a855f7;
-      --danger: #f43f5e;
-      --text-main: #f0fdf4;
-      --text-muted: #94a3b8;
-      --font-display: 'Bricolage Grotesque', sans-serif;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --ground: #4a2131;
+      --cover: #1f2f55;
+      --gold: #e8c870;
+      --page: #eef3ea;
+      --page-ink: #23282f;
+      --page-soft: #4f5862;
+      --ink-navy: #23407a;
+      --ink-red: #a3263a;
+      --ink-green: #2c6b3e;
+      --ink-purple: #5f3a96;
+      --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --font-hand: "Gaegu", "Gowun Dodum", sans-serif;
+      --font-body: "Gowun Dodum", system-ui, sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-body);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2.5rem 1rem;
+      display: grid;
+      place-items: center;
+      padding: 2.5rem 1rem 6.5rem;
+      font-family: var(--font-body);
+      color: var(--page-ink);
+      background:
+        radial-gradient(48rem 28rem at 30% 10%, #5e2b3f, transparent 70%),
+        var(--ground);
     }
+
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+    /* ---------- the passport ---------- */
+
     .container {
+      position: relative;
       width: 100%;
       max-width: 760px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(28px);
-      border-radius: 24px;
-      padding: 2.25rem;
-      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65);
+      padding: 0 1.75rem 1.75rem;
+      /* Fine security-print waves over the pale green page. */
+      background:
+        radial-gradient(circle at 50% 120%, transparent 30%, rgb(35 64 122 / 0.05) 30.5% 31%, transparent 31.5%) 0 0 / 2.4rem 1.6rem,
+        radial-gradient(circle at 50% -20%, transparent 30%, rgb(44 107 62 / 0.05) 30.5% 31%, transparent 31.5%) 1.2rem 0.8rem / 2.4rem 1.6rem,
+        var(--page);
+      border-radius: 0.5rem 1rem 1rem 0.5rem;
+      box-shadow:
+        -0.6rem 0 0 var(--cover),
+        -0.6rem 0.35rem 0 #17223f,
+        0 2px 3px rgb(0 0 0 / 0.3),
+        0 30px 50px -24px rgb(0 0 0 / 0.8);
     }
+
+    /* The navy data band with the title in gold foil. */
     .top-bar {
+      position: relative;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
       gap: 1rem;
+      margin: 0 -1.75rem 1.5rem;
+      padding: 1.6rem 1.75rem 1.4rem;
+      color: var(--gold);
+      background: var(--cover);
+      border-radius: 0 1rem 0 0;
     }
-    .tagline {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--accent-cyan);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-    h1 { font-family: var(--font-display); font-size: 2.2rem; line-height: 1.1; margin-top: 0.2rem; }
 
-    /* Navigation Tabs */
+    .tagline {
+      font-size: 0.8125rem;
+      letter-spacing: 0.03em;
+      color: var(--gold);
+    }
+
+    h1 {
+      margin-top: 0.25rem;
+      font-family: var(--font-hand);
+      font-size: clamp(2.3rem, 8vw, 2.9rem);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--gold);
+    }
+
+    .emblem { flex: none; width: 4rem; height: 4rem; }
+
+    /* ---------- index tabs ---------- */
+
     .tabs-nav {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 0.5rem;
-      background: rgba(3, 16, 20, 0.85);
-      padding: 0.35rem;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
       margin-bottom: 1.25rem;
-    }
-    .tab-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-family: var(--font-body);
-      font-weight: 600;
-      font-size: 0.85rem;
-      padding: 0.6rem 0.5rem;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: center;
-    }
-    .tab-btn.active {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(45, 212, 191, 0.2));
-      color: var(--accent-cyan);
-      border: 1px solid rgba(45, 212, 191, 0.3);
-    }
-    .tab-btn:hover:not(.active) {
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.04);
     }
 
-    .search-row {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-    .search-input {
-      flex: 1;
-      background: rgba(3, 16, 20, 0.75);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 0.75rem 1rem;
-      color: var(--text-main);
+    .tab-btn {
+      min-height: 2.75rem;
+      padding: 0.55rem 0.5rem 0.5rem;
       font-family: var(--font-body);
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
+      font-size: 0.9375rem;
+      color: var(--page-ink);
+      background: var(--tab, #fff);
+      border: 2px solid rgb(35 40 47 / 0.25);
+      border-bottom-width: 4px;
+      border-radius: 0.6rem 0.6rem 0.3rem 0.3rem;
+      cursor: pointer;
+      transition: transform 220ms var(--ease-out), border-color 220ms var(--ease-out);
     }
-    .search-input:focus {
-      border-color: var(--accent-cyan);
+    .tab-btn:nth-child(1) { --tab: #ffd9e1; }
+    .tab-btn:nth-child(2) { --tab: #fff0c2; }
+    .tab-btn:nth-child(3) { --tab: #d6e8ff; }
+    .tab-btn:nth-child(4) { --tab: #d3f1df; }
+    .tab-btn:hover { transform: translateY(-2px); }
+    .tab-btn.active {
+      font-weight: 700;
+      border-color: var(--page-ink);
+      transform: translateY(-4px);
+      box-shadow: 0 4px 0 -1px rgb(35 40 47 / 0.25);
     }
+    .tab-btn:focus-visible { outline-color: var(--cover); }
+
+    /* ---------- search: written in pen on the page ---------- */
+
+    .search-row { margin-bottom: 1.25rem; }
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 0.25rem;
+      font-family: "Nanum Pen Script", var(--font-hand);
+      font-size: 1.6rem;
+      color: var(--ink-navy);
+      background: transparent;
+      border: 0;
+      border-bottom: 2px dashed var(--page-soft);
+      border-radius: 0;
+    }
+    .search-input::placeholder { color: var(--page-soft); opacity: 1; }
+    .search-input:focus-visible { outline-offset: 4px; outline-color: var(--cover); border-bottom-color: var(--cover); }
+
+    /* ---------- visa stamps ---------- */
 
     .country-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
       max-height: 480px;
       overflow-y: auto;
-      padding-right: 4px;
+      padding: 0.6rem 0.6rem 0.6rem 0.25rem;
+      scrollbar-color: rgb(35 64 122 / 0.35) transparent;
     }
-    .country-list::-webkit-scrollbar { width: 6px; }
-    .country-list::-webkit-scrollbar-thumb { background: rgba(45, 212, 191, 0.2); border-radius: 4px; }
 
     .country-card {
-      background: rgba(3, 16, 20, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 1rem 1.25rem;
+      --stamp: var(--ink-navy);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: border-color 0.2s, transform 0.15s;
+      gap: 0.75rem 1rem;
+      padding: 0.9rem 1.1rem;
+      color: var(--page-ink);
+      border: 2.5px solid var(--stamp);
+      border-radius: 0.9rem;
+      outline: 1px solid var(--stamp);
+      outline-offset: -7px;
+      transform: rotate(var(--tilt, -0.6deg));
+      transition: transform 260ms var(--ease-out);
     }
-    .country-card:hover {
-      border-color: rgba(45, 212, 191, 0.35);
-      transform: translateY(-1px);
-    }
+    .country-card:nth-child(4n + 2) { --stamp: var(--ink-red); --tilt: 0.7deg; }
+    .country-card:nth-child(4n + 3) { --stamp: var(--ink-green); --tilt: -0.3deg; }
+    .country-card:nth-child(4n) { --stamp: var(--ink-purple); --tilt: 0.4deg; }
+    .country-card:hover { transform: rotate(0deg); }
+
     .country-header { display: flex; align-items: center; gap: 0.85rem; }
     .country-flag { font-size: 2rem; line-height: 1; }
-    .country-name { font-weight: 700; font-size: 1.05rem; }
-    .country-meta {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      margin-top: 0.15rem;
-    }
+    .country-name { font-family: var(--font-hand); font-size: 1.45rem; font-weight: 700; line-height: 1.1; color: var(--stamp); }
+    .country-meta { margin-top: 0.15rem; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--page-soft); }
 
-    .domain-stats {
-      text-align: right;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.3rem;
-    }
-    .primary-metric {
-      font-family: var(--font-mono);
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-    .badges-row { display: flex; gap: 0.4rem; }
+    .domain-stats { display: grid; justify-items: end; gap: 0.35rem; text-align: right; }
+    .primary-metric { font-family: var(--font-mono); font-size: 1.05rem; font-weight: 700; color: var(--page-ink); }
+    .badges-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.35rem; }
+
     .metric-badge {
+      padding: 0.1rem 0.45rem;
       font-family: var(--font-mono);
       font-size: 0.75rem;
-      padding: 0.2rem 0.55rem;
-      border-radius: 6px;
-      font-weight: 600;
+      font-weight: 700;
+      border: 1.5px solid currentColor;
+      border-radius: 0.25rem;
     }
-    .badge-cyan { background: rgba(45, 212, 191, 0.15); color: var(--accent-cyan); }
-    .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
-    .badge-green { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
-    .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+    .badge-cyan { color: #11636a; }
+    .badge-blue { color: var(--ink-navy); }
+    .badge-green { color: var(--ink-green); }
+    .badge-purple { color: var(--ink-purple); }
 
-    .status-box { text-align: center; padding: 2.5rem; color: var(--text-muted); }
+    .status-box {
+      padding: 2.5rem 1rem;
+      text-align: center;
+      font-family: "Nanum Pen Script", var(--font-hand);
+      font-size: 1.6rem;
+      color: var(--page-soft);
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 0 1rem 1.25rem; }
+      .top-bar { margin: 0 -1rem 1.25rem; padding: 1.3rem 1rem 1.15rem; }
+      .emblem { width: 3rem; height: 3rem; }
+      .search-input { font-size: 1.3rem; }
+      .tabs-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .country-card { flex-direction: column; align-items: flex-start; }
+      .domain-stats { justify-items: start; text-align: left; }
+      .badges-row { justify-content: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tab-btn, .country-card { transition: none; }
+    }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
   <div class="container">
@@ -187,6 +237,13 @@
         <div class="tagline">Global Macro Data & Indicators</div>
         <h1>GlobePulse</h1>
       </div>
+      <svg class="emblem" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="#e8c870" stroke-width="2.5">
+          <circle cx="32" cy="32" r="22"/>
+          <ellipse cx="32" cy="32" rx="9" ry="22"/>
+          <path d="M10 32h44M14 21h36M14 43h36"/>
+        </g>
+      </svg>
     </div>
 
     <!-- Multi-Domain Switching -->
@@ -203,6 +260,7 @@
         id="searchInput"
         class="search-input"
         placeholder="Filter by country, capital, or currency..."
+        aria-label="Filter by country, capital, or currency"
         oninput="handleSearch()"
       />
     </div>

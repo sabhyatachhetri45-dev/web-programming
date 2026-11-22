@@ -1,26 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS Methods</title>
 
+    <!-- INTERNAL CSS: this <style> block lives inside the page itself. -->
     <style>
+        @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+        @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+        @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
         h2 {
             color: #0369a1;
         }
 
         body {
-            font-family: sans-serif;
+            font-family: "Gowun Dodum", sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            padding: 3rem 1.25rem 7rem;
+            background: #e8e4f3;
+        }
+
+        /* A ruled notebook page: every element below gets its style from somewhere different. */
+        .sheet {
+            position: relative;
+            width: min(44rem, 100%);
+            margin: 0 auto;
+            padding: 3rem 2rem 3.5rem 4.5rem;
+            background:
+                linear-gradient(90deg, transparent 3.25rem, rgba(219, 39, 119, 0.35) 3.25rem, rgba(219, 39, 119, 0.35) calc(3.25rem + 1px), transparent calc(3.25rem + 1px)),
+                repeating-linear-gradient(transparent 0 2.2rem, rgba(3, 105, 161, 0.14) 2.2rem calc(2.2rem + 1px)),
+                #fffdf8;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(50, 40, 80, 0.12), 0 22px 40px -22px rgba(50, 40, 80, 0.45);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 13rem;
+            align-items: center;
+            gap: 0.5rem 1.5rem;
+            padding: 1.25rem 0;
+        }
+
+        .row + .row { border-top: 1px dashed rgba(60, 50, 90, 0.18); }
+
+        /* The margin notes are decoration, written in pencil. */
+        .note {
+            position: relative;
+            font-family: "Nanum Pen Script", cursive;
+            font-size: 1.45rem;
+            line-height: 1.1;
+            color: #574b6e;
+            transform: rotate(-2deg);
+        }
+        .note::before {
+            content: "";
+            position: absolute;
+            right: calc(100% + 0.4rem);
+            top: 0.6rem;
+            width: 1.4rem;
+            height: 0.6rem;
+            border-bottom: 2px solid currentColor;
+            border-left: 2px solid currentColor;
+            border-radius: 0 0 0 0.8rem;
+        }
+
+        h1, h2 {
+            margin: 0;
+            font-family: "Gaegu", sans-serif;
+            line-height: 1;
+        }
+
+        /* Inline CSS: the colour is written on the h1 tag itself, like a
+           sticky note stuck straight onto it. */
+        h1 {
+            position: relative;
+            justify-self: start;
+            padding: 0.8rem 1.2rem 0.7rem;
+            font-size: 2.8rem;
+            background: #efe5ff;
+            box-shadow: 0 8px 14px -8px rgba(80, 40, 140, 0.45);
+            transform: rotate(-2deg);
+        }
+        h1::before {
+            content: "";
+            position: absolute;
+            top: -0.55rem;
+            left: 50%;
+            width: 4rem;
+            height: 1.1rem;
+            margin-left: -2rem;
+            background: rgba(196, 170, 240, 0.7);
+            transform: rotate(3deg);
+        }
+
+        h2 { font-size: 2.4rem; }
+
+        /* External CSS: a separate little booklet clipped to the page. */
+        .booklet {
+            position: relative;
+            justify-self: start;
+            max-width: 20rem;
+            padding: 1.4rem 1.3rem 1.2rem;
+            background: #f7f2e6;
+            border: 1px solid rgba(90, 70, 40, 0.18);
+            border-radius: 4px;
+            box-shadow: 4px 6px 0 -1px #efe8d8, 4px 6px 2px 0 rgba(90, 70, 40, 0.14), 0 12px 18px -12px rgba(60, 40, 20, 0.4);
+            transform: rotate(1.5deg);
+        }
+        .booklet p { margin: 0; font-size: 1.05rem; line-height: 1.55; color: #3d3428; }
+
+        /* Paperclip holding the booklet on. */
+        .clip {
+            position: absolute;
+            top: -1rem;
+            left: 1.5rem;
+            width: 0.9rem;
+            height: 2.6rem;
+            border: 2px solid #8a93a3;
+            border-radius: 0.5rem;
+        }
+        .clip::after {
+            content: "";
+            position: absolute;
+            left: 0.12rem;
+            top: 0.35rem;
+            width: 0.35rem;
+            height: 1.7rem;
+            border: 2px solid #8a93a3;
+            border-top: 0;
+            border-radius: 0 0 0.3rem 0.3rem;
+        }
+
+        @media (max-width: 40rem) {
+            .sheet { padding: 2.5rem 1.25rem 3rem 3.75rem; }
+            .row { grid-template-columns: minmax(0, 1fr); }
+            .note { margin-left: 1.8rem; }
+            h1 { font-size: 2.3rem; }
         }
     </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 
 <body>
 
-    <h1 style="color: #7c3aed;">Inline CSS</h1>
+    <main class="sheet">
 
-    <h2>Internal CSS</h2>
+        <div class="row">
+            <h1 style="color: #7c3aed;">Inline CSS</h1>
+            <span class="note" aria-hidden="true">style="…" written right on the tag</span>
+        </div>
 
-    <p>External CSS is applied using a separate CSS file.</p>
+        <div class="row">
+            <h2>Internal CSS</h2>
+            <span class="note" aria-hidden="true">from the &lt;style&gt; in this page's head</span>
+        </div>
+
+        <div class="row">
+            <div class="booklet">
+                <span class="clip" aria-hidden="true"></span>
+                <p>External CSS is applied using a separate CSS file.</p>
+            </div>
+            <span class="note" aria-hidden="true">its own little .css file, clipped on</span>
+        </div>
+
+    </main>
 
 </body>
 </html>

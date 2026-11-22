@@ -4,320 +4,300 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 7 Task 6 | Complete Book Search</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
   <style>
+    /*
+      Step 6: the reading room, the end of the Week 7 walk through the library.
+      The search sits on a green reading table under a banker's lamp, and every
+      result is a book laid open: the cover on the left, and on the inside back
+      cover a library pocket holding the due-date card (first published and
+      editions). Fonts and the reset come from ../assets/drawer/base.css.
+    */
     :root {
-      --bg: #0b0f19;
-      --surface: #151d30;
-      --surface-hover: #1e2942;
-      --border: #233354;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --primary: #38bdf8;
-      --primary-hover: #0ea5e9;
-      --accent: #818cf8;
-      --danger: #f43f5e;
-      --warning: #fbbf24;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.55);
-      --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --ground: #2e1f17;
+      --table: #23473a;
+      --ink: #f6eee2;
+      --ink-soft: #dccdb8;
+      --walnut: #5a3a24;
+      --walnut-light: #7d5434;
+      --brass: #d1a54d;
+      --leather: #7a2e2e;
+      --endpaper: #fbf6ea;
+      --card: #fffdf7;
+      --manila: #e6cf9f;
+      --paper-ink: #2a2622;
+      --paper-soft: #5c5348;
+      --rule-red: #d8737b;
+      --rule-blue: #b8cbe6;
+      --warn: #ffc0b5;
+      --focus: #ffd98a;
+      --select: #3c6b57;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      padding-bottom: 6rem;
+      background:
+        radial-gradient(ellipse 55% 50% at 50% 12rem, rgb(255 210 140 / 0.16), transparent 70%),
+        var(--ground);
     }
 
-    /* Breadcrumbs */
+    /* ---------- wayfinding strip ---------- */
+
     .crumbbar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .crumbbar a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .crumbbar a:hover {
-      color: var(--primary);
-    }
-
-    .crumbbar .back {
-      background: var(--surface);
-      padding: 0.35rem 0.9rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .crumbbar .back:hover {
-      background: var(--surface-hover);
-      border-color: var(--primary);
-    }
-
-    /* Hero Header */
-    .hero {
-      text-align: center;
-      padding: 2.75rem 1.5rem 1.25rem;
-    }
-
-    .hero h1 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 2.75rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 40%, var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-    }
-
-    /* Main Container */
-    main {
-      flex: 1;
-      max-width: 1120px;
-      width: 100%;
+      gap: 0.5rem 1rem;
+      width: min(100% - 2rem, 68rem);
       margin: 0 auto;
-      padding: 1.5rem;
+      padding: 1rem 0;
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
     }
+    .crumbbar a { color: var(--ink); text-underline-offset: 3px; }
+    .crumbbar a:hover { color: var(--focus); }
 
-    .panel {
-      background: rgba(21, 29, 48, 0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2.25rem;
-      box-shadow: var(--shadow);
-    }
-
-    .panel-header {
-      margin-bottom: 1.75rem;
-      text-align: center;
-    }
-
-    .panel-header h2 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.85rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .panel-header p {
-      color: var(--text-muted);
-    }
-
-    /* Search Controls */
-    .search-box-wrapper {
-      max-width: 640px;
-      margin: 0 auto 1.5rem;
-    }
-
-    .search-form {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .input-field {
-      flex: 1;
-      padding: 0.85rem 1.25rem;
-      font-size: 1rem;
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .input-field:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-    }
-
-    .input-field.input-error {
-      border-color: var(--danger);
-      box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2);
-      animation: shake 0.35s ease;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-6px); }
-      40%, 80% { transform: translateX(6px); }
-    }
-
-    .search-button {
-      padding: 0.85rem 1.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: var(--radius-md);
-      background: var(--primary);
-      color: #0b0f19;
-      border: none;
-      cursor: pointer;
+    /* "Back" is a brass door plate. */
+    .crumbbar .back {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      transition: var(--transition);
-      white-space: nowrap;
-      min-width: 140px;
+      min-height: 44px;
+      padding: 0 1.1rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.125rem;
+      text-decoration: none;
+      color: #2a1d0e;
+      background: linear-gradient(#e7c579, var(--brass) 55%, #b08431);
+      border-radius: 0.35rem;
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35), 0 4px 8px -4px rgb(0 0 0 / 0.7);
+    }
+    .crumbbar .back:hover { color: #2a1d0e; background: #ecd08e; }
+
+    /* ---------- heading ---------- */
+
+    .hero {
+      display: grid;
+      gap: 0.35rem;
+      width: min(100% - 2rem, 68rem);
+      margin: 1.25rem auto 0;
+    }
+    .hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.75rem, 8vw, 4.5rem); line-height: 1; }
+    .hero p { font-size: 1.0625rem; color: var(--ink-soft); }
+
+    main { width: min(100% - 2rem, 68rem); margin: 0 auto; }
+
+    /* ---------- the reading table ---------- */
+
+    .panel {
+      position: relative;
+      margin-top: 6rem;
+      padding: clamp(2.25rem, 5vw, 3rem) clamp(0.9rem, 3.5vw, 2.25rem) 2.75rem;
+      border: 0.8rem solid transparent;
+      border-radius: 0.9rem;
+      background:
+        radial-gradient(ellipse 50% 22rem at 50% 0, rgb(255 222 160 / 0.2), transparent 75%) padding-box,
+        linear-gradient(var(--table), #1d3b30) padding-box,
+        linear-gradient(var(--walnut-light), var(--walnut) 40%, #3d2716) border-box;
+      box-shadow: 0 30px 50px -28px rgb(0 0 0 / 0.9);
     }
 
-    .search-button:hover:not(:disabled) {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
+    /* The banker's lamp standing on the table's back edge. */
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: -6.1rem;
+      left: 50%;
+      width: 8rem;
+      height: 6rem;
+      margin-left: -4rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 90'%3E%3Cellipse cx='60' cy='86' rx='28' ry='4' fill='%23000' fill-opacity='0.3'/%3E%3Cpath d='M36 86 Q36 76 60 76 Q84 76 84 86Z' fill='%23b88a35'/%3E%3Crect x='57' y='40' width='6' height='38' fill='%23d1a54d'/%3E%3Cpath d='M28 44 H92 L106 54 H14Z' fill='%23ffe3a3' fill-opacity='0.55'/%3E%3Cpath d='M20 36 Q60 8 100 36 L94 46 H26Z' fill='%232f6b4f'/%3E%3Cpath d='M30 31 Q60 14 90 31' stroke='%238cc4a6' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cpath d='M26 46 H94' stroke='%23d1a54d' stroke-width='2.5'/%3E%3Cpath d='M84 46 v14' stroke='%23d1a54d' stroke-width='1.5'/%3E%3Ccircle cx='84' cy='62' r='2.6' fill='%23d1a54d'/%3E%3C/svg%3E") center bottom / contain no-repeat;
     }
 
-    .search-button:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
+    .panel-header { display: grid; justify-items: center; gap: 0.4rem; margin-bottom: 1.75rem; text-align: center; }
+
+    .panel-header h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      line-height: 1.1;
     }
 
+    /* A drawn open book stands in for the emoji. */
+    .panel-header h2 .emoji { display: none; }
+    .panel-header h2::before {
+      content: "";
+      width: 2.6rem;
+      height: 2.6rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M3 12 Q20 6 20 12 Q20 6 37 12 V33 Q20 28 20 33 Q20 28 3 33Z' fill='%237a2e2e'/%3E%3Cpath d='M5 11 Q14 7 19 12 V31 Q14 27 5 30Z' fill='%23fbf6ea'/%3E%3Cpath d='M21 12 Q26 7 35 11 V30 Q26 27 21 31Z' fill='%23efe5d0'/%3E%3Cpath d='M19 12 v22 l1.5 -2 1.5 2 v-22' fill='%23d1a54d'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .panel-header p { color: var(--ink-soft); }
+
+    /* ---------- the search card ---------- */
+
+    .search-box-wrapper { max-width: 40rem; margin: 0 auto 2.25rem; }
+    .search-form { display: flex; gap: 0.75rem; }
+
+    /* A blank catalogue card: red header rule and one blue writing line. */
+    .input-field {
+      flex: 1;
+      min-width: 0;
+      min-height: 3.5rem;
+      padding: 0.9rem 1rem 0.6rem;
+      font: inherit;
+      font-size: 1.0625rem;
+      color: var(--paper-ink);
+      background:
+        linear-gradient(var(--rule-red), var(--rule-red)) 0 0.45rem / 100% 2px no-repeat,
+        linear-gradient(var(--rule-blue), var(--rule-blue)) 0 calc(100% - 0.55rem) / 100% 1px no-repeat,
+        var(--card);
+      border: 0;
+      border-radius: 0.25rem;
+      box-shadow: 0 10px 18px -10px rgb(0 0 0 / 0.75);
+    }
+    .input-field::placeholder { color: var(--paper-soft); }
+    .input-field:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+    /* Too short: the card gets a red pencil mark. */
+    .input-field.input-error {
+      outline: 3px solid var(--warn);
+      outline-offset: 3px;
+      background:
+        linear-gradient(var(--rule-red), var(--rule-red)) 0 0.45rem / 100% 2px no-repeat,
+        linear-gradient(#c0392b, #c0392b) 0 calc(100% - 0.55rem) / 100% 2px no-repeat,
+        var(--card);
+    }
+
+    /* An oxblood leather button with a gold-foil line. */
+    .search-button {
+      min-width: 8.75rem;
+      min-height: 3.5rem;
+      padding: 0 1.4rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #fff4df;
+      background: var(--leather);
+      border: 0;
+      border-radius: 0.45rem;
+      box-shadow: inset 0 0 0 4px var(--leather), inset 0 0 0 5.5px rgb(209 165 77 / 0.85), 0 10px 16px -8px rgb(0 0 0 / 0.75);
+      cursor: pointer;
+      transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out);
+    }
+    .search-button:hover:not(:disabled) { background: #8a3636; }
+    .search-button:active:not(:disabled) { transform: translateY(2px); }
+    .search-button:disabled { cursor: progress; background: #5f2a2a; }
+    .search-button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+    /* The hint is pencilled on the table under the card. */
     .hint {
+      margin-top: 0.75rem;
       text-align: center;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-top: 0.6rem;
-      transition: var(--transition);
+      font-family: var(--font-hand);
+      font-size: 1.45rem;
+      line-height: 1.1;
+      color: var(--ink-soft);
     }
+    .hint.is-error { color: var(--warn); text-decoration: underline wavy; text-decoration-thickness: 1px; text-underline-offset: 5px; }
 
-    .hint.is-error {
-      color: var(--danger);
-      font-weight: 500;
-    }
+    /* ---------- the books ---------- */
 
-    /* Results Header */
     .results-header {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
+      gap: 0.5rem 1rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px dashed rgb(246 238 226 / 0.25);
     }
 
+    /* A brass reserved-seat nameplate. */
     .results-title {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.35rem;
+      padding: 0.2rem 1rem 0.3rem;
+      font-family: var(--font-display);
       font-weight: 700;
+      font-size: 1.35rem;
+      line-height: 1.3;
+      color: #2a1d0e;
+      background: linear-gradient(#e7c579, var(--brass) 55%, #b08431);
+      border-radius: 0.3rem;
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35), 0 6px 10px -6px rgb(0 0 0 / 0.7);
     }
 
-    .results-meta {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+    .results-meta { font-family: var(--font-code); font-size: 0.8125rem; color: var(--ink-soft); }
 
-    /* Book Cards Grid */
     .results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 20.5rem), 1fr));
+      gap: 1.75rem;
+      padding-top: 2rem;
     }
 
+    /* A book lying open on the table: cloth binding showing around the pages. */
     .book {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: var(--transition);
       position: relative;
+      display: grid;
+      grid-template-columns: minmax(5.5rem, 36%) minmax(0, 1fr);
+      padding: 0.45rem;
+      background: var(--cloth, #34507a);
+      border-radius: 0.4rem;
+      box-shadow: 0 16px 22px -14px rgb(0 0 0 / 0.9);
+      transform: rotate(var(--lie, -0.6deg));
+      transition: transform 320ms var(--ease-out);
     }
-
-    .book:hover {
-      transform: translateY(-4px);
-      border-color: var(--primary);
-      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.6);
-    }
+    .book:nth-child(4n + 2) { --cloth: #7a2e2e; --lie: 0.5deg; }
+    .book:nth-child(4n + 3) { --cloth: #3f5e3a; --lie: 0.3deg; }
+    .book:nth-child(4n) { --cloth: #6b4a2a; --lie: -0.4deg; }
+    .book:hover { --lie: 0deg; transform: rotate(0deg) translateY(-0.25rem); }
 
     .cover-container {
-      width: 100%;
-      height: 270px;
-      background: #0d1424;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      align-self: start;
+      aspect-ratio: 2 / 3;
       overflow: hidden;
-      position: relative;
+      background: rgb(0 0 0 / 0.2);
+      border-radius: 0.2rem 0 0 0.2rem;
     }
-
-    .book .cover {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    .book:hover .cover {
-      transform: scale(1.04);
-    }
+    .book .cover { width: 100%; height: 100%; object-fit: cover; }
 
     .cover-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      padding: 1.5rem;
-      text-align: center;
-      width: 100%;
+      display: grid;
+      place-content: center;
       height: 100%;
-      background: linear-gradient(180deg, #101827 0%, #172138 100%);
+      padding: 0.75rem;
+      text-align: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.2;
+      color: #f3d9a0;
+      box-shadow: inset 0 0 0 0.35rem rgb(243 217 160 / 0.4);
     }
+    .cover-placeholder span { display: none; }
 
-    .cover-placeholder span {
-      font-size: 2.5rem;
-    }
-
+    /* The inside back cover: endpaper with a shaded gutter. */
     .book-content {
-      padding: 1.25rem;
       display: flex;
       flex-direction: column;
-      flex: 1;
+      gap: 0.4rem;
+      padding: 0.9rem 0.9rem 0.9rem 1.1rem;
+      color: var(--paper-ink);
+      background:
+        linear-gradient(90deg, rgb(60 40 20 / 0.22), transparent 1rem),
+        var(--endpaper);
+      border-radius: 0 0.2rem 0.2rem 0;
     }
 
     .book-title {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.05rem;
+      font-family: var(--font-display);
       font-weight: 700;
-      line-height: 1.35;
-      margin-bottom: 0.45rem;
+      font-size: 1.15rem;
+      line-height: 1.15;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -325,135 +305,201 @@
     }
 
     .book-author {
-      font-size: 0.875rem;
-      color: var(--primary);
-      margin-bottom: 0.75rem;
+      font-size: 0.8125rem;
+      line-height: 1.35;
+      color: var(--paper-soft);
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .book-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-bottom: 0.85rem;
-    }
-
+    /* Subjects are little round library classification stickers. */
+    .book-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
     .tag-badge {
-      font-size: 0.7rem;
-      background: rgba(56, 189, 248, 0.1);
-      color: #7dd3fc;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: 4px;
-      padding: 0.15rem 0.45rem;
+      max-width: 100%;
+      padding: 0.1rem 0.55rem;
+      overflow: hidden;
+      font-size: 0.75rem;
+      line-height: 1.5;
       white-space: nowrap;
       text-overflow: ellipsis;
-      max-width: 100%;
-      overflow: hidden;
+      color: var(--paper-ink);
+      background: #cfe6d6;
+      border-radius: 999px;
     }
+    .tag-badge + .tag-badge { background: #f4d7a8; }
 
+    /* The due-date card, standing in its library pocket. */
     .book-details {
-      margin-top: auto;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      position: relative;
+      display: grid;
+      margin-top: 0.35rem;
+      padding: 0.6rem 0.6rem 2rem;
+      background:
+        linear-gradient(var(--rule-red), var(--rule-red)) 0 0.35rem / 100% 1.5px no-repeat,
+        var(--card);
+      border-radius: 0.15rem;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+      transform: rotate(-1.5deg);
     }
 
     .detail-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding-block: 0.2rem;
+      font-size: 0.75rem;
+      line-height: 1.4;
+      border-bottom: 1px solid var(--rule-blue);
     }
+    .detail-label { color: var(--paper-soft); }
+    .detail-value { font-family: var(--font-code); font-weight: 700; color: #8a2f2f; }
 
-    .detail-label {
-      color: #64748b;
-    }
-
-    .detail-value {
-      color: var(--text);
-      font-weight: 500;
+    /* The manila pocket in front of the card's lower edge, with a thumb notch. */
+    .book-details::after {
+      content: "";
+      position: absolute;
+      left: -0.3rem;
+      right: -0.3rem;
+      bottom: -0.25rem;
+      height: 1.75rem;
+      background: var(--manila);
+      border-radius: 0 0 0.2rem 0.2rem;
+      mask: radial-gradient(circle at 50% 0, transparent 0.6rem, #000 0.65rem);
+      box-shadow: 0 -1px 0 rgb(0 0 0 / 0.08);
+      transform: rotate(1.5deg);
     }
 
     .book-link {
-      display: inline-block;
-      margin-top: 0.85rem;
-      text-align: center;
-      padding: 0.45rem 0.75rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--primary);
-      border: 1px solid var(--border);
-      background: rgba(56, 189, 248, 0.05);
-      border-radius: var(--radius-sm);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .book-link:hover {
-      background: var(--primary);
-      color: #0b0f19;
-      border-color: var(--primary);
-    }
-
-    /* Status Components */
-    .status-panel {
-      text-align: center;
-      padding: 3.5rem 1rem;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
+      display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
+      align-self: flex-start;
+      min-height: 2.75rem;
+      margin-top: auto;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--leather);
+      text-underline-offset: 3px;
+    }
+    .book-link:hover { color: #a33b3b; }
+    .book-link:focus-visible { outline-color: var(--leather); }
+
+    /* ---------- states ---------- */
+
+    .status-panel {
+      display: grid;
+      justify-items: center;
+      gap: 1rem;
+      padding: 2.5rem 1rem 1.5rem;
+      text-align: center;
+    }
+    .status-panel .icon { display: none; }
+    .status-panel .status { max-width: 28rem; font-size: 1.0625rem; color: var(--ink); }
+    .status-panel strong { color: var(--focus); font-weight: 400; }
+
+    /* Before searching: an open book and a cup of tea on the table. */
+    .status-panel::before {
+      content: "";
+      width: 13rem;
+      height: 7.5rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 120'%3E%3Cpath d='M22 48 Q62 34 102 50 Q142 34 182 48 V108 Q142 94 102 110 Q62 94 22 108Z' fill='%237a2e2e'/%3E%3Cpath d='M28 44 Q65 32 100 48 V102 Q65 88 28 100Z' fill='%23fbf6ea'/%3E%3Cpath d='M104 48 Q139 32 176 44 V100 Q139 88 104 102Z' fill='%23efe5d0'/%3E%3Cpath d='M38 58 Q62 50 90 60 M38 68 Q62 60 90 70 M38 78 Q62 70 84 79 M114 60 Q140 50 166 56 M114 70 Q140 60 166 66 M114 80 Q136 71 158 75' stroke='%23c9bfae' stroke-width='2' fill='none'/%3E%3Cpath d='M98 48 v66 l4 -6 4 6 v-66' fill='%23d1a54d'/%3E%3Crect x='184' y='76' width='18' height='26' rx='3' fill='%23f4d7a8'/%3E%3Cpath d='M202 82 q8 0 8 7 t-8 7' stroke='%23f4d7a8' stroke-width='3' fill='none'/%3E%3Cpath d='M190 70 q-4 -6 0 -12 M196 70 q-4 -6 0 -12' stroke='%23f6eee2' stroke-opacity='0.55' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
     }
 
-    .status-panel .icon {
-      font-size: 2.5rem;
-    }
-
-    .status-panel.error-state {
-      color: #fda4af;
-    }
-
-    .status-panel.error-state p {
-      color: var(--text-muted);
-      max-width: 440px;
-    }
+    /* Loading: books being stacked on the table for you. */
+    .status-panel:has(.spinner)::before { content: none; }
 
     .spinner {
-      width: 34px;
-      height: 34px;
-      border: 3px solid rgba(56, 189, 248, 0.2);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.75s linear infinite;
+      position: relative;
+      width: 7rem;
+      height: 6rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 112 96'%3E%3Crect x='4' y='88' width='104' height='4' rx='2' fill='%233d2716'/%3E%3Crect x='14' y='74' width='84' height='14' rx='2' fill='%237a2e2e'/%3E%3Crect x='18' y='77' width='78' height='8' fill='%23f1e7d2'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .spinner::before,
+    .spinner::after {
+      content: "";
+      position: absolute;
+      height: calc(14 / 96 * 100%);
+      border-radius: 2px;
+      background:
+        linear-gradient(90deg, transparent 0.25rem, #f1e7d2 0.25rem) center / 100% 56% no-repeat,
+        var(--c);
+      animation: stack-up 2s var(--ease-out) infinite;
     }
+    .spinner::before { --c: #2f6b4f; left: calc(20 / 112 * 100%); width: calc(70 / 112 * 100%); bottom: calc(22 / 96 * 100%); }
+    .spinner::after { --c: #d1a54d; left: calc(28 / 112 * 100%); width: calc(56 / 112 * 100%); bottom: calc(36 / 96 * 100%); animation-delay: 0.35s; }
+
+    @keyframes stack-up {
+      0% { transform: translateY(-2.5rem); opacity: 0; }
+      22%, 80% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0; }
+    }
+
+    /* No results: the book opens to blank pages. */
+    .results-header:has(.results-meta:not(:empty)) + .results .status-panel:not(.error-state):not(:has(.spinner))::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 120'%3E%3Cpath d='M22 48 Q62 34 102 50 Q142 34 182 48 V108 Q142 94 102 110 Q62 94 22 108Z' fill='%2334507a'/%3E%3Cpath d='M28 44 Q65 32 100 48 V102 Q65 88 28 100Z' fill='%23fbf6ea'/%3E%3Cpath d='M104 48 Q139 32 176 44 V100 Q139 88 104 102Z' fill='%23efe5d0'/%3E%3Cpath d='M132 74 l40 -26 6 6 -40 26 -9 3Z' fill='%23e8b04b'/%3E%3Cpath d='M129 83 l3 -9 6 6Z' fill='%232a2622'/%3E%3Cpath d='M172 48 l6 6 4 -3 -6 -6Z' fill='%23d65f5f'/%3E%3C/svg%3E");
+    }
+    .results-header:has(.results-meta:not(:empty)) + .results .status-panel:not(.error-state):not(:has(.spinner)) .status {
+      font-family: var(--font-hand);
+      font-size: 1.75rem;
+      line-height: 1.1;
+    }
+
+    /* Error: the brass desk plaque that says the room is closed for now. */
+    .status-panel.error-state::before { content: none; }
+
+    .error-state h3 {
+      position: relative;
+      margin-bottom: 0.9rem;
+      padding: 0.6rem 1.6rem 0.7rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.75rem;
+      line-height: 1.1;
+      color: #3a2508;
+      background: linear-gradient(#ecd08e, var(--brass) 55%, #a87b2c);
+      border-radius: 0.3rem;
+      box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.35), inset 0 0 0 5px rgb(120 80 20 / 0.35), 0 8px 12px -8px rgb(0 0 0 / 0.8);
+    }
+    /* The wooden block the plaque sits on. */
+    .error-state h3::after {
+      content: "";
+      position: absolute;
+      left: -0.6rem;
+      right: -0.6rem;
+      bottom: -0.8rem;
+      height: 0.8rem;
+      background: linear-gradient(var(--walnut-light), #3d2716);
+      border-radius: 0.2rem;
+    }
+    .error-state .status { color: var(--ink-soft); }
+
+    /* ---------- footer ---------- */
 
     footer {
+      width: min(100% - 2rem, 68rem);
+      margin: 3rem auto 0;
+      padding-top: 1.25rem;
       text-align: center;
-      padding: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      border-top: 1px dashed rgb(246 238 226 / 0.25);
     }
 
-    @media (max-width: 600px) {
-      .panel { padding: 1.25rem; }
+    @media (max-width: 37.5rem) {
       .search-form { flex-direction: column; }
       .search-button { width: 100%; }
-      .hero h1 { font-size: 2.1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner::before, .spinner::after { animation: none; }
+      .book { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
 
@@ -473,7 +519,7 @@
 <main>
   <div class="panel">
     <div class="panel-header">
-      <h2>📚 Book Search</h2>
+      <h2><span class="emoji" aria-hidden="true">📚</span> Book Search</h2>
       <p>Discover books by title using the Open Library Search API.</p>
     </div>
 

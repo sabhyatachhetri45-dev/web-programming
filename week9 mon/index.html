@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 9 · Measuring and improving a website</title>
+  <meta name="description" content="Week 9 coursework by Sabhyata Chhetri: Lighthouse reports on performance, accessibility and SEO, and the improved website.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='9' y='2' width='14' height='28' rx='1' fill='%23cdb8ef'/%3E%3Crect x='11' y='4' width='10' height='7' fill='%232b2230'/%3E%3Crect x='11' y='13' width='10' height='7' fill='%232b2230'/%3E%3Crect x='11' y='22' width='10' height='5' fill='%232b2230'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
+  <link rel="stylesheet" href="../assets/drawer/week9.css">
+</head>
+<body>
+  <main class="page">
+    <header class="intro">
+      <a class="back-to-diary" href="../index.html"><span aria-hidden="true">←</span> back to the diary</a>
+      <h1>Week 9</h1>
+      <p class="intro__topic">This week's topic is <strong>measuring and improving a website</strong>: running Google Lighthouse, fixing what it finds in performance, accessibility and SEO, then comparing before and after. Each photo strip is one task, in four cuts.</p>
+      <p class="intro__note">before and after, four cuts each. the after photos are my favourite.</p>
+    </header>
+
+    <section aria-labelledby="line-title">
+      <div class="line-head">
+        <h2 id="line-title">Hung up to dry</h2>
+        <p data-count>3 strips</p>
+      </div>
+      <ol class="line">
+        <li>
+          <a class="strip strip--mon" href="updated%20performance.html" data-task="week9 mon/updated performance.html">
+              <span class="frame shot-1"><img src="Screenshot%202026-11-02%20185052.png" width="1174" height="651" alt="" loading="lazy" decoding="async"><span class="frame__tag">before</span></span>
+              <span class="frame shot-2"><img src="Screenshot%202026-11-02%20202331.png" width="1240" height="811" alt="" loading="lazy" decoding="async"><span class="frame__tag">after</span></span>
+              <span class="frame frame--score"><svg viewBox="0 0 200 72" aria-hidden="true" focusable="false"><circle cx="25" cy="30" r="18" fill="none" stroke="#2a3a30" stroke-width="4"/><circle cx="25" cy="30" r="18" fill="none" stroke="#0cce6b" stroke-width="4" stroke-linecap="round" stroke-dasharray="112.0 113.1" transform="rotate(-90 25 30)"/><text x="25" y="35" text-anchor="middle" font-size="13" fill="#0cce6b">99</text><text x="25" y="64" text-anchor="middle" font-size="7.5" font-weight="400" fill="#d9d4de">Perf</text><circle cx="75" cy="30" r="18" fill="none" stroke="#2a3a30" stroke-width="4"/><circle cx="75" cy="30" r="18" fill="none" stroke="#0cce6b" stroke-width="4" stroke-linecap="round" stroke-dasharray="108.6 113.1" transform="rotate(-90 75 30)"/><text x="75" y="35" text-anchor="middle" font-size="13" fill="#0cce6b">96</text><text x="75" y="64" text-anchor="middle" font-size="7.5" font-weight="400" fill="#d9d4de">A11y</text><circle cx="125" cy="30" r="18" fill="none" stroke="#2a3a30" stroke-width="4"/><circle cx="125" cy="30" r="18" fill="none" stroke="#0cce6b" stroke-width="4" stroke-linecap="round" stroke-dasharray="113.1 113.1" transform="rotate(-90 125 30)"/><text x="125" y="35" text-anchor="middle" font-size="13" fill="#0cce6b">100</text><text x="125" y="64" text-anchor="middle" font-size="7.5" font-weight="400" fill="#d9d4de">Best pr.</text><circle cx="175" cy="30" r="18" fill="none" stroke="#2a3a30" stroke-width="4"/><circle cx="175" cy="30" r="18" fill="none" stroke="#0cce6b" stroke-width="4" stroke-linecap="round" stroke-dasharray="101.8 113.1" transform="rotate(-90 175 30)"/><text x="175" y="35" text-anchor="middle" font-size="13" fill="#0cce6b">90</text><text x="175" y="64" text-anchor="middle" font-size="7.5" font-weight="400" fill="#d9d4de">SEO</text></svg></span>
+              <span class="frame frame--note">performance stayed at 99. accessibility went up.</span>
+            <span class="strip__foot">
+              <span class="strip__title"><span class="visually-hidden">Task 1: </span>Website Improvements Report</span>
+              <span class="strip__meta">Performance, accessibility and SEO · Monday</span>
+              <span class="strip__seen" aria-hidden="true">seen</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="strip strip--a11y" href="../week9%20fri/accessibility-task.html" data-task="week9 fri/accessibility-task.html">
+              <span class="frame shot-3"><img src="../week9%20fri/screenshots/accessibility_before.png" width="924" height="904" alt="" loading="lazy" decoding="async"><span class="frame__tag">before</span></span>
+              <span class="frame shot-4"><img src="../week9%20fri/screenshots/accessibility_after.png" width="884" height="899" alt="" loading="lazy" decoding="async"><span class="frame__tag">after</span></span>
+              <span class="frame frame--score"><svg viewBox="0 0 200 72" aria-hidden="true" focusable="false"><circle cx="45" cy="30" r="18" fill="none" stroke="#2a3a30" stroke-width="4"/><circle cx="45" cy="30" r="18" fill="none" stroke="#0cce6b" stroke-width="4" stroke-linecap="round" stroke-dasharray="101.8 113.1" transform="rotate(-90 45 30)"/><text x="45" y="35" text-anchor="middle" font-size="13" fill="#0cce6b">90</text><text x="45" y="64" text-anchor="middle" font-size="7.5" font-weight="400" fill="#d9d4de">before</text><path d="M84 30 h30 m-8 -6 l8 6 -8 6" fill="none" stroke="#fff6cc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="155" cy="30" r="18" fill="none" stroke="#2a3a30" stroke-width="4"/><circle cx="155" cy="30" r="18" fill="none" stroke="#0cce6b" stroke-width="4" stroke-linecap="round" stroke-dasharray="113.1 113.1" transform="rotate(-90 155 30)"/><text x="155" y="35" text-anchor="middle" font-size="13" fill="#0cce6b">100</text><text x="155" y="64" text-anchor="middle" font-size="7.5" font-weight="400" fill="#d9d4de">after</text></svg></span>
+              <span class="frame frame--note">a skip link, a nav label and a focus outline.</span>
+            <span class="strip__foot">
+              <span class="strip__title"><span class="visually-hidden">Task 2: </span>Accessibility Audit Report</span>
+              <span class="strip__meta">Lighthouse accessibility, 90 to 100 · Friday</span>
+              <span class="strip__seen" aria-hidden="true">seen</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="strip strip--site" href="../week9%20fri/updatedwebsite.html" data-task="week9 fri/updatedwebsite.html">
+              <span class="frame shot-5"><img src="../assets/drawer/week9/site-desktop.webp" width="1280" height="800" alt="" loading="lazy" decoding="async"></span>
+              <span class="frame shot-6"><img src="../assets/drawer/week9/site-section.webp" width="1280" height="800" alt="" loading="lazy" decoding="async"></span>
+              <span class="frame frame--contain shot-7"><img src="../assets/drawer/week9/site-phone.webp" width="390" height="780" alt="" loading="lazy" decoding="async"><span class="frame__tag">phone</span></span>
+              <span class="frame frame--note">same me, faster and easier to use.</span>
+            <span class="strip__foot">
+              <span class="strip__title"><span class="visually-hidden">Task 3: </span>The updated website</span>
+              <span class="strip__meta">My portfolio, after the fixes · Friday</span>
+              <span class="strip__seen" aria-hidden="true">seen</span>
+            </span>
+          </a>
+        </li>
+      </ol>
+    </section>
+
+    <nav class="page-turn" aria-label="Week 9 pages">
+      <a href="../week8(fri)/index.html"><span aria-hidden="true">←&nbsp;</span>Week 8's boarding passes</a>
+      <a href="../week10/index.html">on to Week 10<span aria-hidden="true">&nbsp;→</span></a>
+    </nav>
+  </main>
+
+  <script>
+    // The drawer tab on every task page records which tasks were opened
+    // (localStorage "drawer:seen"); those strips get a handwritten "seen".
+    try {
+      const saved = JSON.parse(localStorage.getItem('drawer:seen') ?? '[]');
+      const seen = new Set(Array.isArray(saved) ? saved : []);
+      const strips = document.querySelectorAll('.strip[data-task]');
+      let opened = 0;
+      strips.forEach((strip) => {
+        if (seen.has(strip.dataset.task)) { strip.classList.add('is-seen'); opened += 1; }
+      });
+      if (opened) document.querySelector('[data-count]').textContent = `${opened} of ${strips.length} looked at`;
+    } catch {
+      // No storage: the strips simply stay unmarked.
+    }
+  </script>
+</body>
+</html>

@@ -4,300 +4,349 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 7 Task 5 | Book Search</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
   <style>
+    /*
+      Step 5: the display window. Now that results have covers, they are shown
+      face-out on the library's "new arrivals" ledges under a striped awning.
+      Every book wears a spine-label sticker, and its author and publication
+      details hang underneath on a manila tag. Fonts and the reset come from
+      ../assets/drawer/base.css.
+    */
     :root {
-      --bg: #0b0f19;
-      --surface: #151d30;
-      --surface-hover: #1e2942;
-      --border: #233354;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --primary: #38bdf8;
-      --primary-hover: #0ea5e9;
-      --accent: #818cf8;
-      --danger: #f43f5e;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.55);
-      --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --ground: #1b2540;
+      --window: #233156;
+      --ink: #f3efe6;
+      --ink-soft: #c9cee0;
+      --oak: #c99a62;
+      --oak-dark: #8a6236;
+      --awning-red: #c24848;
+      --awning-cream: #f4ead6;
+      --tag: #f2dfb8;
+      --paper: #fffdf6;
+      --paper-ink: #2a2622;
+      --paper-soft: #5b4f40;
+      --focus: #ffd98a;
+      --select: #3c5aa0;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      padding-bottom: 6rem;
+      background:
+        radial-gradient(ellipse 22% 38% at 18% 0, rgb(255 214 140 / 0.13), transparent 70%),
+        radial-gradient(ellipse 22% 38% at 50% 0, rgb(255 214 140 / 0.16), transparent 70%),
+        radial-gradient(ellipse 22% 38% at 82% 0, rgb(255 214 140 / 0.13), transparent 70%),
+        var(--ground);
     }
 
-    /* Breadcrumbs */
+    /* ---------- wayfinding strip ---------- */
+
     .crumbbar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .crumbbar a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .crumbbar a:hover {
-      color: var(--primary);
-    }
-
-    .crumbbar .back {
-      background: var(--surface);
-      padding: 0.35rem 0.9rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .crumbbar .back:hover {
-      background: var(--surface-hover);
-      border-color: var(--primary);
-    }
-
-    /* Hero Header */
-    .hero {
-      text-align: center;
-      padding: 2.75rem 1.5rem 1.25rem;
-    }
-
-    .hero h1 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 2.75rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 40%, var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-    }
-
-    /* Main Container */
-    main {
-      flex: 1;
-      max-width: 1100px;
-      width: 100%;
+      gap: 0.5rem 1rem;
+      width: min(100% - 2rem, 68rem);
       margin: 0 auto;
-      padding: 1.5rem;
+      padding: 1rem 0;
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
     }
+    .crumbbar a { color: var(--ink); text-underline-offset: 3px; }
+    .crumbbar a:hover { color: var(--focus); }
 
-    .panel {
-      background: rgba(21, 29, 48, 0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2.25rem;
-      box-shadow: var(--shadow);
-    }
-
-    .panel-header {
-      margin-bottom: 1.75rem;
-      text-align: center;
-    }
-
-    .panel-header h2 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.85rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .panel-header p {
-      color: var(--text-muted);
-    }
-
-    /* Search Controls */
-    .search-box-wrapper {
-      max-width: 620px;
-      margin: 0 auto 1.5rem;
-    }
-
-    .search-form {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .input-field {
-      flex: 1;
-      padding: 0.85rem 1.25rem;
-      font-size: 1rem;
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .input-field:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-    }
-
-    .search-button {
-      padding: 0.85rem 1.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: var(--radius-md);
-      background: var(--primary);
-      color: #0b0f19;
-      border: none;
-      cursor: pointer;
+    /* "Back" is a little shop-door sign. */
+    .crumbbar .back {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      transition: var(--transition);
-      white-space: nowrap;
-      min-width: 135px;
+      min-height: 44px;
+      padding: 0 1.1rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.125rem;
+      text-decoration: none;
+      color: var(--paper-ink);
+      background: var(--awning-cream);
+      border: 2px solid var(--oak-dark);
+      border-radius: 0.5rem;
+    }
+    .crumbbar .back:hover { color: var(--paper-ink); background: #ffe9a8; }
+
+    /* ---------- heading ---------- */
+
+    .hero {
+      display: grid;
+      gap: 0.35rem;
+      width: min(100% - 2rem, 68rem);
+      margin: 1.25rem auto 2.25rem;
+    }
+    .hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.75rem, 8vw, 4.5rem); line-height: 1; }
+    .hero p { font-size: 1.0625rem; color: var(--ink-soft); }
+
+    main { width: min(100% - 2rem, 68rem); margin: 0 auto; }
+
+    /* ---------- the shop window ---------- */
+
+    .panel {
+      position: relative;
+      padding: 4.25rem clamp(0.9rem, 3.5vw, 2.25rem) 2.75rem;
+      background:
+        radial-gradient(ellipse 60% 30% at 50% 0, rgb(255 220 160 / 0.12), transparent 75%),
+        var(--window);
+      border: 0.7rem solid #121a2e;
+      border-top: 0;
+      border-radius: 0 0 0.6rem 0.6rem;
+      box-shadow: 0 30px 50px -28px rgb(0 0 0 / 0.85);
     }
 
-    .search-button:hover:not(:disabled) {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
+    /* The striped awning with a scalloped edge. */
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      /* Overhangs the window frame slightly, but stays inside the page gutter. */
+      left: -0.95rem;
+      right: -0.95rem;
+      height: 2.9rem;
+      background: repeating-linear-gradient(90deg, var(--awning-red) 0 2.25rem, var(--awning-cream) 2.25rem 4.5rem);
+      --scallop: radial-gradient(circle at 50% 0, #000 0.62rem, transparent 0.66rem) 0 100% / 2.25rem 1.25rem repeat-x;
+      mask: linear-gradient(#000 0 0) top / 100% calc(100% - 1.25rem) no-repeat, var(--scallop);
+      filter: drop-shadow(0 6px 4px rgb(0 0 0 / 0.35));
     }
 
-    .search-button:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
+    .panel-header { display: grid; justify-items: center; gap: 0.4rem; margin-bottom: 1.75rem; text-align: center; }
+
+    .panel-header h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      line-height: 1.1;
     }
+
+    /* A drawn book on a stand stands in for the emoji. */
+    .panel-header h2 .emoji { display: none; }
+    .panel-header h2::before {
+      content: "";
+      width: 2.4rem;
+      height: 2.4rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='11' y='5' width='18' height='25' rx='2' fill='%23c24848'/%3E%3Crect x='14' y='9' width='12' height='6' rx='1' fill='%23f4ead6'/%3E%3Crect x='12' y='8' width='2' height='20' fill='%23000' fill-opacity='0.2'/%3E%3Cpath d='M8 30 h24 l-3 5 h-18Z' fill='%23c99a62'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .panel-header p { color: var(--ink-soft); }
+
+    /* ---------- ask the bookseller ---------- */
+
+    .search-box-wrapper { max-width: 40rem; margin: 0 auto 2.25rem; }
+    .search-form { display: flex; gap: 0.75rem; }
+
+    /* A kraft-paper label strip. */
+    .input-field {
+      flex: 1;
+      min-width: 0;
+      min-height: 3.25rem;
+      padding: 0.75rem 1.1rem;
+      font: inherit;
+      font-size: 1.0625rem;
+      color: var(--paper-ink);
+      background: var(--tag);
+      border: 2px dashed #b9975c;
+      border-radius: 0.35rem;
+      box-shadow: 0 10px 18px -10px rgb(0 0 0 / 0.7);
+    }
+    .input-field::placeholder { color: var(--paper-soft); }
+    .input-field:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+    /* A red "new arrival" sticker. */
+    .search-button {
+      min-width: 8.75rem;
+      min-height: 3.25rem;
+      padding: 0 1.4rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #fff8ee;
+      background: #b23c3c;
+      border: 0;
+      border-radius: 999px;
+      box-shadow: inset 0 0 0 3px #b23c3c, inset 0 0 0 5px rgb(255 248 238 / 0.65), 0 10px 16px -8px rgb(0 0 0 / 0.7);
+      cursor: pointer;
+      transition: transform 160ms var(--ease-out), background-color 160ms var(--ease-out);
+    }
+    .search-button:hover:not(:disabled) { background: #c24848; transform: rotate(-3deg); }
+    .search-button:active:not(:disabled) { transform: scale(0.97); }
+    .search-button:disabled { cursor: progress; background: #8f4040; }
+    .search-button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
     .hint {
+      margin-top: 0.75rem;
       text-align: center;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-top: 0.6rem;
+      font-family: var(--font-hand);
+      font-size: 1.45rem;
+      line-height: 1.1;
+      color: var(--ink-soft);
     }
 
-    /* Results Header */
+    /* ---------- the display ---------- */
+
     .results-header {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
+      gap: 0.5rem 1rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px dashed rgb(243 239 230 / 0.25);
     }
 
+    /* A painted wooden shop sign. */
     .results-title {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.35rem;
+      padding: 0.2rem 1rem 0.3rem;
+      font-family: var(--font-display);
       font-weight: 700;
+      font-size: 1.35rem;
+      line-height: 1.3;
+      color: #fff4df;
+      background: var(--oak-dark);
+      border-radius: 0.35rem;
+      box-shadow: inset 0 0 0 2px rgb(255 244 223 / 0.25), 0 6px 10px -6px rgb(0 0 0 / 0.7);
     }
 
-    .results-meta {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+    .results-meta { font-family: var(--font-code); font-size: 0.8125rem; color: var(--ink-soft); }
 
-    /* Book Cards Grid */
     .results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+      column-gap: 1.25rem;
+      row-gap: 2.75rem;
+      padding: 2.5rem 0.25rem 1rem;
     }
 
-    .book {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: var(--transition);
+    @media (min-width: 40rem) {
+      .results-grid { grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); column-gap: 1.75rem; }
     }
 
-    .book:hover {
-      transform: translateY(-4px);
-      border-color: var(--primary);
-      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.6);
-    }
+    .book { display: flex; flex-direction: column; }
 
+    /* Face-out on the ledge, leaning back a little. */
     .cover-container {
-      width: 100%;
-      height: 270px;
-      background: #0d1424;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
       position: relative;
+      aspect-ratio: 2 / 3;
+      margin-inline: 0.45rem;
+      overflow: hidden;
+      background: var(--cloth, #3c5a8a);
+      border-radius: 2px 5px 5px 2px;
+      box-shadow: 0 14px 16px -10px rgb(0 0 0 / 0.8);
+      transform: perspective(600px) rotateX(5deg);
+      transform-origin: bottom center;
+      transition: transform 320ms var(--ease-out);
+    }
+    .book:nth-child(4n + 2) .cover-container { --cloth: #8c3b4b; --band: #ffd66b; }
+    .book:nth-child(4n + 3) .cover-container { --cloth: #3f6b4c; --band: #9ad8ff; }
+    .book:nth-child(4n) .cover-container { --cloth: #6b4a7a; --band: #ff9fb6; }
+
+    .book:hover .cover-container { transform: perspective(600px) rotateX(0deg) translateY(-0.3rem); }
+
+    .book .cover { width: 100%; height: 100%; object-fit: cover; }
+
+    /* The library spine label: a colour band and typed call-number lines. */
+    .cover-container::after {
+      content: "";
+      position: absolute;
+      left: 0.45rem;
+      bottom: 0.5rem;
+      width: 1.75rem;
+      height: 2.35rem;
+      background:
+        linear-gradient(var(--band, #c9f0e4), var(--band, #c9f0e4)) top / 100% 32% no-repeat,
+        linear-gradient(#8f877a, #8f877a) 0.3rem 58% / 60% 1px no-repeat,
+        linear-gradient(#8f877a, #8f877a) 0.3rem 72% / 45% 1px no-repeat,
+        linear-gradient(#8f877a, #8f877a) 0.3rem 86% / 55% 1px no-repeat,
+        var(--paper);
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
     }
 
-    .book .cover {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    .book:hover .cover {
-      transform: scale(1.04);
-    }
-
+    /* No cover: a cloth binding with gold lettering. */
     .cover-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      padding: 1.5rem;
-      text-align: center;
-      width: 100%;
+      display: grid;
+      place-content: center;
       height: 100%;
-      background: linear-gradient(180deg, #101827 0%, #172138 100%);
+      padding: 1rem 0.75rem;
+      text-align: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.2;
+      color: #f3d9a0;
+      box-shadow: inset 0 0 0 0.4rem rgb(0 0 0 / 0.12), inset 0 0 0 0.5rem rgb(243 217 160 / 0.45);
+    }
+    .cover-placeholder span { display: none; }
+
+    /* The display ledge (drawn after the cover, before the tag). */
+    .book::after {
+      content: "";
+      order: 1;
+      height: 0.8rem;
+      margin-inline: -0.9rem;
+      background: linear-gradient(#e0b47c, var(--oak) 45%, var(--oak-dark));
+      border-radius: 2px;
+      box-shadow: 0 8px 10px -5px rgb(0 0 0 / 0.65);
     }
 
-    .cover-placeholder span {
-      font-size: 2.5rem;
-    }
-
+    /* The manila tag hanging under the ledge on a string. */
     .book-content {
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+      order: 2;
+      position: relative;
+      display: grid;
+      gap: 0.35rem;
+      margin: 1.15rem 0.35rem 0;
+      padding: 1.6rem 0.75rem 0.8rem;
+      color: var(--paper-ink);
+      background:
+        linear-gradient(135deg, transparent 0.7rem, var(--tag) 0) top left / 51% 100% no-repeat,
+        linear-gradient(-135deg, transparent 0.7rem, var(--tag) 0) top right / 51% 100% no-repeat;
+      filter: drop-shadow(0 6px 6px rgb(0 0 0 / 0.45));
+      transform: rotate(var(--swing, -2deg));
+      transform-origin: 50% -1.15rem;
+      transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .book:nth-child(even) .book-content { --swing: 2deg; }
+    .book:hover .book-content { --swing: 0deg; }
+
+    /* The punched hole... */
+    .book-content::before {
+      content: "";
+      position: absolute;
+      top: 0.5rem;
+      left: 50%;
+      width: 0.7rem;
+      height: 0.7rem;
+      margin-left: -0.35rem;
+      border-radius: 50%;
+      background: var(--window);
+      box-shadow: 0 0 0 2px #c9a86a;
+    }
+    /* ...and the string up to the ledge. */
+    .book-content::after {
+      content: "";
+      position: absolute;
+      top: -1.15rem;
+      left: 50%;
+      width: 2px;
+      height: 2rem;
+      margin-left: -1px;
+      background: #e9dcc4;
     }
 
     .book-title {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.05rem;
+      font-family: var(--font-display);
       font-weight: 700;
-      line-height: 1.35;
-      margin-bottom: 0.45rem;
+      font-size: 1.1rem;
+      line-height: 1.15;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -305,94 +354,134 @@
     }
 
     .book-author {
-      font-size: 0.875rem;
-      color: var(--primary);
-      margin-bottom: 0.85rem;
+      font-size: 0.8125rem;
+      line-height: 1.35;
+      color: var(--paper-soft);
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .book-details {
-      margin-top: auto;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+    .book-details { display: grid; gap: 0.15rem; padding-top: 0.35rem; border-top: 1px dashed #b9975c; }
+    .detail-row { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; font-size: 0.75rem; line-height: 1.4; }
+    .detail-label { color: var(--paper-soft); }
+    .detail-value { font-family: var(--font-code); font-weight: 700; }
 
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    /* ---------- states ---------- */
 
-    .detail-label {
-      color: #64748b;
-    }
-
-    .detail-value {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    /* Status Components */
     .status-panel {
+      display: grid;
+      justify-items: center;
+      gap: 1rem;
+      padding: 2.5rem 1rem 1.5rem;
       text-align: center;
-      padding: 3.5rem 1rem;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
+    }
+    .status-panel .icon { display: none; }
+    .status-panel .status { max-width: 28rem; font-size: 1.0625rem; color: var(--ink); }
+    .status-panel strong { color: var(--focus); font-weight: 400; }
+
+    /* Before searching: an empty display stand waiting for a book. */
+    .status-panel::before {
+      content: "";
+      width: 11rem;
+      height: 8.5rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 124'%3E%3Cpath d='M62 118 L80 26 L98 118' stroke='%238a6236' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Crect x='52' y='22' width='56' height='66' rx='3' fill='%23ffffff' fill-opacity='0.06' stroke='%23f3efe6' stroke-width='2.5' stroke-dasharray='7 6'/%3E%3Crect x='40' y='86' width='80' height='8' rx='2' fill='%23c99a62'/%3E%3Cpath d='M28 30 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2Z M132 52 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6Z' fill='%23ffd98a'/%3E%3C/svg%3E") center / contain no-repeat;
     }
 
-    .status-panel .icon {
-      font-size: 2.5rem;
-    }
-
-    .status-panel.error-state {
-      color: #fda4af;
-    }
-
-    .status-panel.error-state p {
-      color: var(--text-muted);
-      max-width: 440px;
-    }
+    /* Loading: turning the pages of a new arrival. */
+    .status-panel:has(.spinner)::before { content: none; }
 
     .spinner {
-      width: 34px;
-      height: 34px;
-      border: 3px solid rgba(56, 189, 248, 0.2);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.75s linear infinite;
+      position: relative;
+      width: 8rem;
+      height: 5rem;
+      perspective: 500px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 112 70'%3E%3Cpath d='M3 12 Q56 2 109 12 V66 Q56 58 3 66Z' fill='%23c24848'/%3E%3Cpath d='M7 10 Q32 4 56 12 V62 Q32 55 7 61Z' fill='%23fffaf0'/%3E%3Cpath d='M56 12 Q80 4 105 10 V61 Q80 55 56 62Z' fill='%23f1e7d2'/%3E%3Cpath d='M14 22 h34 M14 30 h34 M14 38 h30 M14 46 h34' stroke='%23c9bfae' stroke-width='1.5'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .spinner::before {
+      content: "";
+      position: absolute;
+      top: 16%;
+      left: 50%;
+      width: 44%;
+      height: 72%;
+      background:
+        repeating-linear-gradient(transparent 0 0.45rem, #d8cdb8 0.45rem calc(0.45rem + 1.5px)) 0.5rem 0.6rem / calc(100% - 1rem) calc(100% - 1.2rem) no-repeat,
+        #fffaf0;
+      border-radius: 0 3px 3px 0;
+      transform-origin: left center;
+      animation: turn-page 1.4s ease-in-out infinite;
     }
+
+    @keyframes turn-page {
+      0% { transform: rotateY(0deg); }
+      70%, 100% { transform: rotateY(-180deg); }
+    }
+
+    /* No results: an empty stand with a folded "sorry" card in front of it. */
+    .results-header:has(.results-meta:not(:empty)) + .results .status-panel:not(.error-state):not(:has(.spinner)) .status {
+      padding: 1rem 1.4rem 0.9rem;
+      font-family: var(--font-hand);
+      font-size: 1.6rem;
+      line-height: 1.1;
+      color: var(--paper-ink);
+      background:
+        linear-gradient(rgb(0 0 0 / 0.1), transparent 0.6rem),
+        var(--paper);
+      border-radius: 0.3rem;
+      box-shadow: 0 10px 14px -8px rgb(0 0 0 / 0.75);
+    }
+
+    /* Error: a paper notice taped to the inside of the window. */
+    .status-panel.error-state {
+      position: relative;
+      max-width: 27rem;
+      margin: 2.25rem auto 0.5rem;
+      padding: 1.75rem 1.5rem 1.5rem;
+      color: var(--paper-ink);
+      background: var(--paper);
+      border-radius: 0.2rem;
+      box-shadow: 0 16px 24px -14px rgb(0 0 0 / 0.85);
+      transform: rotate(-1.5deg);
+    }
+    .status-panel.error-state::before {
+      position: absolute;
+      top: -0.7rem;
+      left: 50%;
+      width: 5rem;
+      height: 1.4rem;
+      margin-left: -2.5rem;
+      background: rgb(255 233 168 / 0.8);
+      transform: rotate(3deg);
+    }
+    .error-state h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; line-height: 1.1; color: #a83232; }
+    .error-state .status { color: var(--paper-soft); }
+
+    /* ---------- footer ---------- */
 
     footer {
+      width: min(100% - 2rem, 68rem);
+      margin: 3rem auto 0;
+      padding-top: 1.25rem;
       text-align: center;
-      padding: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      border-top: 1px dashed rgb(243 239 230 / 0.25);
     }
 
-    @media (max-width: 600px) {
-      .panel { padding: 1.25rem; }
+    @media (max-width: 37.5rem) {
       .search-form { flex-direction: column; }
       .search-button { width: 100%; }
-      .hero h1 { font-size: 2.1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner::before { animation: none; }
+      .cover-container, .book-content { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
 
@@ -412,7 +501,7 @@
 <main>
   <div class="panel">
     <div class="panel-header">
-      <h2>📚 Book Search</h2>
+      <h2><span class="emoji" aria-hidden="true">📚</span> Book Search</h2>
       <p>Discover books by title using the Open Library Search API.</p>
     </div>
 
@@ -532,4 +621,103 @@
 
         const titleText = book.title || 'Untitled';
         const authorsList = book.author_name || ['Not listed'];
-        const displayedAuthors = authorsList.slice(0, 3).
+        const displayedAuthors = authorsList.slice(0, 3).join(', ');
+        const extraAuthors = authorsList.length > 3 ? ` (+${authorsList.length - 3} more)` : '';
+        const authorText = displayedAuthors + extraAuthors;
+
+        const publishYearText = book.first_publish_year ? String(book.first_publish_year) : 'Year not listed';
+        const editionsText = book.edition_count ? String(book.edition_count) : 'Not listed';
+
+        // Cover image, with a placeholder when there is no cover or it fails to load
+        const coverBox = document.createElement('div');
+        coverBox.className = 'cover-container';
+
+        if (book.cover_i) {
+          const img = document.createElement('img');
+          img.className = 'cover';
+          img.src = 'https://covers.openlibrary.org/b/id/' + book.cover_i + '-M.jpg';
+          img.alt = 'Cover of ' + titleText;
+          img.loading = 'lazy';
+          img.onerror = () => {
+            img.remove();
+            coverBox.appendChild(createCoverPlaceholder());
+          };
+          coverBox.appendChild(img);
+        } else {
+          coverBox.appendChild(createCoverPlaceholder());
+        }
+
+        // Title, author and publication details
+        const text = document.createElement('div');
+        text.className = 'book-content';
+
+        const h = document.createElement('h3');
+        h.className = 'book-title';
+        h.textContent = titleText;
+        h.title = titleText;
+
+        const author = document.createElement('p');
+        author.className = 'book-author';
+        author.textContent = 'Author(s): ' + authorText;
+        author.title = authorText;
+
+        const details = document.createElement('div');
+        details.className = 'book-details';
+        details.innerHTML = `
+          <div class="detail-row">
+            <span class="detail-label">First published</span>
+            <span class="detail-value">${escapeHtml(publishYearText)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Editions</span>
+            <span class="detail-value">${escapeHtml(editionsText)}</span>
+          </div>
+        `;
+
+        text.append(h, author, details);
+        item.append(coverBox, text);
+        grid.appendChild(item);
+      });
+
+      results.appendChild(grid);
+
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+      console.error(e);
+      // 5. Error State
+      resultsMeta.textContent = '';
+      results.innerHTML = `
+        <div class="status-panel error-state">
+          <span class="icon">⚠️</span>
+          <h3>Search Failed</h3>
+          <p class="status">Could not load books. Please check your internet connection and try again.</p>
+        </div>
+      `;
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Search';
+    }
+  }
+
+  function createCoverPlaceholder() {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'cover-placeholder';
+    placeholder.innerHTML = `
+      <span>📘</span>
+      <div>No Cover Available</div>
+    `;
+    return placeholder;
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+</script>
+</body>
+</html>

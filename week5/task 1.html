@@ -5,86 +5,282 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Web Programming - Sabhyata Chhetri</title>
   <style>
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+    /* The page is a café wall with a chalkboard menu hanging on it. */
+    :root {
+      --wall: #3a2a24;
+      --board: #24342e;
+      --frame: #8a5a36;
+      --chalk: #f3efe6;
+      --chalk-soft: #cfd8d2;
+      --chalk-pink: #f6b9c6;
+      --chalk-yellow: #f6df8c;
+      --chalk-mint: #a9e5cf;
+      --brass: #d7a74a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 40px auto;
-      max-width: 650px;
+      margin: 0;
+      min-height: 100vh;
+      padding: 3rem 1rem 6rem;
+      font-family: "Gowun Dodum", Arial, Helvetica, sans-serif;
       line-height: 1.6;
-      color: #333333;
-      background-color: #fafafa;
-      padding: 0 15px;
+      color: var(--chalk);
+      /* a warm pendant lamp pooling light on the wall */
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 0%, rgba(255, 196, 120, 0.22), transparent 70%),
+        var(--wall);
+    }
+
+    /* The chalkboard: wooden frame around a slate surface. */
+    .board {
+      position: relative;
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 2.5rem 2.25rem 2rem;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.06), transparent 55%),
+        radial-gradient(ellipse at 80% 85%, rgba(255, 255, 255, 0.04), transparent 50%),
+        var(--board);
+      border: 14px solid var(--frame);
+      border-image: linear-gradient(135deg, #a8744a, #7a4c2c 40%, #9c6a42 70%, #6e4326) 1;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.45), 0 20px 40px -18px rgba(0, 0, 0, 0.7);
+    }
+
+    /* The string the board hangs from. */
+    .board::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -3.4rem;
+      width: 9rem;
+      height: 3rem;
+      margin-left: -4.5rem;
+      border: 2px solid #b8a88a;
+      border-bottom: 0;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
     }
 
     header {
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 15px;
-      margin-bottom: 25px;
+      text-align: center;
+      padding-bottom: 1.1rem;
+      margin-bottom: 1.6rem;
+      border-bottom: 2px dashed rgba(243, 239, 230, 0.35);
     }
 
     h1 {
-      margin: 0 0 5px;
-      font-size: 24px;
-      color: #222;
+      margin: 0 0 0.35rem;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: clamp(2.4rem, 8vw, 3.4rem);
+      line-height: 1;
+      letter-spacing: 0.01em;
+      color: var(--chalk);
+      text-shadow: 0 0 1px rgba(255, 255, 255, 0.6);
     }
 
     p.subtitle {
       margin: 0;
-      color: #666;
-      font-size: 14px;
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.6rem;
+      line-height: 1.1;
+      color: var(--chalk-yellow);
     }
 
     section {
-      margin-bottom: 25px;
+      margin-bottom: 1.75rem;
     }
 
     h2 {
-      font-size: 18px;
-      color: #444;
-      margin-bottom: 10px;
+      display: inline-block;
+      margin: 0 0 0.6rem;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.6rem;
+      line-height: 1.1;
+      color: var(--chalk-pink);
+      /* a chalk underline swipe */
+      background: linear-gradient(transparent 82%, rgba(246, 185, 198, 0.35) 82%);
     }
 
+    section p {
+      margin: 0;
+      color: var(--chalk-soft);
+    }
+
+    /* Assignments read like menu items with dotted leaders. */
     ul {
       margin: 0;
-      padding-left: 20px;
+      padding: 0;
+      list-style: none;
     }
 
     li {
-      margin-bottom: 6px;
+      margin-bottom: 0.4rem;
     }
 
     a {
-      color: #2b5797;
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      padding: 0.25rem 0;
+      color: var(--chalk);
       text-decoration: none;
+      font-size: 1.05rem;
+    }
+
+    a::after {
+      content: "";
+      flex: 1;
+      border-bottom: 2px dotted rgba(243, 239, 230, 0.4);
+      transform: translateY(-0.3rem);
     }
 
     a:hover {
+      color: var(--chalk-mint);
       text-decoration: underline;
+      text-underline-offset: 4px;
     }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px dashed var(--chalk-yellow);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
+    /* Quick Test: the counter's brass service bell. */
+    .quick {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 1rem 1.5rem;
+    }
+
+    .quick h2 { grid-column: 1 / -1; justify-self: start; }
 
     button {
-      background-color: #f0f0f0;
-      border: 1px solid #ccc;
-      color: #333;
-      padding: 6px 12px;
-      font-size: 14px;
+      position: relative;
+      display: grid;
+      justify-items: center;
+      padding: 3.4rem 0 0;
+      background: none;
+      border: 0;
       cursor: pointer;
-      border-radius: 3px;
+      font-family: "Gowun Dodum", Arial, sans-serif;
+      font-size: 0.95rem;
+      color: var(--chalk);
     }
 
-    button:hover {
-      background-color: #e5e5e5;
+    /* the dome */
+    button::before {
+      content: "";
+      position: absolute;
+      top: 0.7rem;
+      left: 50%;
+      width: 5.2rem;
+      height: 2.9rem;
+      margin-left: -2.6rem;
+      border-radius: 5.2rem 5.2rem 0.4rem 0.4rem;
+      background: radial-gradient(ellipse at 35% 30%, #fff3cf, var(--brass) 45%, #9a6d1f);
+      box-shadow: inset 0 -3px 4px rgba(80, 50, 10, 0.4), 0 6px 10px -4px rgba(0, 0, 0, 0.6);
+      transform-origin: 50% 100%;
+    }
+
+    /* the plunger on top */
+    button::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 0.9rem;
+      height: 1rem;
+      margin-left: -0.45rem;
+      border-radius: 0.5rem 0.5rem 0.15rem 0.15rem;
+      background: linear-gradient(#f3d58a, #a57a2c);
+      transition: transform 120ms ease-out;
+    }
+
+    /* the wooden base with the label engraved on it */
+    .bell-label {
+      display: block;
+      padding: 0.35rem 1rem;
+      border-radius: 0.4rem;
+      background: linear-gradient(#5b3b25, #3f2818);
+      box-shadow: 0 4px 8px -3px rgba(0, 0, 0, 0.6);
+    }
+
+    button:hover::before { filter: brightness(1.08); }
+    button:active::after { transform: translateY(0.4rem); }
+
+    /* a little shake when the bell is pressed */
+    button.ringing::before { animation: ring 520ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+    @keyframes ring {
+      0% { transform: rotate(0); }
+      20% { transform: rotate(-7deg); }
+      45% { transform: rotate(5deg); }
+      70% { transform: rotate(-3deg); }
+      100% { transform: rotate(0); }
+    }
+
+    /* The status line, written in chalk beside the bell (was an inline style). */
+    #status {
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.7rem;
+      line-height: 1.1;
+      color: var(--chalk-mint);
     }
 
     footer {
-      border-top: 1px solid #ddd;
-      margin-top: 35px;
-      padding-top: 15px;
-      font-size: 12px;
-      color: #777;
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 2px dashed rgba(243, 239, 230, 0.35);
+      font-size: 0.85rem;
+      color: var(--chalk-soft);
+    }
+
+    footer p { margin: 0; }
+
+    /* Chalk sticks resting on the frame's ledge. */
+    .ledge {
+      position: relative;
+      max-width: 650px;
+      height: 0;
+      margin: 0 auto;
+    }
+
+    .ledge span {
+      position: absolute;
+      top: 0.4rem;
+      height: 0.55rem;
+      border-radius: 0.3rem;
+    }
+
+    .ledge span:nth-child(1) { right: 3rem; width: 2.6rem; background: var(--chalk); transform: rotate(-3deg); }
+    .ledge span:nth-child(2) { right: 6.2rem; width: 1.8rem; background: var(--chalk-pink); transform: rotate(4deg); }
+    .ledge span:nth-child(3) { right: 8.6rem; width: 2.2rem; background: var(--chalk-yellow); }
+
+    @media (max-width: 30rem) {
+      body { padding-top: 3.5rem; }
+      .board { padding: 2rem 1.25rem 1.5rem; border-width: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      button.ringing::before { animation: none; }
+      button::after { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
+
+  <main class="board">
 
   <header>
     <h1>Web Programming</h1>
@@ -105,20 +301,70 @@
     </ul>
   </section>
 
-  <section>
+  <section class="quick">
     <h2>Quick Test</h2>
-    <button id="testBtn">Check Status</button>
-    <span id="status" style="margin-left: 10px; font-size: 14px; color: #555;"></span>
+    <button id="testBtn"><span class="bell-label">Check Status</span></button>
+    <span id="status" aria-live="polite"></span>
   </section>
 
   <footer>
     <p>&copy; Sabhyata Chhetri</p>
   </footer>
 
+  </main>
+
+  <div class="ledge" aria-hidden="true"><span></span><span></span><span></span></div>
+
   <script>
     document.getElementById('testBtn').addEventListener('click', function() {
       document.getElementById('status').textContent = 'Page working properly.';
     });
+
+    // Decoration only: shake the bell each time it is pressed.
+    document.getElementById('testBtn').addEventListener('click', function() {
+      this.classList.remove('ringing');
+      void this.offsetWidth;
+      this.classList.add('ringing');
+      ding();
+    });
+
+    // A service-bell "ding" made with the Web Audio API, so no sound file is needed.
+    // A real bell rings at several pitches at once (partials) that fade at different speeds.
+    let audio;
+    const PARTIALS = [
+      // [frequency ratio, loudness, seconds to fade]
+      [1, 0.5, 1.8],
+      [2.01, 0.22, 1.1],
+      [2.76, 0.16, 0.8],
+      [4.07, 0.08, 0.45],
+    ];
+
+    function ding() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      audio ??= new AudioCtx();
+      if (audio.state === 'suspended') audio.resume();
+
+      const now = audio.currentTime;
+      const base = 1320;
+      const out = audio.createGain();
+      out.gain.value = 0.35;
+      out.connect(audio.destination);
+
+      PARTIALS.forEach(([ratio, loudness, fade]) => {
+        const tone = audio.createOscillator();
+        const level = audio.createGain();
+        tone.type = 'sine';
+        tone.frequency.value = base * ratio;
+        // Instant strike, then a long exponential ring-out.
+        level.gain.setValueAtTime(0.0001, now);
+        level.gain.exponentialRampToValueAtTime(loudness, now + 0.004);
+        level.gain.exponentialRampToValueAtTime(0.0001, now + fade);
+        tone.connect(level).connect(out);
+        tone.start(now);
+        tone.stop(now + fade + 0.05);
+      });
+    }
   </script>
 
 </body>

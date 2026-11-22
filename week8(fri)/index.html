@@ -2,139 +2,252 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Work through the Week 8 Friday form lessons in order, then complete the registration homework.">
-  <title>Week 8 Friday | Forms and Registration</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #f4f7fb;
-      --surface: #fff;
-      --border: #dce5ef;
-      --text: #172033;
-      --muted: #59677d;
-      --accent: #2563eb;
-      --radius: 16px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font: 16px/1.6 system-ui, sans-serif;
-    }
-
-    a { color: inherit; }
-
-    .crumbbar {
-      padding: 1rem max(1.25rem, calc((100vw - 900px) / 2));
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-
-    .crumbbar a {
-      color: var(--muted);
-      text-decoration: none;
-    }
-
-    main {
-      width: min(100% - 2rem, 900px);
-      margin: 0 auto;
-      padding: 3rem 0;
-    }
-
-    .eyebrow {
-      color: var(--accent);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 0.4rem 0;
-      font-size: clamp(2rem, 6vw, 3rem);
-      line-height: 1.15;
-    }
-
-    .intro {
-      max-width: 640px;
-      margin: 0;
-      color: var(--muted);
-    }
-
-    ol {
-      display: grid;
-      gap: 0.8rem;
-      margin: 2rem 0 0;
-      padding: 0;
-      list-style: none;
-      counter-reset: lessons;
-    }
-
-    li { counter-increment: lessons; }
-
-    .lesson {
-      display: grid;
-      grid-template-columns: 2.5rem 1fr;
-      align-items: center;
-      gap: 1rem;
-      min-height: 5rem;
-      padding: 1rem 1.2rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
-      text-decoration: none;
-      transition: border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .lesson:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
-    }
-
-    .lesson::before {
-      display: grid;
-      width: 2.5rem;
-      height: 2.5rem;
-      place-items: center;
-      border-radius: 50%;
-      background: #eaf1ff;
-      color: var(--accent);
-      content: counter(lessons, decimal-leading-zero);
-      font-weight: 700;
-    }
-
-    .lesson span {
-      display: block;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 8 Friday · Forms and registration</title>
+  <meta name="description" content="Week 8 Friday coursework by Sabhyata Chhetri: seven lessons on HTML forms and a registration homework.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='8' width='28' height='16' rx='3' fill='%23fffdf9'/%3E%3Crect x='2' y='8' width='28' height='5' rx='2' fill='%232f5aa8'/%3E%3Cpath d='M23 13v11' stroke='%23c9c1cc' stroke-dasharray='2 1.5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
+  <link rel="stylesheet" href="../assets/drawer/week8.css">
 </head>
-<body>
-  <nav class="crumbbar" aria-label="Breadcrumb">
-    <a href="../index.html">Web Programming</a>
-  </nav>
+<body class="friday">
+  <main class="page">
+    <header class="intro">
+      <a class="back-to-diary" href="../index.html"><span aria-hidden="true">←</span> back to the diary</a>
+      <h1>Week 8, Friday <span class="day" lang="ko" aria-hidden="true">금</span></h1>
+      <p class="intro__topic">This week's topic is <strong>HTML forms</strong>. Follow these lessons in order to learn about HTML forms, then try the registration homework. Each flight leaves from the lesson before it.</p>
+      <p class="intro__note">eight gates, one registration form at the end of the trip.</p>
+    </header>
 
-  <main>
-    <span class="eyebrow">Week 08 · Friday</span>
-    <h1>Forms and Registration</h1>
-    <p class="intro">Follow these lessons in order to learn about HTML forms, then try the registration homework.</p>
+    <section aria-labelledby="stack-title">
+      <div class="stack-head">
+        <h2 id="stack-title">Friday's connecting flights</h2>
+        <p data-count>8 passes to board</p>
+      </div>
+      <ol class="passes">
+        <li>
+          <a class="pass" href="why%20forms.html" data-task="week8(fri)/why forms.html">
+            <span class="pass__main">
+              <span class="pass__band" aria-hidden="true"><span>SABHYATA AIR</span><span>BOARDING PASS</span></span>
+              <span class="pass__route" aria-hidden="true">
+                <span class="code"><b>STU</b><small>Monday</small></span>
+                <span class="flight"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V8.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" transform="rotate(90 12 12)"/></svg></span>
+                <span class="code code--to"><b>WHY</b><small>Why forms</small></span>
+              </span>
+              <span class="pass__title"><span class="visually-hidden">Task 1: </span>Why Forms?</span>
+              <span class="pass__desc">Learn what forms do and when to use them.</span>
+              <span class="pass__fields" aria-hidden="true">
+                <span><small>Passenger</small>S. CHHETRI</span>
+                <span><small>Flight</small>W8-F01</span>
+                <span><small>Gate</small>01</span>
+                <span><small>Boards</small>FRIDAY</span>
+              </span>
+            </span>
+            <span class="pass__stub" aria-hidden="true">
+              <span class="stub__seat"><small>Seat</small><b>8A</b></span>
+              <span class="stub__stamp">BOARDED</span>
+              <svg class="barcode" viewBox="0 0 56 60" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" width="1" height="60"/><rect x="3" width="1" height="60"/><rect x="6" width="2" height="60"/><rect x="10" width="1" height="60"/><rect x="12" width="1" height="60"/><rect x="15" width="3" height="60"/><rect x="20" width="3" height="60"/><rect x="24" width="1" height="60"/><rect x="28" width="2" height="60"/><rect x="32" width="2" height="60"/><rect x="35" width="1" height="60"/><rect x="38" width="3" height="60"/><rect x="43" width="1" height="60"/><rect x="46" width="1" height="60"/><rect x="50" width="1" height="60"/><rect x="52" width="3" height="60"/></g></svg>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="pass" href="the%20element.html" data-task="week8(fri)/the element.html">
+            <span class="pass__main">
+              <span class="pass__band" aria-hidden="true"><span>SABHYATA AIR</span><span>BOARDING PASS</span></span>
+              <span class="pass__route" aria-hidden="true">
+                <span class="code"><b>WHY</b><small>Why forms</small></span>
+                <span class="flight"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V8.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" transform="rotate(90 12 12)"/></svg></span>
+                <span class="code code--to"><b>FRM</b><small>Form element</small></span>
+              </span>
+              <span class="pass__title"><span class="visually-hidden">Task 2: </span>The Form Element</span>
+              <span class="pass__desc">Build a form with the correct structure.</span>
+              <span class="pass__fields" aria-hidden="true">
+                <span><small>Passenger</small>S. CHHETRI</span>
+                <span><small>Flight</small>W8-F02</span>
+                <span><small>Gate</small>02</span>
+                <span><small>Boards</small>FRIDAY</span>
+              </span>
+            </span>
+            <span class="pass__stub" aria-hidden="true">
+              <span class="stub__seat"><small>Seat</small><b>8B</b></span>
+              <span class="stub__stamp">BOARDED</span>
+              <svg class="barcode" viewBox="0 0 56 60" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" width="2" height="60"/><rect x="3" width="2" height="60"/><rect x="8" width="3" height="60"/><rect x="13" width="3" height="60"/><rect x="18" width="2" height="60"/><rect x="22" width="1" height="60"/><rect x="25" width="3" height="60"/><rect x="29" width="1" height="60"/><rect x="32" width="2" height="60"/><rect x="36" width="1" height="60"/><rect x="40" width="1" height="60"/><rect x="42" width="2" height="60"/><rect x="45" width="1" height="60"/><rect x="48" width="3" height="60"/><rect x="52" width="1" height="60"/></g></svg>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="pass" href="input%20types.html" data-task="week8(fri)/input types.html">
+            <span class="pass__main">
+              <span class="pass__band" aria-hidden="true"><span>SABHYATA AIR</span><span>BOARDING PASS</span></span>
+              <span class="pass__route" aria-hidden="true">
+                <span class="code"><b>FRM</b><small>Form element</small></span>
+                <span class="flight"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V8.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" transform="rotate(90 12 12)"/></svg></span>
+                <span class="code code--to"><b>INP</b><small>Input types</small></span>
+              </span>
+              <span class="pass__title"><span class="visually-hidden">Task 3: </span>Input Types</span>
+              <span class="pass__desc">Choose controls for different kinds of data.</span>
+              <span class="pass__fields" aria-hidden="true">
+                <span><small>Passenger</small>S. CHHETRI</span>
+                <span><small>Flight</small>W8-F03</span>
+                <span><small>Gate</small>03</span>
+                <span><small>Boards</small>FRIDAY</span>
+              </span>
+            </span>
+            <span class="pass__stub" aria-hidden="true">
+              <span class="stub__seat"><small>Seat</small><b>8C</b></span>
+              <span class="stub__stamp">BOARDED</span>
+              <svg class="barcode" viewBox="0 0 56 60" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" width="1" height="60"/><rect x="3" width="1" height="60"/><rect x="6" width="1" height="60"/><rect x="10" width="3" height="60"/><rect x="14" width="1" height="60"/><rect x="17" width="1" height="60"/><rect x="20" width="1" height="60"/><rect x="22" width="1" height="60"/><rect x="26" width="1" height="60"/><rect x="30" width="3" height="60"/><rect x="35" width="3" height="60"/><rect x="39" width="3" height="60"/><rect x="44" width="1" height="60"/><rect x="48" width="3" height="60"/><rect x="52" width="1" height="60"/></g></svg>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="pass" href="grouping%20fields.html" data-task="week8(fri)/grouping fields.html">
+            <span class="pass__main">
+              <span class="pass__band" aria-hidden="true"><span>SABHYATA AIR</span><span>BOARDING PASS</span></span>
+              <span class="pass__route" aria-hidden="true">
+                <span class="code"><b>INP</b><small>Input types</small></span>
+                <span class="flight"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V8.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" transform="rotate(90 12 12)"/></svg></span>
+                <span class="code code--to"><b>GRP</b><small>Fieldsets</small></span>
+              </span>
+              <span class="pass__title"><span class="visually-hidden">Task 4: </span>Grouping Fields</span>
+              <span class="pass__desc">Organize related controls into fieldsets.</span>
+              <span class="pass__fields" aria-hidden="true">
+                <span><small>Passenger</small>S. CHHETRI</span>
+                <span><small>Flight</small>W8-F04</span>
+                <span><small>Gate</small>04</span>
+                <span><small>Boards</small>FRIDAY</span>
+              </span>
+            </span>
+            <span class="pass__stub" aria-hidden="true">
+              <span class="stub__seat"><small>Seat</small><b>8D</b></span>
+              <span class="stub__stamp">BOARDED</span>
+              <svg class="barcode" viewBox="0 0 56 60" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" width="2" height="60"/><rect x="4" width="3" height="60"/><rect x="9" width="1" height="60"/><rect x="11" width="1" height="60"/><rect x="13" width="1" height="60"/><rect x="16" width="3" height="60"/><rect x="22" width="1" height="60"/><rect x="24" width="1" height="60"/><rect x="26" width="3" height="60"/><rect x="32" width="3" height="60"/><rect x="37" width="2" height="60"/><rect x="42" width="1" height="60"/><rect x="45" width="2" height="60"/><rect x="49" width="1" height="60"/><rect x="51" width="1" height="60"/><rect x="53" width="1" height="60"/></g></svg>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="pass" href="labels_%26_accessibility.html" data-task="week8(fri)/labels_&_accessibility.html">
+            <span class="pass__main">
+              <span class="pass__band" aria-hidden="true"><span>SABHYATA AIR</span><span>BOARDING PASS</span></span>
+              <span class="pass__route" aria-hidden="true">
+                <span class="code"><b>GRP</b><small>Fieldsets</small></span>
+                <span class="flight"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V8.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" transform="rotate(90 12 12)"/></svg></span>
+                <span class="code code--to"><b>LBL</b><small>Labels</small></span>
+              </span>
+              <span class="pass__title"><span class="visually-hidden">Task 5: </span>Labels and Accessibility</span>
+              <span class="pass__desc">Make form controls clear and accessible.</span>
+              <span class="pass__fields" aria-hidden="true">
+                <span><small>Passenger</small>S. CHHETRI</span>
+                <span><small>Flight</small>W8-F05</span>
+                <span><small>Gate</small>05</span>
+                <span><small>Boards</small>FRIDAY</span>
+              </span>
+            </span>
+            <span class="pass__stub" aria-hidden="true">
+              <span class="stub__seat"><small>Seat</small><b>8E</b></span>
+              <span class="stub__stamp">BOARDED</span>
+              <svg class="barcode" viewBox="0 0 56 60" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" width="1" height="60"/><rect x="2" width="1" height="60"/><rect x="6" width="1" height="60"/><rect x="10" width="1" height="60"/><rect x="13" width="1" height="60"/><rect x="16" width="2" height="60"/><rect x="21" width="1" height="60"/><rect x="23" width="1" height="60"/><rect x="25" width="3" height="60"/><rect x="30" width="2" height="60"/><rect x="35" width="2" height="60"/><rect x="39" width="1" height="60"/><rect x="42" width="1" height="60"/><rect x="45" width="1" height="60"/><rect x="49" width="3" height="60"/></g></svg>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="pass" href="validation%20attributes.html" data-task="week8(fri)/validation attributes.html">
+            <span class="pass__main">
+              <span class="pass__band" aria-hidden="true"><span>SABHYATA AIR</span><span>BOARDING PASS</span></span>
+              <span class="pass__route" aria-hidden="true">
+                <span class="code"><b>LBL</b><small>Labels</small></span>
+                <span class="flight"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V8.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" transform="rotate(90 12 12)"/></svg></span>
+                <span class="code code--to"><b>VAL</b><small>Validation</small></span>
+              </span>
+              <span class="pass__title"><span class="visually-hidden">Task 6: </span>Validation Attributes</span>
+              <span class="pass__desc">Use HTML attributes to validate entries.</span>
+              <span class="pass__fields" aria-hidden="true">
+                <span><small>Passenger</small>S. CHHETRI</span>
+                <span><small>Flight</small>W8-F06</span>
+                <span><small>Gate</small>06</span>
+                <span><small>Boards</small>FRIDAY</span>
+              </span>
+            </span>
+            <span class="pass__stub" aria-hidden="true">
+              <span class="stub__seat"><small>Seat</small><b>8F</b></span>
+              <span class="stub__stamp">BOARDED</span>
+              <svg class="barcode" viewBox="0 0 56 60" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" width="3" height="60"/><rect x="6" width="2" height="60"/><rect x="11" width="2" height="60"/><rect x="15" width="3" height="60"/><rect x="20" width="1" height="60"/><rect x="23" width="3" height="60"/><rect x="28" width="3" height="60"/><rect x="34" width="1" height="60"/><rect x="38" width="3" height="60"/><rect x="44" width="1" height="60"/><rect x="47" width="1" height="60"/><rect x="51" width="1" height="60"/></g></svg>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="pass" href="css_validation_pseudo_classes.html" data-task="week8(fri)/css_validation_pseudo_classes.html">
+            <span class="pass__main">
+              <span class="pass__band" aria-hidden="true"><span>SABHYATA AIR</span><span>BOARDING PASS</span></span>
+              <span class="pass__route" aria-hidden="true">
+                <span class="code"><b>VAL</b><small>Validation</small></span>
+                <span class="flight"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V8.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" transform="rotate(90 12 12)"/></svg></span>
+                <span class="code code--to"><b>CSS</b><small>Pseudo-classes</small></span>
+              </span>
+              <span class="pass__title"><span class="visually-hidden">Task 7: </span>CSS Validation Pseudo-Classes</span>
+              <span class="pass__desc">Style valid and invalid form controls.</span>
+              <span class="pass__fields" aria-hidden="true">
+                <span><small>Passenger</small>S. CHHETRI</span>
+                <span><small>Flight</small>W8-F07</span>
+                <span><small>Gate</small>07</span>
+                <span><small>Boards</small>FRIDAY</span>
+              </span>
+            </span>
+            <span class="pass__stub" aria-hidden="true">
+              <span class="stub__seat"><small>Seat</small><b>8G</b></span>
+              <span class="stub__stamp">BOARDED</span>
+              <svg class="barcode" viewBox="0 0 56 60" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" width="2" height="60"/><rect x="4" width="2" height="60"/><rect x="9" width="2" height="60"/><rect x="14" width="2" height="60"/><rect x="19" width="1" height="60"/><rect x="23" width="3" height="60"/><rect x="27" width="3" height="60"/><rect x="32" width="2" height="60"/><rect x="35" width="3" height="60"/><rect x="40" width="1" height="60"/><rect x="42" width="2" height="60"/><rect x="45" width="3" height="60"/><rect x="50" width="1" height="60"/></g></svg>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="pass" href="homework%20registration.html" data-task="week8(fri)/homework registration.html">
+            <span class="pass__main">
+              <span class="pass__band" aria-hidden="true"><span>SABHYATA AIR</span><span>BOARDING PASS</span></span>
+              <span class="pass__route" aria-hidden="true">
+                <span class="code"><b>CSS</b><small>Pseudo-classes</small></span>
+                <span class="flight"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V8.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" transform="rotate(90 12 12)"/></svg></span>
+                <span class="code code--to"><b>REG</b><small>Homework</small></span>
+              </span>
+              <span class="pass__title"><span class="visually-hidden">Task 8: </span>Registration Homework</span>
+              <span class="pass__desc">Apply the lessons in a complete registration form.</span>
+              <span class="pass__fields" aria-hidden="true">
+                <span><small>Passenger</small>S. CHHETRI</span>
+                <span><small>Flight</small>W8-F08</span>
+                <span><small>Gate</small>08</span>
+                <span><small>Boards</small>FRIDAY</span>
+              </span>
+            </span>
+            <span class="pass__stub" aria-hidden="true">
+              <span class="stub__seat"><small>Seat</small><b>8H</b></span>
+              <span class="stub__stamp">BOARDED</span>
+              <svg class="barcode" viewBox="0 0 56 60" aria-hidden="true" focusable="false"><g fill="currentColor"><rect x="0" width="2" height="60"/><rect x="4" width="1" height="60"/><rect x="8" width="1" height="60"/><rect x="10" width="3" height="60"/><rect x="14" width="1" height="60"/><rect x="17" width="3" height="60"/><rect x="22" width="3" height="60"/><rect x="27" width="1" height="60"/><rect x="29" width="3" height="60"/><rect x="33" width="2" height="60"/><rect x="37" width="1" height="60"/><rect x="39" width="3" height="60"/><rect x="44" width="1" height="60"/><rect x="47" width="2" height="60"/><rect x="52" width="1" height="60"/></g></svg>
+            </span>
+          </a>
+        </li>
+      </ol>
+    </section>
 
-    <ol aria-label="Week 8 Friday lessons">
-      <li><a class="lesson" href="why%20forms.html"><div>Why Forms?<span>Learn what forms do and when to use them.</span></div></a></li>
-      <li><a class="lesson" href="the%20element.html"><div>The Form Element<span>Build a form with the correct structure.</span></div></a></li>
-      <li><a class="lesson" href="input%20types.html"><div>Input Types<span>Choose controls for different kinds of data.</span></div></a></li>
-      <li><a class="lesson" href="grouping%20fields.html"><div>Grouping Fields<span>Organize related controls into fieldsets.</span></div></a></li>
-      <li><a class="lesson" href="labels_%26_accessibility.html"><div>Labels and Accessibility<span>Make form controls clear and accessible.</span></div></a></li>
-      <li><a class="lesson" href="validation%20attributes.html"><div>Validation Attributes<span>Use HTML attributes to validate entries.</span></div></a></li>
-      <li><a class="lesson" href="css_validation_pseudo_classes.html"><div>CSS Validation Pseudo-Classes<span>Style valid and invalid form controls.</span></div></a></li>
-      <li><a class="lesson" href="homework%20registration.html"><div>Registration Homework<span>Apply the lessons in a complete registration form.</span></div></a></li>
-    </ol>
+    <nav class="page-turn" aria-label="Week 8 pages">
+      <a href="../week8(mon)/index.html"><span aria-hidden="true">←&nbsp;</span>Monday's passes</a>
+      <a href="../week9%20mon/index.html">on to Week 9<span aria-hidden="true">&nbsp;→</span></a>
+    </nav>
   </main>
+
+  <script>
+    // The drawer tab on every task page records which tasks were opened
+    // (localStorage "drawer:seen"); those passes get stamped BOARDED.
+    try {
+      const saved = JSON.parse(localStorage.getItem('drawer:seen') ?? '[]');
+      const seen = new Set(Array.isArray(saved) ? saved : []);
+      const passes = document.querySelectorAll('.pass[data-task]');
+      let boarded = 0;
+      passes.forEach((pass) => {
+        if (seen.has(pass.dataset.task)) { pass.classList.add('is-seen'); boarded += 1; }
+      });
+      if (boarded) document.querySelector('[data-count]').textContent = `${boarded} of ${passes.length} boarded`;
+    } catch {
+      // No storage: the passes simply stay unstamped.
+    }
+  </script>
 </body>
 </html>

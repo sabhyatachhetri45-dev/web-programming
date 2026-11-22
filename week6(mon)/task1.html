@@ -4,386 +4,503 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Random Joke Generator — Week 6 Homework</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
+    /*
+      A 뽑기 capsule-toy machine outside a 문방구. "Load Joke" turns the crank,
+      a capsule rolls out, and the joke is the paper slip inside it. Saved
+      favourites are slips pinned to a cork strip under the machine.
+    */
+    @font-face { font-family: "Gaegu"; font-weight: 700; font-display: swap; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); }
+    @font-face { font-family: "Gowun Dodum"; font-weight: 400; font-display: swap; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); }
+    @font-face { font-family: "Nanum Pen Script"; font-weight: 400; font-display: swap; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); }
+
     :root {
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
-      --border-hover: #cbd5e1;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --primary-light: #eff6ff;
-      --primary-border: #bfdbfe;
-      --amber: #f59e0b;
-      --amber-light: #fef3c7;
-      --amber-border: #fde68a;
-      --danger: #ef4444;
-      --danger-light: #fef2f2;
-      --danger-border: #fecaca;
-      --emerald: #10b981;
-      --emerald-light: #ecfdf5;
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
+      --night: #262c57;
+      --night-deep: #1b2046;
+      --cream: #fdf3e7;
+      --cream-soft: #d9dcf2;
+      --machine: #d8344a;
+      --machine-dark: #a91f35;
+      --metal: #e9e4dc;
+      --metal-dark: #b9b1a6;
+      --paper: #fffdf7;
+      --paper-ink: #2b2622;
+      --paper-soft: #5f564e;
+      --pen-red: #c0283c;
+      --cork: #c8955f;
+      --cork-ink: #3b2412;
+      --tape: rgb(255 236 170 / 0.85);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    html { background: var(--night-deep); }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg);
-      background-image:
-        radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.07) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(245, 158, 11, 0.07) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
-      color: var(--text-main);
-      line-height: 1.6;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 16px 80px;
+      font-family: "Gowun Dodum", system-ui, sans-serif;
+      line-height: 1.6;
+      color: var(--cream);
+      background:
+        radial-gradient(ellipse 60% 45% at 50% 30%, rgb(255 214 150 / 0.16), transparent 70%),
+        linear-gradient(var(--night), var(--night-deep));
+      padding: 2.5rem 1rem 6rem;
     }
+
+    :focus-visible { outline: 3px solid #ffd66b; outline-offset: 3px; }
 
     .container {
-      width: 100%;
-      max-width: 600px;
+      width: min(100%, 34rem);
+      margin: 0 auto;
+      display: grid;
+      gap: 1.75rem;
     }
 
-    /* Header */
-    header {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+    /* ---------- the shop sign ---------- */
 
+    header { display: grid; justify-items: center; gap: 0.6rem; text-align: center; }
+
+    /* "Week 6 Homework" as a rubber stamp, not a pill. */
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--primary-light);
-      border: 1px solid var(--primary-border);
-      color: var(--primary);
-      font-size: 0.78rem;
-      font-weight: 700;
+      padding: 0.2rem 0.7rem;
+      font-family: "Gaegu", cursive;
+      font-size: 1.05rem;
+      line-height: 1.3;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 12px;
+      color: #ffb8c4;
+      border: 2px solid currentColor;
+      border-radius: 0.3rem;
+      box-shadow: inset 0 0 0 2px var(--night), inset 0 0 0 3px currentColor;
+      transform: rotate(-4deg);
     }
 
     h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--text-main);
-      line-height: 1.2;
-      margin-bottom: 8px;
+      font-family: "Gaegu", cursive;
+      font-weight: 700;
+      font-size: clamp(2.3rem, 8vw, 3.2rem);
+      line-height: 1.05;
+      color: var(--cream);
     }
 
-    .subtitle {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
+    .subtitle { max-width: 26rem; font-size: 0.95rem; color: var(--cream-soft); }
 
-    /* Main Joke Card */
-    .joke-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 32px 28px;
-      box-shadow: var(--shadow-md);
-      margin-bottom: 24px;
+    /* ---------- "out of order" note ---------- */
+
+    .error-box {
+      display: none;
       position: relative;
-      overflow: hidden;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.1rem;
+      font-size: 0.95rem;
+      color: #8f1527;
+      background: #fff6c9;
+      border-radius: 0.2rem;
+      box-shadow: 0 6px 14px rgb(0 0 0 / 0.35);
+      transform: rotate(-1deg);
+    }
+    .error-box::before {
+      content: "";
+      position: absolute;
+      top: -0.6rem;
+      left: 50%;
+      width: 4.5rem;
+      height: 1.2rem;
+      margin-left: -2.25rem;
+      background: var(--tape);
+      transform: rotate(3deg);
+    }
+    .error-box svg { flex: none; }
+
+    /* ---------- the machine ---------- */
+
+    .joke-card {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 1.25rem;
+      padding: 0 1.25rem 1.5rem;
+      margin-top: 1rem;
+      /* Keeps the cabinet (z-index -1 below) inside the machine, above the page. */
+      isolation: isolate;
     }
 
+    /* Red cabinet behind the bottom half of the machine. */
     .joke-card::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #2563eb, #f59e0b);
+      inset: 9.5rem 0 0;
+      z-index: -1;
+      border-radius: 1.4rem 1.4rem 0.9rem 0.9rem;
+      background:
+        linear-gradient(90deg, rgb(255 255 255 / 0.14), transparent 18% 82%, rgb(0 0 0 / 0.12)),
+        var(--machine);
+      box-shadow: inset 0 -0.6rem 0 var(--machine-dark), 0 28px 40px -20px rgb(0 0 0 / 0.7);
     }
 
-    /* Joke Display Area */
-    .joke-stage {
-      min-height: 160px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin-bottom: 28px;
+    /* The clear dome full of capsules. */
+    .globe {
       position: relative;
+      width: min(100%, 17rem);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 45%, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.05) 70%);
+      box-shadow:
+        inset 0 0 0 0.45rem rgb(255 255 255 / 0.25),
+        inset 0 -2rem 3rem rgb(0 0 0 / 0.25),
+        0 0 0 0.6rem var(--metal),
+        0 0 0 0.85rem var(--metal-dark);
+    }
+    .globe::after {
+      content: "";
+      position: absolute;
+      top: 12%;
+      left: 16%;
+      width: 26%;
+      height: 14%;
+      border-radius: 50%;
+      background: rgb(255 255 255 / 0.55);
+      transform: rotate(-30deg);
     }
 
-    .setup-box {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--text-main);
-      margin-bottom: 14px;
-      line-height: 1.5;
+    .capsule {
+      position: absolute;
+      width: 22%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: linear-gradient(var(--top, #ff8fab) 50%, rgb(255 255 255 / 0.85) 50%);
+      box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.12), 0 2px 3px rgb(0 0 0 / 0.25);
+      transform: rotate(var(--r, 0deg));
     }
+    .capsule:nth-child(1) { left: 6%;  bottom: 4%;  --top: #ff8fab; --r: 20deg; }
+    .capsule:nth-child(2) { left: 26%; bottom: 2%;  --top: #ffd66b; --r: -40deg; }
+    .capsule:nth-child(3) { left: 47%; bottom: 3%;  --top: #8fd3ff; --r: 70deg; }
+    .capsule:nth-child(4) { left: 68%; bottom: 6%;  --top: #9fe3b8; --r: -10deg; }
+    .capsule:nth-child(5) { left: 14%; bottom: 22%; --top: #c9b6ff; --r: 120deg; }
+    .capsule:nth-child(6) { left: 36%; bottom: 21%; --top: #ff8fab; --r: 200deg; }
+    .capsule:nth-child(7) { left: 57%; bottom: 23%; --top: #ffd66b; --r: 35deg; }
+    .capsule:nth-child(8) { left: 76%; bottom: 27%; --top: #8fd3ff; --r: -80deg; }
+    .capsule:nth-child(9) { left: 25%; bottom: 40%; --top: #9fe3b8; --r: 160deg; }
+    .capsule:nth-child(10) { left: 48%; bottom: 41%; --top: #c9b6ff; --r: -20deg; }
+
+    /* While a joke loads, the capsules tumble. */
+    .joke-card:has(.loading-state[style*="flex"]) .capsule { animation: tumble 0.5s ease-in-out infinite alternate; }
+    @keyframes tumble { to { transform: rotate(calc(var(--r) + 40deg)) translateY(-6px); } }
+
+    /* The dispensing window the slip appears in. */
+    .joke-stage {
+      position: relative;
+      width: 100%;
+      min-height: 11rem;
+      display: grid;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 1rem;
+      background: #4a1220;
+      box-shadow: inset 0 6px 12px rgb(0 0 0 / 0.55), 0 0 0 0.35rem var(--metal);
+    }
+
+    /* The paper slip that came out of the capsule. */
+    #jokeContent {
+      position: relative;
+      padding: 1.4rem 1.3rem 1.2rem;
+      color: var(--paper-ink);
+      background:
+        repeating-linear-gradient(transparent 0 1.9rem, #f0e2cf 1.9rem calc(1.9rem + 1px)) 0 0.9rem,
+        var(--paper);
+      border-radius: 0.2rem;
+      box-shadow: 0 2px 4px rgb(0 0 0 / 0.35);
+      transform: rotate(-1.2deg);
+      animation: unroll 450ms var(--ease-out);
+    }
+    #jokeContent::before {
+      content: "";
+      position: absolute;
+      top: -0.55rem;
+      right: 1.2rem;
+      width: 3.6rem;
+      height: 1.1rem;
+      background: var(--tape);
+      transform: rotate(-4deg);
+    }
+    @keyframes unroll {
+      from { opacity: 0; transform: rotate(-1.2deg) translateY(1.5rem) scaleY(0.6); }
+    }
+
+    .setup-box { font-size: 1.08rem; line-height: 1.9rem; }
 
     .punchline-box {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--primary);
-      background: var(--primary-light);
-      border-left: 3px solid var(--primary);
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
       display: none;
-      animation: fadeIn 0.3s ease-in-out;
+      margin-top: 0.5rem;
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.85rem;
+      line-height: 1.9rem;
+      color: var(--pen-red);
+      animation: write 500ms var(--ease-out) 150ms both;
     }
+    @keyframes write { from { opacity: 0; transform: translateX(-0.5rem); } }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Loading Spinner State */
+    /* Loading: one capsule rolling down the chute. */
     .loading-state {
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      font-weight: 500;
-      padding: 30px 0;
+      gap: 0.6rem;
+      font-family: "Gaegu", cursive;
+      font-size: 1.25rem;
+      color: var(--cream);
     }
-
     .spinner {
-      width: 36px;
-      height: 36px;
-      border: 3px solid var(--border);
-      border-top-color: var(--primary);
+      width: 2.6rem;
+      height: 2.6rem;
       border-radius: 50%;
-      animation: spin 0.75s linear infinite;
+      background: linear-gradient(#ff8fab 50%, rgb(255 255 255 / 0.9) 50%);
+      box-shadow: 0 2px 4px rgb(0 0 0 / 0.4);
+      animation: roll 0.7s linear infinite;
     }
+    @keyframes roll { to { transform: rotate(360deg); } }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    /* ---------- crank and keep button ---------- */
 
-    /* Error Message Box */
-    .error-box {
-      display: none;
-      background: var(--danger-light);
-      border: 1px solid var(--danger-border);
-      color: var(--danger);
-      padding: 14px 18px;
-      border-radius: var(--radius-md);
-      font-size: 0.9rem;
-      font-weight: 500;
-      margin-bottom: 20px;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Action Buttons */
     .action-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem 1.5rem;
     }
 
     .btn {
-      appearance: none;
-      border: 1px solid transparent;
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 700;
-      padding: 12px 20px;
-      border-radius: var(--radius-md);
       cursor: pointer;
+      border: 0;
+      font: inherit;
+    }
+    .btn:disabled { cursor: not-allowed; }
+
+    /* "Load Joke" is the machine's coin crank. */
+    .btn-primary {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 8.5rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      color: var(--paper-ink);
+      background: radial-gradient(circle at 38% 32%, #ffffff, var(--metal) 55%, var(--metal-dark));
+      box-shadow: 0 0 0 0.4rem var(--machine-dark), 0 8px 14px rgb(0 0 0 / 0.4);
+      isolation: isolate;
+    }
+    /* The grip bar across the crank; it turns when pressed and while loading. */
+    .btn-primary::before {
+      content: "";
+      position: absolute;
+      inset: 50% 0.55rem auto;
+      height: 2.6rem;
+      margin-top: -1.3rem;
+      z-index: -1;
+      border-radius: 1.3rem;
+      background: linear-gradient(#fffaf2, #d8cfc2);
+      box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.12), 0 2px 3px rgb(0 0 0 / 0.25);
+      transition: transform 500ms var(--ease-out);
+    }
+    .btn-primary:hover:not(:disabled)::before { transform: rotate(-25deg); }
+    .btn-primary:active:not(:disabled)::before { transform: rotate(180deg); }
+    .btn-primary:disabled::before { animation: crank 0.9s linear infinite; }
+    @keyframes crank { to { transform: rotate(360deg); } }
+
+    .btn-primary svg { position: absolute; top: 1.1rem; color: var(--machine-dark); }
+    #btnLoadText {
+      font-family: "Gaegu", cursive;
+      font-weight: 700;
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    /* "Save Favourite": a little paper ticket. */
+    .btn-fav {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.2s ease;
+      gap: 0.5rem;
+      min-height: 3rem;
+      padding: 0.6rem 1.1rem;
+      font-family: "Gaegu", cursive;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--paper-ink);
+      background: var(--paper);
+      border-radius: 0.25rem;
+      /* Ticket notches on both short ends. */
+      mask:
+        radial-gradient(circle at 0 50%, transparent 0.45rem, #000 0.5rem) left / 51% 100% no-repeat,
+        radial-gradient(circle at 100% 50%, transparent 0.45rem, #000 0.5rem) right / 51% 100% no-repeat;
+      transform: rotate(2deg);
+      transition: transform 250ms var(--ease-out);
     }
+    .btn-fav svg { color: #e0a92e; }
+    .btn-fav:hover:not(:disabled) { transform: rotate(0deg) translateY(-2px); }
+    .btn-fav:disabled { opacity: 0.55; }
+    .btn-fav:focus-visible { outline: none; box-shadow: inset 0 0 0 3px #2c58c7; }
 
-    .btn:active:not(:disabled) {
-      transform: scale(0.98);
-    }
+    /* ---------- cork strip of saved slips ---------- */
 
-    .btn-primary {
-      background: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: var(--primary-hover);
-      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
-    }
-
-    .btn-fav {
-      background: #ffffff;
-      border-color: var(--border);
-      color: var(--text-main);
-    }
-
-    .btn-fav:hover:not(:disabled) {
-      background: var(--amber-light);
-      border-color: var(--amber-border);
-      color: #b45309;
-    }
-
-    .btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    /* Favorites List Section */
     .fav-section {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow-sm);
+      position: relative;
+      margin-top: 1rem;
+      padding: 1.4rem 1.1rem 1.5rem;
+      color: var(--cork-ink);
+      border-radius: 0.5rem;
+      background:
+        radial-gradient(circle at 20% 30%, rgb(90 50 20 / 0.25) 1px, transparent 1.6px) 0 0 / 13px 11px,
+        radial-gradient(circle at 70% 60%, rgb(255 235 200 / 0.3) 1px, transparent 1.6px) 0 0 / 17px 15px,
+        var(--cork);
+      box-shadow: inset 0 0 0 0.55rem #8a5a3b, inset 0 0 0 0.65rem #6c4329, 0 20px 30px -18px rgb(0 0 0 / 0.7);
     }
 
     .fav-header {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      gap: 0.5rem 1rem;
+      padding: 0.3rem 0.5rem 1rem;
     }
 
     .fav-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--text-main);
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 0.6rem;
+      padding: 0.25rem 0.9rem;
+      font-family: "Gaegu", cursive;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      color: var(--paper-ink);
+      background: var(--paper);
+      box-shadow: 0 2px 3px rgb(0 0 0 / 0.25);
+      transform: rotate(-1.5deg);
     }
 
     .fav-count {
-      background: #e2e8f0;
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      min-width: 1.9rem;
+      height: 1.9rem;
+      padding: 0 0.35rem;
+      font-size: 1.05rem;
+      color: #fff;
+      background: var(--machine);
+      border-radius: 50%;
     }
 
     .btn-clear {
-      background: transparent;
-      border: none;
-      color: var(--text-light);
-      font-size: 0.8rem;
-      font-weight: 600;
+      min-height: 2.75rem;
+      padding: 0.3rem 0.6rem;
+      font: inherit;
+      font-size: 0.95rem;
+      color: var(--cork-ink);
+      background: none;
+      border: 0;
+      text-decoration: underline;
+      text-underline-offset: 4px;
       cursor: pointer;
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
     }
-
-    .btn-clear:hover {
-      color: var(--danger);
-      background: var(--danger-light);
-    }
+    .btn-clear:hover { color: #7a1222; }
 
     .fav-list {
       list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      display: grid;
+      gap: 1rem;
+      padding: 0 0.5rem;
     }
 
     .fav-item {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
+      position: relative;
       display: flex;
-      justify-content: space-between;
+      gap: 0.75rem;
       align-items: flex-start;
-      gap: 12px;
-      transition: border-color 0.15s ease;
+      padding: 1rem 0.75rem 0.85rem 1rem;
+      background: var(--paper);
+      box-shadow: 0 3px 6px rgb(0 0 0 / 0.25);
+      transform: rotate(-0.8deg);
+    }
+    .fav-item:nth-child(even) { transform: rotate(0.9deg); }
+    /* Push pin. */
+    .fav-item::before {
+      content: "";
+      position: absolute;
+      top: -0.45rem;
+      left: 50%;
+      width: 1rem;
+      height: 1rem;
+      margin-left: -0.5rem;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ff9aaa, var(--machine) 60%, var(--machine-dark));
+      box-shadow: 0 2px 2px rgb(0 0 0 / 0.35);
     }
 
-    .fav-item:hover {
-      border-color: var(--border-hover);
-    }
-
-    .fav-text {
-      font-size: 0.88rem;
-    }
-
-    .fav-setup {
-      font-weight: 600;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-
+    .fav-text { flex: 1; min-width: 0; }
+    .fav-setup { color: var(--paper-ink); }
     .fav-punchline {
-      color: var(--primary);
-      font-weight: 500;
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      color: var(--pen-red);
     }
 
     .fav-del-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-light);
-      cursor: pointer;
-      padding: 4px;
-      font-size: 1.1rem;
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 1.4rem;
       line-height: 1;
-      border-radius: 4px;
+      color: var(--paper-soft);
+      background: none;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
     }
-
-    .fav-del-btn:hover {
-      color: var(--danger);
-    }
+    .fav-del-btn:hover { color: var(--pen-red); background: #f6ebe0; }
 
     .fav-empty {
+      padding: 0.75rem 0.75rem 0.25rem;
       text-align: center;
-      padding: 24px 12px;
-      color: var(--text-muted);
-      font-size: 0.88rem;
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.55rem;
+      line-height: 1.2;
+      color: var(--cork-ink);
     }
 
-    /* Toast Notification */
+    /* ---------- toast: a little receipt slip ---------- */
+
     .toast {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #0f172a;
-      color: #ffffff;
-      padding: 10px 18px;
-      border-radius: var(--radius-md);
-      font-size: 0.85rem;
-      font-weight: 600;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      transform: translateY(80px);
-      opacity: 0;
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      right: 1rem;
+      bottom: 1.25rem;
       z-index: 1000;
+      padding: 0.6rem 1rem;
+      font-family: "Gaegu", cursive;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--paper-ink);
+      background: var(--paper);
+      border-radius: 0.2rem;
+      box-shadow: 0 10px 20px rgb(0 0 0 / 0.35);
+      transform: translateY(6rem) rotate(-2deg);
+      opacity: 0;
+      transition: transform 300ms var(--ease-out), opacity 300ms var(--ease-out);
     }
+    .toast.show { transform: translateY(0) rotate(-2deg); opacity: 1; }
 
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
 
@@ -407,6 +524,10 @@
 
     <!-- Main Card -->
     <main class="joke-card">
+      <div class="globe" aria-hidden="true">
+        <span class="capsule"></span><span class="capsule"></span><span class="capsule"></span><span class="capsule"></span><span class="capsule"></span>
+        <span class="capsule"></span><span class="capsule"></span><span class="capsule"></span><span class="capsule"></span><span class="capsule"></span>
+      </div>
       <div class="joke-stage">
 
         <!-- Loading Spinner -->
@@ -548,6 +669,31 @@
         showToast('Removed from favourites');
       }
 
+      // Official Joke API first. It sometimes goes down (HTTP 503), so fall back to
+      // JokeAPI, which returns the same setup/punchline idea as "setup"/"delivery".
+      async function loadJokeData() {
+        try {
+          // Await 1: Wait for HTTP response headers
+          const response = await fetch('https://official-joke-api.appspot.com/random_joke');
+          if (!response.ok) {
+            throw new Error(`Server returned HTTP ${response.status}`);
+          }
+          // Await 2: Wait for JSON body to be read & parsed
+          return await response.json();
+        } catch (firstErr) {
+          console.warn('Official Joke API failed, trying JokeAPI:', firstErr);
+          const response = await fetch('https://v2.jokeapi.dev/joke/Programming,Misc,Pun?type=twopart&safe-mode');
+          if (!response.ok) {
+            throw new Error(`Backup server returned HTTP ${response.status}`);
+          }
+          const backup = await response.json();
+          if (backup.error) {
+            throw new Error('Backup API returned an error');
+          }
+          return { id: `jokeapi-${backup.id}`, setup: backup.setup, punchline: backup.delivery };
+        }
+      }
+
       // --- Fetch Joke with Two-Await Pattern & Try/Catch/Finally ---
       async function fetchJoke() {
         // 1. Reset UI to Loading State
@@ -559,15 +705,7 @@
         btnLoadText.textContent = 'Loading…';
 
         try {
-          // Await 1: Wait for HTTP response headers
-          const response = await fetch('https://official-joke-api.appspot.com/random_joke');
-
-          if (!response.ok) {
-            throw new Error(`Server returned HTTP ${response.status}`);
-          }
-
-          // Await 2: Wait for JSON body to be read & parsed
-          const data = await response.json();
+          const data = await loadJokeData();
 
           // Store current joke
           currentJoke = {

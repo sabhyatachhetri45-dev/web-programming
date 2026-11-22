@@ -2,88 +2,204 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Sale Card</title>
 
   <style>
-    body {
-      margin: 0;
-      padding: 50px;
-      background-color: #f0fdfa;
-      font-family: Arial, sans-serif;
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+
+    :root {
+      --wall: #e3f7f1;
+      --kraft: #e4c99c;
+      --kraft-dark: #c9a56e;
+      --ink: #3a2a1b;
+      --teal: #0f766e;
+      --sticker: #e0483e;
     }
 
-    /* Main card */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      justify-items: center;
+      align-content: start;
+      padding: 9rem 1.5rem 6rem;
+      overflow-x: hidden;
+      font-family: "Gowun Dodum", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 50% 0%, #f4fdfa 0%, transparent 60%),
+        var(--wall);
+    }
+
+    /* The brass shop rail the tag hangs from. */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 3.5rem;
+      left: 0;
+      right: 0;
+      height: 0.6rem;
+      background: linear-gradient(#f3dba0, #b8893c 55%, #8a6326);
+      box-shadow: 0 6px 10px -4px rgba(60, 40, 10, 0.35);
+    }
+
+    /* Main card: now a kraft hang tag.
+       position: relative is still the important part, because the
+       badge, the hole ring and the string are all positioned against it. */
     .card {
-      width: 280px;
-      height: 180px;
-      background-color: white;
-      border: 2px solid #14b8a6;
-      border-radius: 12px;
-
-      /* This is important because the badge
-         is positioned according to the card */
       position: relative;
-
-      padding: 20px;
+      width: min(19rem, 100%);
+      padding: 4.25rem 1.75rem 2rem;
       margin: auto;
 
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transform-origin: 50% 2.4rem;
+      transform: rotate(-4deg);
+      /* drop-shadow follows the tag's cut shape; box-shadow would draw a rectangle */
+      filter: drop-shadow(0 14px 18px rgba(40, 60, 50, 0.22)) drop-shadow(0 2px 2px rgba(40, 60, 50, 0.18));
 
-      /* Small hover effect */
-      transition: 0.3s;
+      /* Small hover effect: the tag swings on its string */
+      transition: transform 900ms cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transform: rotate(3deg);
     }
 
-    /* Sale label */
+    /* The tag itself: cut top corners plus a punched hole. */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        repeating-linear-gradient(97deg, rgba(255, 255, 255, 0.06) 0 2px, transparent 2px 7px),
+        linear-gradient(160deg, #ecd5ab, var(--kraft) 45%, #dcbd8a);
+      border-radius: 0 0 10px 10px;
+      clip-path: polygon(22% 0, 78% 0, 100% 3.25rem, 100% 100%, 0 100%, 0 3.25rem);
+    }
+
+    /* The punched hole and its reinforcement ring, drawn as one circle
+       so the hole is always dead centre in the ring. */
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 1.45rem;
+      left: 50%;
+      width: 1.9rem;
+      height: 1.9rem;
+      margin-left: -0.95rem;
+      border-radius: 50%;
+      border: 0.4rem solid #f6ead2;
+      background: var(--wall);
+      box-shadow: inset 0 2px 3px rgba(40, 60, 50, 0.35), 0 1px 1px rgba(58, 42, 27, 0.2);
+    }
+
+    /* The string, from the rail down through the hole. */
+    .string {
+      position: absolute;
+      bottom: calc(100% - 2.4rem);
+      left: 50%;
+      width: 2px;
+      height: 8rem;
+      margin-left: -1px;
+      background: linear-gradient(#8f7a5e, #b49a74);
+      z-index: 1;
+
+      /* Counter-rotates against the tag so the string always hangs straight down. */
+      transform-origin: 50% 100%;
+      transform: rotate(4deg);
+      transition: transform 900ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .card:hover .string { transform: rotate(-3deg); }
+
+    /* Sale label: a sticker slapped over the corner. */
     .badge {
       position: absolute;
-      top: -12px;
-      right: 15px;
+      top: 2.1rem;
+      right: -1.4rem;
 
-      background-color: #0f766e;
+      display: grid;
+      place-items: center;
+      width: 4.6rem;
+      height: 4.6rem;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #f26a5f, var(--sticker) 60%, #c7362d);
+      box-shadow: inset 0 0 0 0.3rem var(--sticker), inset 0 0 0 0.4rem rgba(255, 255, 255, 0.85), 0 3px 6px rgba(80, 20, 10, 0.3);
       color: white;
 
-      padding: 5px 13px;
-      border-radius: 20px;
+      transform: rotate(14deg);
+      transition: transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
-      font-size: 12px;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.2rem;
       font-weight: bold;
+      letter-spacing: 0.06em;
     }
 
+    .card:hover .badge { transform: rotate(4deg) scale(1.06); }
+
     .card h2 {
-      margin-top: 20px;
-      color: #0f766e;
+      margin: 0 0 0.6rem;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--ink);
     }
 
     .card p {
-      color: #555;
-      font-size: 14px;
-      line-height: 1.5;
+      margin: 0 0 1.4rem;
+      color: #5b4630;
+      font-size: 0.95rem;
+      line-height: 1.55;
     }
 
+    /* Prices are written on with marker, like a real shop tag. */
     .price {
-      font-size: 20px;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 3rem;
       font-weight: bold;
-      color: #0f766e;
+      line-height: 1;
+      color: var(--teal);
     }
 
     .old-price {
-      margin-left: 8px;
-      color: #999;
-      text-decoration: line-through;
-      font-size: 13px;
+      position: relative;
+      margin-left: 0.6rem;
+      color: #5b4630;
+      font-size: 1.05rem;
+    }
+
+    /* A red marker scribble instead of a plain line-through. */
+    .old-price::after {
+      content: "";
+      position: absolute;
+      left: -0.3rem;
+      right: -0.3rem;
+      top: 50%;
+      height: 0.7rem;
+      margin-top: -0.35rem;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 Q20 2 40 6 T78 4' fill='none' stroke='%23e0483e' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+      transform: rotate(-6deg);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card, .badge, .string { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 
 <body>
 
   <div class="card">
+
+    <span class="string" aria-hidden="true"></span>
 
     <span class="badge">SALE</span>
 

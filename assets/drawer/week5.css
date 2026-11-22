@@ -1,0 +1,245 @@
+/*
+  Week 5 — JavaScript basics. The drawer object is a café receipt that prints
+  out of a little receipt printer when the page opens. Each task is a line
+  item; Task 2's six mini exercises are its sub-items.
+*/
+
+:root {
+  --ground: #2b2230;
+  --ink: #f6ecef;
+  --ink-soft: #d4c5d0;
+  --thermal: #fbfaf6;
+  --thermal-ink: #2a2a2e;
+  --thermal-soft: #5d5d66;
+  --printer: #e9e4ee;
+  --printer-dark: #b9b1c4;
+  --focus: #f6ecef;
+  --select: #7a4b6a;
+  --receipt-font: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.page {
+  width: min(100% - 2rem, 70rem);
+  margin-inline: auto;
+  padding-block: 1.25rem 4rem;
+}
+
+.layout {
+  display: grid;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .layout { grid-template-columns: 1fr 26rem; gap: 4rem; padding-top: 1.5rem; }
+}
+
+/* ---------- left column ---------- */
+
+.intro { display: grid; gap: 1rem; max-width: 34rem; }
+
+.intro h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6.4vw, 4.25rem);
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.day {
+  display: inline-grid;
+  place-items: center;
+  width: 2.6em;
+  height: 2.6em;
+  font-size: 0.42em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+
+.intro__topic { font-size: 1.0625rem; color: var(--ink-soft); }
+.intro__topic strong { font-weight: 400; color: var(--ink); background: linear-gradient(transparent 62%, var(--select) 62%); }
+.intro__note { font-family: var(--font-hand); font-size: 1.75rem; line-height: 1.1; transform: rotate(-1.5deg); transform-origin: left; }
+
+/* ---------- the printer and its receipt ---------- */
+
+.printer {
+  position: relative;
+  width: min(100%, 24rem);
+  margin-inline: auto;
+}
+
+.printer__body {
+  position: relative;
+  z-index: 2;
+  height: 3.25rem;
+  border-radius: 1rem 1rem 0.6rem 0.6rem;
+  background: linear-gradient(var(--printer), var(--printer-dark));
+  box-shadow: 0 2px 2px rgb(0 0 0 / 0.25), 0 12px 20px -10px rgb(0 0 0 / 0.6);
+}
+
+/* The slot the paper comes out of. */
+.printer__body::after {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 0.7rem;
+  height: 0.45rem;
+  border-radius: 0.3rem;
+  background: #4a4152;
+  box-shadow: inset 0 2px 2px rgb(0 0 0 / 0.5);
+}
+
+.printer__light {
+  position: absolute;
+  top: 0.8rem;
+  right: 1.2rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #7ee2b8;
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.5);
+}
+
+/* Clips the receipt so it looks like it is coming out of the slot. */
+.printer__mouth {
+  margin: -0.85rem 1.6rem 0;
+  overflow: hidden;
+  padding: 0 0.5rem 2rem;
+}
+
+.receipt {
+  position: relative;
+  padding: 2rem 1.4rem 2.25rem;
+  font-family: var(--receipt-font);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--thermal-ink);
+  background: var(--thermal);
+  /* A torn zig-zag bottom edge, the way a receipt is ripped off the roll. */
+  --tooth: 0.55rem;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--tooth)) no-repeat,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tooth) * 2) var(--tooth) repeat-x;
+  filter: drop-shadow(0 10px 12px rgb(0 0 0 / 0.35));
+  animation: print 1.6s steps(24, end) 0.25s both;
+}
+
+@keyframes print {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .receipt { animation: none; }
+}
+
+.receipt__shop {
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+
+.receipt__meta {
+  margin-top: 0.35rem;
+  text-align: center;
+  color: var(--thermal-soft);
+}
+
+.rule {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px dashed #9a9aa3;
+}
+
+.receipt__head,
+.line__row {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+  gap: 0.5rem;
+}
+
+.receipt__head { font-size: 0.75rem; color: var(--thermal-soft); letter-spacing: 0.04em; }
+
+.lines { display: grid; gap: 0.35rem; }
+
+.line {
+  display: block;
+  margin-inline: -0.6rem;
+  padding: 0.55rem 0.6rem;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0.35rem;
+  transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out);
+}
+
+/* Hovering a line selects it, like on the café's till. */
+.line:hover,
+.line:focus-visible {
+  color: var(--thermal);
+  background: var(--thermal-ink);
+}
+.line:focus-visible { outline-color: var(--thermal-ink); outline-offset: 2px; }
+.line:hover .line__subs,
+.line:focus-visible .line__subs { color: #d9d9de; }
+
+.line__title { font-weight: 700; }
+
+.line__subs {
+  display: grid;
+  gap: 0.05rem;
+  margin-top: 0.3rem;
+  padding-left: 2rem;
+  color: var(--thermal-soft);
+}
+.line__subs li::before { content: "+ "; }
+
+.receipt__total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.receipt__thanks {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+
+.barcode {
+  display: block;
+  width: 70%;
+  height: 2.75rem;
+  margin: 1rem auto 0;
+}
+
+/* ---------- page turn ---------- */
+
+.page-turn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed #4d4056;
+}
+.page-turn a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+.page-turn a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }

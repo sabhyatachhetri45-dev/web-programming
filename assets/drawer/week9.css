@@ -1,0 +1,226 @@
+/*
+  Week 9 — measuring and improving a website with Lighthouse. The drawer
+  object is a row of four-cut photo-booth strips hung on a string with
+  clothespins: every task is a before-and-after story, so each strip shows
+  the real screenshots from that task, frame by frame.
+*/
+
+:root {
+  --ground: #2b2230;
+  --ink: #f6ecef;
+  --ink-soft: #d4c5d0;
+  --string: #c9b9a6;
+  --pin: #e7c89a;
+  --note: #fffdf7;
+  --note-ink: #2b2622;
+  --red: #c0264f;
+  --focus: #f6ecef;
+  --select: #7a4b6a;
+}
+
+.page {
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding-block: 1.25rem 4rem;
+}
+
+.intro { display: grid; gap: 1rem; max-width: 44rem; padding: 0.5rem 0 2.5rem; }
+.intro h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.5rem, 6.4vw, 4.25rem); line-height: 1; }
+.intro__topic { font-size: 1.0625rem; color: var(--ink-soft); }
+.intro__topic strong { font-weight: 400; color: var(--ink); background: linear-gradient(transparent 62%, var(--select) 62%); }
+.intro__note { font-family: var(--font-hand); font-size: 1.75rem; line-height: 1.1; transform: rotate(-1.5deg); transform-origin: left; }
+
+.line-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+}
+.line-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 2rem; line-height: 1.1; }
+.line-head p { font-size: 0.9375rem; color: var(--ink-soft); }
+
+/* ---------- the string and the strips ---------- */
+
+.line {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem 3.5rem;
+  padding-top: 2.5rem;
+}
+
+/* The string the strips hang from, sagging slightly. */
+.line::before {
+  content: "";
+  position: absolute;
+  top: 1.4rem;
+  left: -1rem;
+  right: -1rem;
+  height: 1.6rem;
+  border-bottom: 2px solid var(--string);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  pointer-events: none;
+}
+
+/* On one column the string would only cross the first strip. */
+@media (max-width: 52rem) {
+  .line::before { display: none; }
+}
+
+.line li:nth-child(1) .strip { --tilt: -2.5deg; }
+.line li:nth-child(2) .strip { --tilt: 1.8deg; }
+.line li:nth-child(3) .strip { --tilt: -1deg; }
+
+.strip {
+  position: relative;
+  display: grid;
+  gap: 0.45rem;
+  width: 15.5rem;
+  padding: 0.65rem 0.65rem 0;
+  text-decoration: none;
+  color: var(--strip-ink);
+  background: var(--strip);
+  border-radius: 0.2rem;
+  box-shadow: 0 2px 3px rgb(0 0 0 / 0.35), 0 22px 30px -18px rgb(0 0 0 / 0.75);
+  transform-origin: 50% -0.6rem;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 600ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* A strip swings on its pin when touched (a literal pendulum, so a little overshoot). */
+.strip:hover,
+.strip:focus-visible { transform: rotate(calc(var(--tilt, 0deg) * -1)); }
+.strip:focus-visible { outline-offset: 6px; }
+
+/* The wooden clothespin. */
+.strip::before {
+  content: "";
+  position: absolute;
+  top: -1.55rem;
+  left: 50%;
+  width: 0.95rem;
+  height: 2.6rem;
+  margin-left: -0.475rem;
+  border-radius: 0.2rem;
+  background:
+    linear-gradient(90deg, transparent 46%, rgb(80 50 20 / 0.35) 46% 54%, transparent 54%),
+    linear-gradient(var(--pin), #c9a46d);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 0.35);
+}
+
+.strip--mon { --strip: #cdb8ef; --strip-ink: #2a1f3d; }
+.strip--a11y { --strip: #a8e3cf; --strip-ink: #12352b; }
+.strip--site { --strip: #1d1a22; --strip-ink: #f6ecef; }
+
+/* ---------- the four frames ---------- */
+
+.frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #111;
+  border-radius: 0.15rem;
+}
+
+.frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.frame--contain { background: #2a2433; }
+.frame--contain img { object-fit: contain; padding-block: 0.35rem; }
+
+/* Where each screenshot is cropped, so the score or the page stays in view. */
+.shot-1 img { object-position: 30% 60%; }
+.shot-2 img { object-position: 50% 20%; }
+.shot-3 img { object-position: 50% 30%; }
+.shot-4 img { object-position: 50% 30%; }
+.shot-5 img { object-position: 0% 30%; }
+.shot-6 img { object-position: 40% 30%; }
+.shot-7 img { object-position: 50% 0%; }
+
+
+/* "before" / "after", written on a scrap of tape stuck to the photo. */
+.frame__tag {
+  position: absolute;
+  left: 0.4rem;
+  bottom: 0.4rem;
+  padding: 0.05rem 0.5rem 0.15rem;
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  line-height: 1.1;
+  color: var(--note-ink);
+  background: rgb(255 246 204 / 0.92);
+  transform: rotate(-3deg);
+}
+
+.frame--note {
+  align-content: center;
+  padding: 0.75rem;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  line-height: 1.1;
+  color: var(--note-ink);
+  background: var(--note);
+}
+
+.frame--score {
+  background: #15131a;
+}
+.frame--score svg { width: 88%; height: auto; }
+.frame--score text { font-family: var(--font-code); font-weight: 700; }
+
+/* ---------- the strip's printed footer ---------- */
+
+.strip__foot {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.35rem 0.2rem 0.8rem;
+  text-align: center;
+}
+.strip__title { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; line-height: 1.15; }
+.strip__meta { font-size: 0.8125rem; }
+
+/* A handwritten "seen" once the task has been opened. */
+.strip__seen {
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--seen, var(--red));
+  visibility: hidden;
+}
+.strip--site { --seen: #ff8fab; }
+.strip.is-seen .strip__seen { visibility: visible; }
+
+/* ---------- page turn ---------- */
+
+.page-turn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed #4d4056;
+}
+.page-turn a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+.page-turn a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .strip { transition: none; }
+}

@@ -1,33 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 3 Monday Tasks</title>
-    <style>
-        body { margin: 0; padding: 40px 20px; background: #07070a; color: #f5f5f7; font-family: Arial, sans-serif; }
-        main { max-width: 760px; margin: auto; }
-        a { color: #67e8f9; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        li { margin: 14px 0; }
-        .back { display: inline-block; margin-bottom: 28px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 3 Monday · CSS basics</title>
+  <meta name="description" content="Week 3 Monday coursework by Sabhyata Chhetri: eight CSS basics tasks, from styling text to a full page.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='6' y='3' width='20' height='26' rx='3' fill='%23fffdf9' stroke='%232b2622' stroke-width='1.5'/%3E%3Crect x='6' y='3' width='20' height='15' rx='3' fill='%23db2777'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
+  <link rel="stylesheet" href="../assets/drawer/week3.css">
 </head>
 <body>
-    <main>
-        <a class="back" href="../index.html">&lt; Back to homepage</a>
-        <h1>Week 3 Monday</h1>
-        <p>Click any HTML file to open it.</p>
-        <ul>
-            <li><a href="task1-heading.html">task1-heading.html</a></li>
-            <li><a href="task2-difference.html">task2-difference.html</a></li>
-            <li><a href="task3-color.html">task3-color.html</a></li>
-            <li><a href="task4-boxmodel.html">task4-boxmodel.html</a></li>
-            <li><a href="task5-fixcode.html">task5-fixcode.html</a></li>
-            <li><a href="task6-flexbox.html">task6-flexbox.html</a></li>
-            <li><a href="task7-profile.html">task7-profile.html</a></li>
-            <li><a href="task8-fullstyle.html">task8-fullstyle.html</a></li>
-        </ul>
-    </main>
+  <main class="page">
+    <header class="wall">
+      <div class="wall__text">
+        <a class="back-to-diary" href="../index.html"><span aria-hidden="true">←</span> back to the diary</a>
+        <h1>Week 3, Monday <span class="day" lang="ko" aria-hidden="true">월</span></h1>
+        <p class="wall__topic">This week's topic is <strong>CSS basics</strong>: colour, text, the box model and flexbox. Each chip below is one task, painted with a colour that task actually uses.</p>
+        <p class="wall__note">the week my pages finally got colour.</p>
+        <p class="wall__hint">Hover a chip to try its colour on the wall.</p>
+      </div>
+
+      <figure class="patch" aria-hidden="true">
+        <svg viewBox="0 0 320 240" focusable="false">
+          <defs>
+            <clipPath id="patch-shape"><path d="M22 34c38-12 92-5 140-11s104-8 134 5c10 40-1 78 6 118s-2 62-6 76c-52 10-108 2-162 9s-86 3-112-6c-8-38 4-74-4-112S14 58 22 34Z"/></clipPath>
+            <pattern id="roller" width="26" height="240" patternUnits="userSpaceOnUse" patternTransform="rotate(4)">
+              <rect width="12" height="240" fill="#fff" opacity="0.04"/>
+              <rect x="17" width="2" height="240" fill="#000" opacity="0.03"/>
+            </pattern>
+          </defs>
+          <path d="M22 34c38-12 92-5 140-11s104-8 134 5c10 40-1 78 6 118s-2 62-6 76c-52 10-108 2-162 9s-86 3-112-6c-8-38 4-74-4-112S14 58 22 34Z"/>
+          <rect class="roller" width="320" height="240" fill="url(#roller)" clip-path="url(#patch-shape)"/>
+        </svg>
+        <figcaption class="patch__label"></figcaption>
+      </figure>
+    </header>
+
+    <section aria-labelledby="deck-title">
+      <div class="deck-head">
+        <h2 id="deck-title">The swatch book</h2>
+        <p>8 tasks · open any chip</p>
+      </div>
+
+      <ol class="swatches">
+        <li>
+          <a class="chip c1" href="task1-heading.html">
+            <span class="chip__colour" aria-hidden="true"></span>
+            <span class="chip__label">
+              <span class="chip__code" aria-hidden="true">W3-01</span>
+              <span class="visually-hidden">Task 1:</span>
+              <strong class="chip__name">Styling text</strong>
+              <span class="chip__task">CSS is Beautiful heading</span>
+              <span class="chip__hex" aria-hidden="true">#15803D</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="chip c2" href="task2-difference.html">
+            <span class="chip__colour" aria-hidden="true"></span>
+            <span class="chip__label">
+              <span class="chip__code" aria-hidden="true">W3-02</span>
+              <span class="visually-hidden">Task 2:</span>
+              <strong class="chip__name">Where CSS lives</strong>
+              <span class="chip__task">Inline, internal and external CSS</span>
+              <span class="chip__hex" aria-hidden="true">#0369A1</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="chip c3" href="task3-color.html">
+            <span class="chip__colour" aria-hidden="true"></span>
+            <span class="chip__label">
+              <span class="chip__code" aria-hidden="true">W3-03</span>
+              <span class="visually-hidden">Task 3:</span>
+              <strong class="chip__name">Colour</strong>
+              <span class="chip__task">Colour swatches</span>
+              <span class="chip__hex" aria-hidden="true">#DB2777</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="chip c4" href="task4-boxmodel.html">
+            <span class="chip__colour" aria-hidden="true"></span>
+            <span class="chip__label">
+              <span class="chip__code" aria-hidden="true">W3-04</span>
+              <span class="visually-hidden">Task 4:</span>
+              <strong class="chip__name">Box model</strong>
+              <span class="chip__task">Box model visualisation</span>
+              <span class="chip__hex" aria-hidden="true">#F59E0B</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="chip c5" href="task5-fixcode.html">
+            <span class="chip__colour" aria-hidden="true"></span>
+            <span class="chip__label">
+              <span class="chip__code" aria-hidden="true">W3-05</span>
+              <span class="visually-hidden">Task 5:</span>
+              <strong class="chip__name">Debugging</strong>
+              <span class="chip__task">Fix Me! broken CSS</span>
+              <span class="chip__hex" aria-hidden="true">#DCFCE7</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="chip c6" href="task6-flexbox.html">
+            <span class="chip__colour" aria-hidden="true"></span>
+            <span class="chip__label">
+              <span class="chip__code" aria-hidden="true">W3-06</span>
+              <span class="visually-hidden">Task 6:</span>
+              <strong class="chip__name">Flexbox</strong>
+              <span class="chip__task">My Portfolio layout</span>
+              <span class="chip__hex" aria-hidden="true">#1E293B</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="chip c7" href="task7-profile.html">
+            <span class="chip__colour" aria-hidden="true"></span>
+            <span class="chip__label">
+              <span class="chip__code" aria-hidden="true">W3-07</span>
+              <span class="visually-hidden">Task 7:</span>
+              <strong class="chip__name">Centering a card</strong>
+              <span class="chip__task">Profile card</span>
+              <span class="chip__hex" aria-hidden="true">#16A34A</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="chip c8" href="task8-fullstyle.html">
+            <span class="chip__colour" aria-hidden="true"></span>
+            <span class="chip__label">
+              <span class="chip__code" aria-hidden="true">W3-08</span>
+              <span class="visually-hidden">Task 8:</span>
+              <strong class="chip__name">A full page</strong>
+              <span class="chip__task">My Personal Page</span>
+              <span class="chip__hex" aria-hidden="true">#7C3AED</span>
+            </span>
+          </a>
+        </li>
+      </ol>
+    </section>
+
+    <nav class="page-turn" aria-label="Week 3 pages">
+      <a href="../index.html"><span aria-hidden="true">←&nbsp;</span>the diary</a>
+      <a href="../week3(fri)/index.html">Friday's teal strip<span aria-hidden="true">&nbsp;→</span></a>
+    </nav>
+  </main>
 </body>
 </html>

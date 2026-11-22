@@ -1,46 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>JavaScript Basics</title>
 
   <style>
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+    /* The café kitchen: every exercise is an order ticket clipped to the
+       steel ticket rail above the pass. */
+    :root {
+      --wall: #17393a;
+      --tile-line: rgba(255, 255, 255, 0.05);
+      --ticket: #fffdf6;
+      --ticket-ink: #26303b;
+      --pen: #b4233c;
+      --steel-hi: #eef1f3;
+      --steel: #a9b2b9;
+      --steel-lo: #6c757c;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      max-width: 700px;
-      margin: auto;
-      padding: 30px;
+      font-family: "Gowun Dodum", Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2.5rem 1rem 6rem;
+      color: var(--ticket-ink);
+      /* subway tiles behind the pass */
+      background-color: var(--wall);
+      background-image:
+        linear-gradient(var(--tile-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--tile-line) 1px, transparent 1px);
+      background-size: 4rem 2rem, 4rem 2rem;
+      background-position: 0 0, 2rem 1rem;
     }
 
-    section {
-      background-color: white;
-      padding: 15px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-    }
-
+    /* The enamel sign over the pass. */
     h1 {
+      width: fit-content;
+      margin: 0 auto 3rem;
+      padding: 0.6rem 1.6rem 0.7rem;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: clamp(2.2rem, 7vw, 3.2rem);
+      line-height: 1;
       color: #0f766e;
+      background: #f4fbf9;
+      border: 3px solid #0f766e;
+      border-radius: 0.8rem;
+      box-shadow: inset 0 0 0 4px #f4fbf9, inset 0 0 0 5px rgba(15, 118, 110, 0.4), 0 12px 24px -12px rgba(0, 0, 0, 0.7);
+      transform: rotate(-1.5deg);
     }
+
+    .rail {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+      gap: 3.5rem 1.25rem;
+      max-width: 62rem;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    /* Each section is one order ticket. */
+    section {
+      position: relative;
+      align-self: start;
+      padding: 2.1rem 1.15rem 1.4rem;
+      background: var(--ticket);
+      border-radius: 0 0 0.3rem 0.3rem;
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), 0 16px 24px -14px rgba(0, 0, 0, 0.65);
+      transform: rotate(var(--tilt, 0deg));
+      transform-origin: 50% 0;
+      counter-increment: ticket;
+      transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    section:nth-child(3n + 1) { --tilt: -1.2deg; }
+    section:nth-child(3n + 2) { --tilt: 0.8deg; }
+    section:nth-child(3n) { --tilt: -0.4deg; }
+
+    section:hover,
+    section:focus-within { transform: rotate(0deg); }
+
+    /* The steel rail segment each ticket is tucked into. Segments run into
+       the gaps, so a row of tickets reads as one long rail. */
+    section::before {
+      content: "";
+      position: absolute;
+      left: -0.75rem;
+      right: -0.75rem;
+      top: -0.9rem;
+      height: 1.6rem;
+      border-radius: 0.4rem;
+      background: linear-gradient(var(--steel-hi), var(--steel) 45%, var(--steel-lo));
+      box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35);
+      /* the rail stays level while the ticket under it hangs at an angle */
+      transform: rotate(calc(var(--tilt, 0deg) * -1));
+      transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    section:hover::before,
+    section:focus-within::before { transform: rotate(0deg); }
+
+    /* Ticket number, printed like a kitchen printer would. */
+    section::after {
+      content: "ORDER " counter(ticket, decimal-leading-zero);
+      position: absolute;
+      top: 0.95rem;
+      right: 1rem;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      color: #5b6570;
+    }
+
+    .rail { counter-reset: ticket; }
 
     h2 {
+      margin: 0.2rem 0 0.7rem;
+      padding-bottom: 0.5rem;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.45rem;
+      line-height: 1.15;
       color: #334155;
+      border-bottom: 2px dashed #c9cdd3;
     }
 
+    section p {
+      margin: 0.3rem 0;
+      font-size: 0.95rem;
+    }
+
+    /* Inputs are the write-in lines on the ticket. */
     input {
-      padding: 6px;
+      width: 100%;
+      margin: 0.2rem 0 0.6rem;
+      padding: 0.45rem 0.1rem;
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--ticket-ink);
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid #9aa3ad;
+      border-radius: 0;
     }
 
+    input::placeholder { color: #6b7480; }
+
+    input:focus-visible {
+      outline: none;
+      border-bottom-color: #0f766e;
+      background: rgba(15, 118, 110, 0.06);
+    }
+
+    /* Buttons are rubber stamps the cook presses onto the ticket. */
     button {
-      padding: 6px 10px;
+      padding: 0.45rem 1rem;
+      font-family: "Gowun Dodum", Arial, sans-serif;
+      font-size: 0.95rem;
+      color: #ffffff;
+      background: #0f766e;
+      border: 0;
+      border-radius: 0.4rem;
+      box-shadow: 0 3px 0 #0a4f4a, 0 6px 10px -4px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: transform 120ms ease-out, box-shadow 120ms ease-out;
+    }
+
+    button:hover { background: #115e59; }
+
+    button:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #0a4f4a, 0 3px 6px -3px rgba(0, 0, 0, 0.4);
+    }
+
+    button:focus-visible {
+      outline: 2px solid #26303b;
+      outline-offset: 3px;
+    }
+
+    /* Results get written on in red pen. */
+    #message,
+    #output,
+    #grade,
+    #loop,
+    #fruits,
+    #saved {
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.55rem;
+      line-height: 1.15;
+      color: var(--pen);
+    }
+
+    #message { color: var(--ticket-ink); }
+
+    #output:empty,
+    #grade:empty,
+    #loop:empty { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      section, section::before, button { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 
 <body>
 
   <h1>JavaScript Basics</h1>
+
+  <main class="rail">
 
   <section>
     <h2>Changing Content</h2>
@@ -58,7 +232,7 @@
   <section>
     <h2>Condition (if / else)</h2>
     <p>Enter a score:</p>
-    <input type="number" id="scoreInput">
+    <input type="number" id="scoreInput" aria-label="Score">
     <button onclick="checkScore()">Check</button>
     <p id="grade"></p>
   </section>
@@ -66,7 +240,7 @@
   <section>
     <h2>Loop (for)</h2>
     <p>Enter a number:</p>
-    <input type="number" id="loopInput">
+    <input type="number" id="loopInput" aria-label="Number of steps">
     <button onclick="runLoop()">Run</button>
     <p id="loop"></p>
   </section>
@@ -80,6 +254,8 @@
     <h2>localStorage</h2>
     <p id="saved"></p>
   </section>
+
+  </main>
 
   <script>
     let name = 'Sabhyata Chhetri';

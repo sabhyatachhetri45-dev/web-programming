@@ -5,33 +5,243 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Random Dog</title>
   <style>
-    :root { --bg: #f4f6f8; --card: #fff; --text: #1d2433; --muted: #5d677a; --accent: #3156a5; --accent-text: #fff; --border: #dde2ea; --error: #b3261e; }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg: #12151c; --card: #1b2030; --text: #e6e9f0; --muted: #98a2b8; --accent: #6f93e6; --accent-text: #0e1320; --border: #2c3348; --error: #ff8a80; }
+    /*
+      A pastel instant camera. "Get a dog" is the shutter; the dog from the API
+      comes out of the slot as an instant print.
+    */
+    @font-face { font-family: "Gaegu"; font-weight: 700; font-display: swap; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); }
+    @font-face { font-family: "Gowun Dodum"; font-weight: 400; font-display: swap; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); }
+
+    :root {
+      --ground: #a84a2e;
+      --ground-deep: #8a3a22;
+      --body: #c6ead9;
+      --body-dark: #95cdb4;
+      --body-ink: #1f3a30;
+      --trim: #fffaf2;
+      --lens: #2a2d36;
+      --shutter: #e0485e;
+      --error: #9b1c1c;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
-    * { box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 24px 16px; }
-    main { max-width: 700px; margin: 0 auto; background: var(--card); padding: 24px; border-radius: 12px; }
-    h1 { margin-top: 0; }
-    .row { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
-    select { flex: 1 1 200px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); color: var(--text); font-size: 1rem; }
-    button { padding: 10px 15px; cursor: pointer; background: var(--accent); color: var(--accent-text); border: 0; border-radius: 6px; font-size: 1rem; }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-    button:focus-visible, select:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-    #status { color: var(--muted); min-height: 1.4em; }
-    #status.error { color: var(--error); }
-    #dog-img { max-width: 100%; max-height: 420px; border-radius: 10px; display: block; margin-top: 12px; }
+
+    html { background: var(--ground-deep); }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 2.5rem 1rem 6rem;
+      font-family: "Gowun Dodum", system-ui, sans-serif;
+      color: var(--body-ink);
+      background:
+        radial-gradient(ellipse 55% 40% at 50% 28%, rgb(255 220 180 / 0.22), transparent 70%),
+        linear-gradient(var(--ground), var(--ground-deep));
+    }
+
+    :focus-visible { outline: 3px solid #fff3b0; outline-offset: 3px; }
+
+    /* ---------- the camera ---------- */
+
+    main {
+      width: min(100%, 30rem);
+      margin: 0 auto;
+    }
+
+    .camera {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 0.9rem;
+      padding: 1.4rem 1.25rem 1.6rem;
+      border-radius: 2.2rem 2.2rem 1.6rem 1.6rem;
+      background:
+        linear-gradient(to top, rgb(30 80 60 / 0.16), transparent 2.5rem),
+        linear-gradient(90deg, rgb(255 255 255 / 0.25), transparent 20% 80%, rgb(0 0 0 / 0.06)),
+        var(--body);
+      box-shadow: 0 30px 40px -22px rgb(40 10 0 / 0.75);
+    }
+
+    /* Top row: viewfinder, flash, and the camera's name plate. */
+    .camera__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .viewfinder {
+      width: 3.2rem;
+      height: 2.2rem;
+      border-radius: 0.6rem;
+      background: radial-gradient(circle at 40% 35%, #6d7385, var(--lens) 70%);
+      box-shadow: 0 0 0 0.3rem var(--trim);
+    }
+    .flash {
+      width: 4.2rem;
+      height: 2.2rem;
+      border-radius: 0.5rem;
+      background: repeating-linear-gradient(90deg, #fffef7 0 4px, #e9e4d8 4px 6px);
+      box-shadow: 0 0 0 0.3rem var(--trim);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Gaegu", cursive;
+      font-weight: 700;
+      font-size: clamp(1.9rem, 7vw, 2.4rem);
+      line-height: 1.1;
+      text-align: center;
+      color: var(--body-ink);
+    }
+
+    .lens {
+      justify-self: center;
+      width: min(62%, 11rem);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 38% 34%, rgb(255 255 255 / 0.55) 0 7%, transparent 8%),
+        radial-gradient(circle, #3d4a6b 0 28%, #1a1c24 30% 52%, #4a4f5c 54% 58%, #22252e 60% 100%);
+      box-shadow: 0 0 0 0.6rem var(--trim), 0 0 0 0.9rem var(--body-dark), 0 6px 10px 0.9rem rgb(0 0 0 / 0.12);
+      margin-block: 0.6rem 0.4rem;
+    }
+    .camera:has(#dog-btn:disabled) .lens { animation: focus 0.6s ease-in-out infinite alternate; }
+    @keyframes focus { to { transform: scale(0.96) rotate(20deg); } }
+
+    /* Controls: the breed choice is a label-maker strip, "Get a dog" is the shutter. */
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0;
+    }
+
+    select {
+      flex: 1 1 12rem;
+      min-height: 3rem;
+      padding: 0.6rem 2.4rem 0.6rem 0.9rem;
+      font: inherit;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+      color: #f4f4f6;
+      background:
+        linear-gradient(45deg, transparent 50%, #f4f4f6 50%) right 1.15rem center / 0.45rem 0.45rem no-repeat,
+        linear-gradient(-45deg, transparent 50%, #f4f4f6 50%) right 0.8rem center / 0.45rem 0.45rem no-repeat,
+        #2a2d36;
+      border: 0;
+      border-radius: 0.35rem;
+      box-shadow: 0 2px 0 #14161c;
+      appearance: none;
+      cursor: pointer;
+    }
+    select option { color: #1d2433; background: #fff; }
+
+    #dog-btn {
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 5.6rem;
+      aspect-ratio: 1;
+      padding: 0.5rem;
+      font-family: "Gaegu", cursive;
+      font-weight: 700;
+      font-size: 1.2rem;
+      line-height: 1;
+      color: #fff;
+      background: radial-gradient(circle at 38% 30%, #e5566a, #c8364c 60%, #a8253b);
+      border: 0;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0.35rem var(--trim), 0 6px 0 0.35rem var(--body-dark);
+      cursor: pointer;
+      transition: transform 150ms var(--ease-out), box-shadow 150ms var(--ease-out);
+    }
+    #dog-btn:hover:not(:disabled) { transform: translateY(-1px); }
+    #dog-btn:active:not(:disabled),
+    #dog-btn:disabled { transform: translateY(4px); box-shadow: 0 0 0 0.35rem var(--trim), 0 2px 0 0.35rem var(--body-dark); }
+    #dog-btn:disabled { cursor: wait; }
+
+    #status {
+      min-height: 1.5em;
+      margin: 0;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--body-ink);
+    }
+    #status.error { color: var(--error); font-weight: 700; }
+
+    /* The slot the print comes out of. */
+    .camera::after {
+      content: "";
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      bottom: 0.15rem;
+      height: 0.45rem;
+      border-radius: 0.3rem;
+      background: #3a5a4c;
+    }
+
+    /* ---------- the instant print ---------- */
+
+    .print {
+      position: relative;
+      z-index: 1;
+      width: min(86%, 22rem);
+      margin: -0.4rem auto 0;
+      padding: 0.85rem 0.85rem 3.2rem;
+      background: #fffdf8;
+      border-radius: 0.2rem;
+      box-shadow: 0 2px 3px rgb(0 0 0 / 0.25), 0 20px 30px -16px rgb(40 10 0 / 0.7);
+      transform: rotate(-1.5deg);
+      transform-origin: top center;
+    }
+    .print.eject { animation: eject 900ms var(--ease-out); }
+    @keyframes eject { from { transform: translateY(-70%) rotate(0deg); } }
+
+    /* Until the first picture arrives, the print is still "developing". */
+    .print:has(#dog-img[hidden])::before {
+      content: "";
+      display: block;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #2f3540, #4a4f5c);
+      border-radius: 0.1rem;
+    }
+
+    #dog-img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 0.1rem;
+      margin: 0;
+      max-height: none;
+    }
+    #dog-img[hidden] { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
   <main>
-    <h1>🐶 Random Dog</h1>
-    <div class="row">
-      <select id="breed" aria-label="Dog breed"><option value="">Any breed</option></select>
-      <button id="dog-btn" type="button">Get a dog</button>
+    <div class="camera">
+      <div class="camera__top" aria-hidden="true"><span class="viewfinder"></span><span class="flash"></span></div>
+      <h1>🐶 Random Dog</h1>
+      <span class="lens" aria-hidden="true"></span>
+      <div class="row">
+        <select id="breed" aria-label="Dog breed"><option value="">Any breed</option></select>
+        <button id="dog-btn" type="button">Get a dog</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
     </div>
-    <p id="status" role="status" aria-live="polite"></p>
-    <img id="dog-img" alt="" hidden>
+    <figure class="print">
+      <img id="dog-img" alt="" hidden>
+    </figure>
   </main>
 
   <script>
@@ -91,6 +301,14 @@
     }
 
     btn.addEventListener("click", getDog);
+
+    // Decoration only: each new picture slides out of the camera like a fresh print.
+    img.addEventListener("load", () => {
+      const print = img.closest(".print");
+      print.classList.remove("eject");
+      void print.offsetWidth;
+      print.classList.add("eject");
+    });
     loadBreeds();
     getDog();
   </script>

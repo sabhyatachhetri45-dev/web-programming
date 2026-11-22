@@ -2,176 +2,199 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Browse the Week 6 Friday API data, weather, and cryptocurrency projects.">
-  <title>Week 6 Friday | API Projects</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #030d12;
-      --surface: #0b191e;
-      --surface-hover: #10262a;
-      --border: rgba(45, 212, 191, 0.2);
-      --text: #f0fdf4;
-      --muted: #94a3b8;
-      --accent: #2dd4bf;
-      --radius: 18px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      line-height: 1.6;
-    }
-
-    a { color: inherit; }
-
-    .crumbbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1rem max(1.25rem, calc((100vw - 960px) / 2));
-      border-bottom: 1px solid var(--border);
-    }
-
-    .crumbbar a {
-      color: var(--muted);
-      text-decoration: none;
-    }
-
-    .crumbbar a:hover, .project-card:hover h2 { color: var(--accent); }
-
-    main {
-      width: min(100% - 2rem, 900px);
-      margin: 0 auto;
-      padding: 3.5rem 0;
-    }
-
-    .eyebrow {
-      color: var(--accent);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    h1, h2 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      line-height: 1.15;
-    }
-
-    h1 {
-      margin: 0.45rem 0;
-      font-size: clamp(2.2rem, 7vw, 3.5rem);
-      letter-spacing: -0.04em;
-    }
-
-    .intro {
-      max-width: 620px;
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .project-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-      gap: 1rem;
-      margin-top: 2.25rem;
-    }
-
-    .project-card {
-      display: block;
-      min-height: 155px;
-      padding: 1.25rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      text-decoration: none;
-      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-2px);
-      background: var(--surface-hover);
-      border-color: var(--accent);
-    }
-
-    .project-type {
-      color: var(--accent);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .project-card h2 {
-      margin: 0.55rem 0 0.35rem;
-      font-size: 1.25rem;
-      transition: color 0.2s ease;
-    }
-
-    .project-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { transition-duration: 0.01ms !important; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 6 · Fetching data from APIs</title>
+  <meta name="description" content="Week 6 coursework by Sabhyata Chhetri: seven projects that fetch real data from public APIs.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='7' width='26' height='18' rx='2' fill='%23fbf7ef' stroke='%23d64550' stroke-width='2' stroke-dasharray='4 2'/%3E%3Crect x='20' y='10' width='6' height='7' fill='%232f5aa8'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
+  <link rel="stylesheet" href="../assets/drawer/week6.css">
 </head>
 <body>
-  <nav class="crumbbar" aria-label="Breadcrumb">
-    <a href="../index.html">Web Programming</a>
-    <a href="../index.html#exercisesHeader">All exercises</a>
-  </nav>
+  <main class="page">
+    <header class="intro">
+      <a class="back-to-diary" href="../index.html"><span aria-hidden="true">←</span> back to the diary</a>
+      <h1>Week 6</h1>
+      <p class="intro__topic">This week's topic is <strong>fetching data from APIs</strong>: sending a request with fetch and async / await, waiting, and showing the answer that comes back. Every card below is one project, addressed from the API it talks to.</p>
+      <p class="intro__note">i wrote to seven strangers. all of them wrote back.</p>
+    </header>
 
-  <main>
-    <span class="eyebrow">Week 06 · Friday</span>
-    <h1>API Projects</h1>
-    <p class="intro">Choose a project to explore API data, discover country demographics, check the weather, find a random dog, browse GitHub repositories, or follow cryptocurrency prices.</p>
-
-    <section class="project-list" aria-label="Week 6 Friday projects">
-      <a class="project-card" href="jsoonplaceholder.html">
-        <span class="project-type">API Explorer</span>
-        <h2>Data Stream Explorer</h2>
-        <p>Explore API data in a live dashboard.</p>
-      </a>
-      <a class="project-card" href="openmetoe%20weather.html">
-        <span class="project-type">Open-Meteo API</span>
-        <h2>Weather Tracker</h2>
-        <p>Check current conditions with AeroCast.</p>
-      </a>
-      <a class="project-card" href="cryptocurrency%20trackerr.html">
-        <span class="project-type">CoinGecko API</span>
-        <h2>Cryptocurrency Tracker</h2>
-        <p>Track prices and 24-hour changes for popular coins.</p>
-      </a>
-      <a class="project-card" href="country%20demographic.html">
-        <span class="project-type">Country Data API</span>
-        <h2>Country Demographics</h2>
-        <p>Explore country data and demographic information.</p>
-      </a>
-      <a class="project-card" href="github%20repo.html">
-        <span class="project-type">GitHub API</span>
-        <h2>GitHub Repositories</h2>
-        <p>Look up a GitHub user's recently updated repositories.</p>
-      </a>
-      <a class="project-card" href="random%20dog.html">
-        <span class="project-type">Dog CEO API</span>
-        <h2>Random Dog</h2>
-        <p>Discover a random dog photo, or choose a breed.</p>
-      </a>
+    <section aria-labelledby="pile-title">
+      <div class="pile-head">
+        <h2 id="pile-title">Postcards that came back</h2>
+        <p data-count>7 cards · opened ones get postmarked</p>
+      </div>
+      <ol class="pile">
+        <li>
+          <a class="card card--1" href="../week6(mon)/task1.html" data-task="week6(mon)/task1.html">
+            <span class="card__picture" aria-hidden="true">
+              <svg viewBox="0 0 120 120" focusable="false"><circle cx="60" cy="58" r="34" fill="#ffd66b"/><path d="M44 52 q5 -6 10 0 M66 52 q5 -6 10 0" stroke="#2c2430" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M42 66 q18 22 36 0Z" fill="#2c2430"/><path d="M50 72 q10 8 20 0Z" fill="#ff8fab"/><path d="M84 20 l16 -8 M92 32 l14 -2 M18 22 l-12 -8" stroke="#ff7aa2" stroke-width="4" stroke-linecap="round"/></svg>
+            </span>
+            <span class="card__back">
+              <span class="stamp" aria-hidden="true"><span class="stamp__art"><svg viewBox="0 0 40 40" focusable="false"><circle cx="20" cy="20" r="13" fill="#2c2430"/><path d="M13 22 q7 8 14 0" stroke="#ffd66b" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span></span>
+              <svg class="postmark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs><path id="ring-1" d="M50 50 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"/></defs>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <text><textPath href="#ring-1" startOffset="2%">OFFICIAL-JOKE-API.APPSPOT.COM</textPath></text>
+                <text x="50" y="54" text-anchor="middle">WK 6</text>
+              </svg>
+              <span class="card__day" aria-hidden="true">Monday</span>
+              <span class="card__concept"><span class="visually-hidden">Task 1: </span>async / await</span>
+              <span class="card__title">Random joke</span>
+              <span class="card__from">from official-joke-api.appspot.com</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="card card--2" href="jsoonplaceholder.html" data-task="week6(fri)/jsoonplaceholder.html">
+            <span class="card__picture" aria-hidden="true">
+              <svg viewBox="0 0 120 120" focusable="false"><rect x="18" y="26" width="84" height="60" rx="8" fill="#fff" stroke="#2c2430" stroke-width="3"/><path d="M18 34 L60 62 L102 34" fill="none" stroke="#2c2430" stroke-width="3" stroke-linejoin="round"/><text x="60" y="104" text-anchor="middle" font-family="ui-monospace,monospace" font-size="20" font-weight="700" fill="#14806b">{ }</text></svg>
+            </span>
+            <span class="card__back">
+              <span class="stamp" aria-hidden="true"><span class="stamp__art"><svg viewBox="0 0 40 40" focusable="false"><text x="20" y="27" text-anchor="middle" font-family="ui-monospace,monospace" font-size="17" font-weight="700" fill="#2c2430">{}</text></svg></span></span>
+              <svg class="postmark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs><path id="ring-2" d="M50 50 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"/></defs>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <text><textPath href="#ring-2" startOffset="2%">JSONPLACEHOLDER.TYPICODE.COM</textPath></text>
+                <text x="50" y="54" text-anchor="middle">WK 6</text>
+              </svg>
+              <span class="card__day" aria-hidden="true">Friday</span>
+              <span class="card__concept"><span class="visually-hidden">Task 2: </span>Fetching JSON</span>
+              <span class="card__title">Data stream explorer</span>
+              <span class="card__from">from jsonplaceholder.typicode.com</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="card card--3" href="openmetoe%20weather.html" data-task="week6(fri)/openmetoe weather.html">
+            <span class="card__picture" aria-hidden="true">
+              <svg viewBox="0 0 120 120" focusable="false"><circle cx="46" cy="44" r="20" fill="#ffc14d"/><path d="M46 12v8 M46 68v8 M14 44h8 M70 44h8 M24 22l6 6 M62 60l6 6 M24 66l6 -6" stroke="#ffc14d" stroke-width="4" stroke-linecap="round"/><path d="M50 92 h48 a14 14 0 0 0 -4 -27 a20 20 0 0 0 -38 4 a12 12 0 0 0 -6 23Z" fill="#fff" stroke="#9bb3d6" stroke-width="3"/></svg>
+            </span>
+            <span class="card__back">
+              <span class="stamp" aria-hidden="true"><span class="stamp__art"><svg viewBox="0 0 40 40" focusable="false"><circle cx="20" cy="20" r="9" fill="#ff8a3d"/></svg></span></span>
+              <svg class="postmark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs><path id="ring-3" d="M50 50 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"/></defs>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <text><textPath href="#ring-3" startOffset="2%">API.OPEN-METEO.COM</textPath></text>
+                <text x="50" y="54" text-anchor="middle">WK 6</text>
+              </svg>
+              <span class="card__day" aria-hidden="true">Friday</span>
+              <span class="card__concept"><span class="visually-hidden">Task 3: </span>Asking with query parameters</span>
+              <span class="card__title">Weather tracker</span>
+              <span class="card__from">from api.open-meteo.com</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="card card--4" href="cryptocurrency%20trackerr.html" data-task="week6(fri)/cryptocurrency trackerr.html">
+            <span class="card__picture" aria-hidden="true">
+              <svg viewBox="0 0 120 120" focusable="false"><ellipse cx="60" cy="86" rx="34" ry="10" fill="#e0a92e"/><rect x="26" y="70" width="68" height="16" fill="#e0a92e"/><ellipse cx="60" cy="70" rx="34" ry="10" fill="#ffd66b"/><ellipse cx="60" cy="54" rx="34" ry="10" fill="#e0a92e"/><rect x="26" y="38" width="68" height="16" fill="#e0a92e"/><ellipse cx="60" cy="38" rx="34" ry="10" fill="#ffd66b"/><path d="M60 32 v12 M54 38 h12" stroke="#b07a10" stroke-width="3" stroke-linecap="round"/></svg>
+            </span>
+            <span class="card__back">
+              <span class="stamp" aria-hidden="true"><span class="stamp__art"><svg viewBox="0 0 40 40" focusable="false"><circle cx="20" cy="20" r="11" fill="#ffd66b" stroke="#b07a10" stroke-width="2.5"/></svg></span></span>
+              <svg class="postmark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs><path id="ring-4" d="M50 50 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"/></defs>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <text><textPath href="#ring-4" startOffset="2%">API.COINGECKO.COM</textPath></text>
+                <text x="50" y="54" text-anchor="middle">WK 6</text>
+              </svg>
+              <span class="card__day" aria-hidden="true">Friday</span>
+              <span class="card__concept"><span class="visually-hidden">Task 4: </span>Live prices, 24-hour change</span>
+              <span class="card__title">Crypto tracker</span>
+              <span class="card__from">from api.coingecko.com</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="card card--5" href="country%20demographic.html" data-task="week6(fri)/country demographic.html">
+            <span class="card__picture" aria-hidden="true">
+              <svg viewBox="0 0 120 120" focusable="false"><circle cx="60" cy="58" r="40" fill="#9ad8ff"/><path d="M34 40 q10 -6 18 2 q6 10 -4 14 q-8 4 -6 14 q-12 -4 -14 -16Z M66 30 q14 0 20 10 q-6 6 -14 2 q-8 -2 -6 -12Z M64 70 q12 -6 22 4 q-2 14 -14 16 q-8 -8 -8 -20Z" fill="#7fcf8f"/><path d="M60 18 a40 40 0 0 1 0 80 M60 18 a40 40 0 0 0 0 80" fill="none" stroke="#fff" stroke-width="2" opacity="0.6"/></svg>
+            </span>
+            <span class="card__back">
+              <span class="stamp" aria-hidden="true"><span class="stamp__art"><svg viewBox="0 0 40 40" focusable="false"><circle cx="20" cy="20" r="11" fill="#9ad8ff"/><path d="M13 17 q5 -3 9 1 q-2 5 -7 4Z" fill="#7fcf8f"/></svg></span></span>
+              <svg class="postmark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs><path id="ring-5" d="M50 50 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"/></defs>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <text><textPath href="#ring-5" startOffset="2%">HAND-DELIVERED</textPath></text>
+                <text x="50" y="54" text-anchor="middle">WK 6</text>
+              </svg>
+              <span class="card__day" aria-hidden="true">Friday</span>
+              <span class="card__concept"><span class="visually-hidden">Task 5: </span>Searching data in the page</span>
+              <span class="card__title">Country demographics</span>
+              <span class="card__from">from hand-delivered · no API</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="card card--6" href="github%20repo.html" data-task="week6(fri)/github repo.html">
+            <span class="card__picture" aria-hidden="true">
+              <svg viewBox="0 0 120 120" focusable="false"><path d="M38 22 V98 M38 50 q0 18 24 18 h12 M38 78 q0 -10 20 -10" fill="none" stroke="#7a4b6a" stroke-width="5" stroke-linecap="round"/><circle cx="38" cy="22" r="9" fill="#fff" stroke="#7a4b6a" stroke-width="4"/><circle cx="38" cy="98" r="9" fill="#fff" stroke="#7a4b6a" stroke-width="4"/><circle cx="82" cy="68" r="9" fill="#ff8fab" stroke="#7a4b6a" stroke-width="4"/></svg>
+            </span>
+            <span class="card__back">
+              <span class="stamp" aria-hidden="true"><span class="stamp__art"><svg viewBox="0 0 40 40" focusable="false"><path d="M14 8 V32 M14 18 q0 8 12 8" stroke="#7a4b6a" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="27" cy="26" r="4" fill="#7a4b6a"/></svg></span></span>
+              <svg class="postmark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs><path id="ring-6" d="M50 50 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"/></defs>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <text><textPath href="#ring-6" startOffset="2%">API.GITHUB.COM</textPath></text>
+                <text x="50" y="54" text-anchor="middle">WK 6</text>
+              </svg>
+              <span class="card__day" aria-hidden="true">Friday</span>
+              <span class="card__concept"><span class="visually-hidden">Task 6: </span>Your input inside the request</span>
+              <span class="card__title">GitHub repositories</span>
+              <span class="card__from">from api.github.com</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="card card--7" href="random%20dog.html" data-task="week6(fri)/random dog.html">
+            <span class="card__picture" aria-hidden="true">
+              <svg viewBox="0 0 120 120" focusable="false"><path d="M30 40 q-14 6 -10 34 q10 4 16 -8Z M90 40 q14 6 10 34 q-10 4 -16 -8Z" fill="#a86b45"/><ellipse cx="60" cy="62" rx="32" ry="30" fill="#e8b98a"/><ellipse cx="60" cy="76" rx="16" ry="12" fill="#fbe3cb"/><circle cx="48" cy="58" r="4.5" fill="#2c2430"/><circle cx="72" cy="58" r="4.5" fill="#2c2430"/><ellipse cx="60" cy="70" rx="6" ry="4.5" fill="#2c2430"/><path d="M60 75 v5 M54 82 q6 5 12 0" stroke="#2c2430" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+            </span>
+            <span class="card__back">
+              <span class="stamp" aria-hidden="true"><span class="stamp__art"><svg viewBox="0 0 40 40" focusable="false"><ellipse cx="20" cy="21" rx="10" ry="9" fill="#e8b98a"/><path d="M10 14 q-5 4 -2 12 M30 14 q5 4 2 12" stroke="#a86b45" stroke-width="4" fill="none" stroke-linecap="round"/></svg></span></span>
+              <svg class="postmark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs><path id="ring-7" d="M50 50 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"/></defs>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <text><textPath href="#ring-7" startOffset="2%">DOG.CEO</textPath></text>
+                <text x="50" y="54" text-anchor="middle">WK 6</text>
+              </svg>
+              <span class="card__day" aria-hidden="true">Friday</span>
+              <span class="card__concept"><span class="visually-hidden">Task 7: </span>Pictures from an API</span>
+              <span class="card__title">Random dog</span>
+              <span class="card__from">from dog.ceo</span>
+            </span>
+          </a>
+        </li>
+      </ol>
     </section>
+
+    <nav class="page-turn" aria-label="Week 6 pages">
+      <a href="../week5/index.html"><span aria-hidden="true">←&nbsp;</span>Week 5's receipt</a>
+      <a href="../week%207/index.html">on to Week 7<span aria-hidden="true">&nbsp;→</span></a>
+    </nav>
   </main>
+
+  <script>
+    // The drawer tab on every task page records which tasks were opened
+    // (localStorage "drawer:seen"); those postcards get postmarked here.
+    try {
+      const saved = JSON.parse(localStorage.getItem('drawer:seen') ?? '[]');
+      const seen = new Set(Array.isArray(saved) ? saved : []);
+      const cards = document.querySelectorAll('.card[data-task]');
+      let opened = 0;
+      cards.forEach((card) => {
+        if (seen.has(card.dataset.task)) { card.classList.add('is-seen'); opened += 1; }
+      });
+      if (opened) document.querySelector('[data-count]').textContent = `${opened} of ${cards.length} opened`;
+    } catch {
+      // No storage: every card simply stays unstamped.
+    }
+  </script>
 </body>
 </html>

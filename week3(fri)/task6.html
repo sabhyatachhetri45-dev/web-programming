@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,67 +7,113 @@
   <title>Responsive Cards</title>
 
   <style>
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+
     :root {
       --primary: #0f766e;
       --accent: #14b8a6;
-      --background: #f0fdfa;
-      --card-color: white;
-      --text-color: #334155;
-      --radius: 12px;
+      --background: #e3f5f0;
+      --sheet: #f9fffd;
+      --text-color: #23343a;
+      --sticker-ink: #042f2e;
+      --radius: 1.4rem;
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      padding: 30px;
-      font-family: Arial, sans-serif;
+      padding: 2.5rem 1rem 6rem;
+      font-family: "Gowun Dodum", Arial, sans-serif;
       background: var(--background);
       color: var(--text-color);
     }
 
+    /* The page is one sheet of die-cut stickers. */
+    .sheet {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem clamp(1rem, 4vw, 2.5rem) 2.5rem;
+      background:
+        repeating-linear-gradient(135deg, transparent 0 18px, rgba(20, 184, 166, 0.06) 18px 19px),
+        var(--sheet);
+      border-radius: 0.6rem;
+      box-shadow: 0 1px 2px rgba(15, 80, 70, 0.12), 0 30px 50px -30px rgba(15, 80, 70, 0.45);
+    }
+
+    /* A peeled-back corner of the backing paper. */
+    .sheet::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 3.2rem;
+      height: 3.2rem;
+      background: linear-gradient(135deg, var(--background) 50%, #d9ebe6 50%, #ffffff 100%);
+      border-top-left-radius: 0.6rem;
+      box-shadow: -3px -3px 6px rgba(15, 80, 70, 0.12);
+    }
+
     h1 {
+      margin: 0 0 1.75rem;
       text-align: center;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: clamp(2.4rem, 6vw, 3.4rem);
+      line-height: 1;
       color: var(--primary);
-      margin-bottom: 30px;
     }
 
     /* One column by default */
     .grid {
-      max-width: 1000px;
-      margin: 0 auto;
-
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 1.6rem;
     }
 
+    /* Each card is a sticker: a coloured shape with a thick white die-cut edge. */
     .card {
-      background: var(--card-color);
-      border: 2px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 25px;
-
-      
       position: relative;
+      padding: 1.4rem 1.5rem 1.5rem;
+      background: var(--fill, #ccfbf1);
+      color: var(--sticker-ink);
+      border: 0.45rem solid #ffffff;
+      border-radius: var(--radius);
+      box-shadow: 0 0 0 1px rgba(15, 80, 70, 0.12), 0 3px 5px rgba(15, 80, 70, 0.14);
+      transform: rotate(var(--tilt, 0deg));
 
-    
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    
-    .card::before {
-      content: "💡";
-      font-size: 28px;
+    .card:nth-child(1) { --fill: #ccfbf1; --tilt: -1.5deg; }
+    .card:nth-child(2) { --fill: #99f6e4; --tilt: 1deg; }
+    .card:nth-child(3) { --fill: #fef3c7; --tilt: -0.5deg; }
+    .card:nth-child(4) { --fill: #5eead4; --tilt: 1.5deg; }
+    .card:nth-child(5) { --fill: #fce7f3; --tilt: -1deg; }
+    .card:nth-child(6) { --fill: #a7f3d0; --tilt: 0.5deg; }
+
+    /* Icon replaces the old emoji: drawn in SVG, one stroke weight. */
+    .icon {
       display: block;
-      margin-bottom: 10px;
+      width: 2.4rem;
+      height: 2.4rem;
+      margin-bottom: 0.6rem;
+      fill: none;
+      stroke: var(--sticker-ink);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .card h2 {
-      margin: 0 0 10px;
-      color: var(--primary);
+      margin: 0 0 0.4rem;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.7rem;
+      line-height: 1.1;
+      color: var(--sticker-ink);
     }
 
     .card p {
@@ -76,70 +121,98 @@
       line-height: 1.6;
     }
 
-    
+    /* Hover: the sticker starts to peel off the sheet. */
     .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(20, 184, 166, 0.3);
+      transform: translateY(-6px) rotate(0deg);
+      box-shadow: 0 0 0 1px rgba(15, 80, 70, 0.12), 0 14px 22px -6px rgba(20, 184, 166, 0.45);
     }
 
-   
+    .card::after {
+      content: "";
+      position: absolute;
+      right: -0.45rem;
+      bottom: -0.45rem;
+      width: 0;
+      height: 0;
+      background: linear-gradient(135deg, transparent 50%, #e6efed 50%, #ffffff);
+      border-top-left-radius: 0.5rem;
+      box-shadow: -2px -2px 4px rgba(15, 80, 70, 0.15);
+      transition: width 0.3s ease, height 0.3s ease;
+    }
+
+    .card:hover::after { width: 2rem; height: 2rem; }
+
+    /* Three columns once there is room. */
     @media (min-width: 640px) {
       .grid {
         grid-template-columns: repeat(3, 1fr);
       }
     }
 
-
     @media (prefers-color-scheme: dark) {
       :root {
         --primary: #5eead4;
-        --accent: #14b8a6;
-        --background: #0f172a;
-        --card-color: #1e293b;
+        --background: #0b2a2c;
+        --sheet: #12393a;
         --text-color: #e2e8f0;
       }
+      .sheet::after { background: linear-gradient(135deg, var(--background) 50%, #245455 50%, #2f6566 100%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card, .card::after { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 
 <body>
+
+  <main class="sheet">
 
   <h1>My Web Skills</h1>
 
   <div class="grid">
 
     <div class="card">
+      <svg class="icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M11 9 4 16l7 7M21 9l7 7-7 7M18 6l-4 20"/></svg>
       <h2>HTML</h2>
       <p>HTML gives a webpage its basic structure.</p>
     </div>
 
     <div class="card">
+      <svg class="icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M26 4 14 16l2 2L28 6a1.4 1.4 0 0 0-2-2Z"/><path d="M13 17c-3 0-5 2-5 5 0 2-1 3-3 4 5 1 11 0 11-5l-3-4Z"/></svg>
       <h2>CSS</h2>
       <p>CSS is used to make websites look better.</p>
     </div>
 
     <div class="card">
+      <svg class="icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M18 3 7 18h8l-2 11 12-16h-8l1-10Z"/></svg>
       <h2>JavaScript</h2>
       <p>JavaScript adds interaction to webpages.</p>
     </div>
 
     <div class="card">
+      <svg class="icon" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M1 24h22"/><rect x="22" y="11" width="8" height="15" rx="1.5"/><path d="M25 23h2"/></svg>
       <h2>Responsive Design</h2>
       <p>Responsive design helps websites work on different screens.</p>
     </div>
 
     <div class="card">
+      <svg class="icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="7" r="3"/><circle cx="9" cy="25" r="3"/><circle cx="23" cy="12" r="3"/><path d="M9 10v12M23 15c0 5-6 5-12 8"/></svg>
       <h2>Git</h2>
       <p>Git helps developers manage project changes.</p>
     </div>
 
     <div class="card">
+      <svg class="icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 7 16l9 13 9-13-9-13Z"/><path d="M16 3v12"/><circle cx="16" cy="17" r="2"/></svg>
       <h2>Web Design</h2>
       <p>Good design makes websites easier to use.</p>
     </div>
 
   </div>
 
+  </main>
+
 </body>
 </html>
-

@@ -1,28 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 4 Monday Tasks</title>
-    <style>
-        body { margin: 0; padding: 40px 20px; background: #07070a; color: #f5f5f7; font-family: Arial, sans-serif; }
-        main { max-width: 760px; margin: auto; }
-        a { color: #67e8f9; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        li { margin: 14px 0; }
-        .back { display: inline-block; margin-bottom: 28px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 4 Monday · JavaScript and the DOM</title>
+  <meta name="description" content="Week 4 Monday coursework by Sabhyata Chhetri: four JavaScript tasks on click events, classes, creating elements and filtering lists.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23fff'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23ffb3c7'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
+  <link rel="stylesheet" href="../assets/drawer/week4.css">
 </head>
 <body>
-    <main>
-        <a class="back" href="../index.html">&lt; Back to homepage</a>
-        <h1>Week 4 Monday</h1>
-        <ul>
-            <li><a href="task1.html">Task 1: Rocket launch</a></li>
-            <li><a href="task2.html">Task 2: Profile card</a></li>
-            <li><a href="task3.html">Task 3: To-do list</a></li>
-            <li><a href="task4.html">Task 4: Student directory</a></li>
-        </ul>
-    </main>
+  <!-- One shared die-cut filter: grows each drawing's silhouette into a white sticker border. -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" class="visually-hidden">
+    <filter id="diecut" x="-25%" y="-25%" width="150%" height="150%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="7" result="grown"/>
+      <feFlood flood-color="#ffffff"/>
+      <feComposite in2="grown" operator="in" result="border"/>
+      <feMerge><feMergeNode in="border"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </svg>
+
+  <main class="page">
+    <header class="cover">
+      <a class="back-to-diary" href="../index.html"><span aria-hidden="true">←</span> back to the diary</a>
+      <h1>Week 4, Monday <span class="day" lang="ko" aria-hidden="true">월</span></h1>
+      <p class="cover__topic">This week's topic is <strong>JavaScript and the DOM</strong>: listening for clicks, toggling classes, creating elements and filtering lists. Each sticker is one task.</p>
+      <p class="cover__note">the week my pages started answering back.</p>
+    </header>
+
+    <section class="book" aria-labelledby="book-title">
+      <div class="book__head">
+        <h2 id="book-title">My sticker book</h2>
+        <p class="book__count" data-count>4 stickers to collect</p>
+      </div>
+
+      <ol class="stickers">
+        <li>
+          <a class="sticker" href="task1.html" data-task="week4(mon).html/task1.html">
+            <span class="sticker__slot">
+              <svg class="sticker__art" viewBox="0 0 160 160" aria-hidden="true" focusable="false">
+                <g filter="url(#diecut)" transform="rotate(28 80 80)">
+                  <path d="M66 112 Q80 152 94 112Z" fill="#ffc14d"/>
+                  <path d="M72 112 Q80 136 88 112Z" fill="#ff8a3d"/>
+                  <path d="M60 92 L40 120 L64 112Z M100 92 L120 120 L96 112Z" fill="#ff7aa2"/>
+                  <path d="M80 16 C106 38 110 80 100 112 L60 112 C50 80 54 38 80 16Z" fill="#f7f3ff"/>
+                  <path d="M80 16 C91 25 97 33 100 42 L60 42 C63 33 69 25 80 16Z" fill="#ff7aa2"/>
+                  <circle cx="80" cy="66" r="12" fill="#9ad8ff" stroke="#5b4a8b" stroke-width="4"/>
+                  <path d="M70 92 H90" stroke="#d9d0f0" stroke-width="4" stroke-linecap="round"/>
+                </g>
+                <path d="M26 34 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3Z M132 28 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2Z" fill="#ffd66b" filter="url(#diecut)"/>
+              </svg>
+            </span>
+            <span class="sticker__label">
+              <span class="visually-hidden">Task 1:</span>
+              <span class="sticker__name">Click events</span>
+              <span class="sticker__task">Rocket launch</span>
+              <span class="sticker__seen" aria-hidden="true">seen</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="sticker" href="task2.html" data-task="week4(mon).html/task2.html">
+            <span class="sticker__slot">
+              <svg class="sticker__art" viewBox="0 0 160 160" aria-hidden="true" focusable="false">
+                <g filter="url(#diecut)">
+                  <path d="M58 40 Q66 22 80 34 Q94 22 102 40Z" fill="#7a4b6a"/>
+                  <circle cx="80" cy="86" r="50" fill="#ffc2d1"/>
+                  <ellipse cx="62" cy="80" rx="10" ry="12" fill="#fff"/>
+                  <ellipse cx="98" cy="80" rx="10" ry="12" fill="#fff"/>
+                  <circle cx="64" cy="83" r="5.5" fill="#2f2530"/>
+                  <circle cx="100" cy="83" r="5.5" fill="#2f2530"/>
+                  <circle cx="52" cy="102" r="7" fill="#ff8fab" opacity="0.7"/>
+                  <circle cx="108" cy="102" r="7" fill="#ff8fab" opacity="0.7"/>
+                  <path d="M70 106 Q80 116 90 106" fill="none" stroke="#2f2530" stroke-width="4" stroke-linecap="round"/>
+                </g>
+              </svg>
+            </span>
+            <span class="sticker__label">
+              <span class="visually-hidden">Task 2:</span>
+              <span class="sticker__name">Toggling classes</span>
+              <span class="sticker__task">Profile card</span>
+              <span class="sticker__seen" aria-hidden="true">seen</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="sticker" href="task3.html" data-task="week4(mon).html/task3.html">
+            <span class="sticker__slot">
+              <svg class="sticker__art" viewBox="0 0 160 160" aria-hidden="true" focusable="false">
+                <g filter="url(#diecut)" transform="rotate(-6 80 80)">
+                  <rect x="34" y="26" width="92" height="112" rx="10" fill="#fff6cc"/>
+                  <rect x="64" y="18" width="32" height="14" rx="4" fill="#9ad8ff"/>
+                  <rect x="46" y="50" width="14" height="14" rx="3" fill="#fff" stroke="#2f2530" stroke-width="3"/>
+                  <rect x="46" y="78" width="14" height="14" rx="3" fill="#fff" stroke="#2f2530" stroke-width="3"/>
+                  <rect x="46" y="106" width="14" height="14" rx="3" fill="#fff" stroke="#2f2530" stroke-width="3"/>
+                  <path d="M48 56 l4 5 9 -11 M48 84 l4 5 9 -11" fill="none" stroke="#e0483e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M68 57 H112 M68 85 H104 M68 113 H110" stroke="#b9a978" stroke-width="4" stroke-linecap="round"/>
+                </g>
+              </svg>
+            </span>
+            <span class="sticker__label">
+              <span class="visually-hidden">Task 3:</span>
+              <span class="sticker__name">Creating elements</span>
+              <span class="sticker__task">To-do list</span>
+              <span class="sticker__seen" aria-hidden="true">seen</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="sticker" href="task4.html" data-task="week4(mon).html/task4.html">
+            <span class="sticker__slot">
+              <svg class="sticker__art" viewBox="0 0 160 160" aria-hidden="true" focusable="false">
+                <g filter="url(#diecut)">
+                  <rect x="18" y="44" width="124" height="86" rx="16" fill="#c9f0e4"/>
+                  <circle cx="48" cy="76" r="13" fill="#ffd66b"/>
+                  <path d="M30 116 Q48 92 66 116Z" fill="#ffd66b"/>
+                  <circle cx="80" cy="72" r="14" fill="#ff9fb6"/>
+                  <path d="M60 116 Q80 88 100 116Z" fill="#ff9fb6"/>
+                  <circle cx="112" cy="76" r="13" fill="#9ad8ff"/>
+                  <path d="M94 116 Q112 92 130 116Z" fill="#9ad8ff"/>
+                  <circle cx="120" cy="38" r="17" fill="#fff" stroke="#2f2530" stroke-width="4"/>
+                  <path d="M132 50 L144 62" stroke="#2f2530" stroke-width="6" stroke-linecap="round"/>
+                </g>
+              </svg>
+            </span>
+            <span class="sticker__label">
+              <span class="visually-hidden">Task 4:</span>
+              <span class="sticker__name">Filtering a list</span>
+              <span class="sticker__task">Student directory</span>
+              <span class="sticker__seen" aria-hidden="true">seen</span>
+            </span>
+          </a>
+        </li>
+      </ol>
+
+      <p class="book__hint">open a sticker and it stays stuck in the book.</p>
+    </section>
+
+    <nav class="page-turn" aria-label="Week 4 pages">
+      <a href="../week3(fri)/index.html"><span aria-hidden="true">←&nbsp;</span>Week 3's teal strip</a>
+      <a href="../week5/index.html">on to Week 5<span aria-hidden="true">&nbsp;→</span></a>
+    </nav>
+  </main>
+
+  <script>
+    // The drawer tab on every task page records which tasks were opened
+    // (localStorage "drawer:seen"); here those stickers get marked as collected.
+    const SEEN_KEY = 'drawer:seen';
+
+    function readSeen() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(SEEN_KEY) ?? '[]');
+        return new Set(Array.isArray(saved) ? saved : []);
+      } catch {
+        return new Set();
+      }
+    }
+
+    const stickers = document.querySelectorAll('.sticker[data-task]');
+    const seen = readSeen();
+    let collected = 0;
+
+    stickers.forEach((sticker) => {
+      if (seen.has(sticker.dataset.task)) {
+        sticker.classList.add('is-collected');
+        collected += 1;
+      }
+    });
+
+    const count = document.querySelector('[data-count]');
+    count.textContent = collected === 0
+      ? `${stickers.length} stickers to collect`
+      : `${collected} of ${stickers.length} collected`;
+  </script>
 </body>
 </html>

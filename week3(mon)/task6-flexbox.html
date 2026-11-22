@@ -6,52 +6,138 @@
   <title>My Portfolio</title>
 
   <style>
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+    /*
+      The idea: a pencil case lying on a cutting mat. The nav is the zipped
+      pencil case, and flexbox is what lines everything up inside it:
+      justify-content: space-between pushes the label and the pens apart,
+      align-items: center keeps them on one line.
+    */
+
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: sans-serif;
-      background-color: #f8fafc;
+      min-height: 100vh;
+      padding: 2rem 1.25rem 6rem;
+      font-family: "Gowun Dodum", sans-serif;
       color: #334155;
+      /* a self-healing cutting mat: 1cm grid with heavier 5cm lines */
+      background-color: #e6f2ec;
+      background-image:
+        linear-gradient(rgba(16, 120, 80, 0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 120, 80, 0.18) 1px, transparent 1px),
+        linear-gradient(rgba(16, 120, 80, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 120, 80, 0.08) 1px, transparent 1px);
+      background-size: 190px 190px, 190px 190px, 38px 38px, 38px 38px;
     }
 
+    /* The pencil case. */
     nav {
+      position: relative;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 1.4rem 2rem 1.9rem;
       background-color: #1e293b;
-      padding: 16px 40px;
+      /* soft canvas weave */
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 4px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 4px);
+      border-radius: 1.6rem;
+      box-shadow: inset 0 -6px 10px rgba(0, 0, 0, 0.25), 0 18px 30px -18px rgba(15, 40, 30, 0.6);
+      transform: rotate(-0.8deg);
     }
 
+    /* The zip along the bottom edge. */
+    nav::after {
+      content: "";
+      position: absolute;
+      left: 1.6rem;
+      right: 1.6rem;
+      bottom: 0.65rem;
+      height: 0.45rem;
+      background: repeating-linear-gradient(90deg, #cbd5e1 0 3px, transparent 3px 6px);
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+
+    /* The woven name label stitched onto the case. */
     .logo {
-      color: white;
+      padding: 0.35rem 0.9rem;
+      color: #1e293b;
+      font-family: "Gaegu", sans-serif;
       font-size: 1.5rem;
       font-weight: bold;
+      line-height: 1.2;
+      background-color: #fef3c7;
+      border-radius: 4px;
+      outline: 1.5px dashed rgba(30, 41, 59, 0.45);
+      outline-offset: -5px;
     }
 
+    /* The pens poking out of the case: a second flex row. */
     .links {
       display: flex;
-      gap: 25px;
+      flex-wrap: wrap;
+      gap: 0.6rem;
     }
 
     .links a {
-      color: white;
+      position: relative;
+      padding: 0.55rem 1rem 0.55rem 1.35rem;
+      color: #1e293b;
       text-decoration: none;
       font-weight: 500;
+      background-color: var(--pen);
+      border-radius: 0.35rem 1.2rem 1.2rem 0.35rem;
+      transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .links a:hover {
-      color: #10B981;
+    /* the pen's clip */
+    .links a::before {
+      content: "";
+      position: absolute;
+      left: 0.45rem;
+      top: 0.45rem;
+      bottom: 0.45rem;
+      width: 0.25rem;
+      border-radius: 2px;
+      background-color: rgba(30, 41, 59, 0.35);
     }
+
+    .links a:nth-child(1) { --pen: #fbcfe8; }
+    .links a:nth-child(2) { --pen: #bae6fd; }
+    .links a:nth-child(3) { --pen: #bbf7d0; }
+    .links a:nth-child(4) { --pen: #fde68a; }
+
+    .links a:hover {
+      color: #1e293b;
+      transform: translateY(-0.35rem);
+    }
+
+    .links a:focus-visible { outline: 2px solid #fef3c7; outline-offset: 3px; }
 
     .content {
       max-width: 800px;
-      margin: 60px auto;
-      padding: 20px;
+      margin: 3.5rem auto 0;
+      padding: 0 0.5rem;
       text-align: center;
     }
 
     .content h1 {
+      margin: 0 0 1rem;
       color: #1e293b;
-      font-size: 2.5rem;
+      font-family: "Gaegu", sans-serif;
+      font-size: clamp(2.4rem, 6vw, 3.4rem);
+      line-height: 1.1;
     }
 
     .content p {
@@ -59,13 +145,62 @@
       line-height: 1.7;
     }
 
+    .content > p {
+      max-width: 38rem;
+      margin: 0 auto;
+    }
+
+    /* About Me: an index card held down with a paper clip. */
     .card {
-      background-color: white;
-      padding: 25px;
-      margin-top: 30px;
-      border-radius: 10px;
+      position: relative;
+      max-width: 34rem;
+      margin: 3rem auto 0;
+      padding: 2.4rem 2rem 1.5rem;
+      text-align: left;
+      background-color: #ffffff;
+      background-image:
+        linear-gradient(#f87171, #f87171),
+        repeating-linear-gradient(transparent 0 calc(1.85rem - 1px), #dbeafe calc(1.85rem - 1px) 1.85rem);
+      background-size: 100% 2px, 100% 100%;
+      background-position: 0 3.3rem, 0 3.45rem;
+      background-repeat: no-repeat, repeat;
+      border-radius: 3px;
+      box-shadow: 0 1px 2px rgba(15, 40, 30, 0.15), 0 16px 26px -16px rgba(15, 40, 30, 0.45);
+      transform: rotate(1.2deg);
+    }
+
+    .card h2 {
+      margin: -1rem 0 1.15rem;
+      font-family: "Gaegu", sans-serif;
+      font-size: 1.7rem;
+      color: #1e293b;
+    }
+
+    .card p { margin: 0; line-height: 1.85rem; }
+    /* the red line on an index card sits under the title */
+
+    .clip {
+      position: absolute;
+      top: -1.2rem;
+      right: 2.2rem;
+      width: 1.2rem;
+      height: 3.6rem;
+    }
+
+    .clip path { fill: none; stroke: #94a3b8; stroke-width: 2.2; stroke-linecap: round; }
+
+    @media (max-width: 40rem) {
+      nav { padding: 1.2rem 1.1rem 1.8rem; border-radius: 1.2rem; }
+      .links { gap: 0.45rem; }
+      .links a { padding: 0.5rem 0.75rem 0.5rem 1.15rem; }
+      .card { padding: 2.4rem 1.25rem 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .links a { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 
 <body>
@@ -91,6 +226,7 @@
     </p>
 
     <div class="card">
+      <svg class="clip" viewBox="0 0 20 60" aria-hidden="true"><path d="M6 44V10a4 4 0 0 1 8 0v40a7 7 0 0 1-14 0V16"/></svg>
       <h2>About Me</h2>
       <p>
         I am currently developing my skills in HTML, CSS, Python, and data

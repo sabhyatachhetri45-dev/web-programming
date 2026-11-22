@@ -1,0 +1,282 @@
+/*
+  Week 8 — HTML forms. The drawer object is a stack of boarding passes:
+  a boarding pass is itself a filled-in form (name, from, to, gate, seat),
+  and each lesson is one flight on the trip. Each pass flies FROM the
+  previous lesson TO this one. Passes the visitor has opened get a
+  "BOARDED" stamp on the stub.
+*/
+
+:root {
+  --ground: #2b2230;
+  --ink: #f6ecef;
+  --ink-soft: #d4c5d0;
+  --pass: #fffdf9;
+  --pass-ink: #23202a;
+  --pass-soft: #5e5867;
+  --pass-line: #e4dde6;
+  --band: #2f5aa8;
+  --band-ink: #ffffff;
+  --accent: #2f5aa8;
+  --stamp: #b4234f;
+  --focus: #f6ecef;
+  --select: #7a4b6a;
+  --stub: 6.25rem;
+}
+
+/* Friday's passes are a different airline colour. */
+:root:has(body.friday) {
+  --band: #b4234f;
+  --accent: #b4234f;
+  --stamp: #2f5aa8;
+}
+
+.page {
+  width: min(100% - 2rem, 74rem);
+  margin-inline: auto;
+  padding-block: 1.25rem 4rem;
+}
+
+/* ---------- header ---------- */
+
+.intro { display: grid; gap: 1rem; max-width: 44rem; padding: 0.5rem 0 2.75rem; }
+
+.intro h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6.4vw, 4.25rem);
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.day {
+  display: inline-grid;
+  place-items: center;
+  width: 2.6em;
+  height: 2.6em;
+  font-size: 0.42em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+
+.intro__topic { font-size: 1.0625rem; color: var(--ink-soft); }
+.intro__topic strong { font-weight: 400; color: var(--ink); background: linear-gradient(transparent 62%, var(--select) 62%); }
+.intro__note { font-family: var(--font-hand); font-size: 1.75rem; line-height: 1.1; transform: rotate(-1.5deg); transform-origin: left; }
+
+.stack-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  margin-bottom: 1.5rem;
+}
+.stack-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 2rem; line-height: 1.1; }
+.stack-head p { font-size: 0.9375rem; color: var(--ink-soft); }
+
+/* ---------- the passes ---------- */
+
+.passes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.75rem;
+}
+
+@media (min-width: 64rem) {
+  .passes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.25rem 2.5rem; }
+}
+
+.passes li:nth-child(odd) .pass { --tilt: -0.8deg; }
+.passes li:nth-child(even) .pass { --tilt: 0.7deg; }
+
+.pass {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--stub);
+  min-height: 100%;
+  text-decoration: none;
+  color: var(--pass-ink);
+  border-radius: 0.6rem;
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.3)) drop-shadow(0 16px 16px rgb(0 0 0 / 0.35));
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 400ms var(--ease-out);
+}
+
+/* Lifting the pass to hand it over at the gate. */
+.pass:hover,
+.pass:focus-visible {
+  transform: rotate(0deg) translateY(-0.4rem);
+}
+.pass:focus-visible { outline-offset: 6px; }
+
+.pass__main {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: 0.6rem;
+  padding: 0 1.25rem 1.1rem;
+  background: var(--pass);
+  border-radius: 0.6rem 0 0 0.6rem;
+}
+
+/* The airline's coloured band across the top. */
+.pass__band {
+  display: flex;
+  white-space: nowrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 -1.25rem 0.35rem;
+  padding: 0.55rem 1.25rem;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--band-ink);
+  background: var(--band);
+  border-radius: 0.6rem 0 0 0;
+}
+
+.pass__route {
+  display: grid;
+  grid-template-columns: auto minmax(2rem, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.code { display: grid; line-height: 1; }
+.code b { font-family: var(--font-code); font-size: clamp(1.75rem, 5vw, 2.25rem); font-weight: 700; letter-spacing: 0.02em; }
+.code small { margin-top: 0.3rem; font-size: 0.75rem; color: var(--pass-soft); }
+.code--to { text-align: right; }
+
+/* The dotted flight path with a little plane in the middle. */
+.flight {
+  position: relative;
+  height: 1.5rem;
+  background: radial-gradient(circle, var(--pass-soft) 1.2px, transparent 1.6px) 0 50% / 8px 8px repeat-x;
+}
+.flight svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: -0.75rem 0 0 -0.75rem;
+  padding: 0.1rem;
+  color: var(--accent);
+  background: var(--pass);
+  transition: transform 500ms var(--ease-out);
+}
+.pass:hover .flight svg,
+.pass:focus-visible .flight svg { transform: translateX(1.25rem); }
+
+.pass__title {
+  padding-top: 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  border-top: 1px solid var(--pass-line);
+}
+
+.pass__desc { font-size: 0.9375rem; color: var(--pass-soft); }
+
+.pass__fields {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--pass-line);
+}
+.pass__fields span { display: grid; white-space: nowrap; font-family: var(--font-code); font-size: 0.875rem; font-weight: 700; }
+.pass__fields small { font-family: var(--font-body); font-size: 0.75rem; font-weight: 400; color: var(--pass-soft); }
+
+/* Phones: a narrower stub, and the four fields go two by two. */
+@media (max-width: 30rem) {
+  :root { --stub: 4.6rem; }
+  .pass__main { padding-inline: 1rem; }
+  .pass__band { margin-inline: -1rem; padding-inline: 1rem; letter-spacing: 0.04em; }
+  .pass__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .barcode { width: 2.8rem; }
+}
+
+/* The tear-off stub. The two round notches are cut in the ground colour. */
+.pass__stub {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.5rem 0.9rem;
+  text-align: center;
+  background:
+    linear-gradient(var(--band), var(--band)) top / 100% 2.05rem no-repeat,
+    var(--pass);
+  border-left: 2px dashed var(--pass-line);
+  border-radius: 0 0.6rem 0.6rem 0;
+}
+.pass__stub::before,
+.pass__stub::after {
+  content: "";
+  position: absolute;
+  left: -0.7rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: var(--ground);
+}
+.pass__stub::before { top: -0.6rem; }
+.pass__stub::after { bottom: -0.6rem; }
+
+.stub__seat { display: grid; margin-top: 2rem; line-height: 1; }
+.stub__seat small { font-size: 0.75rem; color: var(--pass-soft); }
+.stub__seat b { margin-top: 0.2rem; font-family: var(--font-code); font-size: 1.5rem; }
+
+.barcode { width: 3.4rem; height: auto; align-self: end; }
+
+/* "BOARDED", stamped on passes the visitor has opened. */
+.stub__stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 0.15rem 0.4rem;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--stamp);
+  background: rgb(255 253 249 / 0.85);
+  border: 2px solid currentColor;
+  border-radius: 0.25rem;
+  transform: translate(-50%, -20%) rotate(-24deg);
+  opacity: 0;
+  transition: opacity 250ms var(--ease-out);
+}
+.pass.is-seen .stub__stamp { opacity: 0.9; }
+
+/* ---------- page turn ---------- */
+
+.page-turn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed #4d4056;
+}
+.page-turn a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+.page-turn a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pass, .flight svg, .stub__stamp { transition: none; }
+}

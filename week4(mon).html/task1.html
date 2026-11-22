@@ -5,31 +5,90 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rocket Launch</title>
 <style>
-  * { box-sizing: border-box; }
+  @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+  @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+  @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+  /* A paper stomp-rocket on a cardboard launch box, in a paper-cut park at dusk.
+     The JavaScript is unchanged: the click handler still counts to 5, lights
+     the .cell boxes, grows the flame and adds .launch to fly the rocket. */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --panel-h: 18.5rem;          /* height of the cardboard launch box */
+    --panel-gap: 1.25rem;        /* space under it */
+    --kraft: #e2c290;
+    --kraft-dark: #b98d55;
+    --ink: #3a2a1b;
+    --marker-red: #c8323f;
+  }
+
   html, body { height: 100%; margin: 0; overflow: hidden; }
   body {
-    background: linear-gradient(#0a0e2a 0%, #1b1550 60%, #43286e 100%);
-    color: #fff;
-    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    background: linear-gradient(#8fb2e4 0%, #b9b3e9 46%, #f3bfcf 82%, #f9d6c4 100%);
+    color: var(--ink);
+    font-family: "Gowun Dodum", "Trebuchet MS", system-ui, sans-serif;
     display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
   }
 
-  /* ---------- Stars ---------- */
+  /* ---------- Paper-cut scenery (decorative) ---------- */
+  .scene { position: fixed; inset: auto 0 0 0; height: 62vh; z-index: 0; pointer-events: none; }
+  .scene svg { width: 100%; height: 100%; display: block; }
+  .scene .hill-back  { fill: #b7dcc9; filter: drop-shadow(0 -3px 4px rgb(60 80 110 / 0.18)); }
+  .scene .hill-mid   { fill: #8fcbb2; filter: drop-shadow(0 -3px 4px rgb(40 70 60 / 0.2)); }
+  .scene .hill-front { fill: #69b394; filter: drop-shadow(0 -4px 5px rgb(30 60 50 / 0.25)); }
+
+  /* A paper crescent: a transparent circle whose offset shadow is the moon. */
+  .moon {
+    position: fixed; top: 9vh; right: 14vw; width: 4.5rem; height: 4.5rem; z-index: 0;
+    border-radius: 50%;
+    box-shadow: -1.1rem 0.5rem 0 0 #fff6d8;
+    filter: drop-shadow(0 3px 3px rgb(80 70 140 / 0.25));
+  }
+
+  .cloud { position: fixed; z-index: 0; pointer-events: none; filter: drop-shadow(0 3px 3px rgb(70 70 130 / 0.2)); }
+  .cloud svg { display: block; width: 100%; height: auto; }
+  .cloud.one { top: 14vh; left: 8vw; width: 11rem; }
+  .cloud.two { top: 30vh; right: 6vw; width: 8rem; }
+
+  /* ---------- Stars (made by the script) ---------- */
   .star {
-    position: fixed; background: #fff; border-radius: 50%;
+    position: fixed; background: #fffbea; border-radius: 50%; opacity: 0.8;
     animation: twinkle var(--t, 3s) ease-in-out infinite;
   }
-  @keyframes twinkle { 50% { opacity: .15; } }
+  @keyframes twinkle { 50% { opacity: .2; } }
+
+  /* ---------- Launch tube the rocket sits on (stays behind on launch) ---------- */
+  .tube {
+    position: fixed; left: 50%; z-index: 1;
+    bottom: calc(var(--panel-h) + var(--panel-gap) - 0.4rem);
+    width: 1.6rem; height: 3.2rem; margin-left: -0.8rem;
+    border-radius: 0.4rem 0.4rem 0 0;
+    background: repeating-linear-gradient(-30deg, #fff 0 7px, #ff8fab 7px 12px);
+    box-shadow: inset -4px 0 0 rgb(0 0 0 / 0.08), 0 2px 4px rgb(60 40 20 / 0.25);
+  }
 
   /* ---------- Rocket ---------- */
   #rocket {
-    position: fixed; left: 50%; bottom: 290px; width: 90px; height: 160px; margin-left: -45px;
+    position: fixed; left: 50%; bottom: calc(var(--panel-h) + var(--panel-gap) + 1.4rem);
+    width: 90px; height: 160px; margin-left: -45px;
     transition: transform 2.4s cubic-bezier(.6, 0, 1, .6);
     z-index: 2;
   }
   #rocket.launch { transform: translateY(-130vh); }
   #rocket .body { width: 100%; height: 100%; animation: rumble .08s linear infinite; }
   #rocket.launch .body { --amp: 4; }
+  #rocket svg { overflow: visible; filter: drop-shadow(0 4px 4px rgb(60 40 80 / 0.25)); }
+
+  /* Dotted trail drawn behind the rocket as it flies up. */
+  #rocket::after {
+    content: ""; position: absolute; top: 92%; left: 50%; width: 6px; margin-left: -3px; height: 0;
+    background: radial-gradient(circle, #fffdf6 2.4px, transparent 2.8px) center top / 6px 16px repeat-y;
+    transition: height 2.4s cubic-bezier(.6, 0, 1, .6);
+  }
+  #rocket.launch::after { height: 130vh; }
+  #rocket:not(.launch)::after { transition: none; }
+
   @keyframes rumble {
     0%   { transform: translate(calc(var(--amp, 0) * 1px), 0); }
     50%  { transform: translate(calc(var(--amp, 0) * -1px), calc(var(--amp, 0) * .5px)); }
@@ -42,43 +101,82 @@
   }
   @keyframes flicker { to { opacity: .75; } }
 
-  /* ---------- Smoke ---------- */
+  /* ---------- Smoke: cotton-wool puffs ---------- */
   .smoke {
-    position: fixed; bottom: 280px; width: 40px; height: 40px; border-radius: 50%;
-    background: rgba(255,255,255,.7); pointer-events: none; z-index: 1;
+    position: fixed; bottom: calc(var(--panel-h) + var(--panel-gap)); width: 40px; height: 40px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff, #f1ecf6 70%);
+    box-shadow: 0 2px 4px rgb(90 70 120 / 0.2);
+    pointer-events: none; z-index: 1;
     animation: puff 1.6s ease-out forwards;
   }
   @keyframes puff { to { transform: translate(var(--dx), var(--dy)) scale(4); opacity: 0; } }
 
-  /* ---------- Control panel ---------- */
+  /* ---------- Control panel: the cardboard launch box ---------- */
   .panel {
-    position: relative; z-index: 3; width: min(94%, 400px); margin-bottom: 18px; padding: 1.2rem 1.4rem 1.2rem;
-    text-align: center; background: rgba(15, 12, 45, .8); backdrop-filter: blur(8px);
-    border: 2px solid rgba(255,255,255,.18); border-radius: 26px;
-    box-shadow: 0 0 40px rgba(124, 77, 255, .35);
+    position: relative; z-index: 3;
+    width: min(94%, 25rem); height: var(--panel-h); margin-bottom: var(--panel-gap);
+    padding: 1.1rem 1.4rem 1rem;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    background:
+      repeating-linear-gradient(90deg, rgb(255 255 255 / 0.07) 0 3px, transparent 3px 9px),
+      linear-gradient(170deg, #ead0a3, var(--kraft) 55%, #d6b27b);
+    border-radius: 0.6rem 0.6rem 0.9rem 0.9rem;
+    box-shadow: 0 3px 4px rgb(60 40 20 / 0.25), 0 22px 30px -18px rgb(60 30 60 / 0.55);
   }
-  h1 { margin: 0; font-size: 1.15rem; letter-spacing: .5px; }
-  #counter { font-size: 2.6rem; font-weight: 800; margin: .1rem 0; }
+  /* Box flaps along the top edge. */
+  .panel::before {
+    content: ""; position: absolute; top: -0.55rem; left: 6%; right: 6%; height: 0.7rem;
+    background: linear-gradient(#d9b680, #cda56c);
+    border-radius: 0.3rem 0.3rem 0 0;
+    box-shadow: 0 -1px 2px rgb(60 40 20 / 0.2);
+    z-index: -1;
+  }
+  /* A strip of masking tape holding the box shut. */
+  .panel::after {
+    content: ""; position: absolute; top: -0.9rem; left: 50%; width: 5.5rem; height: 1.5rem; margin-left: -2.75rem;
+    background: rgb(250 238 205 / 0.88);
+    transform: rotate(-3deg);
+    box-shadow: 0 1px 2px rgb(60 40 20 / 0.2);
+  }
+
+  h1 { margin: 0; font-family: "Gaegu", cursive; font-size: 1.6rem; line-height: 1.1; }
+  #counter { font-family: "Gaegu", cursive; font-size: 3rem; font-weight: 700; line-height: 1; margin: .15rem 0 .2rem; }
   #counter.pop { animation: pop .3s ease; }
-  @keyframes pop { 50% { transform: scale(1.35); color: #ffd23f; } }
+  @keyframes pop { 50% { transform: scale(1.35); color: var(--marker-red); } }
 
-  .fuel { display: flex; gap: 6px; margin: .3rem 0 .6rem; }
-  .cell { flex: 1; height: 16px; border-radius: 6px; background: rgba(255,255,255,.14); transition: background .3s, box-shadow .3s; }
-  .cell.on { background: linear-gradient(#ffd23f, #ff7a1a); box-shadow: 0 0 12px #ff9a1a; }
+  /* The five fuel cells are tally boxes drawn on the cardboard in marker. */
+  .fuel { display: flex; gap: 0.5rem; width: 100%; margin: .2rem 0 .55rem; }
+  .cell {
+    flex: 1; height: 1.15rem; border-radius: 0.35rem 0.5rem 0.3rem 0.45rem;
+    border: 2px solid var(--ink);
+    background: rgb(255 255 255 / 0.35);
+    transition: background .3s, transform .3s;
+  }
+  .cell:nth-child(even) { transform: rotate(1.5deg); }
+  .cell:nth-child(odd) { transform: rotate(-1deg); }
+  .cell.on {
+    background:
+      repeating-linear-gradient(-35deg, #ff7aa2 0 4px, #ff9ab8 4px 7px);
+  }
 
-  #message { min-height: 1.5em; margin: 0 0 .9rem; color: #c9c2f5; font-weight: 600; }
-  #message.success { color: #4dffa0; font-size: 1.1rem; }
+  #message { min-height: 2.6em; margin: 0 0 .5rem; color: var(--ink); font-size: 1rem; line-height: 1.3; }
+  #message.success { color: #17552e; font-family: "Gaegu", cursive; font-weight: 700; font-size: 1.3rem; }
 
+  /* "Add fuel" is the rubber stomp pad of the toy. */
   #clickBtn {
     position: relative; overflow: hidden;
-    font: inherit; font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: .5px;
-    background: #7c4dff; border: 0; border-radius: 16px; padding: .85rem 2.4rem;
-    cursor: pointer; box-shadow: 0 6px 0 #4a28c0;
-    transition: background .3s, box-shadow .3s, transform .08s;
+    font-family: "Gaegu", cursive; font-size: 1.35rem; font-weight: 700; color: #fff;
+    background: radial-gradient(circle at 40% 30%, #e85a63, #d23a43 60%, #b52a35);
+    border: 0; border-radius: 999px; padding: .7rem 2.4rem .75rem;
+    cursor: pointer;
+    box-shadow: inset 0 -5px 0 rgb(0 0 0 / 0.18), 0 2px 3px rgb(60 20 20 / 0.3), 0 8px 12px -6px rgb(60 20 20 / 0.45);
+    transition: background .3s, box-shadow .15s, transform .1s;
   }
-  #clickBtn:active { transform: translateY(5px); box-shadow: 0 1px 0 #4a28c0; }
-  #clickBtn:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
-  #clickBtn.done { background: #1fbf6b; box-shadow: 0 6px 0 #12894b; }   /* green at 5 clicks */
+  #clickBtn:hover { box-shadow: inset 0 -5px 0 rgb(0 0 0 / 0.18), 0 3px 4px rgb(60 20 20 / 0.3), 0 12px 16px -6px rgb(60 20 20 / 0.5); }
+  #clickBtn:active { transform: translateY(3px) scaleY(0.94); box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.18), 0 1px 2px rgb(60 20 20 / 0.3); }
+  #clickBtn:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+  #clickBtn.done { background: radial-gradient(circle at 40% 30%, #2a9358, #1b7a43 60%, #146236); }   /* green at 5 clicks */
   #clickBtn:disabled { cursor: default; }
 
   .ripple {
@@ -89,39 +187,72 @@
   @keyframes ripple { to { transform: scale(14); opacity: 0; } }
 
   .plus {
-    position: fixed; z-index: 5; font-weight: 800; font-size: 1.6rem; color: #ffd23f;
-    pointer-events: none; text-shadow: 0 0 8px #ff9a1a;
+    position: fixed; z-index: 5; font-family: "Gaegu", cursive; font-weight: 700; font-size: 1.6rem; color: var(--marker-red);
+    pointer-events: none;
     animation: float 1s ease-out forwards;
   }
   @keyframes float { to { transform: translateY(-80px); opacity: 0; } }
 
   #reset {
-    display: none; margin: .9rem auto 0; font: inherit; font-weight: 600;
-    color: #c9c2f5; background: none; border: 0; text-decoration: underline; cursor: pointer;
+    display: none; margin: .5rem auto 0; padding: .2rem .5rem;
+    font-family: "Nanum Pen Script", cursive; font-size: 1.5rem; line-height: 1;
+    color: var(--ink); background: none; border: 0; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;
   }
+  #reset:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
   #reset.show { display: block; }
+
+  /* Keep the cardboard box clear of the drawer tab in the bottom-left on phones. */
+  @media (max-width: 40rem) {
+    :root { --panel-gap: 4.5rem; --panel-h: 18rem; }
+    .moon { right: 8vw; width: 3.5rem; height: 3.5rem; box-shadow: -0.85rem 0.4rem 0 0 #fff6d8; }
+    .cloud.one { width: 8rem; }
+    .cloud.two { width: 6rem; top: 24vh; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .star, #rocket .body, #flame { animation: none !important; }
-    #rocket { transition-duration: .01s; }
+    #rocket, #rocket::after { transition-duration: .01s; }
   }
 </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
+
+<div class="scene" aria-hidden="true">
+  <svg viewBox="0 0 1440 500" preserveAspectRatio="none" focusable="false">
+    <path class="hill-back" d="M0 260 C180 170 320 200 470 240 C640 285 760 150 950 170 C1120 190 1250 250 1440 200 V500 H0Z"/>
+    <path class="hill-mid" d="M0 340 C210 280 380 330 560 310 C760 290 860 230 1060 270 C1230 305 1330 290 1440 270 V500 H0Z"/>
+    <path class="hill-front" d="M0 410 C240 370 420 400 640 385 C860 370 1040 350 1240 380 C1330 393 1400 395 1440 390 V500 H0Z"/>
+  </svg>
+</div>
+<span class="moon" aria-hidden="true"></span>
+<span class="cloud one" aria-hidden="true"><svg viewBox="0 0 160 60" focusable="false"><path d="M18 52 C2 52 2 32 18 32 C18 16 40 10 52 22 C60 6 92 6 98 24 C112 14 134 20 132 36 C150 36 152 52 138 52Z" fill="#fdfbff"/></svg></span>
+<span class="cloud two" aria-hidden="true"><svg viewBox="0 0 160 60" focusable="false"><path d="M20 52 C6 52 6 34 22 34 C24 20 44 16 56 26 C66 12 96 14 100 30 C116 24 134 32 130 44 C144 44 146 52 136 52Z" fill="#fdfbff"/></svg></span>
+<span class="tube" aria-hidden="true"></span>
 
 <div id="rocket" aria-hidden="true">
   <div class="body">
     <svg viewBox="0 0 100 160" width="100%" height="100%">
+      <!-- tissue-paper flame -->
       <g id="flame">
-        <polygon points="36,118 64,118 50,158" fill="#ff7a1a"/>
-        <polygon points="42,118 58,118 50,146" fill="#ffd23f"/>
+        <path d="M34 118 C36 132 42 140 40 156 C46 148 48 142 50 158 C53 142 56 148 60 156 C58 140 64 132 66 118Z" fill="#ff9f4a"/>
+        <path d="M41 118 C43 128 46 134 45 146 C48 140 50 136 51 148 C53 136 55 140 56 146 C55 134 58 128 59 118Z" fill="#ffd66b"/>
       </g>
-      <path d="M25 90 L4 128 L26 116Z" fill="#ff4d6d"/>
-      <path d="M75 90 L96 128 L74 116Z" fill="#ff4d6d"/>
-      <path d="M50 4 C76 30 81 70 76 112 L24 112 C19 70 24 30 50 4Z" fill="#f4f6ff"/>
-      <path d="M50 4 C60 14 67 25 71 36 L29 36 C33 25 40 14 50 4Z" fill="#ff4d6d"/>
-      <circle cx="50" cy="64" r="13" fill="#4dabff" stroke="#c9d6ff" stroke-width="4"/>
-      <rect x="38" y="110" width="24" height="9" rx="3" fill="#8b90a8"/>
+      <!-- paper fins -->
+      <path d="M26 88 L6 128 L28 118Z" fill="#ff8fab" stroke="#3a2a1b" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M74 88 L94 128 L72 118Z" fill="#ff8fab" stroke="#3a2a1b" stroke-width="2.2" stroke-linejoin="round"/>
+      <!-- rolled paper body -->
+      <path d="M50 4 C76 30 81 70 76 116 L24 116 C19 70 24 30 50 4Z" fill="#fdf8ef" stroke="#3a2a1b" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M50 4 C60 14 67 25 71 36 L29 36 C33 25 40 14 50 4Z" fill="#9ad8ff" stroke="#3a2a1b" stroke-width="2.2" stroke-linejoin="round"/>
+      <!-- washi tape band -->
+      <path d="M22 92 L78 88 L79 100 L23 104Z" fill="#ffd66b" opacity="0.9"/>
+      <path d="M30 91 l3 12 M40 90 l3 12 M50 90 l3 12 M60 89 l3 12 M70 88 l3 12" stroke="#ffb347" stroke-width="2.5" opacity="0.8"/>
+      <!-- window, drawn in marker -->
+      <circle cx="50" cy="62" r="12.5" fill="#c9ecff" stroke="#3a2a1b" stroke-width="2.6"/>
+      <path d="M44 57 Q47 53 52 54" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+      <!-- doodled stars on the paper -->
+      <path d="M33 46 l1.5 3 3 1.5 -3 1.5 -1.5 3 -1.5 -3 -3 -1.5 3 -1.5Z M66 76 l1.2 2.4 2.4 1.2 -2.4 1.2 -1.2 2.4 -1.2 -2.4 -2.4 -1.2 2.4 -1.2Z" fill="#ff8fab"/>
+      <rect x="38" y="113" width="24" height="7" rx="2" fill="#c9b8a0" stroke="#3a2a1b" stroke-width="2"/>
     </svg>
   </div>
 </div>

@@ -6,50 +6,129 @@
     <title>Box Model Visualisation</title>
 
     <style>
+        @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+        @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        /* A parcel cut open on the table, so you can see every layer of the box model. */
         body {
-            font-family: sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            padding: 1px 1rem 7rem;
+            font-family: "Gaegu", sans-serif;
+            font-size: 1.35rem;
             text-align: center;
+            color: #2b2622;
+            background: #dde6ed;
+            background-image: repeating-linear-gradient(90deg, rgba(50, 70, 90, 0.05) 0 2px, transparent 2px 46px);
         }
 
+        .layer { position: relative; }
+
+        /* MARGIN: the empty space around the parcel, marked out like a
+           taped-off spot on the table. */
         .margin {
             background-color: #f59e0b;
+            background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.18) 0 10px, transparent 10px 20px);
             padding: 40px;
-            width: 400px;
+            width: min(400px, 100%);
             margin: 50px auto;
+            border-radius: 6px;
+            box-shadow: 0 20px 34px -20px rgba(90, 60, 20, 0.55);
         }
 
+        /* BORDER: the cardboard wall of the box, with packing tape across it. */
         .border {
             background-color: #475569;
             padding: 30px;
+            color: #ffffff;
+            border-radius: 4px;
+            box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.08);
+        }
+        .border::before {
+            content: "";
+            position: absolute;
+            right: -0.9rem;
+            top: 0.6rem;
+            width: 3.6rem;
+            height: 1.2rem;
+            background: rgba(214, 186, 130, 0.85);
+            transform: rotate(38deg);
         }
 
+        /* PADDING: bubble wrap cushioning the gift inside. */
         .padding {
             background-color: #38bdf8;
+            background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0 4px, rgba(255, 255, 255, 0.12) 5px, transparent 6px);
+            background-size: 18px 18px;
             padding: 30px;
+            color: #0b2e44;
+            border-radius: 4px;
         }
 
+        /* CONTENT: the present itself, ribbon and all. */
         .content {
             background-color: #7c3aed;
+            background-image:
+                linear-gradient(90deg, transparent calc(50% - 7px), #f9d3e6 calc(50% - 7px), #f9d3e6 calc(50% + 7px), transparent calc(50% + 7px)),
+                linear-gradient(transparent calc(50% - 7px), #f9d3e6 calc(50% - 7px), #f9d3e6 calc(50% + 7px), transparent calc(50% + 7px));
             padding: 40px;
             color: white;
             font-weight: bold;
+            border-radius: 4px;
+            transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* The word sits on a little gift tag so it stays readable over the ribbon. */
+        .content span {
+            display: inline-block;
+            padding: 0.1rem 0.7rem;
+            border-radius: 0.3rem;
+            background: #5b21b6;
+        }
+
+        .margin:hover .content { transform: translateY(-8px) rotate(-2deg); }
+
+        .note {
+            display: block;
+            margin: 2.5rem auto 0;
+            max-width: 22rem;
+            font-family: "Nanum Pen Script", cursive;
+            font-size: 1.6rem;
+            line-height: 1.15;
+            color: #5a4a38;
+        }
+
+        @media (max-width: 30rem) {
+            .margin { padding: 22px; }
+            .border { padding: 18px; }
+            .padding { padding: 18px; }
+            .content { padding: 28px 12px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .content { transition: none; }
         }
     </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 
 <body>
 
-    <div class="margin">
+    <span class="note" aria-hidden="true">a parcel cut open, layer by layer</span>
+
+    <div class="margin layer">
         Margin
 
-        <div class="border">
+        <div class="border layer">
             Border
 
-            <div class="padding">
+            <div class="padding layer">
                 Padding
 
-                <div class="content">
-                    Content
+                <div class="content layer">
+                    <span>Content</span>
                 </div>
 
             </div>

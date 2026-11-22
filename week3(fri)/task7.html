@@ -7,32 +7,50 @@
   <title>My Portfolio</title>
 
   <style>
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
     /* =========================
        CSS VARIABLES
+       The whole page is a desk: a teal cutting mat with paper on it.
     ========================== */
     :root {
       --primary: #0f766e;
       --accent: #14b8a6;
-      --background: #f0fdfa;
-      --card: white;
-      --text: #334155;
-      --nav: #1e293b;
-      --radius: 12px;
+      --background: #cdeee6;   /* the cutting mat */
+      --grid: rgba(15, 94, 89, 0.13);
+      --grid-bold: rgba(15, 94, 89, 0.24);
+      --card: #fffdf6;         /* paper stays paper in both themes */
+      --paper-ink: #24343a;
+      --text: #1f3a3a;
+      --nav: #fbf5e6;
+      --nav-ink: #134e4a;
+      --radius: 4px;
       --space: 20px;
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
-      scroll-behavior: smooth;
     }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 8rem; }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: var(--background);
+      font-family: "Gowun Dodum", Arial, sans-serif;
       color: var(--text);
+      background-color: var(--background);
+      /* Cutting-mat grid: fine lines every 24px, bold every 120px. */
+      background-image:
+        linear-gradient(var(--grid-bold) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-bold) 1px, transparent 1px),
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
     }
 
+    /* Fixed nav: the ruler printed along the mat's top edge. */
     nav {
       position: fixed;
       top: 0;
@@ -40,131 +58,240 @@
       width: 100%;
 
       background: var(--nav);
-      padding: 15px 40px;
+      padding: 0.8rem clamp(1rem, 5vw, 2.5rem) 1.25rem;
 
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 1rem;
 
       z-index: 1000;
+      box-shadow: 0 6px 16px -10px rgba(15, 80, 70, 0.5);
+    }
+
+    nav::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 0.7rem;
+      background:
+        repeating-linear-gradient(90deg, var(--nav-ink) 0 1px, transparent 1px 60px) 0 0 / 100% 100%,
+        repeating-linear-gradient(90deg, var(--nav-ink) 0 1px, transparent 1px 12px) 0 100% / 100% 45% no-repeat;
+      opacity: 0.45;
     }
 
     .logo {
-      color: white;
-      font-size: 21px;
+      color: var(--nav-ink);
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.6rem;
       font-weight: bold;
+      line-height: 1;
     }
 
     .nav-links {
       display: flex;
-      gap: 25px;
+      gap: clamp(0.9rem, 3vw, 1.6rem);
     }
 
     .nav-links a {
-      color: white;
+      color: var(--nav-ink);
       text-decoration: none;
+      text-underline-offset: 5px;
     }
 
     .nav-links a:hover {
-      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 3px;
     }
 
+    a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+
+    /* =========================
+       HERO: an index card held by a binder clip
+    ========================== */
     .hero {
       min-height: 450px;
-      padding: 150px 30px 80px;
+      padding: 9rem 1.25rem 5rem;
 
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
+    }
 
-      animation: fadeIn 1.5s ease;
+    .index-card {
+      position: relative;
+      max-width: 36rem;
+      padding: 3rem clamp(1.25rem, 5vw, 3rem) 2.25rem;
+      color: var(--paper-ink);
+      background-color: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 3px rgba(15, 60, 55, 0.18), 0 26px 40px -24px rgba(15, 60, 55, 0.55);
+      transform: rotate(-2deg);
+
+      animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Binder clip holding the card. */
+    .clip {
+      position: absolute;
+      top: -1.1rem;
+      left: 50%;
+      width: 4.5rem;
+      height: 1.9rem;
+      margin-left: -2.25rem;
+      background: linear-gradient(#1d6b65, #0f4f4a);
+      clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%);
+      border-radius: 3px;
+    }
+
+    .clip::before {
+      content: "";
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      top: 0.35rem;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .clip-wire {
+      position: absolute;
+      top: -2.6rem;
+      left: 50%;
+      width: 3rem;
+      height: 2rem;
+      margin-left: -1.5rem;
+      border: 3px solid #b8c4c4;
+      border-bottom: 0;
+      border-radius: 0.8rem 0.8rem 0 0;
     }
 
     .hero h1 {
-      font-size: 48px;
-      color: var(--primary);
-      margin-bottom: 10px;
+      margin: 0 0 0.5rem;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: clamp(2.6rem, 8vw, 3.6rem);
+      line-height: 1;
+      color: #0f766e;
     }
 
     .hero h2 {
-      font-size: 24px;
-      margin: 10px 0;
+      margin: 0.6rem 0 1rem;
+      font-family: "Nanum Pen Script", cursive;
+      font-weight: normal;
+      font-size: 1.9rem;
+      line-height: 1;
+      color: #7a3e52;
     }
 
     .hero p {
-      max-width: 600px;
+      max-width: 30rem;
       margin: auto;
-      line-height: 1.6;
+      line-height: 1.85rem;
     }
-
 
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(-28px) rotate(-7deg);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) rotate(-2deg);
       }
     }
 
+    /* =========================
+       STICKY HEADING: a strip of washi tape
+    ========================== */
     .section-title {
       position: sticky;
-      top: 65px;
+      top: 4.6rem;
 
-      background: var(--background);
-      padding: 15px 20px;
+      width: fit-content;
+      margin: 0 auto;
+      padding: 0.45rem 1.8rem 0.5rem;
 
-      color: var(--primary);
-      border-bottom: 2px solid var(--accent);
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.8rem;
+      line-height: 1;
+      color: #134e4a;
+      background:
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.35) 0 6px, transparent 6px 12px),
+        rgba(94, 234, 212, 0.88);
+      clip-path: polygon(0 8%, 3% 0, 97% 4%, 100% 0, 99% 92%, 100% 100%, 2% 96%, 0 100%);
+      transform: rotate(-1.5deg);
 
       z-index: 10;
     }
 
+    /* =========================
+       SKILLS: sticky notes on the mat
+    ========================== */
     .skills {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 2.5rem 1.25rem 1rem;
 
       display: grid;
       grid-template-columns: 1fr;
-      gap: var(--space);
+      gap: calc(var(--space) * 1.5);
     }
 
-    /* Skill card */
     .card {
-      background: var(--card);
-      border: 2px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 25px;
+      position: relative;
+      padding: 2rem 1.5rem 1.6rem;
+      color: var(--paper-ink);
+      background: var(--note, #fef3c7);
+      border-radius: 2px 2px 2px 1.4rem;
+      box-shadow: 0 1px 2px rgba(15, 60, 55, 0.2), 0 12px 16px -12px rgba(15, 60, 55, 0.45);
+      transform: rotate(var(--tilt, 0deg));
 
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    /* Emoji before every card */
+    .card:nth-child(1) { --note: #fef3c7; --tilt: -1.5deg; }
+    .card:nth-child(2) { --note: #ccfbf1; --tilt: 1.2deg; }
+    .card:nth-child(3) { --note: #fce7f3; --tilt: -0.6deg; }
+    .card:nth-child(4) { --note: #99f6e4; --tilt: 1.6deg; }
+    .card:nth-child(5) { --note: #e0f2fe; --tilt: -1deg; }
+    .card:nth-child(6) { --note: #fde68a; --tilt: 0.8deg; }
+
+    /* A bit of tape on each note (this replaced the emoji). */
     .card::before {
-      content: "💡";
-      display: block;
-      font-size: 28px;
-      margin-bottom: 10px;
+      content: "";
+      position: absolute;
+      top: -0.7rem;
+      left: 50%;
+      width: 4.5rem;
+      height: 1.4rem;
+      margin-left: -2.25rem;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 1px 1px rgba(15, 60, 55, 0.12);
+      transform: rotate(-3deg);
     }
 
     .card h3 {
-      margin-top: 0;
-      color: var(--primary);
+      margin: 0 0 0.5rem;
+      font-family: "Gaegu", Arial, sans-serif;
+      font-size: 1.6rem;
+      line-height: 1.1;
+      color: #0b4f4a;
     }
 
     .card p {
+      margin: 0;
       line-height: 1.6;
     }
 
     /* Hover effect */
     .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(20, 184, 166, 0.3);
+      transform: translateY(-6px) rotate(0deg);
+      box-shadow: 0 1px 2px rgba(15, 60, 55, 0.2), 0 20px 26px -12px rgba(20, 184, 166, 0.6);
     }
 
     /* =========================
@@ -176,24 +303,67 @@
       }
     }
 
-   
+    /* =========================
+       ABOUT: a letter on the desk
+    ========================== */
+    .bottom-space {
+      min-height: 500px;
+      padding: 4rem 1.25rem 8rem;
+      text-align: center;
+    }
+
+    .letter {
+      max-width: 34rem;
+      margin: 0 auto;
+      padding: 2rem clamp(1.25rem, 5vw, 2.75rem) 2.25rem;
+      color: var(--paper-ink);
+      background:
+        /* Lines start where the first paragraph starts, one line per 1.85rem of text. */
+        repeating-linear-gradient(transparent 0 calc(1.85rem - 1px), #ead9c4 calc(1.85rem - 1px) 1.85rem) 0 5.6rem / 100% calc(100% - 7.2rem) no-repeat,
+        #fff9ef;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 3px rgba(15, 60, 55, 0.18), 0 24px 36px -22px rgba(15, 60, 55, 0.5);
+      transform: rotate(1deg);
+    }
+
+    .letter h2 {
+      height: 2.6rem;
+      margin: 0 0 1rem;
+      font-family: "Nanum Pen Script", cursive;
+      font-weight: normal;
+      font-size: 2.6rem;
+      line-height: 1;
+      color: #0f766e;
+    }
+
+    .letter p {
+      margin: 0;
+      line-height: 1.85rem;
+    }
+
+    .letter p + p { margin-top: 1.85rem; }
+
+    /* Dark mode: the mat and ruler go dark, the paper stays paper. */
     @media (prefers-color-scheme: dark) {
       :root {
         --primary: #5eead4;
         --accent: #14b8a6;
-        --background: #0f172a;
-        --card: #1e293b;
-        --text: #e2e8f0;
-        --nav: #020617;
+        --background: #0c3634;
+        --grid: rgba(94, 234, 212, 0.07);
+        --grid-bold: rgba(94, 234, 212, 0.15);
+        --text: #e2f5f1;
+        --nav: #072624;
+        --nav-ink: #ccfbf1;
       }
     }
 
-    .bottom-space {
-      height: 500px;
-      padding: 50px 20px;
-      text-align: center;
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .index-card { animation: none; }
+      .card { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 
 <body>
@@ -211,7 +381,10 @@
 
   <!-- Hero Section -->
   <section class="hero" id="home">
-    <div>
+    <div class="index-card">
+      <span class="clip-wire" aria-hidden="true"></span>
+      <span class="clip" aria-hidden="true"></span>
+
       <h1>Hi, I'm Sabhyata</h1>
 
       <h2>Computer Science Student</h2>
@@ -285,19 +458,20 @@
 
   <!-- About Section -->
   <div class="bottom-space" id="about">
-    <h2>About Me</h2>
+    <div class="letter">
+      <h2>About Me</h2>
 
-    <p>
-      I am a Computer Science student who enjoys learning
-      programming and building projects.
-    </p>
+      <p>
+        I am a Computer Science student who enjoys learning
+        programming and building projects.
+      </p>
 
-    <p>
-      My goal is to improve my technical skills and create
-      useful projects in the future.
-    </p>
+      <p>
+        My goal is to improve my technical skills and create
+        useful projects in the future.
+      </p>
+    </div>
   </div>
 
 </body>
 </html>
-

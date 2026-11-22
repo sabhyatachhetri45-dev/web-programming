@@ -4,47 +4,83 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sabhyata Chhetri – Profile Card</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@500;700&display=swap">
 <style>
+@font-face{font-family:"Gaegu";src:url("../assets/fonts/gaegu-700.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Gowun Dodum";src:url("../assets/fonts/gowun-dodum.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Nanum Pen Script";src:url("../assets/fonts/nanum-pen-script.woff2") format("woff2");font-display:swap}
+
+/* A 문방구 toy on a pegboard: the profile card is the cardboard backing of a
+   blister pack, the mascot is the toy sealed under the plastic bubble.
+   "Go dark" turns the shop lights off and the toy glows in the dark.
+   The JavaScript is unchanged: it still toggles .dark on #card. */
 *,*::before,*::after{box-sizing:border-box}
 body{
-  --page:#fff1c9;--dot:#f3d98a;--card:#fffdf7;--ink:#2b2140;--soft:#6d6285;--line:#2b2140;
-  --pink:#ff8fb1;--mint:#7fdcc0;--sun:#ffd35c;--lilac:#c3b3ff;
-  margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;overflow:hidden;
-  font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);
-  background:radial-gradient(var(--dot) 2px,transparent 2.5px) 0 0/26px 26px,var(--page);
+  --wall:#c9d3c6;--hole:#93a08f;--card:#fffdf8;--band:#ff8fab;--ink:#2b2140;--soft:#5f5670;--line:#2b2140;
+  --pink:#ff8fb1;--mint:#7fdcc0;--sun:#ffd35c;--lilac:#c3b3ff;--sheet:#efe9fb;--glow:transparent;
+  margin:0;min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr);place-items:center;padding:5.5rem 24px 6rem;overflow-x:hidden;
+  font-family:"Gowun Dodum",system-ui,sans-serif;color:var(--ink);
+  background:radial-gradient(circle,var(--hole) 3px,transparent 3.5px) 0 0/30px 30px,var(--wall);
   transition:background-color .6s}
+/* Shop lights off: the pegboard goes dark and the toy glows. */
 body:has(.card.dark){
-  --page:#1b1530;--dot:#2a2247;--card:#2a2247;--ink:#d8d0ee;--soft:#9c92bd;--line:#0f0b1f;
-  --pink:#c9789a;--mint:#5fa893;--sun:#c9a94f;--lilac:#8c7fcf}
+  --wall:#1e1b26;--hole:#121018;--card:#2a2635;--band:#3b3350;--ink:#dff7ea;--soft:#a9c9b8;--line:#0f0d16;
+  --pink:#9ef0c0;--mint:#5fb894;--sun:#d4c070;--lilac:#8c7fcf;--sheet:#332e42;--glow:rgb(158 240 192 / .55)}
 
-/* floating doodles */
-.doodle{position:fixed;font-size:34px;opacity:.85;animation:float 6s ease-in-out infinite;pointer-events:none;user-select:none}
-body:has(.card.dark) .doodle{opacity:.45}
-@keyframes float{50%{transform:translateY(-22px) rotate(12deg)}}
+/* The metal peg the pack hangs from. */
+.peg{position:relative;z-index:1;width:min(370px,100%);min-width:0}
+.peg::before{content:"";position:absolute;top:-4.4rem;left:50%;width:.5rem;height:5.6rem;margin-left:-.25rem;z-index:2;
+  border-radius:.3rem;background:linear-gradient(90deg,#8d939a,#e6e9ec 45%,#9aa1a8);
+  box-shadow:2px 3px 4px rgb(0 0 0 / .3)}
+.peg::after{content:"";position:absolute;top:-4.8rem;left:50%;width:1.6rem;height:1rem;margin-left:-.8rem;
+  border-radius:50%;background:radial-gradient(circle at 40% 35%,#eef0f2,#9aa1a8 70%);box-shadow:0 2px 3px rgb(0 0 0 / .35)}
 
-/* card */
-.card{position:relative;z-index:1;width:min(370px,100%);padding:30px 26px 0;overflow:hidden;text-align:center;
-  background:var(--card);border:3px solid var(--line);border-radius:28px;box-shadow:9px 9px 0 var(--line);
-  transform:rotate(-2deg);transition:transform .35s cubic-bezier(.3,1.6,.5,1),background .5s,box-shadow .5s}
-.card:hover{transform:rotate(0) translateY(-4px)}
+/* card = the cardboard backing card */
+.card{position:relative;width:100%;padding:76px 26px 0;overflow:hidden;text-align:center;
+  background:linear-gradient(var(--band) 0 58px,var(--card) 58px);
+  border-radius:14px 14px 10px 10px;
+  box-shadow:0 2px 3px rgb(40 30 50 / .25),0 26px 36px -18px rgb(40 30 50 / .55);
+  transform-origin:50% 22px;transform:rotate(-2deg);
+  transition:transform .6s cubic-bezier(.3,1.6,.5,1),background .5s,box-shadow .5s}
+.card:hover{transform:rotate(1deg)}
+/* the euro-slot hang hole punched through the header */
+.card::before{content:"";position:absolute;top:14px;left:50%;width:58px;height:18px;margin-left:-29px;
+  border-radius:9px;background:var(--wall);box-shadow:inset 0 2px 3px rgb(0 0 0 / .35);transition:background .6s}
+.card.dark{box-shadow:0 0 0 1px #3d3650,0 26px 40px -18px rgb(0 0 0 / .8)}
 
-/* toggle */
-.toggle{position:absolute;top:14px;right:14px;z-index:2;padding:8px 14px;cursor:pointer;
-  font:700 13px 'DM Sans',system-ui,sans-serif;color:var(--ink);background:var(--sun);
-  border:3px solid var(--line);border-radius:999px;box-shadow:3px 3px 0 var(--line);
+.brand{position:absolute;top:16px;left:20px;font:700 22px/1 "Gaegu",cursive;color:#2b2140;transform:rotate(-4deg)}
+.card.dark .brand{color:var(--soft)}
+
+/* toggle: a pull-tag light switch on the header */
+.toggle{position:absolute;top:14px;right:14px;z-index:2;padding:7px 13px;cursor:pointer;
+  font:700 16px/1 "Gaegu",cursive;color:#1e1a2e;background:var(--sun);
+  border:0;border-radius:999px;box-shadow:inset 0 -3px 0 rgb(0 0 0 / .15),0 2px 3px rgb(0 0 0 / .2);
   transition:transform .15s,box-shadow .15s,background .4s}
-.toggle:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--line)}
-.toggle:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
-.toggle:focus-visible,.connect:focus-visible,.face:focus-visible{outline:3px solid var(--lilac);outline-offset:3px}
+.toggle:hover{transform:translateY(-1px)}
+.toggle:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 rgb(0 0 0 / .15)}
+.toggle:focus-visible,.connect:focus-visible,.face:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 
-/* mascot avatar */
-.face{position:relative;width:120px;height:120px;margin:34px auto 6px;padding:0;cursor:pointer;
+/* the clear plastic blister the toy is sealed in */
+.bubble{position:relative;display:block;width:172px;margin:6px auto 4px;padding:18px 0 14px;
+  border-radius:44px 44px 36px 36px;background:rgb(255 255 255 / .35);
+  box-shadow:inset 0 0 0 2px rgb(255 255 255 / .9),inset 0 -10px 18px rgb(120 140 170 / .12),0 0 0 1px rgb(40 30 60 / .12),0 6px 10px -4px rgb(40 30 60 / .2)}
+.bubble::after{content:"";position:absolute;inset:8px auto auto 18px;width:22px;height:70px;border-radius:12px;
+  background:linear-gradient(rgb(255 255 255 / .85),rgb(255 255 255 / 0));transform:rotate(14deg);pointer-events:none}
+.card.dark .bubble{background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 2px rgb(255 255 255 / .12),0 0 0 1px #000}
+
+/* the price sticker slapped on the bubble */
+.price{position:absolute;z-index:2;top:-6px;right:-26px;display:grid;place-items:center;width:58px;height:58px;
+  font:700 15px/1 "Gaegu",cursive;color:#2b1a10;background:#ffb347;border-radius:50%;transform:rotate(14deg);
+  box-shadow:0 0 0 3px #fff,0 2px 4px rgb(0 0 0 / .25)}
+.card.dark .price{background:#6d5a35;color:#f5e6c4;box-shadow:0 0 0 3px #3a3448}
+
+/* mascot avatar: the toy inside */
+.face{position:relative;width:120px;height:120px;margin:0 auto;padding:0;cursor:pointer;
   background:var(--pink);border:3px solid var(--line);border-radius:46% 54% 50% 50%/55% 50% 50% 45%;
-  box-shadow:5px 5px 0 var(--line);animation:wobble 5s ease-in-out infinite;transition:background .5s}
+  box-shadow:0 0 26px var(--glow),inset -8px -10px 0 rgb(0 0 0 / .06);
+  animation:wobble 5s ease-in-out infinite;transition:background .5s,box-shadow .5s}
 .face.jump{animation:jump .5s cubic-bezier(.3,1.6,.5,1)}
 @keyframes wobble{50%{border-radius:52% 48% 46% 54%/48% 55% 45% 52%;transform:rotate(3deg)}}
-@keyframes jump{40%{transform:translateY(-26px) scale(1.06,.94)}}
+@keyframes jump{40%{transform:translateY(-14px) scale(1.06,.94)}}
 .eye{position:absolute;top:38px;width:28px;height:28px;background:#fff;border:3px solid var(--line);border-radius:50%;
   display:grid;place-items:center;animation:blink 4.5s infinite}
 .eye.l{left:22px}.eye.r{right:22px}
@@ -55,65 +91,108 @@ body:has(.card.dark) .doodle{opacity:.45}
 .face.jump .mouth{height:24px;background:var(--line)}
 .cheek{position:absolute;top:70px;width:14px;height:8px;border-radius:50%;background:#fff;opacity:.45}
 .cheek.l{left:10px}.cheek.r{right:10px}
-.hint{margin:6px 0 0;color:var(--soft);font-size:12px;font-weight:500}
-.hint b{color:var(--ink)}
+.hint{margin:6px 0 0;color:var(--soft);font-size:13px}
+.hint b{color:var(--ink);font:700 18px/1 "Gaegu",cursive}
 
-h1{margin:14px 0 0;font:800 30px/1.05 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em}
-.role{display:inline-block;margin:10px 0 0;padding:4px 12px;font-size:13px;font-weight:700;
-  background:var(--mint);border:2px solid var(--line);border-radius:8px;transform:rotate(1.5deg);color:#1e1a2e}
-.bio{min-height:48px;margin:16px auto 0;max-width:28ch;font-size:16px;line-height:1.5;font-weight:500}
+h1{margin:14px 0 0;font:700 34px/1.05 "Gaegu",cursive;color:var(--ink)}
+.role{display:inline-block;margin:8px 0 0;padding:4px 12px;font-size:13px;color:#1e1a2e;
+  background:var(--mint);border-radius:4px;transform:rotate(1.5deg);
+  /* a strip of label-maker tape */
+  box-shadow:0 1px 2px rgb(0 0 0 / .2)}
+.bio{min-height:48px;margin:14px auto 0;max-width:28ch;font-size:16px;line-height:1.5}
 .bio::after{content:"|";margin-left:1px;animation:caret 1s steps(1) infinite}
 @keyframes caret{50%{opacity:0}}
 
-/* sticker chips */
-.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:18px 0}
-.chip{padding:6px 12px;font:700 13px 'DM Sans',system-ui,sans-serif;color:#1e1a2e;cursor:pointer;
-  border:2px solid var(--line);border-radius:999px;box-shadow:2px 2px 0 var(--line);
+/* the free sticker sheet included in the pack */
+.chips{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:16px 0;padding:16px 12px 14px;
+  background:var(--sheet);border-radius:10px;box-shadow:inset 0 0 0 1px rgb(90 70 120 / .15);transition:background .5s}
+.chips::before{content:"FREE stickers";position:absolute;top:-9px;left:12px;padding:1px 8px;
+  font:700 13px/1.2 "Gaegu",cursive;color:#fff;background:#c8323f;border-radius:4px;transform:rotate(-3deg)}
+.chip{padding:6px 12px;font-size:13px;color:#1e1a2e;cursor:pointer;
+  border-radius:999px;box-shadow:0 0 0 3px #fff,0 2px 4px 2px rgb(60 40 80 / .18);
   transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.card.dark .chip{box-shadow:0 0 0 3px #4a4360,0 0 10px 2px var(--glow)}
 .chip:nth-child(1){background:var(--lilac);transform:rotate(-3deg)}
 .chip:nth-child(2){background:var(--sun);transform:rotate(2deg)}
 .chip:nth-child(3){background:var(--pink);transform:rotate(-2deg)}
 .chip:nth-child(4){background:var(--mint);transform:rotate(3deg)}
-.chip:hover{transform:rotate(0) scale(1.12)}
-.chip:active{transform:scale(.9)}
+.chip:hover{transform:rotate(0) translateY(-3px) scale(1.08)}
+.chip:active{transform:scale(.92)}
 
-.connect{width:100%;padding:14px;cursor:pointer;font:800 17px 'Bricolage Grotesque',system-ui,sans-serif;
-  color:#1e1a2e;background:var(--sun);border:3px solid var(--line);border-radius:16px;box-shadow:5px 5px 0 var(--line);
-  transition:transform .15s,box-shadow .15s,background .4s}
-.connect:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--line)}
-.connect:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--line)}
+/* the round "TRY ME" button cut into the packaging */
+.connect{width:100%;padding:13px;cursor:pointer;font:700 22px/1 "Gaegu",cursive;
+  color:#1e1a2e;background:var(--sun);border:0;border-radius:999px;
+  box-shadow:inset 0 -5px 0 rgb(0 0 0 / .14),0 0 0 3px var(--card),0 0 0 5px #c8323f;
+  transition:transform .12s,box-shadow .15s,background .4s}
+.connect:hover{transform:translateY(-1px)}
+.connect:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 rgb(0 0 0 / .14),0 0 0 3px var(--card),0 0 0 5px #c8323f}
 .connect.on{background:var(--mint)}
 
-/* marquee strip */
-.strip{margin:24px -26px 0;padding:9px 0;overflow:hidden;white-space:nowrap;background:var(--line);color:var(--card);
-  font:700 13px 'DM Sans',system-ui,sans-serif}
+/* the printed band along the bottom of the pack */
+.strip{margin:24px -26px 0;padding:9px 0;overflow:hidden;white-space:nowrap;background:var(--band);color:#2b2140;
+  font-size:13px;transition:background .5s}
+.card.dark .strip{color:var(--soft)}
 .strip span{display:inline-block;padding-left:100%;animation:scroll 14s linear infinite}
 @keyframes scroll{to{transform:translateX(-100%)}}
 
-.bit{position:fixed;width:11px;height:11px;border:2px solid var(--line);border-radius:3px;z-index:9;pointer-events:none;
-  animation:bit 1s ease-out forwards}
+.bit{position:fixed;width:11px;height:11px;border-radius:3px;z-index:9;pointer-events:none;
+  box-shadow:0 0 0 2px #fff;animation:bit 1s ease-out forwards}
 @keyframes bit{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+
+/* other 문방구 bits hanging on the pegboard (decorative, wide screens only) */
+.rack{display:none}
+@media (min-width:56rem){
+  .rack{display:block;position:fixed;top:12vh;width:7.5rem;pointer-events:none;filter:drop-shadow(0 8px 8px rgb(30 30 40 / .25))}
+  .rack svg{display:block;width:100%;height:auto}
+  .rack.left{left:9vw;transform:rotate(-3deg)}
+  .rack.right{right:9vw;top:20vh;transform:rotate(4deg)}
+  body:has(.card.dark) .rack{opacity:.35}
+}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01s!important}
 }
 </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
-<span class="doodle" style="top:10%;left:12%">⭐</span>
-<span class="doodle" style="top:70%;left:8%;animation-delay:-2s">🌈</span>
-<span class="doodle" style="top:18%;right:10%;animation-delay:-4s">🪐</span>
-<span class="doodle" style="bottom:12%;right:14%;animation-delay:-1s">🍕</span>
+<span class="rack left" aria-hidden="true">
+  <svg viewBox="0 0 120 200" focusable="false">
+    <rect x="8" y="10" width="104" height="186" rx="8" fill="#9ad8ff"/>
+    <rect x="42" y="20" width="36" height="12" rx="6" fill="#c9d3c6"/>
+    <rect x="22" y="46" width="76" height="132" rx="10" fill="#fff" opacity=".55"/>
+    <g stroke="#2b2140" stroke-width="2">
+      <path d="M34 60 v100 l6 12 6 -12 v-100Z" fill="#ff8fab"/>
+      <path d="M52 60 v100 l6 12 6 -12 v-100Z" fill="#ffd35c"/>
+      <path d="M70 60 v100 l6 12 6 -12 v-100Z" fill="#7fdcc0"/>
+    </g>
+  </svg>
+</span>
+<span class="rack right" aria-hidden="true">
+  <svg viewBox="0 0 120 170" focusable="false">
+    <rect x="8" y="10" width="104" height="156" rx="8" fill="#ffd35c"/>
+    <rect x="42" y="20" width="36" height="12" rx="6" fill="#c9d3c6"/>
+    <rect x="24" y="52" width="72" height="44" rx="8" fill="#fff" stroke="#2b2140" stroke-width="2"/>
+    <rect x="24" y="52" width="28" height="44" rx="8" fill="#c3b3ff" stroke="#2b2140" stroke-width="2"/>
+    <rect x="24" y="108" width="72" height="44" rx="8" fill="#fff" stroke="#2b2140" stroke-width="2"/>
+    <rect x="68" y="108" width="28" height="44" rx="8" fill="#ff8fab" stroke="#2b2140" stroke-width="2"/>
+  </svg>
+</span>
 
+<div class="peg">
 <article class="card" id="card">
+  <span class="brand" aria-hidden="true">new friend!</span>
   <button class="toggle" id="toggle" type="button">🌙 Go dark</button>
 
-  <button class="face" id="face" type="button" aria-label="Give Sabhyata a high five">
-    <span class="eye l"><span class="pupil"></span></span>
-    <span class="eye r"><span class="pupil"></span></span>
-    <span class="cheek l"></span><span class="cheek r"></span>
-    <span class="mouth"></span>
-  </button>
+  <span class="bubble">
+    <span class="price" aria-hidden="true">₩1,000</span>
+    <button class="face" id="face" type="button" aria-label="Give Sabhyata a high five">
+      <span class="eye l"><span class="pupil"></span></span>
+      <span class="eye r"><span class="pupil"></span></span>
+      <span class="cheek l"></span><span class="cheek r"></span>
+      <span class="mouth"></span>
+    </button>
+  </span>
   <p class="hint">Poke me! High fives: <b id="fives">0</b></p>
 
   <h1>Sabhyata Chhetri</h1>
@@ -131,6 +210,7 @@ h1{margin:14px 0 0;font:800 30px/1.05 'Bricolage Grotesque',system-ui,sans-serif
 
   <div class="strip"><span>✦ let's get connected ✦ have fun ✦ make cool things ✦ say hi ✦ let's get connected ✦ have fun ✦ make cool things ✦ say hi</span></div>
 </article>
+</div>
 
 <script>
 // 1. Select the card and the toggle button

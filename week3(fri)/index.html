@@ -1,32 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 3 Friday Tasks</title>
-    <style>
-        body { margin: 0; padding: 40px 20px; background: #07070a; color: #f5f5f7; font-family: Arial, sans-serif; }
-        main { max-width: 760px; margin: auto; }
-        a { color: #67e8f9; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        li { margin: 14px 0; }
-        .back { display: inline-block; margin-bottom: 28px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 3 Friday · CSS in motion</title>
+  <meta name="description" content="Week 3 Friday coursework by Sabhyata Chhetri: seven CSS tasks on positioning, transitions, animation, variables and responsive layout.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='9' y='2' width='14' height='28' rx='2' fill='%23fffdf9' stroke='%232b2622' stroke-width='1.5'/%3E%3Crect x='9' y='8' width='14' height='7' fill='%235eead4'/%3E%3Crect x='9' y='15' width='14' height='7' fill='%2314b8a6'/%3E%3Crect x='9' y='22' width='14' height='8' rx='2' fill='%23115e59'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
+  <link rel="stylesheet" href="../assets/drawer/week3.css">
 </head>
-<body>
-    <main>
-        <a class="back" href="../index.html">&lt; Back to homepage</a>
-        <h1>Week 3 Friday</h1>
-        <p>Click any HTML file to open it.</p>
-        <ul>
-            <li><a href="task1.html">task1.html</a></li>
-            <li><a href="task2.html">task2.html</a></li>
-            <li><a href="task3.html">task3.html</a></li>
-            <li><a href="task4.html">task4.html</a></li>
-            <li><a href="task5.html">task5.html</a></li>
-            <li><a href="task6.html">task6.html</a></li>
-            <li><a href="task7.html">task7.html</a></li>
-        </ul>
-    </main>
+<body class="friday">
+  <main class="page">
+    <header class="wall">
+      <div class="wall__text">
+        <a class="back-to-diary" href="../index.html"><span aria-hidden="true">←</span> back to the diary</a>
+        <h1>Week 3, Friday <span class="day" lang="ko" aria-hidden="true">금</span></h1>
+        <p class="wall__topic">This week's topic carries on with <strong>CSS in motion</strong>: positioning, hover transitions, keyframe animation, CSS variables and responsive layout.</p>
+        <p class="wall__note">everything moved a little on friday.</p>
+        <p class="wall__hint">Hover a shade to try it on the wall.</p>
+      </div>
+
+      <figure class="patch" aria-hidden="true">
+        <svg viewBox="0 0 320 240" focusable="false">
+          <defs>
+            <clipPath id="patch-shape"><path d="M22 34c38-12 92-5 140-11s104-8 134 5c10 40-1 78 6 118s-2 62-6 76c-52 10-108 2-162 9s-86 3-112-6c-8-38 4-74-4-112S14 58 22 34Z"/></clipPath>
+            <pattern id="roller" width="26" height="240" patternUnits="userSpaceOnUse" patternTransform="rotate(4)">
+              <rect width="12" height="240" fill="#fff" opacity="0.04"/>
+              <rect x="17" width="2" height="240" fill="#000" opacity="0.03"/>
+            </pattern>
+          </defs>
+          <path d="M22 34c38-12 92-5 140-11s104-8 134 5c10 40-1 78 6 118s-2 62-6 76c-52 10-108 2-162 9s-86 3-112-6c-8-38 4-74-4-112S14 58 22 34Z"/>
+          <rect class="roller" width="320" height="240" fill="url(#roller)" clip-path="url(#patch-shape)"/>
+        </svg>
+        <figcaption class="patch__label"></figcaption>
+      </figure>
+    </header>
+
+    <section aria-labelledby="strip-title">
+      <div class="deck-head">
+        <h2 id="strip-title">The teal strip</h2>
+        <p>7 tasks · light to dark</p>
+      </div>
+
+      <div class="strip">
+        <p class="strip__cap"><strong>Teal family</strong> <span>7 shades</span></p>
+        <ol>
+          <li>
+            <a class="band t1" href="task1.html">
+              <span class="band__text">
+                <span class="visually-hidden">Task 1:</span>
+                <span class="band__name">Positioning</span>
+                <span class="band__task">Sale card with a badge</span>
+              </span>
+              <span class="band__hex" aria-hidden="true">#CCFBF1</span>
+            </a>
+          </li>
+          <li>
+            <a class="band t2" href="task2.html">
+              <span class="band__text">
+                <span class="visually-hidden">Task 2:</span>
+                <span class="band__name">Hover transitions</span>
+                <span class="band__task">Hover card</span>
+              </span>
+              <span class="band__hex" aria-hidden="true">#99F6E4</span>
+            </a>
+          </li>
+          <li>
+            <a class="band t3" href="task3.html">
+              <span class="band__text">
+                <span class="visually-hidden">Task 3:</span>
+                <span class="band__name">Keyframe animation</span>
+                <span class="band__task">Loading spinner</span>
+              </span>
+              <span class="band__hex" aria-hidden="true">#5EEAD4</span>
+            </a>
+          </li>
+          <li>
+            <a class="band t4" href="task4.html">
+              <span class="band__text">
+                <span class="visually-hidden">Task 4:</span>
+                <span class="band__name">CSS variables</span>
+                <span class="band__task">My Theme Page</span>
+              </span>
+              <span class="band__hex" aria-hidden="true">#2DD4BF</span>
+            </a>
+          </li>
+          <li>
+            <a class="band t5" href="task5.html">
+              <span class="band__text">
+                <span class="visually-hidden">Task 5:</span>
+                <span class="band__name">position: fixed</span>
+                <span class="band__task">Fixed navigation bar</span>
+              </span>
+              <span class="band__hex" aria-hidden="true">#14B8A6</span>
+            </a>
+          </li>
+          <li>
+            <a class="band t6" href="task6.html">
+              <span class="band__text">
+                <span class="visually-hidden">Task 6:</span>
+                <span class="band__name">Responsive grid</span>
+                <span class="band__task">My Web Skills cards</span>
+              </span>
+              <span class="band__hex" aria-hidden="true">#0F766E</span>
+            </a>
+          </li>
+          <li>
+            <a class="band t7" href="task7.html">
+              <span class="band__text">
+                <span class="visually-hidden">Task 7:</span>
+                <span class="band__name">All together</span>
+                <span class="band__task">My Portfolio page</span>
+              </span>
+              <span class="band__hex" aria-hidden="true">#115E59</span>
+            </a>
+          </li>
+        </ol>
+        <p class="strip__foot">all seven friday pages share one teal theme, so they share one strip.</p>
+      </div>
+    </section>
+
+    <nav class="page-turn" aria-label="Week 3 pages">
+      <a href="../week3(mon)/index.html"><span aria-hidden="true">←&nbsp;</span>Monday's swatch book</a>
+      <a href="../week4(mon).html/index.html">on to Week 4<span aria-hidden="true">&nbsp;→</span></a>
+    </nav>
+  </main>
 </body>
 </html>

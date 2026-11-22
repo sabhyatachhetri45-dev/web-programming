@@ -4,81 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Student directory</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Manrope:wght@400;500;600&display=swap">
 <style>
+/* Week 4 · Task 4 — a school yearbook spread. Every student row the JS
+   creates becomes a portrait slot; filter() hides the ones that don't match,
+   so the yearbook page reflows to show only the friends you searched for. */
+@font-face{font-family:"Gaegu";src:url("../assets/fonts/gaegu-700.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Gowun Dodum";src:url("../assets/fonts/gowun-dodum.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Nanum Pen Script";src:url("../assets/fonts/nanum-pen-script.woff2") format("woff2");font-display:swap}
+
 *,*::before,*::after{box-sizing:border-box}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{
-  --bg:#f6f4f0;--surface:#fbfaf8;--ink:#1f1d1a;--muted:#8a857c;--line:#e4e0d8;--accent:#3d4a6b;--accent-soft:#e6e9f0;--mark:#dfe3ee;
-  margin:0;min-height:100vh;display:flex;justify-content:center;padding:56px 20px 80px;
-  background:var(--bg);color:var(--ink);font:400 15px/1.5 'Manrope',system-ui,sans-serif;transition:background .4s,color .4s}
+  /* day: bottle-green yearbook cover around an ivory page */
+  --cover:#1f4a3d;--cover-2:#173a30;--page:#fbf8f2;--ink:#22302b;--muted:#5d6a64;--line:#dfe4dc;
+  --accent:#1f6b55;--accent-soft:#e2f1ea;--mark:#ffe17a;--gold:#c9a24a;
+  margin:0;min-height:100vh;display:flex;justify-content:center;padding:44px 20px 110px;
+  background:var(--cover);
+  color:var(--ink);font:400 15px/1.5 "Gowun Dodum",system-ui,sans-serif;transition:background-color .4s,color .4s}
+/* night: navy cover, page dimmed like reading under a lamp */
 body:has(.app.dark){
-  --bg:#171719;--surface:#1e1e21;--ink:#dcd9d2;--muted:#84817b;--line:#2c2c30;--accent:#9aa8cf;--accent-soft:#26293a;--mark:#31364d}
+  --cover:#121826;--cover-2:#0c111c;--page:#1f2533;--ink:#ecebe6;--muted:#b3b8c2;--line:#323a4b;
+  --accent:#8fd6bd;--accent-soft:#24344a;--mark:#6d5a1f;--gold:#d9b765}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:0}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
-.app{width:min(620px,100%)}
+::selection{background:var(--mark);color:var(--ink)}
+
+/* the open yearbook page, with a gold foil frame line */
+.app{position:relative;width:min(980px,100%);padding:40px 36px 44px;background:var(--page);border-radius:6px 14px 14px 6px;
+  box-shadow:inset 18px 0 24px -20px rgba(0,0,0,.25),0 0 0 10px var(--cover-2),0 34px 60px -24px rgba(0,0,0,.6);transition:background-color .4s}
+.app::before{content:"";position:absolute;inset:14px;border:1.5px solid var(--gold);border-radius:4px 10px 10px 4px;opacity:.55;pointer-events:none}
 
 /* header */
-.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
-h1{margin:0;font:400 38px/1.1 'Newsreader',Georgia,serif;letter-spacing:-.02em}
-.sub{margin:8px 0 0;color:var(--muted)}
-.theme{flex:none;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;
-  transition:border-color .2s,transform .4s cubic-bezier(.3,1.4,.5,1)}
-.theme:hover{border-color:var(--muted);transform:rotate(25deg)}
-.theme svg{width:16px;height:16px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;text-align:left}
+h1{margin:0;font:700 44px/1.05 "Gaegu",cursive;letter-spacing:-.01em;color:var(--accent)}
+.sub{margin:6px 0 0;font:400 23px/1.15 "Nanum Pen Script",cursive;color:var(--muted)}
+.theme{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--gold);
+  border:1.5px solid var(--gold);transition:transform .5s cubic-bezier(.16,1,.3,1),background .2s}
+.theme:hover{transform:rotate(20deg);background:var(--accent-soft)}
+.theme svg{width:18px;height:18px}
 .theme .moon{display:none}
 .app.dark .theme .sun{display:none}
 .app.dark .theme .moon{display:block}
 
-/* search */
-.search{position:relative;display:flex;align-items:center;gap:10px;margin-top:32px;padding:4px 10px 4px 16px;
-  background:var(--surface);border:1px solid var(--line);border-radius:14px;transition:border-color .2s,box-shadow .2s}
+/* search: a name label you write into */
+.search{position:relative;display:flex;align-items:center;gap:10px;margin-top:26px;padding:4px 10px 4px 16px;
+  background:var(--page);border:1.5px solid var(--ink);border-radius:999px;box-shadow:3px 4px 8px -4px rgba(0,0,0,.25);transition:box-shadow .2s,border-color .2s}
 .search:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
 .search svg{flex:none;width:18px;height:18px;color:var(--muted)}
-#search{flex:1;min-width:0;padding:12px 0;background:none;border:0;outline:none}
+#search{flex:1;min-width:0;padding:12px 0;background:none;border:0;outline:none;font-size:16px}
 #search::placeholder{color:var(--muted)}
 #search::-webkit-search-cancel-button{display:none}
-kbd{padding:1px 7px;border:1px solid var(--line);border-radius:5px;color:var(--muted);font:inherit;font-size:12px;transition:opacity .2s}
+kbd{padding:1px 7px;border:1px solid var(--muted);border-radius:5px;color:var(--muted);font:inherit;font-size:12px;transition:opacity .2s}
 .search:focus-within kbd,.search.has-text kbd{display:none}
-.clear{display:none;width:26px;height:26px;border-radius:50%;color:var(--muted);transition:background .2s,color .2s}
+.clear{display:none;width:30px;height:30px;border-radius:50%;color:var(--muted);transition:background .2s,color .2s}
 .clear:hover{background:var(--accent-soft);color:var(--ink)}
 .search.has-text .clear{display:block}
 
-/* toolbar */
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 0 4px;border-bottom:1px solid var(--line)}
-.tabs{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{position:relative;flex:none;padding:8px 0 12px;color:var(--muted);font-weight:500;transition:color .2s}
-.tab:hover,.tab.on{color:var(--ink)}
-.tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink);border-radius:2px}
-.sort{flex:none;padding-bottom:10px;color:var(--muted);font-size:13px;transition:color .2s}
-.sort:hover{color:var(--ink)}
-.status{margin:12px 0 0;color:var(--muted);font-size:13px}
+/* program tabs: club ribbons */
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 4px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{flex:none;min-height:36px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--line);color:var(--ink);font-size:14px;
+  transition:background .2s,border-color .2s,transform .2s cubic-bezier(.16,1,.3,1)}
+.tab:hover{border-color:var(--accent);transform:translateY(-1px)}
+.tab.on{background:var(--accent);border-color:var(--accent);color:var(--page)}
+.sort{flex:none;min-height:36px;padding:0 4px;color:var(--muted);font:400 22px/1 "Nanum Pen Script",cursive;transition:color .2s}
+.sort:hover{color:var(--accent)}
+.status{margin:10px 0 0;color:var(--muted);font-size:13px}
 
-/* rows */
-#list{margin:6px 0 0;padding:0;list-style:none}
-.student{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--line);
-  transition:background .2s,padding .25s cubic-bezier(.2,.8,.2,1)}
-.student:hover{background:var(--accent-soft);padding-left:12px;padding-right:12px;border-radius:10px}
-.student.pop{animation:in .35s cubic-bezier(.2,.8,.2,1)}
+/* the portrait grid */
+#list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 20px;margin:22px 0 0;padding:0;list-style:none}
+.student{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;
+  transform:rotate(var(--tilt,0deg));transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.student:nth-child(3n+1){--tilt:-1.2deg}
+.student:nth-child(3n+2){--tilt:.8deg}
+.student:hover{transform:rotate(0) translateY(-4px)}
+.student.pop{animation:in .35s cubic-bezier(.16,1,.3,1)}
 @keyframes in{from{opacity:0;transform:translateY(6px)}}
-.avatar{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;
-  color:var(--muted);font:500 15px 'Newsreader',Georgia,serif;transition:border-color .2s,color .2s}
-.student:hover .avatar{border-color:var(--accent);color:var(--accent)}
-.name{display:block;font-weight:600}
-.roll{display:block;color:var(--muted);font-size:13px}
-.program{color:var(--muted);font-size:13px;text-align:right}
-mark{padding:0 2px;margin:0 -2px;color:inherit;background:var(--mark);border-radius:3px;box-shadow:0 1px 0 var(--accent)}
+/* the "photo": a pastel portrait slot with the initials drawn in */
+.avatar{width:100%;aspect-ratio:4/5;margin-bottom:10px;display:grid;place-items:center;border:7px solid #fff;border-radius:3px;
+  background:linear-gradient(160deg,#ffd6df,#f8b9c8);color:#5a2a3a;font:700 46px/1 "Gaegu",cursive;
+  box-shadow:0 1px 2px rgba(0,0,0,.18),0 10px 16px -10px rgba(0,0,0,.4)}
+.student:nth-child(4n+2) .avatar{background:linear-gradient(160deg,#d4efe3,#aedcc8);color:#1f4a3d}
+.student:nth-child(4n+3) .avatar{background:linear-gradient(160deg,#dbe8fb,#b6cdf2);color:#22385e}
+.student:nth-child(4n+4) .avatar{background:linear-gradient(160deg,#fff0c2,#f6db8d);color:#5a4413}
+.app.dark .avatar{border-color:#eceae4}
+.name{display:block;font:700 19px/1.15 "Gaegu",cursive}
+.roll{display:block;color:var(--muted);font-size:13px;letter-spacing:.03em}
+.program{margin-top:2px;padding:1px 10px;border-radius:999px;background:var(--accent-soft);color:var(--ink);font-size:12.5px}
+mark{padding:0 2px;margin:0 -2px;color:inherit;background:linear-gradient(transparent 40%,var(--mark) 40%);border-radius:2px}
 
-.empty{display:none;padding:56px 0;text-align:center;color:var(--muted)}
-.empty b{display:block;margin-bottom:4px;color:var(--ink);font:400 22px 'Newsreader',Georgia,serif}
-.empty button{margin-top:14px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;font-size:13px;transition:border-color .2s}
-.empty button:hover{border-color:var(--muted)}
+.empty{display:none;padding:48px 0;text-align:center;color:var(--muted)}
+.empty b{display:block;margin-bottom:4px;color:var(--ink);font:700 28px/1.1 "Gaegu",cursive}
+.empty button{margin-top:14px;min-height:40px;padding:6px 16px;border:1.5px solid var(--ink);border-radius:999px;font-size:14px;transition:background .2s}
+.empty button:hover{background:var(--accent-soft)}
 
-@media (max-width:480px){h1{font-size:30px}.student{grid-template-columns:40px 1fr}.program{display:none}}
+@media (max-width:560px){
+  body{padding:28px 14px 110px}
+  .app{padding:34px 18px 36px}
+  .app::before{inset:8px}
+  h1{font-size:34px}
+  #list{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}
+  .avatar{font-size:38px}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01s!important}}
 </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
 <main class="app" id="app">

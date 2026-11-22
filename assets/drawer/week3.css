@@ -1,0 +1,355 @@
+/*
+  Week 3 — CSS. The drawer object is a paint-chip swatch book.
+  Every chip is coloured with a colour the task page itself uses, and
+  hovering a chip repaints the test patch on the wall. That is all done
+  with :has() and custom properties: no JavaScript, on purpose, because
+  this is the CSS week.
+*/
+
+:root {
+  /* The drawer at night: the same plum as the homepage's heartbreak diary,
+     so the paint chips glow the way they would under a desk lamp. */
+  --ground: #2b2230;
+  --plaster: #3a2f40;
+  --paper: #fffdf9;
+  --ink: #f6ecef;
+  --ink-soft: #d4c5d0;
+  --paper-ink: #2b2622;
+  --paper-soft: #675d54;
+  --line: #4d4056;
+  --tape: rgb(236 214 168 / 0.9);
+  --focus: #f6ecef;
+  --select: #7a4b6a;
+  --shadow-rest: 0 1px 2px rgb(0 0 0 / 0.25), 0 8px 18px -8px rgb(0 0 0 / 0.55);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.25), 0 26px 34px -14px rgb(0 0 0 / 0.7);
+
+  /* What the test patch on the wall currently shows. */
+  --wall: #db2777;
+  --wall-label: "Colour · #DB2777";
+}
+
+.page {
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding-block: 1.25rem 4rem;
+}
+
+/* ---------- the wall with the test patch ---------- */
+
+.wall {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.25rem 1.25rem 2rem;
+  background: var(--plaster);
+  border-radius: 1.25rem;
+  box-shadow: inset 0 0 0 1px var(--line), 0 24px 48px -30px rgb(0 0 0 / 0.7);
+}
+
+.wall__text { display: grid; gap: 1rem; max-width: 40rem; }
+
+.wall h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6.4vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* The little round day stamp the homepage planner also uses (월 / 금). */
+.day {
+  display: inline-grid;
+  place-items: center;
+  width: 2.6em;
+  height: 2.6em;
+  font-size: 0.42em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+
+.wall__topic { font-size: 1.0625rem; max-width: 34rem; color: var(--ink-soft); }
+.wall__topic strong { color: var(--ink); font-weight: 400; background: linear-gradient(transparent 62%, var(--select) 62%); }
+
+.wall__note {
+  font-family: var(--font-hand);
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: var(--ink);
+  transform: rotate(-1.5deg);
+  transform-origin: left;
+}
+
+.patch {
+  justify-self: center;
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  width: min(100%, 15rem);
+}
+
+.patch svg { width: 100%; height: auto; overflow: visible; }
+.patch > svg > path { fill: var(--wall); transition: fill 420ms var(--ease-out); }
+.patch .roller { fill: url(#roller); }
+
+.patch__label {
+  margin-top: -0.9rem;
+  color: var(--paper-ink);
+  padding: 0.4rem 1.1rem 0.45rem;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  line-height: 1;
+  background: var(--tape);
+  transform: rotate(-3deg);
+  box-shadow: 0 1px 2px rgb(64 44 24 / 0.12);
+}
+.patch__label::after { content: var(--wall-label); }
+
+.wall__hint { display: none; font-size: 0.875rem; color: var(--ink-soft); }
+
+@media (hover: hover) {
+  .wall__hint { display: block; }
+}
+
+@media (min-width: 52rem) {
+  .wall {
+    grid-template-columns: 1.25fr 1fr;
+    padding: 2rem 3rem 3rem;
+  }
+  .patch { width: min(100%, 21rem); }
+}
+
+/* ---------- section heading + page-turn footer ---------- */
+
+.deck-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin: 3.5rem 0 1.25rem;
+}
+.deck-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 2rem; line-height: 1.1; }
+.deck-head p { font-size: 0.9375rem; color: var(--ink-soft); }
+
+.page-turn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--line);
+}
+.page-turn a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+.page-turn a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+
+/* ---------- Monday: the swatch book (one chip per task) ---------- */
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem 1rem;
+}
+
+@media (min-width: 48rem) {
+  .swatches { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.25rem 1.5rem; }
+}
+
+.swatches li:nth-child(odd) .chip { --tilt: -1.2deg; }
+.swatches li:nth-child(even) .chip { --tilt: 0.9deg; }
+.swatches li:nth-child(3n) .chip { --tilt: -0.4deg; }
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  background: var(--paper);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-rest);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 380ms var(--ease-out), box-shadow 380ms var(--ease-out);
+}
+
+.chip:hover,
+.chip:focus-visible {
+  transform: translateY(-0.5rem) rotate(0deg);
+  box-shadow: var(--shadow-lift);
+}
+
+.chip__colour {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--chip);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* The punched hole a swatch book's rivet goes through. */
+.chip__colour::before {
+  content: "";
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--ground);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.5);
+}
+
+.chip__label {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.8rem 0.9rem 1rem;
+}
+
+.chip__code {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--paper-soft);
+}
+
+.chip__name {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--paper-ink);
+}
+
+.chip__task { font-size: 0.875rem; line-height: 1.4; color: var(--paper-soft); }
+
+.chip__hex {
+  margin-top: 0.35rem;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  color: var(--paper-soft);
+}
+
+/* Colours are the ones each task page actually uses. */
+.c1 { --chip: #15803d; }
+.c2 { --chip: #0369a1; }
+.c3 { --chip: #db2777; }
+.c4 { --chip: #f59e0b; }
+.c5 { --chip: #dcfce7; }
+.c6 { --chip: #1e293b; }
+.c7 { --chip: #16a34a; }
+.c8 { --chip: #7c3aed; }
+
+/* Friday's strip: one teal family, light to dark. */
+.t1 { --chip: #ccfbf1; }
+.t2 { --chip: #99f6e4; }
+.t3 { --chip: #5eead4; }
+.t4 { --chip: #2dd4bf; }
+.t5 { --chip: #14b8a6; }
+.t6 { --chip: #0f766e; }
+.t7 { --chip: #115e59; }
+
+/* Friday's wall starts on the middle of its own strip. Lower specificity
+   than the hover rules below, so hovering still repaints it. */
+:root:has(body.friday) { --wall: #14b8a6; --wall-label: "Teal family · #14B8A6"; }
+
+/* The repaint: whichever chip is hovered or focused paints the wall. */
+:root:has(.c1:is(:hover, :focus-visible)) { --wall: #15803d; --wall-label: "Styling text · #15803D"; }
+:root:has(.c2:is(:hover, :focus-visible)) { --wall: #0369a1; --wall-label: "Where CSS lives · #0369A1"; }
+:root:has(.c3:is(:hover, :focus-visible)) { --wall: #db2777; --wall-label: "Colour · #DB2777"; }
+:root:has(.c4:is(:hover, :focus-visible)) { --wall: #f59e0b; --wall-label: "Box model · #F59E0B"; }
+:root:has(.c5:is(:hover, :focus-visible)) { --wall: #dcfce7; --wall-label: "Debugging · #DCFCE7"; }
+:root:has(.c6:is(:hover, :focus-visible)) { --wall: #1e293b; --wall-label: "Flexbox · #1E293B"; }
+:root:has(.c7:is(:hover, :focus-visible)) { --wall: #16a34a; --wall-label: "Centering a card · #16A34A"; }
+:root:has(.c8:is(:hover, :focus-visible)) { --wall: #7c3aed; --wall-label: "A full page · #7C3AED"; }
+:root:has(.t1:is(:hover, :focus-visible)) { --wall: #ccfbf1; --wall-label: "Positioning · #CCFBF1"; }
+:root:has(.t2:is(:hover, :focus-visible)) { --wall: #99f6e4; --wall-label: "Hover transitions · #99F6E4"; }
+:root:has(.t3:is(:hover, :focus-visible)) { --wall: #5eead4; --wall-label: "Keyframes · #5EEAD4"; }
+:root:has(.t4:is(:hover, :focus-visible)) { --wall: #2dd4bf; --wall-label: "CSS variables · #2DD4BF"; }
+:root:has(.t5:is(:hover, :focus-visible)) { --wall: #14b8a6; --wall-label: "position: fixed · #14B8A6"; }
+:root:has(.t6:is(:hover, :focus-visible)) { --wall: #0f766e; --wall-label: "Responsive grid · #0F766E"; }
+:root:has(.t7:is(:hover, :focus-visible)) { --wall: #115e59; --wall-label: "All together · #115E59"; }
+
+/* ---------- Friday: one paint strip ---------- */
+
+.strip {
+  width: min(100%, 46rem);
+  margin-inline: auto;
+  background: var(--paper);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-rest);
+  transform: rotate(-0.6deg);
+  overflow: hidden;
+}
+
+.strip__cap {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem 1rem 3rem;
+  font-size: 0.875rem;
+  color: var(--paper-soft);
+}
+.strip__cap strong { font-weight: 400; color: var(--paper-ink); font-size: 1rem; }
+.strip__cap::before {
+  content: "";
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-top: -0.4rem;
+  border-radius: 50%;
+  background: var(--ground);
+  box-shadow: inset 0 1px 2px rgb(64 44 24 / 0.35);
+}
+
+.band {
+  --band-ink: #042f2e;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  min-height: 5rem;
+  padding: 0.9rem 1.25rem 0.9rem 3rem;
+  text-decoration: none;
+  color: var(--band-ink);
+  background: var(--chip);
+  transition: padding 320ms var(--ease-out), filter 320ms var(--ease-out);
+}
+.band.t6,
+.band.t7 { --band-ink: #ffffff; }
+
+.band:hover,
+.band:focus-visible { padding-left: 3.75rem; }
+.band:focus-visible { outline-offset: -4px; outline-color: var(--band-ink); }
+
+.band__text { display: grid; gap: 0.1rem; }
+.band__name { font-size: 1.25rem; line-height: 1.25; }
+.band__task { font-size: 0.875rem; }
+.band__hex { font-family: var(--font-code); font-size: 0.75rem; }
+
+.strip__foot {
+  padding: 1rem 1.25rem 1.2rem 3rem;
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  line-height: 1.2;
+  color: var(--paper-soft);
+}
+
+@media (max-width: 30rem) {
+  .band { grid-template-columns: 1fr; padding-left: 1.25rem; }
+  .band:hover, .band:focus-visible { padding-left: 1.75rem; }
+  .strip__cap, .strip__foot { padding-left: 2.6rem; }
+}

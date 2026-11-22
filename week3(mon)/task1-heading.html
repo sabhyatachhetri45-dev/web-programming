@@ -3,20 +3,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS is Beautiful</title>
   <style>
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* The desk: a soft green cutting mat under the print. */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 3rem 1.25rem 7rem;
+      font-family: "Gowun Dodum", sans-serif;
+      background-color: #dfeadf;
+      background-image:
+        linear-gradient(rgba(21, 128, 61, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21, 128, 61, 0.09) 1px, transparent 1px);
+      background-size: 2rem 2rem;
+    }
+
+    /* A letterpress card: thick cotton paper with soft, uneven edges. */
+    .print {
+      position: relative;
+      width: min(34rem, 100%);
+      padding: 4.5rem 2.5rem 4rem;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.7), transparent 55%),
+        #fbf8f1;
+      border-radius: 3px 6px 4px 7px;
+      box-shadow:
+        0 1px 1px rgba(30, 50, 30, 0.15),
+        0 18px 34px -16px rgba(30, 50, 30, 0.35);
+      transform: rotate(-1.2deg);
+      transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .print:hover {
+      transform: rotate(0deg) translateY(-4px);
+      box-shadow:
+        0 1px 1px rgba(30, 50, 30, 0.15),
+        0 28px 44px -18px rgba(30, 50, 30, 0.4);
+    }
+
+    /* Printer's crop marks in the corners. */
+    .print::before,
+    .print::after {
+      content: "";
+      position: absolute;
+      width: 1.1rem;
+      height: 1.1rem;
+      border-color: #a9b7a9;
+      border-style: solid;
+    }
+    .print::before { top: 1rem; left: 1rem; border-width: 1px 0 0 1px; }
+    .print::after { bottom: 1rem; right: 1rem; border-width: 0 1px 1px 0; }
+
+    /* The three properties this task practises: colour, alignment, size.
+       The text-shadow makes the ink look pressed into the paper. */
     h1 {
+      margin: 0 0 1.25rem;
       color: #15803d;
       text-align: center;
       font-size: 2.5rem;
+      font-family: "Gaegu", sans-serif;
+      line-height: 1.05;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 -1px 0 rgba(10, 60, 30, 0.35);
     }
+
+    h1::after {
+      content: "";
+      display: block;
+      width: 4rem;
+      height: 3px;
+      margin: 1rem auto 0;
+      border-radius: 3px;
+      background: #15803d;
+      opacity: 0.55;
+    }
+
     p {
+      margin: 0 auto;
+      max-width: 24rem;
       color: #64748b;
       font-size: 1.1rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* A pencil proof note in the margin, like a printer checking the run. */
+    .proof {
+      position: absolute;
+      right: 1.5rem;
+      top: 1.3rem;
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.35rem;
+      color: #5d6b5d;
+      transform: rotate(4deg);
+    }
+
+    /* An ink brayer resting on the mat after inking the heading,
+       with the strip of green ink it just rolled out. Drawn as SVG. */
+    .roller {
+      position: absolute;
+      left: -2.5rem;
+      bottom: -3.4rem;
+      width: 13rem;
+      transform: rotate(-12deg);
+      filter: drop-shadow(0 6px 6px rgba(20, 40, 20, 0.35));
+    }
+    .roller svg { display: block; width: 100%; height: auto; }
+
+    @media (max-width: 30rem) {
+      .print { padding: 4rem 1.5rem 3.25rem; }
+      .roller { left: -0.5rem; width: 10rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .print { transition: none; }
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
-  <h1>CSS is Beautiful</h1>
-  <p>With just a few lines of CSS, plain HTML transforms into a polished page.</p>
+  <main class="print">
+    <span class="proof" aria-hidden="true">proof no. 1</span>
+    <h1>CSS is Beautiful</h1>
+    <p>With just a few lines of CSS, plain HTML transforms into a polished page.</p>
+    <span class="roller" aria-hidden="true">
+      <svg viewBox="0 0 230 80" focusable="false">
+        <defs>
+          <linearGradient id="ink-drum" x1="0" x2="1">
+            <stop offset="0" stop-color="#0f5f2d"/>
+            <stop offset="0.45" stop-color="#2f9e5a"/>
+            <stop offset="1" stop-color="#0c4d24"/>
+          </linearGradient>
+          <linearGradient id="handle" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ecd7ad"/>
+            <stop offset="1" stop-color="#b48a52"/>
+          </linearGradient>
+        </defs>
+        <!-- wire frame from both ends of the drum to the handle -->
+        <path d="M24 9 C 46 9, 60 30, 78 40 M24 71 C 46 71, 60 50, 78 40" fill="none" stroke="#8a8f8c" stroke-width="3.2" stroke-linecap="round"/>
+        <!-- the rubber drum, inked green -->
+        <rect x="11" y="5" width="26" height="70" rx="9" fill="url(#ink-drum)"/>
+        <rect x="17" y="9" width="4" height="62" rx="2" fill="#fff" opacity="0.25"/>
+        <!-- wooden handle -->
+        <rect x="76" y="33" width="146" height="14" rx="7" fill="url(#handle)"/>
+        <rect x="76" y="34" width="22" height="12" rx="3" fill="#8a8f8c"/>
+      </svg>
+    </span>
+  </main>
 </body>
 </html>

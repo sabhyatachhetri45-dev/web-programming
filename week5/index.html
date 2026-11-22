@@ -3,124 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Programming - Sabhyata Chhetri</title>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 40px auto;
-      max-width: 650px;
-      line-height: 1.6;
-      color: #333333;
-      background-color: #fafafa;
-      padding: 0 15px;
-    }
-
-    header {
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 15px;
-      margin-bottom: 25px;
-    }
-
-    h1 {
-      margin: 0 0 5px;
-      font-size: 24px;
-      color: #222;
-    }
-
-    p.subtitle {
-      margin: 0;
-      color: #666;
-      font-size: 14px;
-    }
-
-    section {
-      margin-bottom: 25px;
-    }
-
-    h2 {
-      font-size: 18px;
-      color: #444;
-      margin-bottom: 10px;
-    }
-
-    ul {
-      margin: 0;
-      padding-left: 20px;
-    }
-
-    li {
-      margin-bottom: 6px;
-    }
-
-    a {
-      color: #2b5797;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    button {
-      background-color: #f0f0f0;
-      border: 1px solid #ccc;
-      color: #333;
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 3px;
-    }
-
-    button:hover {
-      background-color: #e5e5e5;
-    }
-
-    footer {
-      border-top: 1px solid #ddd;
-      margin-top: 35px;
-      padding-top: 15px;
-      font-size: 12px;
-      color: #777;
-    }
-  </style>
+  <title>Week 5 · JavaScript basics</title>
+  <meta name="description" content="Week 5 coursework by Sabhyata Chhetri: a first click handler and six JavaScript basics exercises.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M8 3h16v24l-2-2-2 2-2-2-2 2-2-2-2 2-2-2-2 2Z' fill='%23fbfaf6' stroke='%232a2a2e' stroke-width='1.5'/%3E%3Cpath d='M11 9h10M11 13h10M11 17h6' stroke='%232a2a2e' stroke-width='1.5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/drawer/base.css">
+  <link rel="stylesheet" href="../assets/drawer/week5.css">
 </head>
 <body>
+  <main class="page">
+    <a class="back-to-diary" href="../index.html"><span aria-hidden="true">←</span> back to the diary</a>
 
-  <header>
-    <h1>Web Programming</h1>
-    <p class="subtitle">Sabhyata Chhetri | Lab Works &amp; Projects</p>
-  </header>
+    <div class="layout">
+      <header class="intro">
+        <h1>Week 5</h1>
+        <p class="intro__topic">This week's topic is <strong>JavaScript basics</strong>: changing what's on the page, reading input, making decisions with if / else, looping, and remembering things with localStorage.</p>
+        <p class="intro__note">ordered one of everything on the javascript menu.</p>
+      </header>
 
-  <section>
-    <h2>About</h2>
-    <p>Collection of web programming assignments, practical exercises, and coursework.</p>
-  </section>
+      <section class="printer" aria-labelledby="receipt-title">
+        <div class="printer__body" aria-hidden="true"><span class="printer__light"></span></div>
+        <div class="printer__mouth">
+          <article class="receipt">
+            <h2 class="receipt__shop" id="receipt-title">JS Café</h2>
+            <p class="receipt__meta">week 5 · table: Sabhyata Chhetri</p>
 
-  <section>
-    <h2>Assignments</h2>
-    <ul>
-      <li><a href="./assignment1.html">Assignment 1 - Basic HTML</a></li>
-      <li><a href="./assignment2.html">Assignment 2 - CSS Styling</a></li>
-      <li><a href="./assignment3.html">Assignment 3 - JavaScript Tasks</a></li>
-      <li><a href="./task2.html">Week 5 - JavaScript Basics</a></li>
-    </ul>
-  </section>
+            <hr class="rule">
+            <p class="receipt__head" aria-hidden="true"><span>no</span><span>item</span><span>open</span></p>
+            <hr class="rule">
 
-  <section>
-    <h2>Quick Test</h2>
-    <button id="testBtn">Check Status</button>
-    <span id="status" style="margin-left: 10px; font-size: 14px; color: #555;"></span>
-  </section>
+            <ol class="lines">
+              <li>
+                <a class="line" href="task%201.html">
+                  <span class="line__row">
+                    <span aria-hidden="true">01</span>
+                    <span><span class="visually-hidden">Task 1: </span><span class="line__title">A first click handler</span><br>Lab works page, Check Status button</span>
+                    <span aria-hidden="true">→</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="line" href="task2.html">
+                  <span class="line__row">
+                    <span aria-hidden="true">02</span>
+                    <span><span class="visually-hidden">Task 2: </span><span class="line__title">JavaScript basics</span><br>six small exercises</span>
+                    <span aria-hidden="true">→</span>
+                  </span>
+                  <ul class="line__subs">
+                    <li>changing content</li>
+                    <li>reading user input</li>
+                    <li>condition (if / else)</li>
+                    <li>loop (for)</li>
+                    <li>loop through an array</li>
+                    <li>localStorage</li>
+                  </ul>
+                </a>
+              </li>
+            </ol>
 
-  <footer>
-    <p>&copy; Sabhyata Chhetri</p>
-  </footer>
+            <hr class="rule">
+            <p class="receipt__total"><span>TOTAL</span><span>2 tasks · 7 ideas</span></p>
+            <hr class="rule">
 
-  <script>
-    document.getElementById('testBtn').addEventListener('click', function() {
-      document.getElementById('status').textContent = 'Page working properly.';
-    });
-  </script>
+            <p class="receipt__thanks">thank you!<br>see you next week</p>
+            <svg class="barcode" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true" focusable="false"><g fill="#2a2a2e"><rect x="0" width="2" height="44"/><rect x="4" width="1" height="44"/><rect x="8" width="1" height="44"/><rect x="10" width="1" height="44"/><rect x="12" width="2" height="44"/><rect x="17" width="1" height="44"/><rect x="21" width="1" height="44"/><rect x="24" width="1" height="44"/><rect x="27" width="3" height="44"/><rect x="32" width="1" height="44"/><rect x="36" width="1" height="44"/><rect x="38" width="1" height="44"/><rect x="42" width="1" height="44"/><rect x="45" width="1" height="44"/><rect x="47" width="1" height="44"/><rect x="50" width="1" height="44"/><rect x="53" width="2" height="44"/><rect x="57" width="1" height="44"/><rect x="60" width="1" height="44"/><rect x="63" width="3" height="44"/><rect x="68" width="1" height="44"/><rect x="71" width="3" height="44"/><rect x="76" width="1" height="44"/><rect x="79" width="1" height="44"/><rect x="82" width="2" height="44"/><rect x="85" width="2" height="44"/><rect x="88" width="2" height="44"/><rect x="92" width="2" height="44"/><rect x="97" width="2" height="44"/><rect x="101" width="3" height="44"/><rect x="107" width="1" height="44"/><rect x="109" width="2" height="44"/><rect x="112" width="2" height="44"/><rect x="117" width="1" height="44"/><rect x="121" width="2" height="44"/><rect x="126" width="1" height="44"/><rect x="130" width="1" height="44"/><rect x="133" width="1" height="44"/><rect x="135" width="1" height="44"/><rect x="139" width="2" height="44"/><rect x="143" width="2" height="44"/><rect x="148" width="1" height="44"/><rect x="151" width="2" height="44"/><rect x="154" width="3" height="44"/><rect x="158" width="1" height="44"/><rect x="161" width="2" height="44"/><rect x="165" width="2" height="44"/><rect x="169" width="1" height="44"/><rect x="172" width="2" height="44"/><rect x="176" width="1" height="44"/><rect x="178" width="1" height="44"/><rect x="181" width="3" height="44"/><rect x="186" width="1" height="44"/><rect x="188" width="3" height="44"/><rect x="192" width="1" height="44"/><rect x="195" width="2" height="44"/></g></svg>
+          </article>
+        </div>
+      </section>
+    </div>
 
+    <nav class="page-turn" aria-label="Week 5 pages">
+      <a href="../week4(mon).html/index.html"><span aria-hidden="true">←&nbsp;</span>Week 4's sticker book</a>
+      <a href="../week6(fri)/index.html">on to Week 6<span aria-hidden="true">&nbsp;→</span></a>
+    </nav>
+  </main>
 </body>
 </html>

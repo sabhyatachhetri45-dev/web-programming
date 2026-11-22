@@ -4,350 +4,381 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 7 Task 2 | Book Search</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /*
+      Step 2, the catalogue drawer pulled all the way out: you type on the tabbed
+      guide card, and every result is a typed 3x5 catalogue card standing behind it.
+    */
     :root {
-      --bg: #090d16;
-      --surface: #131c2e;
-      --surface-hover: #1c2840;
-      --border: #23324d;
-      --text: #f1f5f9;
-      --text-muted: #94a3b8;
-      --primary: #38bdf8;
-      --primary-hover: #0ea5e9;
-      --accent: #818cf8;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
-      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --ground: #1c3a33;
+      --lamp: radial-gradient(ellipse 80% 55% at 50% 0%, #2d5b4f, transparent 70%);
+      --ink: #f4eee2;
+      --ink-soft: #cddad3;
+      --bar: #15302a;
+      --bar-line: #33574e;
+      --focus: #ffd66b;
+      --oak: #8a5a3b;
+      --oak-dark: #5e3a24;
+      --inside: #2b1d16;
+      --buff: #ecd9ae;
+      --buff-ink: #33291c;
+      --buff-soft: #5c4b33;
+      --card: #fffdf7;
+      --card-ink: #26232b;
+      --card-soft: #57536a;
+      --rule-red: #d9737d;
+      --rule-blue: #bccde6;
+      --typed: ui-monospace, "SF Mono", "Courier New", Menlo, monospace;
+      --spin-track: #e3dccb;
+      --spin: #26232b;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    @font-face { font-family: "Gaegu"; src: url("../assets/fonts/gaegu-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Gowun Dodum"; src: url("../assets/fonts/gowun-dodum.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Nanum Pen Script"; src: url("../assets/fonts/nanum-pen-script.woff2") format("woff2"); font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
+      /* Room at the bottom so the week tab never covers the footer. */
+      padding-bottom: 5.5rem;
+      font-family: "Gowun Dodum", "Apple SD Gothic Neo", system-ui, sans-serif;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--lamp), var(--ground);
+      -webkit-font-smoothing: antialiased;
     }
 
+    ::selection { color: #fff; background: #7a4b6a; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+    /* Library wayfinding strip along the top. */
     .crumbbar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(9, 13, 22, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      gap: 0.5rem 1rem;
+      padding: 0.75rem clamp(1rem, 4vw, 2rem);
       font-size: 0.9rem;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      color: var(--ink-soft);
+      background: var(--bar);
+      border-bottom: 1px solid var(--bar-line);
     }
-
-    .crumbbar a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .crumbbar a:hover {
-      color: var(--primary);
-    }
-
+    .crumbbar a { color: var(--ink); text-decoration: none; }
+    .crumbbar a:hover { text-decoration: underline; text-underline-offset: 4px; }
     .crumbbar .back {
-      background: var(--surface);
-      padding: 0.35rem 0.9rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.25rem;
+      padding: 0.2rem 0.9rem;
+      border: 1px solid var(--bar-line);
+      border-radius: 0.3rem;
     }
 
-    .crumbbar .back:hover {
-      background: var(--surface-hover);
-      border-color: var(--primary);
-    }
-
-    .hero {
-      text-align: center;
-      padding: 2.75rem 1.5rem 1.25rem;
-    }
-
+    .hero { padding: 2.75rem 1.25rem 1.5rem; text-align: center; }
     .hero h1 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 2.75rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 40%, var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
+      font-family: "Gaegu", "Gowun Dodum", cursive;
+      font-weight: 700;
+      font-size: clamp(2.75rem, 8vw, 4rem);
+      line-height: 1;
+      color: var(--ink);
     }
-
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-    }
+    .hero p { margin-top: 0.6rem; font-size: 1.05rem; color: var(--ink-soft); }
 
     main {
       flex: 1;
-      max-width: 1080px;
-      width: 100%;
+      width: min(100% - 2rem, 66rem);
       margin: 0 auto;
-      padding: 1.5rem;
+      padding-block: 0.5rem 2rem;
     }
+
+    /* The emoji in the heading and the state icons are decoration; the objects carry the mood. */
+    .h2-icon,
+    .results .icon { display: none; }
+
+    .spinner {
+      width: 2.25rem;
+      height: 2.25rem;
+      margin: 0 auto 1rem;
+      border: 3px solid var(--spin-track);
+      border-top-color: var(--spin);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    footer {
+      padding: 1.5rem 1rem 0;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.8rem;
+      text-align: center;
+      color: var(--ink-soft);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ---------- the drawer ---------- */
 
     .panel {
-      background: rgba(19, 28, 46, 0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2.25rem;
-      box-shadow: var(--shadow);
+      position: relative;
+      margin-top: 1rem;
+      padding: 3.5rem clamp(0.75rem, 3vw, 1.75rem) 2.25rem;
+      background: var(--inside);
+      border: 0.85rem solid var(--oak);
+      border-radius: 0.5rem;
+      box-shadow:
+        inset 0 14px 24px -6px rgb(0 0 0 / 0.65),
+        0 0 0 1px var(--oak-dark),
+        0 30px 50px -26px rgb(0 0 0 / 0.8);
     }
 
-    .panel-header {
-      margin-bottom: 2rem;
-      text-align: center;
+    /* The tabbed guide card at the front of the drawer. */
+    .guide {
+      position: relative;
+      padding: 1.5rem clamp(1rem, 4vw, 1.75rem) 1.35rem;
+      color: var(--buff-ink);
+      background: var(--buff);
+      border-radius: 0 0.3rem 0.3rem 0.3rem;
+      box-shadow: 0 2px 3px rgb(0 0 0 / 0.4);
     }
 
     .panel-header h2 {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.85rem;
-      margin-bottom: 0.4rem;
+      position: absolute;
+      top: -2.45rem;
+      left: 0;
+      height: 2.5rem;
+      padding: 0.3rem 1.25rem 0;
+      font-family: "Gaegu", cursive;
+      font-weight: 700;
+      font-size: 1.55rem;
+      line-height: 1.3;
+      white-space: nowrap;
+      color: var(--buff-ink);
+      background: var(--buff);
+      border-radius: 0.55rem 0.55rem 0 0;
     }
-
-    .panel-header p {
-      color: var(--text-muted);
-    }
+    .panel-header p { font-size: 0.95rem; color: var(--buff-soft); }
 
     .search-form {
       display: flex;
-      gap: 0.75rem;
-      max-width: 620px;
-      margin: 0 auto 1.25rem;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
     }
 
+    /* A typed label strip glued to the guide card. */
     .search-form input[type="search"] {
       flex: 1;
-      padding: 0.85rem 1.25rem;
-      font-size: 1rem;
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      outline: none;
-      transition: var(--transition);
+      min-width: 0;
+      padding: 0.7rem 0.8rem;
+      font: 1rem/1.4 var(--typed);
+      color: var(--card-ink);
+      background: var(--card);
+      border: 1px solid #b9a37a;
+      border-radius: 0.2rem;
+      box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.12);
     }
+    .search-form input[type="search"]::placeholder { color: #6b6676; }
+    .search-form input[type="search"]:focus-visible { outline-color: var(--oak-dark); outline-offset: 2px; }
 
-    .search-form input[type="search"]:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-    }
-
+    /* A round typewriter key. */
     .search-form button {
-      padding: 0.85rem 1.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: var(--radius-md);
-      background: var(--primary);
-      color: #090d16;
-      border: none;
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 4.9rem;
+      height: 4.9rem;
+      font: 700 0.95rem/1 var(--typed);
+      color: #f6f1e6;
+      background: radial-gradient(circle at 50% 38%, #45434a, #1f1e22 72%);
+      border: 0.32rem solid #c9ccd2;
+      border-radius: 50%;
+      box-shadow: 0 4px 0 #8f939b, 0 7px 9px rgb(0 0 0 / 0.4);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: var(--transition);
-      white-space: nowrap;
+      transition: transform 120ms var(--ease), box-shadow 120ms var(--ease);
     }
-
-    .search-form button:hover:not(:disabled) {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
+    .search-form button:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #8f939b, 0 3px 4px rgb(0 0 0 / 0.4);
     }
-
-    .search-form button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    .search-form button:focus-visible { outline-color: var(--oak-dark); outline-offset: 4px; }
+    .search-form button:disabled { opacity: 0.65; cursor: progress; }
 
     .hint {
-      text-align: center;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
+      margin-top: 0.85rem;
+      font-family: "Nanum Pen Script", cursive;
+      font-size: 1.4rem;
+      line-height: 1.15;
+      color: var(--buff-soft);
     }
+
+    /* ---------- the cards behind it ---------- */
 
     .results-header {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
+      align-items: baseline;
+      gap: 0.25rem 1rem;
+      margin: 2.25rem 0 1.25rem;
     }
-
-    .results-title {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 700;
-    }
-
-    .results-meta {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+    .results-title { font-family: "Gaegu", cursive; font-weight: 700; font-size: 1.9rem; line-height: 1.1; color: var(--ink); }
+    .results-meta { font-family: var(--typed); font-size: 0.8rem; color: var(--ink-soft); }
 
     .results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+      gap: 1.5rem 1.25rem;
     }
 
+    /* Every line of type sits on one ruled line: 1.3rem tall, starting 0.9rem down. */
     .book {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: var(--transition);
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 4.5rem;
+      grid-template-areas:
+        "meta meta"
+        "title ."
+        "authors .";
+      align-content: start;
+      column-gap: 1rem;
+      /* Tall enough for the taped-on cover plus the rod hole. */
+      min-height: 11.9rem;
+      padding: 0.9rem 1rem 2.75rem;
+      font-family: var(--typed);
+      font-size: 0.8125rem;
+      line-height: 1.3rem;
+      color: var(--card-ink);
+      background:
+        linear-gradient(var(--rule-red), var(--rule-red)) 0 calc(2.2rem - 2px) / 100% 2px no-repeat,
+        repeating-linear-gradient(transparent 0 calc(1.3rem - 1px), var(--rule-blue) calc(1.3rem - 1px) 1.3rem) 0 2.2rem / 100% calc(100% - 2.2rem) no-repeat,
+        var(--card);
+      border-radius: 0.3rem;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 14px 18px -10px rgb(0 0 0 / 0.65);
+      transform: rotate(var(--tilt, 0deg));
+      transition: transform 360ms var(--ease), box-shadow 360ms var(--ease);
     }
+    .book:nth-child(odd) { --tilt: -0.6deg; }
+    .book:nth-child(even) { --tilt: 0.5deg; }
 
+    /* Pulling a card up out of the drawer. */
     .book:hover {
-      transform: translateY(-4px);
-      border-color: var(--primary);
-      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.6);
+      transform: rotate(0deg) translateY(-0.5rem);
+      box-shadow: 0 2px 3px rgb(0 0 0 / 0.35), 0 26px 28px -14px rgb(0 0 0 / 0.75);
     }
 
-    .book-cover {
-      width: 100%;
-      height: 250px;
-      background: #0d1422;
+    /* The rod hole every catalogue card has. */
+    .book::after {
+      content: "";
+      position: absolute;
+      bottom: 0.75rem;
+      left: 50%;
+      width: 0.9rem;
+      height: 0.9rem;
+      margin-left: -0.45rem;
+      background: var(--inside);
+      border-radius: 50%;
+      box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.6);
+    }
+
+    .book-content { display: contents; }
+
+    .book-meta {
+      grid-area: meta;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .book-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    .book:hover .book-cover img {
-      transform: scale(1.04);
-    }
-
-    .placeholder-cover {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      padding: 1.5rem;
-      text-align: center;
-    }
-
-    .placeholder-cover span {
-      font-size: 2.25rem;
-    }
-
-    .book-content {
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--card-soft);
     }
 
     .book-title {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      line-height: 1.35;
-      margin-bottom: 0.4rem;
+      grid-area: title;
       display: -webkit-box;
+      overflow: hidden;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      overflow: hidden;
+      font-size: 1rem;
+      font-weight: 700;
     }
 
     .book-authors {
-      font-size: 0.875rem;
-      color: var(--primary);
-      margin-bottom: 0.75rem;
+      grid-area: authors;
       display: -webkit-box;
+      overflow: hidden;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      overflow: hidden;
+      color: var(--card-soft);
     }
 
-    .book-meta {
-      margin-top: auto;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.775rem;
-      color: var(--text-muted);
+    /* The cover, taped onto the card like a little photo. */
+    .book-cover {
+      position: absolute;
+      top: 2.6rem;
+      right: 1rem;
+      width: 4.5rem;
+      height: 6.5rem;
+      background: var(--buff);
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+      transform: rotate(2.5deg);
+    }
+    .book-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .book-cover::after {
+      content: "";
+      position: absolute;
+      top: -0.45rem;
+      left: 50%;
+      width: 2.6rem;
+      height: 0.9rem;
+      margin-left: -1.3rem;
+      background: rgb(246 214 140 / 0.75);
+      transform: rotate(-6deg);
     }
 
+    .placeholder-cover {
+      display: grid;
+      place-items: center;
+      height: 100%;
+      padding: 0.4rem;
+      font-size: 0.75rem;
+      line-height: 1.2;
+      text-align: center;
+      color: var(--buff-ink);
+      background: var(--buff);
+    }
+    .placeholder-cover span:first-child { display: none; }
+
+    /* Waiting / empty / error: a single typed card. */
     .status {
+      width: min(100%, 30rem);
+      margin: 0 auto;
+      padding: 1.9rem 1.5rem 2rem;
+      font-family: var(--typed);
+      font-size: 0.875rem;
+      line-height: 1.3rem;
       text-align: center;
-      padding: 3.5rem 1rem;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .status .icon {
-      font-size: 2.5rem;
-    }
-
-    .spinner {
-      width: 32px;
-      height: 32px;
-      border: 3px solid rgba(56, 189, 248, 0.2);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.75s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
-    }
-
-    @media (max-width: 600px) {
-      .panel { padding: 1.25rem; }
-      .search-form { flex-direction: column; }
-      .hero h1 { font-size: 2.1rem; }
+      color: var(--card-ink);
+      background:
+        linear-gradient(var(--rule-red), var(--rule-red)) 0 1.2rem / 100% 2px no-repeat,
+        var(--card);
+      border-radius: 0.3rem;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 14px 18px -10px rgb(0 0 0 / 0.65);
+      transform: rotate(-0.8deg);
     }
   </style>
+  <script src="../assets/drawer/tab.js" defer></script>
 </head>
 <body>
 
@@ -366,26 +397,28 @@
 
 <main>
   <div class="panel">
-    <div class="panel-header">
-      <h2>📚 Book Search</h2>
-      <p>Discover books by title using the Open Library Search API.</p>
+    <div class="guide">
+      <div class="panel-header">
+        <h2><span class="h2-icon" aria-hidden="true">📚</span> Book Search</h2>
+        <p>Discover books by title using the Open Library Search API.</p>
+      </div>
+
+      <form class="search-form" id="searchForm">
+        <input
+          id="query"
+          type="search"
+          placeholder="Enter book title (e.g. 1984, Hamlet, Dune)..."
+          aria-label="Book title"
+          autocomplete="off"
+          required
+        >
+        <button id="searchButton" type="submit">
+          <span>Search</span>
+        </button>
+      </form>
+
+      <p class="hint" id="hint">Search for your favorite books!</p>
     </div>
-
-    <form class="search-form" id="searchForm">
-      <input
-        id="query"
-        type="search"
-        placeholder="Enter book title (e.g. 1984, Hamlet, Dune)..."
-        aria-label="Book title"
-        autocomplete="off"
-        required
-      >
-      <button id="searchButton" type="submit">
-        <span>Search</span>
-      </button>
-    </form>
-
-    <p class="hint" id="hint">Search for your favorite books!</p>
 
     <div class="results-header">
       <h2 class="results-title">Results</h2>

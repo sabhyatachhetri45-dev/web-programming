@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import './CounterWithHistory.css';
 
 const MAX_HISTORY = 5;
 
