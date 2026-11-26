@@ -10,7 +10,7 @@ export function StoreIntro({ isInert }) {
   return (
     <section className="intro" id="top" aria-labelledby="intro-title" inert={isInert}>
       <div className="intro__text">
-        <p className="eyebrow">Week 12 · Interactive shopping cart</p>
+        <p className="eyebrow">Week 12 · Class 1 · Interactive shopping cart</p>
         <h1 className="intro__title" id="intro-title">
           Small things for a <em>slower</em> desk.
         </h1>

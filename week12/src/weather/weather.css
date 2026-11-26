@@ -1,0 +1,566 @@
+/*
+  Week 12, Class 2 — useEffect and fetching. The drawer object is a window:
+  the page is painted with the sky Open-Meteo reports for the chosen place
+  (clear night, sunny day, cloud, rain or snow), and the forecast is a row of
+  small windows. Same fonts and page furniture (back link, round day mark,
+  hand-written note, page turn) as every other week.
+*/
+
+/* ---------- the five skies ---------- */
+
+:root {
+  --frame: #f1e6d8;
+  --frame-edge: #cdbba6;
+  --sill: #8a5a45;
+  --paper: #fffdf9;
+  --paper-ink: #23202a;
+  --paper-soft: #5a5463;
+}
+
+/* Every sky sets the same tokens, so any element inside a [data-sky] (the page, the big
+   window, each day's little window) recolours itself. */
+[data-sky='night'] {
+  --sky-bg: linear-gradient(180deg, #0b1026 0%, #18204a 55%, #3a2d5a 100%);
+  --ink: #f3eef8;
+  --ink-soft: #c9c8e0;
+  --accent: #f2a7b8;
+  --mark: #fbefd0;
+  --highlight: #4b3e86;
+  --glass: rgb(255 255 255 / 0.07);
+  --glass-edge: rgb(255 255 255 / 0.18);
+  --field: rgb(8 10 30 / 0.5);
+  --button: #f3eef8;
+  --button-ink: #18204a;
+  --scrim: rgb(8 10 30 / 0.7);
+}
+
+[data-sky='day'] {
+  --sky-bg: linear-gradient(180deg, #7fb6e6 0%, #c3dcf2 55%, #ffd6b8 100%);
+  --ink: #17243b;
+  --ink-soft: #33435e;
+  --accent: #a8324f;
+  --mark: #d0700c;
+  --highlight: #ffd28a;
+  --glass: rgb(255 255 255 / 0.5);
+  --glass-edge: rgb(255 255 255 / 0.85);
+  --field: rgb(255 255 255 / 0.75);
+  --button: #17243b;
+  --button-ink: #fff;
+  --scrim: rgb(255 248 240 / 0.78);
+}
+
+[data-sky='cloud'] {
+  --sky-bg: linear-gradient(180deg, #3b4055 0%, #565b71 55%, #6a687c 100%);
+  --ink: #fbfbff;
+  --ink-soft: #e3e3ee;
+  --accent: #ffc2cf;
+  --mark: #f4f4fa;
+  --highlight: #7b6f95;
+  --glass: rgb(255 255 255 / 0.1);
+  --glass-edge: rgb(255 255 255 / 0.25);
+  --field: rgb(20 22 36 / 0.4);
+  --button: #fbfbff;
+  --button-ink: #2e3245;
+  --scrim: rgb(30 32 48 / 0.6);
+}
+
+[data-sky='rain'] {
+  --sky-bg: linear-gradient(180deg, #1c2638 0%, #2f3f57 55%, #42536b 100%);
+  --ink: #f4f8fc;
+  --ink-soft: #d0d9e5;
+  --accent: #8fd3e8;
+  --mark: #cfe6f5;
+  --highlight: #2f6f8a;
+  --glass: rgb(255 255 255 / 0.08);
+  --glass-edge: rgb(255 255 255 / 0.2);
+  --field: rgb(10 16 28 / 0.45);
+  --button: #8fd3e8;
+  --button-ink: #10202e;
+  --scrim: rgb(14 20 34 / 0.68);
+}
+
+[data-sky='snow'] {
+  --sky-bg: linear-gradient(180deg, #a9bcd6 0%, #d5e0ee 55%, #f3f6fa 100%);
+  --ink: #1c2a40;
+  --ink-soft: #3a4860;
+  --accent: #8e2f4c;
+  --mark: #4d6690;
+  --highlight: #b9d3f2;
+  --glass: rgb(255 255 255 / 0.55);
+  --glass-edge: rgb(255 255 255 / 0.9);
+  --field: rgb(255 255 255 / 0.8);
+  --button: #1c2a40;
+  --button-ink: #fff;
+  --scrim: rgb(246 249 253 / 0.8);
+}
+
+body { background: #0b1026; }
+
+.sky-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--sky-bg);
+  transition: color 0.6s var(--ease-out);
+  --focus: var(--ink);
+  --select: var(--highlight);
+}
+
+/* Rain, snow, stars and clouds, drawn on a layer behind the page (and inside each window). */
+.pane__weather {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: weather-in 0.9s var(--ease-out);
+}
+
+.sky-page__weather { position: fixed; z-index: 0; }
+.sky-page > .page { position: relative; z-index: 1; }
+
+[data-sky='night'] .pane__weather {
+  background:
+    radial-gradient(1.3px 1.3px at 20px 30px, #fff 98%, transparent),
+    radial-gradient(1px 1px at 90px 80px, rgb(255 255 255 / 0.8) 98%, transparent),
+    radial-gradient(1.5px 1.5px at 150px 20px, #fff 98%, transparent),
+    radial-gradient(1px 1px at 60px 140px, rgb(255 255 255 / 0.65) 98%, transparent),
+    radial-gradient(1.2px 1.2px at 170px 120px, rgb(255 255 255 / 0.85) 98%, transparent),
+    radial-gradient(1.1px 1.1px at 40px 200px, rgb(255 255 255 / 0.7) 98%, transparent),
+    radial-gradient(1.6px 1.6px at 250px 90px, #fff 98%, transparent),
+    radial-gradient(1px 1px at 120px 260px, rgb(255 255 255 / 0.6) 98%, transparent);
+  /* Two tile sizes that don't divide evenly, so the stars don't line up in a grid. */
+  background-size: 200px 170px, 200px 170px, 200px 170px, 200px 170px, 200px 170px, 290px 310px, 290px 310px, 290px 310px;
+  animation: weather-in 0.9s var(--ease-out), twinkle 5s ease-in-out infinite alternate;
+}
+
+[data-sky='day'] .pane__weather {
+  background:
+    radial-gradient(circle at 82% 12%, rgb(255 236 170 / 0.9) 0 4%, rgb(255 214 140 / 0.35) 14%, transparent 34%);
+}
+
+[data-sky='cloud'] .pane__weather {
+  background:
+    radial-gradient(ellipse 30% 9% at 22% 18%, rgb(255 255 255 / 0.16), transparent 70%),
+    radial-gradient(ellipse 36% 11% at 72% 30%, rgb(255 255 255 / 0.12), transparent 70%),
+    radial-gradient(ellipse 28% 8% at 40% 62%, rgb(255 255 255 / 0.1), transparent 70%);
+  background-size: 140% 100%;
+  animation: weather-in 0.9s var(--ease-out), drift 40s linear infinite alternate;
+}
+
+[data-sky='rain'] .pane__weather {
+  background: repeating-linear-gradient(
+    105deg,
+    transparent 0 22px,
+    rgb(200 225 245 / 0.22) 22px 23px,
+    transparent 23px 46px
+  );
+  background-size: 46px 46px;
+  animation: weather-in 0.9s var(--ease-out), rain 0.5s linear infinite;
+}
+
+[data-sky='snow'] .pane__weather {
+  background:
+    radial-gradient(2px 2px at 20px 20px, #fff 98%, transparent),
+    radial-gradient(2.6px 2.6px at 50px 64px, #fff 98%, transparent),
+    radial-gradient(1.6px 1.6px at 84px 36px, rgb(255 255 255 / 0.9) 98%, transparent);
+  background-size: 100px 90px;
+  animation: weather-in 0.9s var(--ease-out), snow 6s linear infinite;
+}
+
+@keyframes weather-in { from { opacity: 0; } }
+@keyframes twinkle { to { opacity: 0.55; } }
+@keyframes drift { to { background-position: 100% 0; } }
+@keyframes rain { to { background-position: -12px 46px; } }
+@keyframes snow { to { background-position: 20px 90px; } }
+
+/* ---------- page and header (matches the other week pages) ---------- */
+
+.page {
+  width: min(100% - 2rem, 74rem);
+  margin-inline: auto;
+  padding-block: 1.25rem 3rem;
+}
+
+.back-to-diary {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-self: start;
+  min-height: 2.75rem;
+  font-family: var(--font-hand);
+  font-size: 1.375rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+.back-to-diary:hover { color: var(--ink); }
+
+.intro { display: grid; gap: 1rem; max-width: 46rem; padding: 0.5rem 0 2.5rem; }
+
+.intro h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6.4vw, 4.25rem);
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.day {
+  display: inline-grid;
+  place-items: center;
+  width: 2.6em;
+  height: 2.6em;
+  font-size: 0.42em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+.day__icon { width: 1.5em; height: 1.5em; }
+
+.intro__topic { font-size: 1.0625rem; color: var(--ink-soft); }
+.intro__topic strong {
+  font-weight: 400;
+  color: var(--ink);
+  background: linear-gradient(transparent 62%, var(--highlight) 62%);
+}
+.intro__note {
+  font-family: var(--font-hand);
+  font-size: 1.75rem;
+  line-height: 1.15;
+  color: var(--accent);
+  transform: rotate(-1.5deg);
+  transform-origin: left;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.875rem;
+  line-height: 1.1;
+}
+
+/* ---------- desk: picker beside the window ---------- */
+
+.desk {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 60rem) {
+  .desk { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 3.5rem; }
+}
+
+/* ---------- the picker: frosted glass over the sky ---------- */
+
+.picker {
+  display: grid;
+  gap: 1.1rem;
+  padding: 1.5rem;
+  background: var(--glass);
+  border: 1.5px solid var(--glass-edge);
+  border-radius: 1.125rem;
+  backdrop-filter: blur(10px);
+}
+
+.picker__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.picker__head h2 { font-family: var(--font-hand); font-weight: 400; font-size: 2.125rem; }
+
+.mode-switch { display: flex; gap: 0.375rem; }
+
+.mode-switch__btn {
+  min-height: 2.75rem;
+  padding: 0.4rem 1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--glass-edge);
+  border-radius: 0.75rem 0.75rem 0.25rem 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+.mode-switch__btn:hover { background: var(--glass); }
+.mode-switch__btn[aria-pressed='true'] { color: var(--button-ink); background: var(--button); border-color: var(--button); }
+
+.field-label { display: block; margin-bottom: 0.4rem; font-size: 0.9375rem; color: var(--ink-soft); }
+
+.text-input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.65rem 1.1rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--field);
+  border: 1.5px solid var(--glass-edge);
+  border-radius: 999px;
+}
+.text-input::placeholder { color: var(--ink-soft); opacity: 0.85; }
+.text-input[aria-invalid='true'] { border-color: var(--accent); }
+
+.hint { margin-top: 0.65rem; font-size: 0.9375rem; color: var(--ink-soft); }
+.hint--error { font-weight: 700; color: var(--accent); }
+
+.city-results { display: grid; gap: 0.4rem; margin-top: 0.75rem; }
+
+.city-result {
+  display: grid;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  background: var(--glass);
+  border: 1.5px solid var(--glass-edge);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out);
+}
+.city-result:hover { transform: translateX(4px); }
+.city-result__name { font-weight: 700; }
+.city-result__detail { font-size: 0.875rem; color: var(--ink-soft); }
+
+.coord-form { display: grid; gap: 1rem; }
+.coord-form__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+.coord-form .hint { margin-top: 0; }
+.coord-form .btn { justify-self: start; }
+
+.picker__or {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-hand);
+  font-size: 1.375rem;
+  color: var(--ink-soft);
+}
+.picker__or::before,
+.picker__or::after { content: ''; flex: 1; border-top: 1.5px dashed var(--glass-edge); }
+
+.locate .hint { margin-top: 0.5rem; }
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.875rem;
+  padding: 0.55rem 1.3rem;
+  font: inherit;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+}
+.btn:hover:not(:disabled) { transform: translateY(-2px); }
+.btn:disabled { cursor: progress; opacity: 0.7; }
+.btn--solid { color: var(--button-ink); background: var(--button); border: 1.5px solid var(--button); }
+.btn--ghost { color: var(--ink); background: var(--glass); border: 1.5px solid var(--glass-edge); }
+
+/* ---------- the window ---------- */
+
+.window-wrap { justify-self: center; width: min(100%, 33rem); }
+/* On a phone, show the weather first; the search box follows. */
+@media (max-width: 59.99rem) { .window-wrap { order: -1; } }
+
+.window {
+  padding: 1rem;
+  background: var(--frame);
+  border-radius: 50% 50% 0.9rem 0.9rem / 15rem 15rem 0.9rem 0.9rem;
+  box-shadow: inset 0 0 0 2px var(--frame-edge), 0 30px 60px -24px rgb(0 0 0 / 0.6);
+}
+
+.pane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(29rem, 68vw, 34rem);
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--sky-bg);
+  border-radius: 50% 50% 0.4rem 0.4rem / 14rem 14rem 0.4rem 0.4rem;
+  box-shadow: inset 0 0 0 2px var(--frame-edge), inset 0 10px 40px rgb(0 0 0 / 0.3);
+}
+
+/* Glazing bars across the top half only, so they never cut through the reading. */
+.pane::before,
+.pane::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  background: var(--frame);
+  box-shadow: 0 0 0 1px var(--frame-edge);
+}
+.pane::before { top: 0; left: 50%; width: 0.6rem; height: 38%; translate: -50% 0; }
+.pane::after { top: 38%; left: 0; right: 0; height: 0.6rem; }
+
+.pane__mark {
+  position: absolute;
+  top: 16%;
+  right: 13%;
+  width: clamp(4rem, 12vw, 5.5rem);
+  height: auto;
+  color: var(--mark);
+  stroke-width: 1.6;
+}
+
+.pane__reading {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 0.25rem;
+  padding: 2.5rem 1.75rem 1.6rem;
+  background: linear-gradient(transparent, var(--scrim) 28%);
+}
+
+.pane__place { font-family: var(--font-display); font-weight: 700; font-size: 2rem; line-height: 1; }
+.pane__detail { display: block; margin-top: 0.3rem; font-family: var(--font-body); font-size: 0.875rem; font-weight: 400; color: var(--ink-soft); }
+.pane__date { font-size: 0.875rem; color: var(--ink-soft); }
+
+.pane__temp {
+  margin-top: 0.4rem;
+  font-size: clamp(3.5rem, 9vw, 4.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.pane__desc { font-family: var(--font-hand); font-size: 2.25rem; line-height: 1.05; color: var(--accent); }
+.pane__wind { font-size: 1.0625rem; color: var(--ink-soft); }
+
+.pane__state { display: grid; justify-items: start; gap: 0.75rem; padding-top: 0.75rem; }
+.pane__state p { max-width: 34ch; color: var(--ink-soft); }
+.pane__state .pane__error-title { font-family: var(--font-hand); font-size: 2.25rem; line-height: 1; color: var(--accent); }
+
+.spinner {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(1turn); } }
+
+.sill {
+  position: relative;
+  height: 1.4rem;
+  margin: -0.25rem -1.5rem 0;
+  background: linear-gradient(#9b6a53, var(--sill));
+  border-radius: 0.3rem;
+  box-shadow: 0 12px 20px -10px rgb(0 0 0 / 0.6);
+}
+
+/* A note left on the sill. Paper, so it keeps dark ink whatever the sky. */
+.sill-note {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0.9rem 0.75rem 0;
+  padding: 0.85rem 1.25rem;
+  color: var(--paper-ink);
+  background: var(--paper);
+  border-radius: 0.25rem;
+  box-shadow: 0 14px 24px -14px rgb(0 0 0 / 0.6);
+  transform: rotate(-1deg);
+}
+.sill-note dt { font-size: 0.8125rem; color: var(--paper-soft); }
+.sill-note dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- the week ahead: a row of little windows ---------- */
+
+.week-ahead { margin-top: 4rem; }
+.week-ahead h2 { margin-bottom: 1.25rem; }
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.75rem, 1fr));
+  gap: 1.25rem 1rem;
+}
+
+.day-window { text-align: center; }
+
+.mini-pane {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 7.5rem;
+  overflow: hidden;
+  background: var(--sky-bg);
+  border: 0.5rem solid var(--frame);
+  border-bottom-width: 0.65rem;
+  border-radius: 50% 50% 0.4rem 0.4rem / 4.5rem 4.5rem 0.4rem 0.4rem;
+  box-shadow: 0 14px 24px -14px rgb(0 0 0 / 0.6);
+}
+.mini-pane__mark { position: relative; width: 2.75rem; height: 2.75rem; color: var(--mark); }
+
+.day-window__name { margin-top: 0.65rem; font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; line-height: 1; }
+.day-window__temps { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.day-window__low { font-weight: 400; color: var(--ink-soft); }
+.day-window__rain { font-size: 0.8125rem; color: var(--ink-soft); }
+
+/* ---------- how this page works ---------- */
+
+.notes { margin-top: 4rem; }
+.notes h2 { margin-bottom: 1.25rem; }
+
+.notes__list { display: grid; gap: 1rem; }
+@media (min-width: 48rem) {
+  .notes__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.note {
+  padding: 1.1rem 1.25rem 1.25rem;
+  color: var(--ink-soft);
+  background: var(--glass);
+  border: 1.5px solid var(--glass-edge);
+  border-radius: 0.9rem;
+  backdrop-filter: blur(8px);
+}
+.note__title { margin-bottom: 0.35rem; font-family: var(--font-hand); font-size: 1.75rem; line-height: 1.1; color: var(--accent); }
+
+/* ---------- page turn ---------- */
+
+.page-turn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px dashed var(--glass-edge);
+}
+.page-turn a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+.page-turn a:hover { color: var(--ink); }
+
+.credit { margin-top: 1.5rem; font-size: 0.8125rem; color: var(--ink-soft); }
+
+@media (max-width: 30rem) {
+  .sill { margin-inline: -0.75rem; }
+  .sill-note { padding-inline: 0.9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pane__weather { animation: none !important; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

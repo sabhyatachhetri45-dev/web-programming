@@ -12,6 +12,9 @@ export function StoreFooter({ isInert }) {
           </a>
           .
         </p>
+        <a className="back-link" href="weather/">
+          Class 2: weather dashboard →
+        </a>
       </div>
     </footer>
   );
