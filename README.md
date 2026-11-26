@@ -31,10 +31,9 @@ Open [`index.html`](index.html) in a browser, or visit the live site:
 - [Week 10 — Git & Deployment](<week10/index.html>)
 - [Week 11 - Interactive React project gallery](<week11/>)
 - [Week 12 - React exercises and interactive shopping cart](<week12/>)
-- [Week 12.2 — React Effects Study Guide and Sprint Quiz](<week12/week12.2/>)
-- [Week 12 — Weather Dashboard](<week12/weather/>)
+- [Week 12.2 — Study Guide and Sprint Quiz inside the Weather Dashboard](<week12/weather/#study-guide>)
 
-Weeks 11 and 12 are React apps built with Vite. To run one locally, open a terminal in `week11` or `week12` and run `npm install` followed by `npm run dev`. The Week 12.2 study guide is served at `/week12.2/`; see [`week12/week12.2/README.md`](week12/week12.2/README.md) for its exercise notes and test checklist.
+Weeks 11 and 12 are React apps built with Vite. To run one locally, open a terminal in `week11` or `week12` and run `npm install` followed by `npm run dev`. The Week 12.2 Study Guide and Sprint Quiz are part of the Weather Dashboard at `/weather/#study-guide`.
 
 ## Built with
 

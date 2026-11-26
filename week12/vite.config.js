@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// The three assignment pages share one Vite project and remain separate entry points.
+// Existing class 1 and Weather Dashboard pages share the Week 12 Vite project.
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? '/web-programming/week12/' : '/',
   plugins: [react()],
@@ -11,12 +11,11 @@ export default defineConfig(({ command }) => ({
     fs: { allow: ['..'] },
   },
   build: {
-    // Class 1, the existing weather dashboard, and the new Week 12.2 study guide.
+    // The Study Guide and Sprint Quiz are embedded in the Weather Dashboard page.
     rollupOptions: {
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         weather: resolve(import.meta.dirname, 'weather/index.html'),
-        studyGuide: resolve(import.meta.dirname, 'week12.2/index.html'),
       },
     },
   },

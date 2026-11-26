@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useWeather } from '../hooks/useWeather.js';
 import { ForecastStrip } from './ForecastStrip.jsx';
 import { PlacePicker } from './PlacePicker.jsx';
+import StudyGuide from '../App.jsx';
 import { skyFor } from './skies.js';
 import { describeWeather } from './weatherCodes.js';
 import { WeatherIcon } from './WeatherIcon.jsx';
@@ -77,6 +78,8 @@ export function WeatherDashboard() {
             ))}
           </ol>
         </section>
+
+        <StudyGuide />
 
         <nav className="page-turn" aria-label="Week 12 pages">
           <a href="../">
