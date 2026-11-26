@@ -9,11 +9,12 @@ export function CoordinateForm({ onPick }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const lat = Number.parseFloat(latitude);
-    const lon = Number.parseFloat(longitude);
+    // Number() rejects partial values such as "37.5north" (parseFloat would accept them).
+    const lat = latitude.trim() === '' ? Number.NaN : Number(latitude);
+    const lon = longitude.trim() === '' ? Number.NaN : Number(longitude);
 
     if (!isValidCoordinate(lat, lon)) {
-      setError('Latitude goes from -90 to 90 and longitude from -180 to 180.');
+      setError('Enter a valid latitude from -90 to 90 and longitude from -180 to 180.');
       return;
     }
     setError('');
