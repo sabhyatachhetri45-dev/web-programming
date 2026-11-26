@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// GitHub Pages serves this folder from /web-programming/week12/, so asset URLs need that prefix in the build.
+// The three assignment pages share one Vite project and remain separate entry points.
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? '/web-programming/week12/' : '/',
   plugins: [react()],
@@ -11,11 +11,12 @@ export default defineConfig(({ command }) => ({
     fs: { allow: ['..'] },
   },
   build: {
-    // Two pages: class 1 (shopping cart) at week12/ and class 2 (weather) at week12/weather/.
+    // Class 1, the existing weather dashboard, and the new Week 12.2 study guide.
     rollupOptions: {
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         weather: resolve(import.meta.dirname, 'weather/index.html'),
+        studyGuide: resolve(import.meta.dirname, 'week12.2/index.html'),
       },
     },
   },
