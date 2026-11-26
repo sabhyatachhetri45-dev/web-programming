@@ -56,7 +56,7 @@ export function WeatherDashboard() {
             This class's topic is <strong>useEffect and fetching data</strong>: asking the free Open-Meteo API for the
             weather whenever the place changes, and showing what happens while it loads or fails.
           </p>
-          <p className="intro__note">I still check the weather where you are. I don't know why.</p>
+          <p className="intro__note">it rained all week, so I built a window to watch the sky.</p>
         </header>
 
         <div className="desk">

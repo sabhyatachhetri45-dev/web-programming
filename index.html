@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sabhyata Chhetri — Web Programming Portfolio</title>
   <meta name="description" content="Sabhyata Chhetri's personal portfolio: interactive web games, responsive designs, and weekly web programming coursework built with HTML, CSS, and JavaScript.">
-  <meta name="theme-color" content="#0E0D12">
+  <meta name="theme-color" content="#FBF6E8">
   <link rel="preload" href="assets/fonts/gowun-dodum.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/great-vibes.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/nanum-pen-script.woff2" as="font" type="font/woff2" crossorigin>
@@ -18,31 +18,32 @@
     /* Only the two Hangul day names (월, 금) the planner uses. */
     @font-face { font-family: "Gaegu"; src: url("assets/fonts/gaegu-700-ko.woff2") format("woff2"); font-weight: 700; unicode-range: U+C6D4, U+AE08; font-display: swap; }
 
+    /*
+      A semester garden: a gardening notebook where every week of web
+      programming is a plant, from one <html> seed in week 1 to a full
+      sunflower in week 12. Cream paper, sunflower yellow, leaf green,
+      soil brown and terracotta pots.
+    */
     :root {
-      /* The desk at night and the notebook's own darkened pages. */
-      --night: #0E0D12;
-      --page: #1E1B24;
-      --card: #2A2631;
-      --card-edge: #5E5766;
-      --text: #E6DEE3;
-      --text-soft: #A9A1AE;
+      --paper: #FBF6E8;
+      --card: #FFFDF6;
+      --edge: #D8CBA8;
+      --ink: #2D2A1F;
+      --ink-soft: #5D5847;
 
-      /* Torn-out sheets and polaroids stay light, like paper under a desk lamp. */
-      --sheet: #CFC6C1;
-      --sheet-2: #C6BCB7;
-      --ink: #2A2638;
-      --ink-soft: #4A4354;
-
-      /* Bruised colours: wine, plum, faded rose, storm blue, tear blue. */
-      --wine: #7A2E3A;
-      --wine-2: #9C4352;
-      --wine-3: #C25A6A;
-      --blush: #E39AA6;
-      --blush-2: #E3B7BE;
-      --plum: #4B2E43;
-      --ash: #6B6470;
-      --storm: #8FA3C7;
-      --tear: #7F9CC0;
+      --sun: #F4B73A;
+      --sun-deep: #D98A12;
+      --sun-soft: #FDE7A8;
+      --seed: #6B4226;
+      --leaf: #3F7A33;
+      --leaf-deep: #2F5D2A;
+      --leaf-soft: #D6EAD0;
+      --sky: #DCEEF5;
+      --pot: #B5532B;
+      --pot-rim: #C8643B;
+      --pot-soft: #F4D2C0;
+      --soil: #A7825A;
+      --soil-top: #8A6A45;
 
       --round: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
       --pen: "Nanum Pen Script", "Gaegu", cursive;
@@ -50,46 +51,39 @@
       --script: "Great Vibes", cursive;
       --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-      --line: 1.5px solid var(--card-edge);
-      --lift: 0 18px 40px -12px rgb(0 0 0 / .85);
+      --outline: 2px solid var(--ink);
+      --lift: 0 18px 36px -18px rgb(70 55 20 / .5);
       --ease: cubic-bezier(.22, 1, .36, 1);
 
-      /* The rip down the cover page; both halves share the same jagged edge. */
-      --tear-left: polygon(0% 0%, 51.0% 0%, 50.5% 3%, 53.4% 6%, 49.7% 9%, 50.1% 12%, 50.7% 15%, 47.5% 18%, 50.1% 21%, 51.0% 24%, 52.3% 27%, 46.8% 30%, 48.4% 33%, 46.7% 36%, 52.5% 39%, 51.5% 42%, 46.3% 45%, 53.9% 48%, 53.7% 51%, 51.2% 54%, 50.9% 57%, 47.3% 60%, 46.1% 63%, 50.2% 66%, 46.5% 69%, 47.5% 72%, 47.9% 75%, 46.2% 78%, 49.7% 81%, 49.5% 84%, 52.7% 87%, 50.2% 90%, 51.1% 93%, 50.0% 96%, 49.0% 100%, 0% 100%);
-      --tear-right: polygon(51.0% 0%, 50.5% 3%, 53.4% 6%, 49.7% 9%, 50.1% 12%, 50.7% 15%, 47.5% 18%, 50.1% 21%, 51.0% 24%, 52.3% 27%, 46.8% 30%, 48.4% 33%, 46.7% 36%, 52.5% 39%, 51.5% 42%, 46.3% 45%, 53.9% 48%, 53.7% 51%, 51.2% 54%, 50.9% 57%, 47.3% 60%, 46.1% 63%, 50.2% 66%, 46.5% 69%, 47.5% 72%, 47.9% 75%, 46.2% 78%, 49.7% 81%, 49.5% 84%, 52.7% 87%, 50.2% 90%, 51.1% 93%, 50.0% 96%, 49.0% 100%, 100% 100%, 100% 0%);
-
-      /* Spiral binding: wine tab and an ash ring through a punched hole. */
-      --rings: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='64'%3E%3Ccircle cx='44' cy='32' r='4.5' fill='%230E0D12'/%3E%3Cpath d='M20 16c16-2 28 6 24 16' fill='none' stroke='%23000' stroke-width='8.5' stroke-linecap='round'/%3E%3Cpath d='M20 16c16-2 28 6 24 16' fill='none' stroke='%23776F7F' stroke-width='5.5' stroke-linecap='round'/%3E%3Crect x='3' y='14' width='24' height='26' rx='9' fill='%237A2E3A' stroke='%23000' stroke-width='1.6'/%3E%3C/svg%3E");
+      /* Spiral binding: a leaf-green tab and a graphite ring through a punched hole. */
+      --rings: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='64'%3E%3Ccircle cx='44' cy='32' r='4.5' fill='%23D8CBA8'/%3E%3Cpath d='M20 16c16-2 28 6 24 16' fill='none' stroke='%233A3628' stroke-width='8.5' stroke-linecap='round'/%3E%3Cpath d='M20 16c16-2 28 6 24 16' fill='none' stroke='%23A39C86' stroke-width='5.5' stroke-linecap='round'/%3E%3Crect x='3' y='14' width='24' height='26' rx='9' fill='%234F8A3C' stroke='%232F5D2A' stroke-width='1.6'/%3E%3C/svg%3E");
     }
 
     *, *::before, *::after { box-sizing: border-box; }
     * { margin: 0; padding: 0; }
     [hidden] { display: none !important; }
 
-    html { scroll-behavior: smooth; scrollbar-color: var(--wine-2) var(--night); }
+    html { scroll-behavior: smooth; scrollbar-color: var(--leaf) var(--paper); }
 
     body {
       font-family: var(--round);
       font-size: 1.0625rem;
       line-height: 1.65;
-      color: var(--text);
-      /* Faint rain streaks on the window behind the desk. */
-      background:
-        repeating-linear-gradient(105deg, transparent 0 46px, rgb(255 255 255 / .025) 46px 47px, transparent 47px 93px),
-        radial-gradient(ellipse at 50% 0%, #1A1820, var(--night) 70%) fixed;
-      caret-color: var(--blush);
+      color: var(--ink);
+      background: var(--paper);
+      caret-color: var(--leaf);
     }
 
     body.modal-open { overflow: hidden; }
 
-    ::selection { background: var(--wine-2); color: #FFF3F5; }
+    ::selection { background: var(--sun); color: var(--ink); }
 
     a { color: inherit; text-underline-offset: .22em; text-decoration-thickness: 1.5px; }
     img { display: block; max-width: 100%; height: auto; }
     button, input { font: inherit; color: inherit; }
 
     :focus-visible {
-      outline: 2.5px dashed var(--blush);
+      outline: 2.5px dashed var(--leaf-deep);
       outline-offset: 4px;
       border-radius: 6px;
     }
@@ -101,8 +95,8 @@
       z-index: 50;
       padding: 10px 18px;
       font-weight: 700;
-      color: #FFF3F5;
-      background: var(--wine-2);
+      color: #fff;
+      background: var(--leaf);
       border-radius: 999px;
       text-decoration: none;
     }
@@ -123,17 +117,13 @@
       position: relative;
       min-height: 100vh;
       padding: clamp(28px, 4vw, 56px) clamp(18px, 4vw, 56px) clamp(32px, 4vw, 56px) clamp(56px, 7vw, 104px);
-      /* Water-damaged pages: tear rings, a coffee ring, two creases, ruled lines, a wine margin. */
+      /* Pale green ruled lines, a terracotta margin, and two soft patches of sunlight. */
       background:
-        radial-gradient(circle at 63% 9%, transparent 70px, rgb(127 156 192 / .19) 72px, rgb(127 156 192 / .06) 80px, transparent 96px),
-        radial-gradient(circle at 18% 38%, transparent 54px, rgb(156 67 82 / .19) 56px, transparent 66px),
-        radial-gradient(circle at 86% 62%, transparent 80px, rgb(127 156 192 / .15) 82px, transparent 96px),
-        linear-gradient(118deg, transparent 40%, rgb(0 0 0 / .25) 40.1%, transparent 40.6%),
-        linear-gradient(64deg, transparent 58%, rgb(255 255 255 / .07) 58.1%, rgb(0 0 0 / .19) 58.4%, transparent 59%),
-        linear-gradient(90deg, transparent clamp(40px, 6vw, 88px), rgb(156 67 82 / .65) clamp(40px, 6vw, 88px) calc(clamp(40px, 6vw, 88px) + 2px), transparent calc(clamp(40px, 6vw, 88px) + 2px)),
-        repeating-linear-gradient(transparent 0 33px, rgb(255 255 255 / .07) 33px 34px),
-        radial-gradient(ellipse at 45% 30%, #26222D, #17151C);
-      box-shadow: inset 0 0 160px rgb(0 0 0 / .55);
+        radial-gradient(ellipse 520px 360px at 92% 4%, rgb(244 183 58 / .2), transparent 70%),
+        radial-gradient(ellipse 420px 340px at 4% 58%, rgb(79 138 60 / .1), transparent 70%),
+        linear-gradient(90deg, transparent clamp(40px, 6vw, 88px), rgb(200 100 59 / .45) clamp(40px, 6vw, 88px) calc(clamp(40px, 6vw, 88px) + 2px), transparent calc(clamp(40px, 6vw, 88px) + 2px)),
+        repeating-linear-gradient(transparent 0 33px, rgb(79 138 60 / .13) 33px 34px),
+        var(--paper);
     }
 
     .notebook > main,
@@ -169,42 +159,43 @@
       line-height: 1.15;
       text-decoration: none;
       white-space: nowrap;
-      color: #FFF3F5;
-      background: var(--wine-2);
-      border: 1.5px solid var(--wine-3);
+      color: #fff;
+      background: var(--leaf);
+      border: 2px solid var(--leaf-deep);
       border-radius: 999px;
+      box-shadow: 0 4px 0 var(--leaf-deep);
       cursor: pointer;
       transition: transform .3s var(--ease), box-shadow .3s var(--ease), background-color .3s var(--ease);
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 0 #000; background: var(--wine); }
-    .btn:active { transform: translateY(0); box-shadow: none; }
-    .btn-plain { color: var(--text); background: transparent; border-color: #8E8696; }
-    .btn-plain:hover { background: rgb(255 255 255 / .08); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--leaf-deep); }
+    .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--leaf-deep); }
+    .btn-plain { color: var(--ink); background: var(--sun-soft); border-color: var(--sun-deep); box-shadow: 0 4px 0 var(--sun-deep); }
+    .btn-plain:hover { box-shadow: 0 6px 0 var(--sun-deep); }
+    .btn-plain:active { box-shadow: 0 1px 0 var(--sun-deep); }
     .btn svg { flex: none; }
 
+    /* Striped washi tape, sunflower yellow. */
     .tape {
       position: absolute;
       z-index: 3;
       width: 112px;
       height: 28px;
-      opacity: .95;
-      background: repeating-linear-gradient(-45deg, #4E4857 0 7px, #5E5866 7px 14px);
-      box-shadow: 0 1px 3px rgb(0 0 0 / .4);
+      background: repeating-linear-gradient(-45deg, var(--sun-soft) 0 10px, #FFF3CF 10px 20px);
+      box-shadow: 0 1px 3px rgb(70 55 20 / .2);
       pointer-events: none;
     }
 
     .sticker { position: absolute; z-index: 4; pointer-events: none; }
-    .doodle { position: absolute; pointer-events: none; }
 
     .highlight {
       padding-inline: .12em;
-      background: linear-gradient(transparent 62%, rgb(156 67 82 / .55) 62% 90%, transparent 90%);
+      background: linear-gradient(transparent 58%, var(--sun-soft) 58% 92%, transparent 92%);
     }
 
     .path {
       font-family: var(--mono);
       font-size: .8125rem;
-      color: var(--text-soft);
+      color: var(--ink-soft);
       overflow-wrap: anywhere;
     }
 
@@ -222,202 +213,184 @@
       font-size: clamp(3rem, 6vw, 4.75rem);
       font-weight: 400;
       line-height: 1;
-      color: #EADFE5;
+      color: var(--ink);
     }
 
     .section-note {
       font-family: var(--pen);
       font-size: clamp(1.625rem, 2.4vw, 2.125rem);
       line-height: 1.1;
-      color: var(--text-soft);
+      color: var(--ink-soft);
     }
 
-    /* The emotional line above each real description. */
+    /* The little garden-diary line above each real description. */
     .feel {
       font-family: var(--pen);
       font-size: clamp(1.75rem, 2.6vw, 2.375rem);
       line-height: 1.05;
-      color: var(--blush);
+      color: var(--leaf-deep);
       text-wrap: balance;
     }
 
-    /* ---------- Cover: one page torn in two ---------- */
+    /* ---------- Cover: a seed packet and a note to the garden ---------- */
 
     .cover {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      gap: clamp(36px, 5vw, 64px);
+      grid-template-columns: minmax(0, 7fr) minmax(0, 6fr);
+      gap: clamp(36px, 5vw, 72px);
       align-items: center;
-      padding-block: clamp(40px, 5vw, 64px) clamp(56px, 6vw, 88px);
+      padding-block: clamp(32px, 4vw, 56px) clamp(48px, 6vw, 80px);
     }
 
     .cover-art { position: relative; }
 
-    .torn-page {
+    .packet {
       position: relative;
-      aspect-ratio: 5 / 4.3;
-      margin-inline: clamp(12px, 3vw, 40px);
+      width: min(100%, 520px);
+      margin-inline: clamp(8px, 3vw, 40px) auto;
+      padding: 22px 26px 30px;
+      background: var(--card);
+      border: var(--outline);
+      border-radius: 6px;
+      box-shadow: 10px 12px 0 var(--leaf-deep);
+      rotate: -2.5deg;
+      animation: packet-in .9s var(--ease) both;
     }
-
-    .half {
+    /* Dashed stitching just inside the edge, like a paper seed envelope. */
+    .packet::before {
+      content: "";
       position: absolute;
-      inset: 0;
+      inset: 9px;
+      border: 1.5px dashed rgb(45 42 31 / .3);
+      border-radius: 3px;
+      pointer-events: none;
+    }
+
+    @keyframes packet-in { from { opacity: 0; translate: 0 16px; rotate: -6deg; } }
+
+    .packet-top {
       display: flex;
-      align-items: center;
-      color: var(--ink);
-      background: var(--sheet);
-      border: 1.5px solid var(--ink);
-      box-shadow: var(--lift);
-    }
-    .half--left {
-      clip-path: var(--tear-left);
-      transform: rotate(-4deg) translate(-5%, 1%);
-      animation: rip-left 1.2s var(--ease) both;
-    }
-    .half--right {
-      clip-path: var(--tear-right);
-      background: var(--sheet-2);
-      transform: rotate(3deg) translate(5%, 4%);
-      animation: rip-right 1.2s var(--ease) both;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--hand);
+      font-size: .9375rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--leaf-deep);
     }
 
-    @keyframes rip-left { from { transform: rotate(-1deg) translate(0, 0); } }
-    @keyframes rip-right { from { transform: rotate(-1deg) translate(0, 0); } }
+    .packet-art {
+      position: relative;
+      height: clamp(220px, 24vw, 300px);
+      margin: 12px 0 14px;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 115%, var(--sun-soft), transparent 70%), var(--sky);
+      border: var(--outline);
+      border-radius: 4px;
+    }
+    .packet-art svg { position: absolute; bottom: -10px; height: auto; transform-origin: 50% 100%; }
+    .packet-art .bloom--big { left: 50%; width: 52%; translate: -50% 0; animation: sway 6s ease-in-out infinite alternate; }
+    .packet-art .bloom--left { left: 4%; width: 26%; animation: sway 5s ease-in-out -2s infinite alternate; }
+    .packet-art .bloom--right { right: 4%; width: 22%; animation: sway 7s ease-in-out -1s infinite alternate; }
 
-    .half-in { width: 100%; }
-    .half--left .half-in { padding: 0 57% 0 6%; text-align: right; }
-    .half--right .half-in { padding: 0 6% 0 57%; text-align: left; }
+    @keyframes sway { from { rotate: -2deg; } to { rotate: 2deg; } }
 
     .cover-script {
       display: block;
       font-family: var(--script);
-      font-size: clamp(2.25rem, 4.6vw, 4rem);
-      line-height: .9;
-      color: var(--plum);
-      white-space: nowrap;
+      font-size: clamp(2.75rem, 5vw, 4rem);
+      line-height: 1;
+      color: var(--seed);
     }
 
     .cover-big {
       display: block;
-      font-size: clamp(2.5rem, 5.6vw, 4.75rem);
-      line-height: .95;
-      letter-spacing: .01em;
+      font-family: var(--hand);
+      font-size: clamp(3rem, 6vw, 4.75rem);
+      font-weight: 700;
+      line-height: .9;
+      letter-spacing: .05em;
       color: var(--ink);
-    }
-
-    .cover-struck {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 4px;
-      font-size: clamp(1.25rem, 2.4vw, 2rem);
-      letter-spacing: .06em;
-      color: var(--ink-soft);
-    }
-    /* Crossed out twice, the way you'd scratch out a word you can't look at. */
-    .cover-struck::before,
-    .cover-struck::after {
-      content: "";
-      position: absolute;
-      left: -8%;
-      right: -8%;
-      height: 3px;
-      background: var(--wine);
-      border-radius: 3px;
-    }
-    .cover-struck::before { top: 44%; transform: rotate(-4deg); }
-    .cover-struck::after { top: 60%; transform: rotate(3deg); }
-
-    .cover-quiet {
-      display: block;
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      letter-spacing: .12em;
-      line-height: 1.1;
-      color: var(--ink-soft);
     }
 
     .cover-small {
       display: block;
       margin-top: 10px;
       font-family: var(--pen);
-      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      font-size: clamp(1.5rem, 2.2vw, 1.875rem);
       line-height: 1;
-      color: var(--wine);
+      color: var(--leaf-deep);
     }
 
-    .drips {
-      display: block;
-      width: 100%;
-      max-width: 240px;
-      height: clamp(26px, 3.4vw, 40px);
-      margin: -4px 0 0 auto;
+    .packet-sticker {
+      position: absolute;
+      top: 54px;
+      right: 22px;
+      z-index: 1;
+      padding: 4px 12px;
+      font-family: var(--hand);
+      font-size: .9375rem;
+      font-weight: 700;
+      background: var(--sun);
+      border: var(--outline);
+      border-radius: 999px;
+      rotate: 6deg;
     }
-    .half--right .drips { margin-left: 0; }
 
     .cover-after {
       position: relative;
       z-index: 2;
-      margin-top: clamp(36px, 5vw, 64px);
+      margin-top: clamp(32px, 4vw, 48px);
       margin-left: clamp(12px, 3vw, 40px);
       font-family: var(--pen);
       font-size: clamp(1.75rem, 3vw, 2.5rem);
       line-height: 1.05;
-      color: var(--blush);
-      rotate: -2deg;
+      color: var(--leaf-deep);
+      rotate: -1.5deg;
     }
     .cover-after small {
       display: block;
       margin-top: 6px;
       font-size: .7em;
-      color: var(--text-soft);
+      color: var(--ink-soft);
     }
-
-    .dead-rose { top: clamp(-80px, -6vw, -40px); left: clamp(-30px, -2vw, -10px); width: clamp(140px, 16vw, 220px); z-index: 3; }
-    .shard-heart { right: -4%; bottom: -6%; width: clamp(96px, 11vw, 150px); z-index: 3; }
-    .petal { width: 24px; }
-    .petal--1 { left: 20%; bottom: 14%; rotate: 40deg; }
-    .petal--2 { left: 54%; bottom: 6%; rotate: -20deg; width: 18px; }
-    .petal--3 { left: 74%; bottom: -2%; rotate: 80deg; }
 
     .letter {
       position: relative;
       z-index: 2;
-      padding: 44px clamp(22px, 2.6vw, 34px) 30px;
-      color: var(--text);
+      padding: 44px clamp(22px, 2.6vw, 40px) 32px;
       background:
-        radial-gradient(circle at 30% 62%, rgb(127 156 192 / .19) 0 34px, transparent 48px),
-        radial-gradient(circle at 74% 40%, rgb(127 156 192 / .13) 0 26px, transparent 40px),
-        repeating-linear-gradient(transparent 0 31px, rgb(255 255 255 / .06) 31px 32px),
-        var(--card);
-      border: var(--line);
-      transform: rotate(2deg);
+        repeating-linear-gradient(transparent 0 35px, rgb(79 138 60 / .16) 35px 36px),
+        #fff;
+      border-radius: 4px;
       box-shadow: var(--lift);
+      rotate: 1.5deg;
     }
-    .letter .tape { top: -14px; left: 50%; translate: -50% 0; rotate: -6deg; }
+    .letter .tape { top: -14px; left: 50%; translate: -50% 0; rotate: -3deg; width: 140px; height: 30px; }
+    .pressed-flower { top: -38px; right: -26px; width: 96px; rotate: 18deg; }
 
     .letter-dear {
       font-family: var(--pen);
       font-size: clamp(2.5rem, 3.6vw, 3.25rem);
       line-height: 1;
-      color: var(--blush-2);
+      color: var(--leaf-deep);
     }
 
     .letter-text {
-      margin-top: 10px;
+      margin-top: 14px;
       font-size: 1.0625rem;
-      line-height: 32px;
+      line-height: 36px;
     }
-    .letter-text s { text-decoration-color: var(--wine-3); text-decoration-thickness: 3px; }
-
-    /* A sentence the tears got to first. */
-    .smudge { filter: blur(1.2px); opacity: .7; }
+    .letter-text s { color: var(--ink-soft); text-decoration-color: var(--pot); text-decoration-thickness: 2px; }
 
     .letter-confess {
-      margin-top: 12px;
+      margin-top: 10px;
       font-family: var(--pen);
-      font-size: clamp(1.75rem, 2.4vw, 2.125rem);
+      font-size: clamp(1.875rem, 2.6vw, 2.25rem);
       line-height: 1.1;
-      color: var(--blush);
+      color: var(--pot);
     }
 
     .letter-sign {
@@ -425,14 +398,95 @@
       font-size: 2rem;
       line-height: 1;
       text-align: right;
-      color: var(--blush-2);
+      color: var(--ink);
     }
 
     .letter-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
       margin-top: 18px;
+    }
+
+    /* ---------- How my garden grew: one plant per week ---------- */
+
+    .growth {
+      position: relative;
+      margin-bottom: clamp(48px, 6vw, 72px);
+      overflow: hidden;
+      background: linear-gradient(transparent calc(100% - 92px), var(--soil-top) calc(100% - 92px) calc(100% - 84px), var(--soil) calc(100% - 84px)), var(--sky);
+      border: var(--outline);
+      border-radius: 16px;
+    }
+
+    .growth-head { padding: 22px 26px 0; }
+    .growth-head h2 {
+      font-family: var(--hand);
+      font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .growth-head p {
+      font-family: var(--pen);
+      font-size: clamp(1.375rem, 2vw, 1.625rem);
+      line-height: 1.2;
+      color: var(--ink-soft);
+    }
+
+    .plants {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(56px, 1fr));
+      align-items: end;
+      height: 330px;
+      padding: 0 14px;
+      overflow-x: auto;
+      list-style: none;
+    }
+
+    .plants li { height: 100%; }
+
+    .plant {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      justify-items: center;
+      height: 100%;
+      padding-bottom: 14px;
+      text-decoration: none;
+      border-radius: 10px;
+    }
+    .plant svg {
+      align-self: end;
+      width: min(100%, 84px);
+      height: auto;
+      margin-bottom: 30px;
+      transform-origin: 50% 100%;
+      transition: rotate .4s var(--ease), scale .4s var(--ease);
+    }
+    a.plant:hover svg,
+    a.plant:focus-visible svg { rotate: -4deg; scale: 1.06; }
+
+    .plant-label {
+      font-family: var(--hand);
+      font-size: 1.0625rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #FFF8E8;
+      white-space: nowrap;
+    }
+    a.plant:hover .plant-label { text-decoration: underline; text-underline-offset: 3px; }
+
+    .growth-badge {
+      position: absolute;
+      top: 22px;
+      right: 24px;
+      padding: 4px 14px;
+      font-family: var(--hand);
+      font-size: 1.0625rem;
+      font-weight: 700;
+      background: var(--sun);
+      border: var(--outline);
+      border-radius: 999px;
+      rotate: 3deg;
     }
 
     /* ---------- Contents bar (search + filters) ---------- */
@@ -443,10 +497,10 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 14px 20px;
-      padding: 18px 22px;
+      padding: 16px 22px;
       margin-bottom: clamp(56px, 7vw, 96px);
       background: var(--card);
-      border: var(--line);
+      border: var(--outline);
       border-radius: 14px;
     }
 
@@ -454,7 +508,7 @@
       font-family: var(--pen);
       font-size: 2rem;
       line-height: 1;
-      color: var(--blush-2);
+      color: var(--leaf-deep);
     }
 
     .search {
@@ -467,7 +521,7 @@
       left: 14px;
       top: 50%;
       translate: 0 -50%;
-      color: var(--text-soft);
+      color: var(--ink-soft);
       pointer-events: none;
     }
     .search input {
@@ -475,12 +529,12 @@
       min-height: 46px;
       padding: 10px 16px 10px 42px;
       font-size: 1rem;
-      background: var(--page);
-      border: var(--line);
+      background: var(--paper);
+      border: 1.5px solid var(--edge);
       border-radius: 999px;
       appearance: none;
     }
-    .search input::placeholder { color: var(--text-soft); opacity: 1; }
+    .search input::placeholder { color: var(--ink-soft); opacity: 1; }
 
     .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -492,20 +546,21 @@
       font-weight: 700;
       line-height: 1;
       background: transparent;
-      border: var(--line);
+      border: 1.5px solid var(--ink);
       border-radius: 12px 12px 4px 4px;
       cursor: pointer;
       transition: background-color .25s var(--ease), transform .25s var(--ease);
     }
-    .tab:hover { transform: translateY(-2px); }
-    .tab[aria-pressed="true"] { color: #FFF3F5; background: var(--wine-2); border-color: var(--wine-3); }
+    .tab:hover { transform: translateY(-2px); background: var(--leaf-soft); }
+    .tab[aria-pressed="true"] { color: #fff; background: var(--leaf); border-color: var(--leaf-deep); }
 
     .tally {
       margin-left: auto;
       font-family: var(--hand);
       font-size: 1.25rem;
+      font-weight: 700;
       font-variant-numeric: tabular-nums;
-      color: var(--text-soft);
+      color: var(--ink-soft);
       white-space: nowrap;
     }
 
@@ -526,9 +581,8 @@
       display: flex;
       flex-direction: column;
       padding: 14px 14px 24px;
-      color: var(--ink);
-      background: var(--sheet);
-      border-radius: 2px;
+      background: #fff;
+      border-radius: 3px;
       box-shadow: var(--lift);
       transform: rotate(var(--tilt));
       transition: transform .45s var(--ease), box-shadow .45s var(--ease);
@@ -536,7 +590,7 @@
     .photo:hover,
     .photo:focus-within {
       transform: rotate(0deg) translateY(-6px);
-      box-shadow: 0 26px 48px -14px #000;
+      box-shadow: 0 26px 44px -18px rgb(70 55 20 / .55);
     }
 
     .photo--lead { grid-column: 1 / 8; grid-row: 1 / span 2; --tilt: -1.4deg; }
@@ -550,7 +604,7 @@
 
     .photo-img {
       overflow: hidden;
-      background: var(--page);
+      background: var(--paper);
     }
     .photo-img img {
       width: 100%;
@@ -564,7 +618,6 @@
       gap: 8px;
       padding: 18px 6px 0;
     }
-    .photo .feel { color: var(--wine); }
 
     .photo-title {
       font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
@@ -584,36 +637,31 @@
       padding: 2px 12px;
       font-size: .875rem;
       font-weight: 700;
-      color: #FFF3F5;
-      background: var(--plum);
+      color: var(--leaf-deep);
+      background: var(--leaf-soft);
       border-radius: 999px;
     }
+    .photo:nth-child(2) .label { color: var(--seed); background: var(--sun-soft); }
+    .photo:nth-child(3) .label { color: var(--pot); background: var(--pot-soft); }
 
-    .photo .path,
-    .photo .card-desc { color: var(--ink-soft); }
-    .card-desc { max-width: 62ch; text-wrap: pretty; }
+    .card-desc { max-width: 62ch; color: var(--ink-soft); text-wrap: pretty; }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
       margin-top: 8px;
     }
-    .photo .btn-plain { color: var(--ink); border-color: var(--ink); }
-    .photo .btn-plain:hover { background: rgb(0 0 0 / .06); }
 
-    .heart-sticker { top: -24px; right: -18px; width: 58px; rotate: 14deg; }
+    .bloom-sticker { top: -30px; right: -20px; width: 72px; rotate: 14deg; }
 
-    /* ---------- Weekly diary ---------- */
+    /* ---------- Weekly garden beds ---------- */
 
     .planner {
       position: relative;
       padding: clamp(28px, 4vw, 48px) clamp(18px, 3vw, 40px) clamp(32px, 4vw, 48px);
-      background:
-        linear-gradient(90deg, rgb(255 255 255 / .03) 1px, transparent 1px) 0 0 / 16px 16px,
-        linear-gradient(rgb(255 255 255 / .03) 1px, transparent 1px) 0 0 / 16px 16px,
-        rgb(0 0 0 / .18);
-      border: 1.5px dashed var(--card-edge);
+      background: rgb(255 253 246 / .55);
+      border: 2px dashed var(--edge);
       border-radius: 18px;
     }
 
@@ -623,21 +671,20 @@
     .weeks {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 24px;
+      gap: 28px;
       align-items: start;
     }
 
     .week {
       display: flex;
       flex-direction: column;
+      scroll-margin-top: 24px;
       background: var(--card);
-      border: var(--line);
-      border-radius: 4px;
-      box-shadow: 0 14px 28px -12px #000;
+      border: var(--outline);
+      border-radius: 14px;
+      box-shadow: 6px 7px 0 var(--wk-shadow, var(--sun));
       overflow: hidden;
     }
-    .week:nth-child(odd) { rotate: -.6deg; }
-    .week:nth-child(even) { rotate: .7deg; }
 
     .week-head {
       display: flex;
@@ -646,50 +693,69 @@
       gap: 12px;
       padding: 10px 18px 8px;
       font-family: var(--hand);
-      background: var(--wk, #3A2A33);
-      border-bottom: var(--line);
+      background: var(--wk, var(--sun-soft));
+      border-bottom: var(--outline);
     }
     .week-head h3 {
       font-size: 1.75rem;
       font-weight: 700;
       line-height: 1;
-      color: var(--storm);
     }
-    .week-head span { font-size: 1.125rem; color: var(--text-soft); }
+    .week-head span { font-size: 1.125rem; font-weight: 700; color: var(--ink-soft); }
 
-    /* Bruise colours shift week to week. */
-    .week:nth-child(4n+1) { --wk: #3A2A33; }
-    .week:nth-child(4n+2) { --wk: #2E3445; }
-    .week:nth-child(4n+3) { --wk: #382E3F; }
-    .week:nth-child(4n+4) { --wk: #33303A; }
+    /* Every bed gets its own colour so the page doesn't read as one block. */
+    .week:nth-child(4n+1) { --wk: var(--sun-soft); --wk-shadow: var(--sun); }
+    .week:nth-child(4n+2) { --wk: var(--leaf-soft); --wk-shadow: #9CC88C; }
+    .week:nth-child(4n+3) { --wk: var(--sky); --wk-shadow: #9FCBDD; }
+    .week:nth-child(4n+4) { --wk: var(--pot-soft); --wk-shadow: #E6A486; }
+
+    /* The week you jumped to from the garden strip gets a quick glow. */
+    .week:target { animation: picked 1.6s var(--ease); }
+    @keyframes picked { 30% { box-shadow: 0 0 0 6px var(--sun); } }
 
     .entry {
       position: relative;
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
-      gap: 6px 14px;
+      gap: 6px 16px;
       padding: 18px 18px 20px;
     }
-    .entry + .entry { border-top: 1.5px dashed #4A4452; }
+    .entry + .entry { border-top: 2px dashed var(--edge); }
     .entry > :not(.day) { grid-column: 2; }
 
+    /* The day badge is a little terracotta flower pot. */
     .day {
       grid-row: 1 / span 4;
+      position: relative;
       display: grid;
       place-items: center;
       align-content: center;
-      width: 52px;
-      height: 52px;
+      width: 64px;
+      height: 60px;
+      margin-top: 10px;
       font-family: var(--hand);
       font-weight: 700;
       line-height: 1;
-      color: var(--blush-2);
-      background: var(--page);
-      border: var(--line);
-      border-radius: 50%;
+      color: #fff;
+      background: var(--pot);
+      border: var(--outline);
+      border-top: 0;
+      clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
+      border-radius: 0 0 6px 6px;
     }
-    .day b { font-size: 1.25rem; }
-    .day small { font-size: .8125rem; font-weight: 400; }
+    /* The pot's rim. */
+    .day::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 10px;
+      background: var(--pot-rim);
+      border-bottom: 2px solid var(--ink);
+    }
+    .day b { position: relative; margin-top: 10px; font-size: 1.5rem; }
+    .day small { position: relative; margin-top: 2px; font-size: .875rem; }
 
     .entry .feel { font-size: clamp(1.625rem, 2.2vw, 2rem); }
 
@@ -699,14 +765,14 @@
       line-height: 1.3;
     }
 
-    .entry .card-desc { font-size: .9688rem; line-height: 1.55; color: var(--text-soft); }
+    .entry .card-desc { font-size: .9688rem; line-height: 1.55; }
     .entry .actions { margin-top: 10px; }
     .entry .btn { min-height: 40px; padding: 8px 16px; font-size: .9375rem; }
 
     .entry--solo { grid-template-columns: minmax(0, 1fr); }
     .entry--solo > :not(.day) { grid-column: 1; }
 
-    .teardrop { position: absolute; top: 16px; right: 18px; width: 16px; }
+    .sprout { position: absolute; top: 14px; right: 16px; width: 26px; }
 
     /* ---------- Empty state ---------- */
 
@@ -718,11 +784,11 @@
       margin-bottom: 48px;
       text-align: center;
       background: var(--card);
-      border: 1.5px dashed var(--card-edge);
+      border: 2px dashed var(--edge);
       border-radius: 18px;
     }
-    .empty h2 { font-family: var(--pen); font-size: 2.75rem; font-weight: 400; line-height: 1; color: var(--blush); }
-    .empty p { color: var(--text-soft); }
+    .empty h2 { font-family: var(--pen); font-size: 2.75rem; font-weight: 400; line-height: 1; color: var(--leaf-deep); }
+    .empty p { color: var(--ink-soft); }
 
     /* ---------- Back page ---------- */
 
@@ -734,17 +800,17 @@
       margin-top: clamp(72px, 9vw, 120px);
       padding-top: 36px;
       margin-inline: auto;
-      border-top: 1.5px dashed var(--card-edge);
+      border-top: 2px dashed rgb(200 100 59 / .4);
     }
 
     .back-page-thanks {
       font-family: var(--script);
       font-size: clamp(2.5rem, 5vw, 3.75rem);
       line-height: 1;
-      color: var(--blush-2);
+      color: var(--seed);
     }
 
-    .back-links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .back-links { display: flex; flex-wrap: wrap; gap: 12px; }
 
     /* ---------- Quick View ---------- */
 
@@ -755,7 +821,7 @@
       display: grid;
       place-items: center;
       padding: clamp(12px, 3vw, 40px);
-      background: rgb(14 13 18 / .85);
+      background: rgb(45 42 31 / .6);
     }
 
     .preview-window {
@@ -765,9 +831,9 @@
       width: min(1180px, 100%);
       height: min(860px, 100%);
       background: var(--card);
-      border: var(--line);
+      border: var(--outline);
       border-radius: 14px;
-      box-shadow: 0 30px 80px -20px #000;
+      box-shadow: 0 30px 80px -20px rgb(0 0 0 / .5);
       animation: sheet-in .45s var(--ease);
     }
     .preview-window .tape { top: -14px; left: 50%; translate: -50% 0; rotate: -2deg; }
@@ -780,7 +846,7 @@
       justify-content: space-between;
       gap: 16px;
       padding: 18px 16px 14px 24px;
-      border-bottom: var(--line);
+      border-bottom: var(--outline);
     }
 
     .preview-title {
@@ -790,10 +856,10 @@
       line-height: 1.1;
       white-space: nowrap;
       text-overflow: ellipsis;
-      color: var(--blush-2);
+      color: var(--leaf-deep);
     }
 
-    .preview-controls { display: flex; gap: 8px; flex: none; }
+    .preview-controls { display: flex; gap: 10px; flex: none; }
     .preview-controls .btn { min-height: 42px; padding: 8px 16px; }
 
     .close-btn {
@@ -801,13 +867,13 @@
       place-items: center;
       width: 42px;
       height: 42px;
-      color: #FFF3F5;
-      background: var(--wine-2);
-      border: 1.5px solid var(--wine-3);
+      color: #fff;
+      background: var(--pot);
+      border: 2px solid var(--ink);
       border-radius: 50%;
       cursor: pointer;
     }
-    .close-btn:hover { background: var(--wine); }
+    .close-btn:hover { background: #9C4526; }
 
     .preview-frame {
       flex: 1;
@@ -828,9 +894,9 @@
       font-family: var(--pen);
       font-size: 1.75rem;
       line-height: 1.1;
-      color: #FFF3F5;
-      background: var(--wine);
-      border: 1.5px solid var(--wine-3);
+      color: #fff;
+      background: var(--leaf);
+      border: var(--outline);
       border-radius: 10px;
       box-shadow: var(--lift);
       visibility: hidden;
@@ -843,28 +909,22 @@
 
     @media (max-width: 980px) {
       .cover { grid-template-columns: 1fr; }
-      .cover-art { max-width: 640px; width: 100%; justify-self: center; }
+      .cover-art { max-width: 560px; width: 100%; justify-self: center; }
       .letter { max-width: 560px; width: 100%; justify-self: center; }
 
       .photo--lead, .photo--side { grid-column: 1 / -1; grid-row: auto; }
       .photo--side { max-width: 560px; width: 100%; justify-self: center; }
       .weeks { grid-template-columns: 1fr; }
+      .plants { height: 280px; }
     }
 
     @media (max-width: 600px) {
-      .notebook { background-size: auto; }
       .notebook::before { width: 44px; background-size: 44px 47px; }
-      .torn-page { aspect-ratio: 5 / 5.4; margin-inline: 8px; }
-      .half--left .half-in { padding-left: 4%; }
-      .half--right .half-in { padding-right: 4%; }
-      .shard-heart { width: 80px; bottom: -8%; right: -2%; }
-      .half--left .half-in { padding-right: 56%; }
-      .half--right .half-in { padding-left: 56%; }
-      .cover-script { font-size: 1.625rem; }
-      .cover-big { font-size: 2.125rem; }
-      .cover-struck { font-size: .9375rem; }
-      .cover-quiet { font-size: 1.25rem; }
-      .cover-small { font-size: 1.125rem; }
+      .packet { padding: 18px 18px 24px; }
+      .packet-sticker { display: none; }
+      .plants { height: 230px; }
+      .pressed-flower { right: -8px; width: 72px; }
+      .growth-badge { display: none; }
 
       .contents { padding: 16px; }
       .tabs { width: 100%; }
@@ -875,14 +935,8 @@
       .entry > :not(.day) { grid-column: 1; }
       .day {
         grid-row: auto;
-        display: inline-flex;
-        gap: 8px;
-        align-items: baseline;
         justify-self: start;
-        width: auto;
-        height: auto;
-        padding: 4px 14px;
-        border-radius: 999px;
+        margin-top: 0;
       }
       .back-page { grid-template-columns: 1fr; }
     }
@@ -891,6 +945,7 @@
       html { scroll-behavior: auto; }
       *, *::before, *::after {
         animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
       }
     }
@@ -899,20 +954,28 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- Reusable drawings: broken heart, tear drop, fallen petal. -->
+  <!-- Reusable drawings: sunflower, leaf, seedling. -->
   <svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
     <defs>
-      <symbol id="broken-heart" viewBox="-32 -30 64 60">
-        <g stroke="#1A1720" stroke-width="2" stroke-linejoin="round">
-          <path d="M-2 24C-20 12-27-1-21-11c5-7 13-6 17 0l-4 9 6 7-5 8 3 5Z" fill="#7A2E3A" transform="translate(-3 1) rotate(-8)"/>
-          <path d="M2 24C20 12 27-1 21-11c-5-7-13-6-17 0l-3 8 6 7-5 8Z" fill="#9C4352" transform="translate(4 -2) rotate(9)"/>
+      <symbol id="sunflower" viewBox="-60 -60 120 120">
+        <g fill="#F4B73A" stroke="#2D2A1F" stroke-width="2">
+          <path id="petal" d="M0-22C-9-34-8-52 0-58 8-52 9-34 0-22Z"/>
+          <use href="#petal" transform="rotate(24)"/><use href="#petal" transform="rotate(48)"/><use href="#petal" transform="rotate(72)"/>
+          <use href="#petal" transform="rotate(96)"/><use href="#petal" transform="rotate(120)"/><use href="#petal" transform="rotate(144)"/>
+          <use href="#petal" transform="rotate(168)"/><use href="#petal" transform="rotate(192)"/><use href="#petal" transform="rotate(216)"/>
+          <use href="#petal" transform="rotate(240)"/><use href="#petal" transform="rotate(264)"/><use href="#petal" transform="rotate(288)"/>
+          <use href="#petal" transform="rotate(312)"/><use href="#petal" transform="rotate(336)"/>
         </g>
+        <circle r="24" fill="#6B4226" stroke="#2D2A1F" stroke-width="2"/>
+        <g fill="#3E2614"><circle cx="-8" cy="-8" r="2.4"/><circle cx="6" cy="-10" r="2.4"/><circle cx="10" cy="4" r="2.4"/><circle cx="-2" cy="10" r="2.4"/><circle cx="-11" cy="5" r="2.4"/><circle cx="0" cy="-1" r="2.4"/></g>
       </symbol>
-      <symbol id="teardrop" viewBox="0 0 18 26">
-        <path d="M9 1C5 9 2 13 2 17a7 7 0 0 0 14 0c0-4-3-8-7-16Z" fill="#7F9CC0" stroke="#4E5D78" stroke-width="1.4"/>
+      <symbol id="leaf" viewBox="0 0 40 24">
+        <path d="M38 20C28 4 10 0 2 6c6 12 22 18 36 14Z" fill="#4F8A3C" stroke="#2D2A1F" stroke-width="1.8"/>
       </symbol>
-      <symbol id="petal" viewBox="0 0 26 20">
-        <path d="M2 10C6 2 20 0 24 6c-4 10-18 12-22 4Z" fill="#7A2E3A" stroke="#4B2E43" stroke-width="1.4"/>
+      <symbol id="seedling" viewBox="0 0 26 26">
+        <path d="M13 25V13" stroke="#3F7A33" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M13 14C10 6 3 4 1 8c3 6 8 8 12 6Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.4"/>
+        <path d="M13 12c3-8 10-10 12-6-3 6-8 8-12 6Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.4"/>
       </symbol>
     </defs>
   </svg>
@@ -920,65 +983,38 @@
   <div class="notebook">
     <main id="main-content">
 
-      <!-- Cover: the portfolio page, torn in two -->
+      <!-- Cover: a seed packet, and a note to the garden -->
       <section class="cover" aria-labelledby="pageTitle">
         <div class="cover-art">
-          <h1 class="visually-hidden" id="pageTitle">Sabhyata's Portfolio: a heartbreak diary</h1>
+          <h1 class="visually-hidden" id="pageTitle">Sabhyata's Portfolio: a semester garden</h1>
 
-          <svg class="doodle dead-rose" viewBox="0 0 230 190" aria-hidden="true">
-            <path d="M20 180C50 130 80 92 140 70" stroke="#6E6A5C" stroke-width="3" fill="none"/>
-            <path d="M70 128c-22-4-34-18-32-32 16 2 28 16 32 32Z" fill="#5E5D4C" stroke="#3F3E33" stroke-width="1.8"/>
-            <path d="M60 150l-8-6M96 112l-6-8M120 84l-2-9" stroke="#6E6A5C" stroke-width="2" stroke-linecap="round"/>
-            <g transform="translate(150 70) rotate(140)">
-              <g fill="#7A2E3A" stroke="#2A1A24" stroke-width="2">
-                <path d="M0 0C-14-6-14-30-6-34Q0-30 6-34C14-30 14-6 0 0Z"/>
-                <path d="M0 0C-14-6-14-30-6-34Q0-30 6-34C14-30 14-6 0 0Z" transform="rotate(70)"/>
-                <path d="M0 0C-14-6-14-30-6-34Q0-30 6-34C14-30 14-6 0 0Z" transform="rotate(-70)"/>
-              </g>
-              <circle r="5" fill="#2A1A24"/>
-            </g>
-          </svg>
-
-          <!-- The visible title is drawn across two torn halves; the h1 above carries it for screen readers. -->
-          <div class="torn-page" aria-hidden="true">
-            <div class="half half--left">
-              <div class="half-in">
-                <span class="cover-script">Sabhyata's</span>
-                <span class="cover-big">HEART</span>
-                <svg class="drips" viewBox="0 0 240 44" preserveAspectRatio="xMaxYMin meet"><g fill="#2A2638" opacity=".85"><path d="M30 0c2 18 3 28 0 36-2 5-6 5-7 0-1-11 2-23 4-36Z"/><path d="M130 0c1 10 2 16 0 21-2 3-4 3-5 0-1-6 1-13 2-21Z"/><path d="M206 0c2 21 3 32 1 41-2 5-6 5-7 0-1-13 2-27 3-41Z"/></g></svg>
-                <span class="cover-small">every project I loved</span>
-              </div>
+          <!-- The visible title is drawn on the seed packet; the h1 above carries it for screen readers. -->
+          <div class="packet" aria-hidden="true">
+            <p class="packet-top"><span>seed co. · no. 12</span><span>fall semester</span></p>
+            <div class="packet-art">
+              <svg class="bloom--left" viewBox="0 0 120 200"><path d="M60 200V70" stroke="#2F5D2A" stroke-width="6"/><use href="#leaf" x="60" y="110" width="44" height="26"/><use href="#leaf" x="16" y="140" width="44" height="26" transform="scale(-1 1) translate(-120 0)"/><use href="#sunflower" x="20" y="30" width="80" height="80"/></svg>
+              <svg class="bloom--big" viewBox="0 0 240 300"><path d="M120 300V110" stroke="#2F5D2A" stroke-width="9"/><use href="#leaf" x="120" y="170" width="80" height="48"/><use href="#leaf" x="40" y="215" width="80" height="48" transform="scale(-1 1) translate(-240 0)"/><use href="#sunflower" x="40" y="20" width="160" height="160"/></svg>
+              <svg class="bloom--right" viewBox="0 0 120 200"><path d="M60 200V80" stroke="#2F5D2A" stroke-width="6"/><use href="#leaf" x="60" y="120" width="40" height="24"/><use href="#sunflower" x="25" y="45" width="70" height="70"/></svg>
             </div>
-            <div class="half half--right">
-              <div class="half-in">
-                <span class="cover-struck">PORTFOLIO</span>
-                <span class="cover-big">BREAK</span>
-                <svg class="drips" viewBox="0 0 240 44" preserveAspectRatio="xMinYMin meet"><g fill="#2A2638" opacity=".85"><path d="M20 0c1 12 2 18 0 25-2 4-5 4-6 0-1-8 2-17 3-25Z"/><path d="M104 0c2 23 3 35 1 42-2 4-6 4-7 0-1-14 2-28 4-42Z"/><path d="M184 0c1 8 2 13 0 17-1 2-3 2-4 0 0-5 1-10 2-17Z"/></g></svg>
-                <span class="cover-quiet">DIARY</span>
-              </div>
-            </div>
-            <svg class="sticker shard-heart" viewBox="-60 -50 120 110">
-              <use href="#broken-heart" x="-50" y="-44" width="100" height="94"/>
-              <path d="M-6 0l10-4 2 9-9 3Z" fill="#B9868C" stroke="#1A1720" stroke-width="1.6" transform="translate(44 42) rotate(30)"/>
-              <path d="M-5 0l8-5 3 8-8 2Z" fill="#B9868C" stroke="#1A1720" stroke-width="1.6" transform="translate(-46 44) rotate(-20)"/>
-            </svg>
-            <svg class="doodle petal petal--1" viewBox="0 0 26 20"><use href="#petal"/></svg>
-            <svg class="doodle petal petal--2" viewBox="0 0 26 20"><use href="#petal"/></svg>
-            <svg class="doodle petal petal--3" viewBox="0 0 26 20"><use href="#petal"/></svg>
+            <span class="cover-script">Sabhyata's</span>
+            <span class="cover-big">GARDEN</span>
+            <span class="cover-small">every project I planted &amp; grew</span>
+            <span class="packet-sticker">12 weeks of sunshine</span>
           </div>
 
-          <p class="cover-after">I loved every line of code. it still wasn't enough.<small>— Sabhyata Chhetri</small></p>
+          <p class="cover-after">it started as one tiny &lt;html&gt; seed.<small>— Sabhyata Chhetri</small></p>
         </div>
 
         <div class="letter">
           <span class="tape" aria-hidden="true"></span>
-          <p class="letter-dear">dear diary,</p>
+          <svg class="sticker pressed-flower" viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sunflower" x="-60" y="-60" width="120" height="120"/></svg>
+          <p class="letter-dear">dear garden,</p>
           <p class="letter-text">
-            I gave HTML, CSS, and JavaScript <s>everything</s> <s>my whole heart</s> my whole semester:
+            I planted HTML, CSS, and JavaScript <s>all at once</s> <s>every night</s> one week at a time:
             interactive web games, responsive designs, and weekly web programming coursework exercises.
-            <span class="smudge">I thought we'd last forever.</span>
+            some weeks nothing grew.
           </p>
-          <p class="letter-confess">I'm not okay. but my code finally works.</p>
+          <p class="letter-confess">then one morning, everything bloomed.</p>
           <p class="letter-sign">— S.</p>
           <div class="letter-actions">
             <a href="week10/index.html" class="btn">
@@ -993,6 +1029,29 @@
           </div>
         </div>
       </section>
+
+      <!-- One plant per week: a seed in week 1, a full sunflower by week 12. Each plant jumps to its week. -->
+      <nav class="growth" aria-labelledby="growthTitle">
+        <div class="growth-head">
+          <h2 id="growthTitle">how my garden grew</h2>
+          <p>one plant for every week. tap one to jump to that week.</p>
+        </div>
+        <span class="growth-badge" aria-hidden="true">seed → sunflower</span>
+        <ol class="plants">
+          <li><span class="plant"><svg viewBox="0 0 80 40" aria-hidden="true" focusable="false"><ellipse cx="40" cy="34" rx="9" ry="6" fill="#6B4226" stroke="#2D2A1F" stroke-width="2"/></svg><span class="plant-label" aria-hidden="true">wk 1</span><span class="visually-hidden">Week 1</span></span></li>
+          <li><a class="plant" href="#week-02"><svg viewBox="0 0 80 60" aria-hidden="true" focusable="false"><path d="M40 60V42" stroke="#3F7A33" stroke-width="4" stroke-linecap="round"/><path d="M40 42c-4-10-14-12-18-8 4 8 12 10 18 8Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.6"/></svg><span class="plant-label" aria-hidden="true">wk 2</span><span class="visually-hidden">Week 2</span></a></li>
+          <li><a class="plant" href="#week-03"><svg viewBox="0 0 80 80" aria-hidden="true" focusable="false"><path d="M40 80V42" stroke="#3F7A33" stroke-width="4" stroke-linecap="round"/><path d="M40 44c-4-10-16-12-20-7 4 8 14 10 20 7Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.6"/><path d="M40 44c4-10 16-12 20-7-4 8-14 10-20 7Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.6"/></svg><span class="plant-label" aria-hidden="true">wk 3</span><span class="visually-hidden">Week 3</span></a></li>
+          <li><a class="plant" href="#week-04"><svg viewBox="0 0 80 110" aria-hidden="true" focusable="false"><path d="M40 110V42" stroke="#3F7A33" stroke-width="4" stroke-linecap="round"/><use href="#leaf" x="40" y="66" width="30" height="18"/><path d="M40 44c-4-10-16-12-20-7 4 8 14 10 20 7Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.6"/><path d="M40 44c4-10 16-12 20-7-4 8-14 10-20 7Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.6"/></svg><span class="plant-label" aria-hidden="true">wk 4</span><span class="visually-hidden">Week 4</span></a></li>
+          <li><a class="plant" href="#week-05"><svg viewBox="0 0 80 135" aria-hidden="true" focusable="false"><path d="M40 135V36" stroke="#3F7A33" stroke-width="4.5" stroke-linecap="round"/><use href="#leaf" x="40" y="80" width="32" height="19"/><use href="#leaf" x="8" y="100" width="32" height="19" transform="scale(-1 1) translate(-80 0)"/><circle cx="40" cy="32" r="7" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.8"/></svg><span class="plant-label" aria-hidden="true">wk 5</span><span class="visually-hidden">Week 5</span></a></li>
+          <li><a class="plant" href="#week-06"><svg viewBox="0 0 80 155" aria-hidden="true" focusable="false"><path d="M40 155V36" stroke="#3F7A33" stroke-width="5" stroke-linecap="round"/><use href="#leaf" x="40" y="90" width="34" height="20"/><use href="#leaf" x="6" y="114" width="34" height="20" transform="scale(-1 1) translate(-80 0)"/><path d="M40 22c-9 4-11 14-6 20h12c5-6 3-16-6-20Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.8"/></svg><span class="plant-label" aria-hidden="true">wk 6</span><span class="visually-hidden">Week 6</span></a></li>
+          <li><a class="plant" href="#week-07"><svg viewBox="0 0 80 170" aria-hidden="true" focusable="false"><path d="M40 170V40" stroke="#3F7A33" stroke-width="5" stroke-linecap="round"/><use href="#leaf" x="40" y="100" width="36" height="22"/><use href="#leaf" x="4" y="126" width="36" height="22" transform="scale(-1 1) translate(-80 0)"/><path d="M40 20c-9 4-11 14-6 20h12c5-6 3-16-6-20Z" fill="#7FBF5E" stroke="#2D2A1F" stroke-width="1.8"/><path d="M36 22l4-8 4 8" fill="#F4B73A" stroke="#2D2A1F" stroke-width="1.4"/></svg><span class="plant-label" aria-hidden="true">wk 7</span><span class="visually-hidden">Week 7</span></a></li>
+          <li><a class="plant" href="#week-08"><svg viewBox="0 0 80 185" aria-hidden="true" focusable="false"><path d="M40 185V40" stroke="#3F7A33" stroke-width="6.1" stroke-linecap="round"/><use href="#leaf" x="40" y="110" width="38" height="23"/><use href="#leaf" x="2" y="140" width="38" height="23" transform="scale(-1 1) translate(-80 0)"/><use href="#sunflower" x="18.0" y="18" width="44" height="44"/></svg><span class="plant-label" aria-hidden="true">wk 8</span><span class="visually-hidden">Week 8</span></a></li>
+          <li><a class="plant" href="#week-09"><svg viewBox="0 0 80 200" aria-hidden="true" focusable="false"><path d="M40 200V42" stroke="#3F7A33" stroke-width="6.4" stroke-linecap="round"/><use href="#leaf" x="40" y="120" width="38" height="23"/><use href="#leaf" x="2" y="152" width="38" height="23" transform="scale(-1 1) translate(-80 0)"/><use href="#sunflower" x="12.0" y="14" width="56" height="56"/></svg><span class="plant-label" aria-hidden="true">wk 9</span><span class="visually-hidden">Week 9</span></a></li>
+          <li><a class="plant" href="#week-10"><svg viewBox="0 0 80 215" aria-hidden="true" focusable="false"><path d="M40 215V42" stroke="#3F7A33" stroke-width="6.6" stroke-linecap="round"/><use href="#leaf" x="40" y="130" width="40" height="24"/><use href="#leaf" x="0" y="164" width="40" height="24" transform="scale(-1 1) translate(-80 0)"/><use href="#sunflower" x="8.0" y="10" width="64" height="64"/></svg><span class="plant-label" aria-hidden="true">wk 10</span><span class="visually-hidden">Week 10</span></a></li>
+          <li><a class="plant" href="#week-11"><svg viewBox="0 0 80 228" aria-hidden="true" focusable="false"><path d="M40 228V42" stroke="#3F7A33" stroke-width="6.8" stroke-linecap="round"/><use href="#leaf" x="40" y="136" width="40" height="24"/><use href="#leaf" x="0" y="174" width="40" height="24" transform="scale(-1 1) translate(-80 0)"/><use href="#sunflower" x="4.0" y="6" width="72" height="72"/></svg><span class="plant-label" aria-hidden="true">wk 11</span><span class="visually-hidden">Week 11</span></a></li>
+          <li><a class="plant" href="#week-12"><svg viewBox="0 0 80 240" aria-hidden="true" focusable="false"><path d="M40 240V40" stroke="#3F7A33" stroke-width="7.0" stroke-linecap="round"/><use href="#leaf" x="40" y="140" width="40" height="24"/><use href="#leaf" x="0" y="180" width="40" height="24" transform="scale(-1 1) translate(-80 0)"/><use href="#sunflower" x="0.0" y="0" width="80" height="80"/></svg><span class="plant-label" aria-hidden="true">wk 12</span><span class="visually-hidden">Week 12</span></a></li>
+        </ol>
+      </nav>
 
       <!-- Contents: search and filters -->
       <div class="contents" role="search" aria-label="Search and filter projects">
@@ -1009,26 +1068,26 @@
           <button type="button" class="tab" data-filter="project" aria-pressed="false">featured</button>
           <button type="button" class="tab" data-filter="exercise" aria-pressed="false">weekly</button>
         </div>
-        <p class="tally" aria-live="polite"><span id="tallyCount">16</span> / <span id="tallyTotal">16</span> pages</p>
+        <p class="tally" aria-live="polite"><span id="tallyCount">16</span> / <span id="tallyTotal">16</span> sprouts</p>
       </div>
 
       <!-- Featured projects as taped photos -->
       <section class="featured" id="featured" aria-labelledby="projectsTitle">
         <div class="section-head">
-          <h2 class="section-title" id="projectsTitle"><span class="highlight">the ones I can't forget</span></h2>
-          <p class="section-note"><span id="projectsCount">3</span> featured projects · please don't ask me how I'm doing</p>
+          <h2 class="section-title" id="projectsTitle"><span class="highlight">the ones that bloomed</span></h2>
+          <p class="section-note"><span id="projectsCount">3</span> featured projects · my favourite flowers so far</p>
         </div>
 
         <div class="photos">
           <article class="photo photo--lead project-card" data-category="project"
                    data-keywords="final project proposal seoulmate travel app local guides itinerary accessibility">
             <span class="tape" aria-hidden="true"></span>
-            <svg class="sticker heart-sticker" viewBox="-32 -30 64 60" aria-hidden="true"><use href="#broken-heart" x="-32" y="-30" width="64" height="60"/></svg>
+            <svg class="sticker bloom-sticker" viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sunflower" x="-60" y="-60" width="120" height="120"/></svg>
             <div class="photo-img">
               <img src="assets/plates/seoulmate.webp" width="1100" height="688" alt="Screenshot of the SeoulMate proposal page" fetchpriority="high" decoding="async">
             </div>
             <div class="photo-body">
-              <p class="feel">we planned a whole trip to Seoul together. I went alone.</p>
+              <p class="feel">I planned a whole trip to Seoul, then built the map myself.</p>
               <h3 class="photo-title card-title">Week 10 · SeoulMate</h3>
               <div class="meta">
                 <span class="label">Web project</span>
@@ -1049,7 +1108,7 @@
               <img src="assets/plates/find-the-cookie.webp" width="900" height="563" alt="Screenshot of the Find the Cookie game board" decoding="async">
             </div>
             <div class="photo-body">
-              <p class="feel">you hid. I kept guessing. I'm still guessing.</p>
+              <p class="feel">I hid a cookie in the soil and watched everyone dig for it.</p>
               <h3 class="photo-title card-title">Find the Cookie</h3>
               <div class="meta">
                 <span class="label">Mini game</span>
@@ -1070,7 +1129,7 @@
               <img src="assets/plates/my-other-website.webp" width="900" height="560" alt="Screenshot of the My Other Website home page" decoding="async">
             </div>
             <div class="photo-body">
-              <p class="feel">I built us a whole other world. you never visited.</p>
+              <p class="feel">a whole second garden, grown from scratch.</p>
               <h3 class="photo-title card-title">My Other Website</h3>
               <div class="meta">
                 <span class="label">Web design</span>
@@ -1092,17 +1151,17 @@
         <span class="tape" aria-hidden="true"></span>
 
         <div class="section-head">
-          <h2 class="section-title" id="exercisesTitle"><span class="highlight">the weeks I survived</span></h2>
+          <h2 class="section-title" id="exercisesTitle"><span class="highlight">the weeks I watered</span></h2>
           <p class="section-note"><span id="exercisesCount">15</span> class exercises · weeks 2–12</p>
         </div>
 
         <div class="weeks">
-          <article class="week">
+          <article class="week" id="week-02">
             <header class="week-head"><h3>Week 02</h3><span>2 classes</span></header>
             <div class="entry project-card" data-category="exercise" data-keywords="week 2 monday fundamentals html tags structure">
-              <svg class="teardrop" viewBox="0 0 18 26" aria-hidden="true"><use href="#teardrop"/></svg>
+              <svg class="sprout" viewBox="0 0 26 26" aria-hidden="true"><use href="#seedling"/></svg>
               <span class="day" aria-hidden="true"><b>월</b><small>Mon</small></span>
-              <p class="feel">our first date: just me and an empty &lt;html&gt; tag. I thought it would be forever.</p>
+              <p class="feel">my first seed: one empty &lt;html&gt; tag in a pot.</p>
               <h4 class="entry-title card-title">Week 2 Monday</h4>
               <p class="card-desc">Initial exploration of foundational HTML markup, semantics, text styling, and document flow.</p>
               <span class="path">week2(mon)/index.html</span>
@@ -1113,7 +1172,7 @@
             </div>
             <div class="entry project-card" data-category="exercise" data-keywords="week 2 friday css selectors styling colors">
               <span class="day" aria-hidden="true"><b>금</b><small>Fri</small></span>
-              <p class="feel">you said I needed more space. so I learned padding.</p>
+              <p class="feel">it needed room to grow, so I learned padding.</p>
               <h4 class="entry-title card-title">Week 2 Friday</h4>
               <p class="card-desc">Practical exercise covering CSS layout fundamentals, basic box-model properties, and typography.</p>
               <span class="path">week2 fri/index.html</span>
@@ -1124,11 +1183,11 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-03">
             <header class="week-head"><h3>Week 03</h3><span>2 classes</span></header>
             <div class="entry project-card" data-category="exercise" data-keywords="week 3 monday forms lists tables flexbox">
               <span class="day" aria-hidden="true"><b>월</b><small>Mon</small></span>
-              <p class="feel">I asked for your input. you left it blank.</p>
+              <p class="feel">planted my first inputs and waited to see what came up.</p>
               <h4 class="entry-title card-title">Week 3 Monday</h4>
               <p class="card-desc">Working with forms, user input fields, semantic containers, and responsive container alignment.</p>
               <span class="path">week3(mon)/index.html</span>
@@ -1139,7 +1198,7 @@
             </div>
             <div class="entry project-card" data-category="exercise" data-keywords="week 3 friday flexbox grid responsive cards">
               <span class="day" aria-hidden="true"><b>금</b><small>Fri</small></span>
-              <p class="feel">we were perfectly aligned. then the grid broke.</p>
+              <p class="feel">lined my seedlings up in neat rows. hello, grid.</p>
               <h4 class="entry-title card-title">Week 3 Friday</h4>
               <p class="card-desc">Advanced CSS layout practice focusing on multi-column arrangements, card patterns, and spacing rules.</p>
               <span class="path">week3(fri)/index.html</span>
@@ -1150,11 +1209,11 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-04">
             <header class="week-head"><h3>Week 04</h3><span>1 class</span></header>
             <div class="entry project-card" data-category="exercise" data-keywords="week 4 monday javascript dom events functions">
               <span class="day" aria-hidden="true"><b>월</b><small>Mon</small></span>
-              <p class="feel">every time I clicked, I hoped you'd respond.</p>
+              <p class="feel">every click was a little drop of water.</p>
               <h4 class="entry-title card-title">Week 4 Monday</h4>
               <p class="card-desc">Introduction to DOM manipulation, event handling, button triggers, and dynamic HTML modification.</p>
               <span class="path">week4(mon).html/index.html</span>
@@ -1165,10 +1224,10 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-05">
             <header class="week-head"><h3>Week 05</h3><span>1 project</span></header>
             <div class="entry entry--solo project-card" data-category="exercise" data-keywords="week 5 javascript basics dom input conditions loops arrays localstorage">
-              <p class="feel">I counted the days in a for loop. you never returned.</p>
+              <p class="feel">counted the days in a for loop until the first leaf.</p>
               <h4 class="entry-title card-title">JavaScript Basics</h4>
               <p class="card-desc">Practice with DOM updates, user input, conditions, loops, arrays, and localStorage.</p>
               <span class="path">week5/index.html</span>
@@ -1179,12 +1238,12 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-06">
             <header class="week-head"><h3>Week 06</h3><span>2 classes</span></header>
             <div class="entry project-card" data-category="exercise" data-keywords="week 6 monday random joke generator api fetch favourites localstorage">
-              <svg class="teardrop" viewBox="0 0 18 26" aria-hidden="true"><use href="#teardrop"/></svg>
+              <svg class="sprout" viewBox="0 0 26 26" aria-hidden="true"><use href="#seedling"/></svg>
               <span class="day" aria-hidden="true"><b>월</b><small>Mon</small></span>
-              <p class="feel">you told me jokes every day. then the API stopped answering.</p>
+              <p class="feel">a fresh joke every morning, picked straight from an API.</p>
               <h4 class="entry-title card-title">Random Joke Generator</h4>
               <p class="card-desc">Fetch random jokes from an API and save favourites in the browser.</p>
               <span class="path">week6(mon)/task1.html</span>
@@ -1195,7 +1254,7 @@
             </div>
             <div class="entry project-card" data-category="exercise" data-keywords="week 6 friday projects api explorer weather cryptocurrency tracker">
               <span class="day" aria-hidden="true"><b>금</b><small>Fri</small></span>
-              <p class="feel">I checked the weather just to know if it was raining where you are.</p>
+              <p class="feel">checked the weather every day, like any good gardener.</p>
               <h4 class="entry-title card-title">API Projects</h4>
               <p class="card-desc">Explore the API data explorer, weather tracker, and cryptocurrency tracker.</p>
               <span class="path">week6(fri)/index.html</span>
@@ -1206,10 +1265,10 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-07">
             <header class="week-head"><h3>Week 07</h3><span>1 project</span></header>
             <div class="entry entry--solo project-card" data-category="exercise" data-keywords="week 7 book search tasks open library api authors subjects">
-              <p class="feel">I searched every library. none of the stories were ours.</p>
+              <p class="feel">a whole library to wander through, one shelf at a time.</p>
               <h4 class="entry-title card-title">Book Search</h4>
               <p class="card-desc">Explore all six steps of the Open Library book search project.</p>
               <span class="path">week 7/index.html</span>
@@ -1220,11 +1279,11 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-08">
             <header class="week-head"><h3>Week 08</h3><span>2 classes</span></header>
             <div class="entry project-card" data-category="exercise" data-keywords="week 8 monday forms contact email message student registration">
               <span class="day" aria-hidden="true"><b>월</b><small>Mon</small></span>
-              <p class="feel">I filled out every form you gave me. you never submitted.</p>
+              <p class="feel">filled in every form, neat as labels on seed packets.</p>
               <h4 class="entry-title card-title">Forms</h4>
               <p class="card-desc">Explore the contact form and student registration form exercises.</p>
               <span class="path">week8(mon)/index.html</span>
@@ -1235,7 +1294,7 @@
             </div>
             <div class="entry project-card" data-category="exercise" data-keywords="week 8 friday forms registration homework validation accessibility">
               <span class="day" aria-hidden="true"><b>금</b><small>Fri</small></span>
-              <p class="feel">I registered for a future that didn't include me.</p>
+              <p class="feel">signed up for the next season.</p>
               <h4 class="entry-title card-title">Registration</h4>
               <p class="card-desc">Follow the form lessons in order, then open the registration homework.</p>
               <span class="path">week8(fri)/index.html</span>
@@ -1246,11 +1305,11 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-09">
             <header class="week-head"><h3>Week 09</h3><span>2 classes</span></header>
             <div class="entry project-card" data-category="exercise" data-keywords="week 9 monday performance seo accessibility before after report">
               <span class="day" aria-hidden="true"><b>월</b><small>Mon</small></span>
-              <p class="feel">I improved my performance. you still didn't notice.</p>
+              <p class="feel">pruned the slow parts so everything could breathe.</p>
               <h4 class="entry-title card-title">Performance &amp; SEO Report</h4>
               <p class="card-desc">Review the before and after improvements for accessibility, performance, and SEO on the portfolio website.</p>
               <span class="path">week9 mon/updated performance.html</span>
@@ -1260,9 +1319,9 @@
               </div>
             </div>
             <div class="entry project-card" data-category="exercise" data-keywords="week 9 friday accessibility audit updated portfolio website redesign html css before after lighthouse score">
-              <svg class="teardrop" viewBox="0 0 18 26" aria-hidden="true"><use href="#teardrop"/></svg>
+              <svg class="sprout" viewBox="0 0 26 26" aria-hidden="true"><use href="#seedling"/></svg>
               <span class="day" aria-hidden="true"><b>금</b><small>Fri</small></span>
-              <p class="feel">I fixed everything you said was wrong with me. you still left.</p>
+              <p class="feel">made sure everyone can walk through the garden.</p>
               <h4 class="entry-title card-title">Accessibility &amp; Portfolio Update</h4>
               <p class="card-desc">Includes both the accessibility audit and the updated portfolio website improvements for the Friday session.</p>
               <span class="path">week9 fri/ (accessibility-task.html + updatedwebsite.html)</span>
@@ -1274,11 +1333,11 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-10">
             <header class="week-head"><h3>Week 10</h3><span>1 project</span></header>
             <div class="entry entry--solo project-card" data-category="exercise" data-keywords="week 10 seoulmate html css javascript accessibility responsive landing page itinerary planner">
-              <svg class="teardrop" viewBox="0 0 18 26" aria-hidden="true"><use href="#teardrop"/></svg>
-              <p class="feel">I went back to Seoul one more time. just to say goodbye.</p>
+              <svg class="sprout" viewBox="0 0 26 26" aria-hidden="true"><use href="#seedling"/></svg>
+              <p class="feel">back to Seoul, this time with a map I drew myself.</p>
               <h4 class="entry-title card-title">SeoulMate Web Project</h4>
               <p class="card-desc">Accessible SeoulMate project page combining responsive HTML, CSS styling, and a JavaScript day-planner interaction.</p>
               <span class="path">week10/index.html</span>
@@ -1289,44 +1348,44 @@
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-11">
             <header class="week-head"><h3>Week 11</h3><span>1 project</span></header>
             <div class="entry entry--solo project-card" data-category="exercise" data-keywords="week 11 react project gallery portfolio filtering interactive preview accessibility">
-              <svg class="teardrop" viewBox="0 0 18 26" aria-hidden="true"><use href="#teardrop"/></svg>
-              <p class="feel">a little collection of things I made along the way.</p>
+              <svg class="sprout" viewBox="0 0 26 26" aria-hidden="true"><use href="#seedling"/></svg>
+              <p class="feel">picked a bouquet of everything I'd grown so far.</p>
               <h4 class="entry-title card-title">Interactive Project Gallery</h4>
               <p class="card-desc">A responsive React portfolio gallery with technology filters, project previews, and accessible interactions.</p>
               <span class="path">week11/</span>
               <div class="actions">
-                <a href="week11/" class="btn" target="_blank" rel="noopener noreferrer">Open full</a>
-                <button type="button" class="btn btn-plain quick-preview-btn" data-title="Week 11 - Interactive Project Gallery" data-url="week11/">Quick view</button>
+                <a href="week11/" data-built class="btn" target="_blank" rel="noopener noreferrer">Open full</a>
+                <button type="button" class="btn btn-plain quick-preview-btn" data-title="Week 11 - Interactive Project Gallery" data-url="week11/" data-built>Quick view</button>
               </div>
             </div>
           </article>
 
-          <article class="week">
+          <article class="week" id="week-12">
             <header class="week-head"><h3>Week 12</h3><span>2 classes</span></header>
             <div class="entry project-card" data-category="exercise" data-keywords="week 12 class 1 react shopping cart usestate product list quantity cart sidebar total dalbit">
               <span class="day" aria-hidden="true"><b>1</b><small>class</small></span>
-              <svg class="teardrop" viewBox="0 0 18 26" aria-hidden="true"><use href="#teardrop"/></svg>
-              <p class="feel">filled a whole cart with little things. none of them were you.</p>
+              <svg class="sprout" viewBox="0 0 26 26" aria-hidden="true"><use href="#seedling"/></svg>
+              <p class="feel">filled a basket with little things from the market.</p>
               <h4 class="entry-title card-title">Interactive Shopping Cart</h4>
               <p class="card-desc">A React shopping cart with a product list, add and remove buttons, quantity controls, and a cart sidebar whose total is computed from state.</p>
               <span class="path">week12/</span>
               <div class="actions">
-                <a href="week12/" class="btn" target="_blank" rel="noopener noreferrer">Open full</a>
-                <button type="button" class="btn btn-plain quick-preview-btn" data-title="Week 12 - Interactive Shopping Cart" data-url="week12/">Quick view</button>
+                <a href="week12/" data-built class="btn" target="_blank" rel="noopener noreferrer">Open full</a>
+                <button type="button" class="btn btn-plain quick-preview-btn" data-title="Week 12 - Interactive Shopping Cart" data-url="week12/" data-built>Quick view</button>
               </div>
             </div>
             <div class="entry project-card" data-category="exercise" data-keywords="week 12 class 2 react useeffect fetch weather dashboard open-meteo api geocoding city coordinates geolocation loading error">
               <span class="day" aria-hidden="true"><b>2</b><small>class</small></span>
-              <p class="feel">I still check the weather where you are. I don't know why.</p>
+              <p class="feel">it rained all week, so I built a window to watch the sky.</p>
               <h4 class="entry-title card-title">Weather Dashboard</h4>
               <p class="card-desc">A React weather dashboard that fetches live Open-Meteo data with useEffect, by city name, coordinates or your location, with loading and error states.</p>
               <span class="path">week12/weather/</span>
               <div class="actions">
-                <a href="week12/weather/" class="btn" target="_blank" rel="noopener noreferrer">Open full</a>
-                <button type="button" class="btn btn-plain quick-preview-btn" data-title="Week 12 Class 2 - Weather Dashboard" data-url="week12/weather/">Quick view</button>
+                <a href="week12/weather/" data-built class="btn" target="_blank" rel="noopener noreferrer">Open full</a>
+                <button type="button" class="btn btn-plain quick-preview-btn" data-title="Week 12 Class 2 - Weather Dashboard" data-url="week12/weather/" data-built>Quick view</button>
               </div>
             </div>
           </article>
@@ -1334,14 +1393,14 @@
       </section>
 
       <section class="empty" id="emptyState" aria-live="polite" hidden>
-        <h2>nothing here. just like my inbox.</h2>
+        <h2>nothing has sprouted here yet.</h2>
         <p>Try a different keyword like "cookie", "week", "css", or "javascript".</p>
       </section>
     </main>
 
     <footer class="back-page">
       <div>
-        <p class="back-page-thanks">thank you for staying till the end</p>
+        <p class="back-page-thanks">thank you for visiting my garden</p>
       </div>
       <div class="back-links">
         <a class="btn btn-plain" href="https://github.com/sabhyatachhetri45-dev/web-programming" target="_blank" rel="noopener noreferrer">Source on GitHub</a>
@@ -1371,6 +1430,17 @@
   <script>
     (function () {
       'use strict';
+
+      // Weeks 11 and 12 are React apps that GitHub Actions builds when the site deploys, so a plain
+      // local server (like Live Server) only has their source and shows a folder listing. Off the
+      // live site, point those links at the deployed build instead.
+      const LIVE_SITE = 'https://sabhyatachhetri45-dev.github.io/web-programming/';
+      if (location.hostname !== 'sabhyatachhetri45-dev.github.io') {
+        document.querySelectorAll('[data-built]').forEach((el) => {
+          if (el.tagName === 'A') el.href = LIVE_SITE + el.getAttribute('href');
+          else el.dataset.url = LIVE_SITE + el.dataset.url;
+        });
+      }
 
       // Search and filtering
       const searchInput = document.getElementById('searchInput');
