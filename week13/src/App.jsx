@@ -54,15 +54,15 @@ function FloralBlossom({ className = 'w-12 h-12', petalColor = '#F43F5E', center
 function FloralVineDivider({ accent = 'rose' }) {
   const strokeMap = {
     rose: '#FDA4AF',
+    indigo: '#A5B4FC',
     emerald: '#6EE7B7',
-    amber: '#FCD34D',
-    sky: '#7DD3FC',
+    cyan: '#7DD3FC',
   };
   const petalMap = {
     rose: '#FB7185',
+    indigo: '#818CF8',
     emerald: '#34D399',
-    amber: '#FBBF24',
-    sky: '#38BDF8',
+    cyan: '#38BDF8',
   };
   const stroke = strokeMap[accent] || strokeMap.rose;
   const petal = petalMap[accent] || petalMap.rose;
@@ -312,7 +312,12 @@ function SkillPicker() {
   feedbackForm: `function CourseFeedbackForm() {
   const [studentName, setStudentName] = useState('');
   const [studentId, setStudentId] = useState('');
+  const [lectureModule, setLectureModule] = useState('Week 6 · React Controlled Forms & Validation');
   const [rating, setRating] = useState('');
+  const [pace, setPace] = useState('Just Right');
+  const [lectureQuality, setLectureQuality] = useState('Clear & Engaging');
+  const [classParticipation, setClassParticipation] = useState('Highly Interactive');
+  const [materialsQuality, setMaterialsQuality] = useState('Very Helpful');
   const [topics, setTopics] = useState([]);
   const [comments, setComments] = useState('');
   const [errors, setErrors] = useState({});
@@ -331,7 +336,7 @@ function SkillPicker() {
     setSubmitted(true);
   }
 
-  if (submitted) return <h3>Thank you, {studentName}!</h3>;
+  if (submitted) return <h3>Thank you, {studentName}! Your K0126_002 feedback is recorded.</h3>;
   // ... form JSX
 }`,
   slide6: `function SearchBar() {
@@ -416,37 +421,32 @@ function SkillPicker() {
 };
 
 // ============================================================================
-// REUSABLE UTILITY COMPONENTS
+// REUSABLE UI HELPERS (COPY BUTTON & CODE INSPECTOR DRAWER)
 // ============================================================================
 
-function CopyButton({ text, label = 'Copy Code', variant = 'light' }) {
+function CopyButton({ text, label = 'Copy Code' }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(text);
+    navigator.clipboard?.writeText(text);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), 1800);
   };
-
-  const baseStyles =
-    variant === 'dark'
-      ? 'bg-slate-800 hover:bg-slate-700 text-slate-100 border-slate-700'
-      : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs';
 
   return (
     <button
       type="button"
       onClick={handleCopy}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${baseStyles}`}
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-2xs transition-colors cursor-pointer"
     >
       {copied ? (
         <>
           <Check className="w-3.5 h-3.5 text-emerald-600" />
-          <span className="text-emerald-600">Copied!</span>
+          <span className="text-emerald-700">Copied!</span>
         </>
       ) : (
         <>
-          <Copy className="w-3.5 h-3.5 text-indigo-600" />
+          <Copy className="w-3.5 h-3.5 text-slate-500" />
           <span>{label}</span>
         </>
       )}
@@ -454,24 +454,25 @@ function CopyButton({ text, label = 'Copy Code', variant = 'light' }) {
   );
 }
 
-function CodeDrawer({ title, code, accentClass = 'text-indigo-600 hover:text-indigo-700' }) {
+function CodeDrawer({ title, code, accentClass = 'text-rose-700 hover:text-rose-800' }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mt-5 border-t border-slate-200/80 pt-3.5">
-      <div className="flex items-center justify-between">
+    <div className="mt-5 pt-4 border-t border-slate-200/80">
+      <div className="flex items-center justify-between gap-2">
         <button
           type="button"
-          onClick={() => setOpen(!open)}
-          className={`inline-flex items-center gap-2 text-xs font-bold transition-colors cursor-pointer ${accentClass}`}
+          onClick={() => setOpen((prev) => !prev)}
+          className={`inline-flex items-center gap-1.5 text-xs font-extrabold transition-colors cursor-pointer ${accentClass}`}
         >
           <Code2 className="w-4 h-4" />
-          {open ? `Hide Source Code` : `View Source Code (${title})`}
+          <span>{open ? `Hide ${title} Code` : `Inspect ${title} Code`}</span>
         </button>
         {open && <CopyButton text={code} />}
       </div>
+
       {open && (
-        <pre className="mt-3 p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-xs overflow-x-auto font-mono leading-relaxed shadow-inner">
+        <pre className="mt-3 p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-xs overflow-x-auto font-mono leading-relaxed">
           <code>{code}</code>
         </pre>
       )}
@@ -480,39 +481,18 @@ function CodeDrawer({ title, code, accentClass = 'text-indigo-600 hover:text-ind
 }
 
 // ============================================================================
-// TAB 1: STUDENT PROFILE EDITOR (MAIN HOMEWORK)
+// TAB 1: HOMEWORK — STUDENT PROFILE EDITOR (MAIN DEFAULT WORKSPACE)
 // ============================================================================
 
-const MAJORS = [
-  'Computer Science',
-  'Computer Engineering',
-  'Software Engineering',
-  'Information Systems',
-  'Data Science',
-];
-
-const SABHYATA_AVATAR_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23E11D48"/><stop offset="100%" stop-color="%237C3AED"/></linearGradient></defs><rect width="120" height="120" fill="url(%23g)"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="sans-serif" font-size="40" font-weight="bold">SC</text></svg>`;
-
-const SABHYATA_DEFAULT_PROFILE = {
-  name: 'Sabhyata Chhetri',
-  studentId: '2025394780',
-  major: 'Computer Science',
-  year: '2',
-  bio: 'Computer Science student at Gachon University building accessible, responsive web applications with React, JavaScript, and Python.',
-  photoUrl: SABHYATA_AVATAR_SVG,
-  skills: ['react', 'javascript', 'css', 'python'],
-};
-
-const SKILL_PILL_STYLES = [
-  'bg-indigo-50 text-indigo-700 border-indigo-200',
-  'bg-emerald-50 text-emerald-700 border-emerald-200',
-  'bg-sky-50 text-sky-700 border-sky-200',
-  'bg-purple-50 text-purple-700 border-purple-200',
-  'bg-amber-50 text-amber-800 border-amber-200',
-  'bg-rose-50 text-rose-700 border-rose-200',
-];
-
 function StudentProfileEditorView({ theme }) {
+  const MAJORS = [
+    'Computer Science',
+    'Computer Engineering',
+    'Software Engineering',
+    'Information Systems',
+    'Data Science',
+  ];
+
   const [form, setForm] = useState({
     name: '',
     studentId: '',
@@ -521,15 +501,22 @@ function StudentProfileEditorView({ theme }) {
     bio: '',
     photoUrl: '',
   });
+
   const [skills, setSkills] = useState(['react', 'javascript', 'css', 'python']);
   const [skillInput, setSkillInput] = useState('');
   const [errors, setErrors] = useState({});
-  const [submittedProfile, setSubmittedProfile] = useState(null);
-  const [showCodeModal, setShowCodeModal] = useState(false);
+  const [submittedProfile, setSubmittedProfile] = useState({
+    name: 'Sabhyata Chhetri',
+    studentId: '2025394710',
+    major: 'Computer Science',
+    year: '2',
+    bio: 'Computer Science undergraduate at Gachon University passionate about building accessible, colorful, and responsive React web applications.',
+    photoUrl: '',
+    skills: ['react', 'javascript', 'css', 'python'],
+  });
 
   const MAX_BIO = 200;
 
-  // Calculate live completion percentage across 6 required fields
   const completedSteps = [
     form.name.trim().length > 0,
     /^\d{10}$/.test(form.studentId),
@@ -538,7 +525,8 @@ function StudentProfileEditorView({ theme }) {
     form.bio.trim().length > 0 && form.bio.length < MAX_BIO,
     Boolean(form.photoUrl),
   ].filter(Boolean).length;
-  const completionPct = Math.round((completedSteps / 6) * 100);
+
+  const progressPercent = Math.round((completedSteps / 6) * 100);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -549,8 +537,8 @@ function StudentProfileEditorView({ theme }) {
   function handlePhotoChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-    const objectUrl = URL.createObjectURL(file);
-    setForm((prev) => ({ ...prev, photoUrl: objectUrl }));
+    const previewUrl = URL.createObjectURL(file);
+    setForm((prev) => ({ ...prev, photoUrl: previewUrl }));
     setErrors((prev) => ({ ...prev, photoUrl: '' }));
   }
 
@@ -569,17 +557,19 @@ function StudentProfileEditorView({ theme }) {
     setSkills((prev) => prev.filter((s) => s !== skillToRemove));
   }
 
-  function fillDemoData() {
-    setForm({
-      name: SABHYATA_DEFAULT_PROFILE.name,
-      studentId: SABHYATA_DEFAULT_PROFILE.studentId,
-      major: SABHYATA_DEFAULT_PROFILE.major,
-      year: SABHYATA_DEFAULT_PROFILE.year,
-      bio: SABHYATA_DEFAULT_PROFILE.bio,
-      photoUrl: SABHYATA_DEFAULT_PROFILE.photoUrl,
-    });
-    setSkills([...SABHYATA_DEFAULT_PROFILE.skills]);
+  function fillDemoSabhyata() {
+    const demoData = {
+      name: 'Sabhyata Chhetri',
+      studentId: '2025394710',
+      major: 'Computer Science',
+      year: '2',
+      bio: 'Computer Science undergraduate at Gachon University passionate about building accessible, colorful, and responsive React web applications.',
+      photoUrl: 'demo-avatar',
+    };
+    setForm(demoData);
+    setSkills(['react', 'javascript', 'css', 'python']);
     setErrors({});
+    setSubmittedProfile({ ...demoData, photoUrl: '', skills: ['react', 'javascript', 'css', 'python'] });
   }
 
   function handleResetForm() {
@@ -591,33 +581,25 @@ function StudentProfileEditorView({ theme }) {
       bio: '',
       photoUrl: '',
     });
-    setSkills(['react', 'javascript', 'css', 'python']);
-    setSkillInput('');
+    setSkills(['react', 'forms', 'css']);
     setErrors({});
-    setSubmittedProfile(null);
   }
 
   function validate() {
     const errs = {};
-    if (!form.name.trim()) {
-      errs.name = 'Full name is required.';
-    }
+    if (!form.name.trim()) errs.name = 'Student name is required.';
     if (!/^\d{10}$/.test(form.studentId)) {
       errs.studentId = 'Student ID must be exactly 10 digits.';
     }
-    if (!form.major) {
-      errs.major = 'Please select a major.';
-    }
-    if (!form.year) {
-      errs.year = 'Please select your academic year (1–4).';
-    }
+    if (!form.major) errs.major = 'Major is required.';
+    if (!form.year) errs.year = 'Please select an academic year (1–4).';
     if (!form.bio.trim()) {
       errs.bio = 'Bio is required.';
     } else if (form.bio.length >= MAX_BIO) {
       errs.bio = 'Bio must be strictly under 200 characters.';
     }
     if (!form.photoUrl) {
-      errs.photoUrl = 'Please upload a profile photo (or click Fill Demo Data).';
+      errs.photoUrl = 'Please upload a profile photo (or click Fill Demo).';
     }
     return errs;
   }
@@ -629,11 +611,14 @@ function StudentProfileEditorView({ theme }) {
       setErrors(errs);
       return;
     }
-    setSubmittedProfile({ ...form, skills: [...skills] });
+    setSubmittedProfile({
+      ...form,
+      photoUrl: form.photoUrl === 'demo-avatar' ? '' : form.photoUrl,
+      skills: [...skills],
+    });
   }
 
   function getInitials(fullName) {
-    if (!fullName.trim()) return 'SC';
     return fullName
       .trim()
       .split(/\s+/)
@@ -642,50 +627,20 @@ function StudentProfileEditorView({ theme }) {
       .join('');
   }
 
-  const activeProfileData = submittedProfile || {
-    name: form.name || SABHYATA_DEFAULT_PROFILE.name,
-    studentId: form.studentId || SABHYATA_DEFAULT_PROFILE.studentId,
-    major: form.major,
-    year: form.year || SABHYATA_DEFAULT_PROFILE.year,
-    bio: form.bio || SABHYATA_DEFAULT_PROFILE.bio,
-    photoUrl: form.photoUrl || SABHYATA_DEFAULT_PROFILE.photoUrl,
-    skills: skills,
-  };
-
-  const profileJsonString = JSON.stringify(
-    {
-      name: activeProfileData.name,
-      studentId: activeProfileData.studentId,
-      major: activeProfileData.major,
-      year: Number(activeProfileData.year),
-      university: 'Gachon University',
-      bio: activeProfileData.bio,
-      skills: activeProfileData.skills,
-    },
-    null,
-    2
-  );
-
   return (
     <div className="space-y-6">
-      {/* Informative Learning Banner with Floral Accents */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-rose-50/90 via-white to-indigo-50/80 border border-rose-200/90 rounded-2xl p-6 shadow-sm">
+      {/* Informative Overview Banner */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-rose-50 via-white to-pink-50/80 border border-rose-200 rounded-2xl p-6 shadow-sm">
         <FloralBlossom
-          className="w-24 h-24 absolute -top-5 -right-5 opacity-20 pointer-events-none rotate-12"
+          className="w-24 h-24 absolute -top-5 -right-5 opacity-20 pointer-events-none"
           petalColor="#F43F5E"
           centerColor="#FBBF24"
         />
-        <FloralBlossom
-          className="w-16 h-16 absolute -bottom-4 right-28 opacity-15 pointer-events-none -rotate-12"
-          petalColor="#A855F7"
-          centerColor="#FDE047"
-        />
-
-        <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 border border-rose-200 text-rose-800 text-xs font-bold">
-              <Flower2 className="w-3.5 h-3.5 text-rose-600" />
-              <span>Main Homework Deliverable · Student Management Form</span>
+              <UserCheck className="w-3.5 h-3.5 text-rose-600" />
+              <span>Main Homework · Controlled Form, Validation &amp; Live ID Preview</span>
             </div>
             <h2
               id="section-student-editor"
@@ -695,24 +650,20 @@ function StudentProfileEditorView({ theme }) {
               1. Student Profile Editor
             </h2>
             <p className="text-sm text-slate-700 max-w-3xl leading-relaxed">
-              Combines <strong className="text-slate-900">controlled text, select, and radio inputs</strong>,{' '}
-              <strong className="text-slate-900">10-digit Student ID regex validation</strong>,{' '}
-              <code className="text-rose-700 bg-rose-100/80 px-1.5 py-0.5 rounded font-mono text-xs">
-                URL.createObjectURL()
-              </code>{' '}
-              photo previews, <strong className="text-slate-900">keyboard skill tags</strong> (press{' '}
-              <kbd className="bg-white px-1.5 py-0.5 rounded text-xs border border-slate-300 shadow-2xs">Enter</kbd> to add,{' '}
-              <kbd className="bg-white px-1.5 py-0.5 rounded text-xs border border-slate-300 shadow-2xs">×</kbd> to remove), and a live character meter strictly under 200 characters.
+              Complete the controlled form below for <strong className="text-slate-900">Gachon University Student Management</strong>. Every field is required, Student ID must be{' '}
+              <code className="text-rose-700 bg-rose-100 px-1.5 py-0.5 rounded font-mono text-xs">10 digits</code>, Bio must stay under{' '}
+              <code className="text-rose-700 bg-rose-100 px-1.5 py-0.5 rounded font-mono text-xs">200 characters</code>, and pressing{' '}
+              <kbd className="px-1.5 py-0.5 rounded bg-slate-100 border border-slate-300 text-xs font-mono">Enter</kbd> adds skill tags.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             <button
               type="button"
-              onClick={fillDemoData}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 shadow-xs transition-all cursor-pointer"
+              onClick={fillDemoSabhyata}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-rose-50 text-rose-700 border border-rose-300 shadow-xs transition-all cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 text-rose-600" />
+              <Sparkles className="w-3.5 h-3.5 text-rose-500" />
               Fill Demo Data (Sabhyata)
             </button>
             <button
@@ -723,384 +674,321 @@ function StudentProfileEditorView({ theme }) {
               <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
               Reset
             </button>
-            <button
-              type="button"
-              onClick={() => setShowCodeModal(!showCodeModal)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition-all cursor-pointer"
-            >
-              <Code2 className="w-3.5 h-3.5" />
-              {showCodeModal ? 'Hide Code' : 'Inspect Component Code'}
-            </button>
           </div>
         </div>
-
-        {/* Collapsible Source Code Drawer */}
-        {showCodeModal && (
-          <div className="mt-5 pt-4 border-t border-indigo-200/70">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-mono font-semibold text-indigo-900">
-                StudentProfileEditor.jsx
-              </span>
-              <CopyButton text={CODE_SNIPPETS.studentEditor} />
-            </div>
-            <pre className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-xs overflow-x-auto font-mono max-h-80 leading-relaxed">
-              <code>{CODE_SNIPPETS.studentEditor}</code>
-            </pre>
-          </div>
-        )}
       </div>
 
-      {/* Main Two-Column Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
-        {/* Left Column: Student Form (7 cols) */}
-        <form
-          onSubmit={handleSubmit}
-          aria-labelledby="form-heading-editor"
-          className="lg:col-span-7 bg-white border border-rose-200/80 rounded-2xl p-6 sm:p-7 space-y-5 shadow-md shadow-rose-900/5"
-        >
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h3 id="form-heading-editor" className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
-              <Flower2 className="w-5 h-5 text-rose-500" />
-              <span>Student Information Form</span>
-            </h3>
-            <span className="text-xs font-semibold text-slate-500">All fields required (*)</span>
-          </div>
-
-          {/* Animated Form Completion Progress Bar */}
-          <div className="bg-rose-50/60 border border-rose-200/70 rounded-xl p-3.5">
+      {/* Main 2-Column Split: Form Left, Digital Student ID Card Right */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Form Card */}
+        <div className="lg:col-span-7 bg-white border border-rose-200/80 rounded-2xl p-6 sm:p-7 shadow-md shadow-rose-900/5">
+          {/* 6-Step Completion Progress Bar */}
+          <div className="mb-6 pb-4 border-b border-slate-100">
             <div className="flex items-center justify-between text-xs font-bold mb-1.5">
-              <span className="text-slate-800">Profile Completion Progress</span>
-              <span className="text-rose-700 font-mono">
-                {completedSteps} / 6 fields ready ({completionPct}%)
-              </span>
+              <span className="text-slate-600">Profile Form Completion</span>
+              <span className="text-rose-700 font-mono">{completedSteps} / 6 Required Fields ({progressPercent}%)</span>
             </div>
-            <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+            <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
               <div
-                className={`h-full transition-all duration-500 ease-out rounded-full ${theme.progressFill}`}
-                style={{ width: `${completionPct}%` }}
+                className={`h-full transition-all duration-300 ${theme.progressFill}`}
+                style={{ width: `${progressPercent}%` }}
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Full Name */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Full Name <span className="text-rose-600">*</span>
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="e.g. Sabhyata Chhetri"
-                className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50/70 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:bg-white focus:outline-none transition-all ${theme.focusBorder}`}
-              />
-              {errors.name && (
-                <p className="mt-1.5 text-xs font-medium text-rose-600 flex items-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.name}
-                </p>
-              )}
-            </div>
-
-            {/* Student ID (10 digits) */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Student ID (10 digits) <span className="text-rose-600">*</span>
-              </label>
-              <input
-                type="text"
-                name="studentId"
-                value={form.studentId}
-                onChange={handleChange}
-                maxLength={10}
-                placeholder="e.g. 2025394780"
-                className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50/70 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm font-mono focus:bg-white focus:outline-none transition-all ${theme.focusBorder}`}
-              />
-              {errors.studentId && (
-                <p className="mt-1.5 text-xs font-medium text-rose-600 flex items-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.studentId}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Major Dropdown */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Major <span className="text-rose-600">*</span>
-              </label>
-              <select
-                name="major"
-                value={form.major}
-                onChange={handleChange}
-                className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50/70 border border-slate-300 text-slate-900 text-sm font-medium focus:bg-white focus:outline-none transition-all ${theme.focusBorder}`}
-              >
-                {MAJORS.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
-              {errors.major && (
-                <p className="mt-1.5 text-xs font-medium text-rose-600 flex items-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.major}
-                </p>
-              )}
-            </div>
-
-            {/* Year Radio Buttons (1-4) */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Academic Year <span className="text-rose-600">*</span>
-              </label>
-              <div className="grid grid-cols-4 gap-2">
-                {[1, 2, 3, 4].map((yr) => {
-                  const active = form.year === String(yr);
-                  return (
-                    <label
-                      key={yr}
-                      className={`flex items-center justify-center py-2.5 px-2 rounded-xl border text-xs font-bold cursor-pointer transition-all ${
-                        active
-                          ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm'
-                          : 'bg-slate-50 border-slate-300 text-slate-700 hover:bg-indigo-50/60 hover:border-indigo-300'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="year"
-                        value={String(yr)}
-                        checked={active}
-                        onChange={handleChange}
-                        className="sr-only"
-                      />
-                      Yr {yr}
-                    </label>
-                  );
-                })}
-              </div>
-              {errors.year && (
-                <p className="mt-1.5 text-xs font-medium text-rose-600 flex items-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.year}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Bio with Live Character Counter & Color Meter */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                Bio (Under 200 chars) <span className="text-rose-600">*</span>
-              </label>
-              <span
-                className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md ${
-                  form.bio.length >= MAX_BIO
-                    ? 'bg-rose-100 text-rose-700'
-                    : form.bio.length > 165
-                    ? 'bg-amber-100 text-amber-800'
-                    : 'bg-slate-100 text-slate-600'
-                }`}
-              >
-                bio: {form.bio.length} / {MAX_BIO}
-              </span>
-            </div>
-            <textarea
-              name="bio"
-              value={form.bio}
-              onChange={handleChange}
-              rows={3}
-              placeholder="Write a brief introduction about your interests and coursework..."
-              className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50/70 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:bg-white focus:outline-none transition-all ${theme.focusBorder}`}
-            />
-            {errors.bio && (
-              <p className="mt-1.5 text-xs font-medium text-rose-600 flex items-center gap-1">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.bio}
-              </p>
-            )}
-          </div>
-
-          {/* Photo File Upload + Live Preview */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-              Profile Photo <span className="text-rose-600">*</span>
-            </label>
-            <div className="flex flex-wrap items-center gap-4">
-              <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold cursor-pointer transition-colors">
-                <Upload className="w-4 h-4 text-indigo-600" />
-                <span>Upload Student Photo</span>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Full Name */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                  Full Name <span className="text-rose-600">*</span>
+                </label>
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                  className="hidden"
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="e.g. Sabhyata Chhetri"
+                  className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none ${theme.focusBorder}`}
                 />
+                {errors.name && (
+                  <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.name}
+                  </p>
+                )}
+              </div>
+
+              {/* Student ID (10 digits) */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                  Student ID (10 digits) <span className="text-rose-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="studentId"
+                  maxLength={10}
+                  value={form.studentId}
+                  onChange={handleChange}
+                  placeholder="e.g. 2025394710"
+                  className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-mono placeholder-slate-400 focus:bg-white focus:outline-none ${theme.focusBorder}`}
+                />
+                {errors.studentId && (
+                  <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.studentId}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Major Dropdown */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                  Major <span className="text-rose-600">*</span>
+                </label>
+                <select
+                  name="major"
+                  value={form.major}
+                  onChange={handleChange}
+                  className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-semibold focus:bg-white focus:outline-none ${theme.focusBorder}`}
+                >
+                  {MAJORS.map((m) => (
+                    <option key={m} value={m}>{m}</option>
+                  ))}
+                </select>
+                {errors.major && (
+                  <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.major}
+                  </p>
+                )}
+              </div>
+
+              {/* Year 1-4 Radio */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                  Academic Year <span className="text-rose-600">*</span>
+                </label>
+                <div className="grid grid-cols-4 gap-2">
+                  {[1, 2, 3, 4].map((yr) => {
+                    const selected = form.year === String(yr);
+                    return (
+                      <label
+                        key={yr}
+                        className={`flex items-center justify-center py-2.5 rounded-xl border text-xs font-bold cursor-pointer transition-all ${
+                          selected
+                            ? theme.activePill
+                            : 'bg-slate-50 border-slate-300 text-slate-700 hover:border-rose-300'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="year"
+                          value={String(yr)}
+                          checked={selected}
+                          onChange={handleChange}
+                          className="sr-only"
+                        />
+                        Yr {yr}
+                      </label>
+                    );
+                  })}
+                </div>
+                {errors.year && (
+                  <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.year}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Bio with Live Character Counter */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                  Short Bio <span className="text-rose-600">*</span>
+                </label>
+                <span
+                  className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                    form.bio.length >= MAX_BIO
+                      ? 'bg-rose-100 text-rose-700'
+                      : form.bio.length > 170
+                      ? 'bg-amber-100 text-amber-800'
+                      : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  bio: {form.bio.length} / {MAX_BIO}
+                </span>
+              </div>
+              <textarea
+                name="bio"
+                value={form.bio}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Write a brief introduction (under 200 characters)..."
+                className={`w-full p-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none ${theme.focusBorder}`}
+              />
+              {errors.bio && (
+                <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.bio}
+                </p>
+              )}
+            </div>
+
+            {/* Profile Photo File Upload + Live Preview */}
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                Profile Photo <span className="text-rose-600">*</span>
               </label>
-              {form.photoUrl && (
-                <div className="flex items-center gap-2.5 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl">
+              <div className="flex flex-wrap items-center gap-3">
+                <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 hover:bg-rose-50/60 border border-slate-300 hover:border-rose-300 text-xs font-bold text-slate-700 cursor-pointer transition-colors">
+                  <Upload className="w-4 h-4 text-rose-600" />
+                  <span>Choose Image File</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="sr-only"
+                  />
+                </label>
+
+                {form.photoUrl && form.photoUrl !== 'demo-avatar' && (
                   <img
                     src={form.photoUrl}
-                    alt="Thumbnail preview"
-                    className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-xs"
+                    alt="Uploaded preview"
+                    className="w-11 h-11 rounded-full object-cover border-2 border-rose-400 shadow-xs"
                   />
-                  <span className="text-xs text-emerald-700 font-bold">Photo attached</span>
-                </div>
+                )}
+                {form.photoUrl === 'demo-avatar' && (
+                  <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
+                    ✓ Demo Avatar Ready
+                  </span>
+                )}
+              </div>
+              {errors.photoUrl && (
+                <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.photoUrl}
+                </p>
               )}
             </div>
-            {errors.photoUrl && (
-              <p className="mt-1.5 text-xs font-medium text-rose-600 flex items-center gap-1">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.photoUrl}
-              </p>
-            )}
-          </div>
 
-          {/* Stretch Goal: Skills Tags */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-              Skills Tags{' '}
-              <span className="text-slate-500 font-normal normal-case">
-                (Press Enter to add, × to remove)
-              </span>
-            </label>
-            <input
-              type="text"
-              value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
-              onKeyDown={handleSkillKeyDown}
-              placeholder="Type a skill (e.g. typescript, tailwind) and press Enter..."
-              className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50/70 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:bg-white focus:outline-none transition-all ${theme.focusBorder}`}
-            />
-            <div className="flex flex-wrap gap-2 mt-3">
-              {skills.map((skill, idx) => {
-                const pillStyle = SKILL_PILL_STYLES[idx % SKILL_PILL_STYLES.length];
-                return (
+            {/* Stretch: Interactive Skills Tags */}
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                Skills Tags <span className="text-slate-400 font-normal normal-case">(Press Enter to add, × to remove)</span>
+              </label>
+              <input
+                type="text"
+                value={skillInput}
+                onChange={(e) => setSkillInput(e.target.value)}
+                onKeyDown={handleSkillKeyDown}
+                placeholder="Type a skill (e.g. typescript) and press Enter..."
+                className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none ${theme.focusBorder}`}
+              />
+              <div className="flex flex-wrap gap-2 mt-2.5">
+                {skills.map((skill) => (
                   <span
                     key={skill}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-mono font-bold shadow-2xs transition-transform hover:scale-105 ${pillStyle}`}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono font-bold"
                   >
                     [{skill}]
                     <button
                       type="button"
-                      onClick={() => removeSkill(skill)}
                       aria-label={`Remove ${skill}`}
-                      className="hover:opacity-70 transition-opacity cursor-pointer"
+                      onClick={() => removeSkill(skill)}
+                      className="text-emerald-600 hover:text-rose-600 transition-colors cursor-pointer"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
                   </span>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </div>
 
-          <button
-            type="submit"
-            className={`w-full py-3.5 px-5 rounded-xl font-bold text-sm transition-all cursor-pointer flex items-center justify-center gap-2 ${theme.primaryBtn}`}
-          >
-            <UserCheck className="w-4 h-4" />
-            Validate &amp; Generate Digital Student ID Card
-          </button>
-        </form>
+            <button
+              type="submit"
+              className={`w-full py-3.5 px-5 rounded-xl font-bold text-sm transition-all cursor-pointer flex items-center justify-center gap-2 ${theme.primaryBtn}`}
+            >
+              <Award className="w-4 h-4" />
+              Save &amp; Render Profile Preview Card
+            </button>
+          </form>
 
-        {/* Right Column: Holographic Digital University Student ID Card (5 cols) */}
-        <div className="lg:col-span-5 space-y-4 sticky top-36">
-          <div className="flex items-center justify-between px-1">
-            <h3 id="preview-heading-card" className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
-              <Flower2 className="w-5 h-5 text-pink-500" />
-              <span>Live Student ID Preview</span>
-            </h3>
-            <span className="text-xs font-semibold text-rose-600">Auto-updating card</span>
-          </div>
+          <CodeDrawer
+            title="StudentProfileEditor"
+            code={CODE_SNIPPETS.studentEditor}
+            accentClass="text-rose-700 hover:text-rose-800"
+          />
+        </div>
 
-          {/* Holographic Outer Frame */}
-          <div className="p-1 rounded-3xl bg-gradient-to-br from-rose-500 via-fuchsia-500 to-indigo-500 shadow-xl shadow-rose-500/15">
-            <div className="bg-white rounded-[22px] overflow-hidden relative">
-              <FloralBlossom
-                className="w-20 h-20 absolute bottom-2 right-2 opacity-10 pointer-events-none"
-                petalColor="#F43F5E"
-                centerColor="#F59E0B"
-              />
-              {/* Gradient University Card Header */}
-              <div className={`bg-gradient-to-r ${theme.cardHeaderGradient} px-6 py-4 text-white flex items-center justify-between`}>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/85">
-                    WEB PROGRAMMING · K0126_002
-                  </p>
-                  <h4 className="text-sm font-extrabold tracking-wide">
-                    DIGITAL STUDENT ID CARD
-                  </h4>
-                </div>
-                {submittedProfile ? (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-xs text-white text-xs font-bold">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Verified
-                  </span>
-                ) : (
-                  <span className="px-2.5 py-1 rounded-full bg-black/20 text-white/90 text-[11px] font-semibold">
-                    Live Draft
-                  </span>
-                )}
+        {/* Digital Student ID Card Preview */}
+        <div className="lg:col-span-5 sticky top-36">
+          <div className="bg-slate-900 rounded-3xl p-6 text-white shadow-xl border border-slate-800 relative overflow-hidden">
+            <FloralBlossom
+              className="w-28 h-28 absolute -bottom-6 -right-6 opacity-15 pointer-events-none"
+              petalColor="#FB7185"
+              centerColor="#FDE047"
+            />
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-extrabold tracking-widest uppercase text-slate-400">
+                PROFILE PREVIEW · DIGITAL ID
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[11px] font-bold">
+                Verified Student
+              </span>
+            </div>
+
+            <div className="bg-white text-slate-900 rounded-2xl overflow-hidden shadow-lg">
+              {/* Top Gradient Banner */}
+              <div className={`h-16 bg-gradient-to-r ${theme.cardHeaderGradient} relative`}>
+                <span className="absolute top-3 right-4 text-[11px] font-extrabold text-white/90 tracking-wider uppercase">
+                  Gachon University
+                </span>
               </div>
 
-              {/* Card Body */}
-              <div className="p-6">
-                <div className="flex items-center gap-4">
-                  {/* Avatar with Gradient Ring */}
-                  <div className="p-1 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 shrink-0 shadow-md">
-                    {activeProfileData.photoUrl ? (
-                      <img
-                        src={activeProfileData.photoUrl}
-                        alt="Student avatar"
-                        className="w-16 h-16 rounded-full object-cover bg-white border-2 border-white"
-                      />
-                    ) : (
-                      <div className="w-16 h-16 rounded-full bg-slate-900 text-white flex items-center justify-center font-extrabold text-xl border-2 border-white">
-                        {getInitials(activeProfileData.name)}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <h4 className="text-xl font-extrabold text-slate-900 truncate">
-                      {activeProfileData.name}
-                    </h4>
-                    <p className="text-xs font-mono font-semibold text-slate-500 mt-0.5">
-                      ID {activeProfileData.studentId} · Year {activeProfileData.year}
-                    </p>
-                    <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                      <span className="inline-block px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-bold">
-                        {activeProfileData.major}
-                      </span>
-                      <span className="inline-block px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200 text-[11px] font-semibold">
-                        Gachon Univ.
-                      </span>
+              <div className="px-6 pb-6">
+                <div className="-mt-9 flex items-end justify-between gap-3 mb-3">
+                  {submittedProfile?.photoUrl ? (
+                    <img
+                      src={submittedProfile.photoUrl}
+                      alt={submittedProfile.name}
+                      className="w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-md bg-slate-100"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-rose-600 to-pink-600 text-white border-4 border-white shadow-md flex items-center justify-center font-extrabold text-2xl">
+                      {getInitials(submittedProfile?.name || 'SC')}
                     </div>
-                  </div>
+                  )}
+                  <span className="px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold">
+                    Year {submittedProfile?.year || '2'}
+                  </span>
                 </div>
 
-                {/* Bio Quote Box */}
-                <div className="mt-5 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-1">
-                    <span>STUDENT BIO</span>
-                    <span>bio: {activeProfileData.bio.length} / 200</span>
+                <h3 className="text-xl font-extrabold text-slate-900">
+                  {submittedProfile?.name}
+                </h3>
+                <p className="text-xs font-mono font-bold text-slate-500 mt-0.5">
+                  ID {submittedProfile?.studentId} · {submittedProfile?.major}
+                </p>
+
+                <div className="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-1">
+                    <span>BIO</span>
+                    <span>bio: {submittedProfile?.bio?.length || 0} / 200</span>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">
-                    {activeProfileData.bio}
+                    {submittedProfile?.bio}
                   </p>
                 </div>
 
-                {/* Skill Chips */}
                 <div className="mt-4">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
-                    Verified Technical Skills
+                  <p className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2">
+                    Verified Skills
                   </p>
                   <div className="flex flex-wrap gap-1.5">
-                    {activeProfileData.skills.map((skill, idx) => (
+                    {(submittedProfile?.skills || []).map((skill) => (
                       <span
                         key={skill}
-                        className={`px-2.5 py-0.5 rounded-md border text-xs font-mono font-bold ${
-                          SKILL_PILL_STYLES[idx % SKILL_PILL_STYLES.length]
-                        }`}
+                        className="px-2.5 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono font-bold"
                       >
                         [{skill}]
                       </span>
@@ -1108,23 +996,15 @@ function StudentProfileEditorView({ theme }) {
                   </div>
                 </div>
 
-                {/* Card Footer Actions */}
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
-                  <span className="text-[11px] text-slate-400 font-medium">
-                    {submittedProfile ? 'Official Submission Ready' : 'Submit form to lock card'}
-                  </span>
-                  <CopyButton text={profileJsonString} label="Copy Profile JSON" />
+                <div className="mt-5 pt-4 border-t border-slate-100 flex justify-end">
+                  <CopyButton
+                    text={JSON.stringify(submittedProfile, null, 2)}
+                    label="Copy Profile JSON"
+                  />
                 </div>
               </div>
             </div>
           </div>
-
-          {submittedProfile && (
-            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 shadow-xs">
-              <Award className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>All validation checks passed! Profile Preview card updated.</span>
-            </div>
-          )}
         </div>
       </div>
     </div>
@@ -1132,24 +1012,23 @@ function StudentProfileEditorView({ theme }) {
 }
 
 // ============================================================================
-// TAB 2: STUDY GUIDE (EXERCISES 1–3) — EMERALD & TEAL THEME
+// TAB 2: STUDY GUIDE — EXERCISES 1 TO 3 (BOTANICAL EMERALD THEME)
 // ============================================================================
 
 function StudyGuideView() {
-  // Exercise 1 State
+  // Exercise 1: BioField State
   const [bio, setBio] = useState('');
-  const MAX_BIO = 200;
-  const remaining = MAX_BIO - bio.length;
-  const bioPercent = Math.min(100, Math.round((bio.length / MAX_BIO) * 100));
+  const MAX_EX1 = 200;
+  const remainingEx1 = MAX_EX1 - bio.length;
 
-  // Exercise 2 State
+  // Exercise 2: ContactForm State
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [contactErrors, setContactErrors] = useState({});
-  const [submittedContactName, setSubmittedContactName] = useState('');
+  const [contactSubmittedName, setContactSubmittedName] = useState('');
 
-  // Exercise 3 State
-  const SKILL_LIST = ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Python'];
-  const [selectedSkills, setSelectedSkills] = useState([]);
+  // Exercise 3: SkillPicker State
+  const SKILLS_LIST = ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Python'];
+  const [selectedSkills, setSelectedSkills] = useState(['HTML', 'React']);
 
   function handleContactChange(e) {
     const { name, value } = e.target;
@@ -1167,7 +1046,7 @@ function StudyGuideView() {
       setContactErrors(errs);
       return;
     }
-    setSubmittedContactName(contactForm.name);
+    setContactSubmittedName(contactForm.name);
     setContactForm({ name: '', email: '', message: '' });
   }
 
@@ -1179,7 +1058,7 @@ function StudyGuideView() {
 
   return (
     <div className="space-y-6">
-      {/* Informative Overview Banner (Emerald & Teal with Botanical Accents) */}
+      {/* Informative Overview Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-teal-50/80 border border-emerald-200 rounded-2xl p-6 shadow-sm">
         <FloralBlossom
           className="w-24 h-24 absolute -top-5 -right-5 opacity-20 pointer-events-none"
@@ -1188,7 +1067,7 @@ function StudyGuideView() {
         />
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-800 text-xs font-bold mb-2">
           <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Study Guide · Exercises 1~3 Practice Labs</span>
+          <span>Study Guide · Interactive Practice Exercises 1–3</span>
         </div>
         <h2
           id="section-study-guide"
@@ -1198,270 +1077,250 @@ function StudyGuideView() {
           2. Study Guide: Exercises 1 to 3
         </h2>
         <p className="text-sm text-slate-700 mt-1.5 max-w-3xl leading-relaxed">
-          Master the three core Study Guide exercises: capping character counts with conditional{' '}
-          <code className="text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded font-mono text-xs">disabled</code>{' '}
-          states, managing multi-field form state with inline validation &amp; reset, and toggling array selections via checkboxes.
+          Test all three Study Guide components live: character-capped controlled textareas with boundary disabling, multi-field form validation with automatic reset, and array-state checkbox selection with live limit warnings.
         </p>
 
-        {/* Sub-heading Quick Links */}
+        {/* Quick-Jump Sub-Links */}
         <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-emerald-200/70">
           <span className="text-xs font-bold text-emerald-900">Jump to Exercise:</span>
-          <a href="#sg-ex-1" className="px-3 py-1 rounded-lg bg-white hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-800 transition-colors">
-            Ex 1: Controlled Bio
+          <a href="#ex-1" className="px-3 py-1 rounded-lg bg-white hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-800 transition-colors">
+            Ex 1: BioField
           </a>
-          <a href="#sg-ex-2" className="px-3 py-1 rounded-lg bg-white hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-800 transition-colors">
-            Ex 2: Contact Form
+          <a href="#ex-2" className="px-3 py-1 rounded-lg bg-white hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-800 transition-colors">
+            Ex 2: ContactForm
           </a>
-          <a href="#sg-ex-3" className="px-3 py-1 rounded-lg bg-white hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-800 transition-colors">
-            Ex 3: Skill Picker
+          <a href="#ex-3" className="px-3 py-1 rounded-lg bg-white hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-800 transition-colors">
+            Ex 3: SkillPicker
           </a>
         </div>
       </div>
 
-      {/* 3 Exercises Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        {/* Exercise 1 */}
-        <div id="sg-ex-1" className="scroll-mt-36 bg-white border border-emerald-200/80 rounded-2xl p-6 flex flex-col justify-between shadow-md shadow-emerald-900/5 hover:shadow-lg transition-shadow">
+      {/* Exercise 1: BioField */}
+      <div id="ex-1" className="scroll-mt-36 bg-white border border-emerald-200/80 rounded-2xl p-6 shadow-md shadow-emerald-900/5">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold">
-                Exercise 1
-              </span>
-              <span className="text-xs font-mono text-slate-400">BioField.jsx</span>
-            </div>
-            <h3 className="text-lg font-extrabold text-slate-900">
-              Controlled Bio &amp; Auto-Disable
+            <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold">
+              Exercise 1
+            </span>
+            <h3 className="text-lg font-extrabold text-slate-900 mt-1">
+              Controlled &lt;textarea&gt; with 200-Char Limit &amp; Auto-Disable
             </h3>
-            <p className="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">
-              Caps input at 200 characters, turns the meter red when fewer than 20 characters remain, and disables the{' '}
-              <code className="text-emerald-700 font-mono">&lt;textarea&gt;</code> at 200 characters.
+          </div>
+          <span className="text-xs font-mono font-bold text-slate-500">
+            disabled={'{bio.length >= 200}'}
+          </span>
+        </div>
+
+        <textarea
+          value={bio}
+          onChange={(e) => setBio(e.target.value.slice(0, MAX_EX1))}
+          disabled={bio.length >= MAX_EX1}
+          rows={3}
+          placeholder="Type up to 200 characters (textarea disables automatically at 200)..."
+          className="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm disabled:bg-rose-50 disabled:border-rose-300 disabled:text-rose-800 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+        />
+
+        <div className="flex items-center justify-between mt-2">
+          <p
+            style={{ color: remainingEx1 < 20 ? '#dc2626' : '#475569', fontSize: 13 }}
+            className="font-mono font-bold"
+          >
+            {bio.length} / {MAX_EX1} characters {bio.length >= MAX_EX1 && '(Limit Reached — Disabled)'}
+          </p>
+          {bio.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setBio('')}
+              className="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer"
+            >
+              Reset Bio
+            </button>
+          )}
+        </div>
+
+        <CodeDrawer
+          title="BioField"
+          code={CODE_SNIPPETS.ex1}
+          accentClass="text-emerald-700 hover:text-emerald-800"
+        />
+      </div>
+
+      {/* Exercise 2: ContactForm */}
+      <div id="ex-2" className="scroll-mt-36 bg-white border border-emerald-200/80 rounded-2xl p-6 shadow-md shadow-emerald-900/5">
+        <div className="mb-4">
+          <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold">
+            Exercise 2
+          </span>
+          <h3 className="text-lg font-extrabold text-slate-900 mt-1">
+            Contact Form with Inline Validation &amp; Reset
+          </h3>
+        </div>
+
+        {contactSubmittedName ? (
+          <div className="p-5 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm font-bold text-emerald-900">
+              Thank you, {contactSubmittedName}! We&apos;ll be in touch.
             </p>
-
-            <textarea
-              value={bio}
-              onChange={(e) => setBio(e.target.value.slice(0, MAX_BIO))}
-              disabled={bio.length >= MAX_BIO}
-              rows={4}
-              placeholder="Type your bio (auto-disables at 200 characters)..."
-              className="w-full p-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 disabled:bg-rose-50/60 disabled:border-rose-200 disabled:text-slate-500 disabled:cursor-not-allowed transition-all"
-            />
-
-            {/* Color-Shifting Progress Meter */}
-            <div className="mt-3 space-y-1.5">
-              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div
-                  className={`h-full transition-all duration-300 rounded-full ${
-                    bio.length >= MAX_BIO
-                      ? 'bg-rose-500'
-                      : remaining < 20
-                      ? 'bg-amber-500'
-                      : 'bg-emerald-500'
-                  }`}
-                  style={{ width: `${bioPercent}%` }}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <p
-                  className={`text-xs font-mono font-bold ${
-                    remaining < 20 ? 'text-rose-600' : 'text-slate-600'
-                  }`}
-                >
-                  {bio.length} / {MAX_BIO} {bio.length >= MAX_BIO && '(Limit reached — disabled)'}
-                </p>
-                {bio.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setBio('')}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800 cursor-pointer"
-                  >
-                    <RotateCcw className="w-3 h-3" /> Reset
-                  </button>
+            <button
+              type="button"
+              onClick={() => setContactSubmittedName('')}
+              className="px-3.5 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 cursor-pointer"
+            >
+              Send Another Message
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleContactSubmit} className="space-y-3.5 max-w-xl">
+            {['name', 'email', 'message'].map((field) => (
+              <div key={field}>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                  {field}
+                </label>
+                {field === 'message' ? (
+                  <textarea
+                    name={field}
+                    value={contactForm[field]}
+                    onChange={handleContactChange}
+                    rows={3}
+                    placeholder="Your message..."
+                    className="w-full p-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:bg-white focus:outline-none focus:border-emerald-500"
+                  />
+                ) : (
+                  <input
+                    name={field}
+                    value={contactForm[field]}
+                    onChange={handleContactChange}
+                    placeholder={`Enter ${field}...`}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:bg-white focus:outline-none focus:border-emerald-500"
+                  />
+                )}
+                {contactErrors[field] && (
+                  <p className="mt-1 text-xs font-semibold text-rose-600">{contactErrors[field]}</p>
                 )}
               </div>
-            </div>
-          </div>
+            ))}
+            <button
+              type="submit"
+              className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs cursor-pointer"
+            >
+              Send Message
+            </button>
+          </form>
+        )}
 
-          <CodeDrawer
-            title="BioField"
-            code={CODE_SNIPPETS.ex1}
-            accentClass="text-emerald-700 hover:text-emerald-800"
-          />
+        <CodeDrawer
+          title="ContactForm"
+          code={CODE_SNIPPETS.ex2}
+          accentClass="text-emerald-700 hover:text-emerald-800"
+        />
+      </div>
+
+      {/* Exercise 3: SkillPicker */}
+      <div id="ex-3" className="scroll-mt-36 bg-white border border-emerald-200/80 rounded-2xl p-6 shadow-md shadow-emerald-900/5">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div>
+            <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold">
+              Exercise 3
+            </span>
+            <h3 className="text-lg font-extrabold text-slate-900 mt-1">
+              Programming Skill Picker (Max 3 Warning)
+            </h3>
+          </div>
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-mono font-bold ${
+              selectedSkills.length > 3
+                ? 'bg-rose-100 text-rose-700 border border-rose-200'
+                : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+            }`}
+          >
+            Selected: {selectedSkills.length} / 3
+          </span>
         </div>
 
-        {/* Exercise 2 */}
-        <div id="sg-ex-2" className="scroll-mt-36 bg-white border border-emerald-200/80 rounded-2xl p-6 flex flex-col justify-between shadow-md shadow-emerald-900/5 hover:shadow-lg transition-shadow">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="px-2.5 py-0.5 rounded-md bg-teal-100 text-teal-800 text-xs font-bold">
-                Exercise 2
-              </span>
-              <span className="text-xs font-mono text-slate-400">ContactForm.jsx</span>
-            </div>
-            <h3 className="text-lg font-extrabold text-slate-900">
-              Contact Form &amp; Validation
-            </h3>
-            <p className="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">
-              Validates Name, Email, and Message on submit, displays inline errors next to empty fields, shows a Thank You banner, and resets inputs.
-            </p>
-
-            {submittedContactName ? (
-              <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-900 space-y-3">
-                <div className="flex items-center gap-2 text-emerald-700 font-extrabold text-sm">
-                  <CheckCircle2 className="w-5 h-5" />
-                  <span>Thank you, {submittedContactName}!</span>
-                </div>
-                <p className="text-xs text-emerald-800">
-                  We&apos;ll be in touch shortly. The form fields have been reset.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setSubmittedContactName('')}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer"
-                >
-                  <RotateCcw className="w-3 h-3" /> Send Another Message
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleContactSubmit} className="space-y-3">
-                {['name', 'email', 'message'].map((field) => (
-                  <div key={field}>
-                    {field === 'message' ? (
-                      <textarea
-                        name={field}
-                        value={contactForm[field]}
-                        onChange={handleContactChange}
-                        rows={3}
-                        placeholder="Your message"
-                        className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                      />
-                    ) : (
-                      <input
-                        name={field}
-                        value={contactForm[field]}
-                        onChange={handleContactChange}
-                        placeholder={field === 'name' ? 'Your Name' : 'Your Email'}
-                        className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                      />
-                    )}
-                    {contactErrors[field] && (
-                      <p className="text-xs font-semibold text-rose-600 mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {contactErrors[field]}
-                      </p>
-                    )}
-                  </div>
-                ))}
-                <button
-                  type="submit"
-                  className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-colors cursor-pointer"
-                >
-                  Send Message
-                </button>
-              </form>
-            )}
+        {selectedSkills.length > 3 && (
+          <div className="mb-3 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>Please select at most 3 skills.</span>
           </div>
+        )}
 
-          <CodeDrawer
-            title="ContactForm"
-            code={CODE_SNIPPETS.ex2}
-            accentClass="text-emerald-700 hover:text-emerald-800"
-          />
-        </div>
-
-        {/* Exercise 3 */}
-        <div id="sg-ex-3" className="scroll-mt-36 bg-white border border-emerald-200/80 rounded-2xl p-6 flex flex-col justify-between shadow-md shadow-emerald-900/5 hover:shadow-lg transition-shadow">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="px-2.5 py-0.5 rounded-md bg-cyan-100 text-cyan-800 text-xs font-bold">
-                Exercise 3
-              </span>
-              <span className="text-xs font-mono text-slate-400">SkillPicker.jsx</span>
-            </div>
-            <h3 className="text-lg font-extrabold text-slate-900">
-              Skill Picker (Max 3 Warning)
-            </h3>
-            <p className="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">
-              Renders 6 skill checkboxes with a live{' '}
-              <code className="text-emerald-700 font-mono">Selected: X / 3</code> counter and triggers a red alert banner when more than 3 are checked.
-            </p>
-
-            <div className="flex items-center justify-between mb-3 p-3 rounded-xl bg-emerald-50/80 border border-emerald-200">
-              <span className="text-xs font-bold text-slate-800">
-                Selected:{' '}
-                <span
-                  className={`font-mono px-2 py-0.5 rounded ${
-                    selectedSkills.length > 3
-                      ? 'bg-rose-100 text-rose-700'
-                      : 'bg-emerald-600 text-white'
-                  }`}
-                >
-                  {selectedSkills.length} / 3
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+          {SKILLS_LIST.map((skill) => {
+            const checked = selectedSkills.includes(skill);
+            return (
+              <label
+                key={skill}
+                className={`flex items-center gap-2.5 p-3 rounded-xl border text-xs font-bold cursor-pointer transition-all ${
+                  checked
+                    ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs'
+                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-emerald-300'
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={(e) => toggleSkill(skill, e.target.checked)}
+                  className="sr-only"
+                />
+                <span className="w-4 h-4 rounded border border-current flex items-center justify-center">
+                  {checked && <Check className="w-3 h-3" />}
                 </span>
-              </span>
-              {selectedSkills.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => setSelectedSkills([])}
-                  className="text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
-
-            {selectedSkills.length > 3 && (
-              <div className="mb-3 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
-                <span>Please select at most 3 skills.</span>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 gap-2.5">
-              {SKILL_LIST.map((skill) => {
-                const isChecked = selectedSkills.includes(skill);
-                return (
-                  <label
-                    key={skill}
-                    className={`flex items-center justify-between p-2.5 rounded-xl border text-xs font-bold cursor-pointer transition-all ${
-                      isChecked
-                        ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs'
-                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-emerald-300 hover:bg-emerald-50/40'
-                    }`}
-                  >
-                    <span>{skill}</span>
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={(e) => toggleSkill(skill, e.target.checked)}
-                      className="sr-only"
-                    />
-                    {isChecked ? (
-                      <CheckCircle2 className="w-4 h-4 text-white" />
-                    ) : (
-                      <span className="w-4 h-4 rounded-full border border-slate-300 bg-white" />
-                    )}
-                  </label>
-                );
-              })}
-            </div>
-          </div>
-
-          <CodeDrawer
-            title="SkillPicker"
-            code={CODE_SNIPPETS.ex3}
-            accentClass="text-emerald-700 hover:text-emerald-800"
-          />
+                <span>{skill}</span>
+              </label>
+            );
+          })}
         </div>
+
+        <CodeDrawer
+          title="SkillPicker"
+          code={CODE_SNIPPETS.ex3}
+          accentClass="text-emerald-700 hover:text-emerald-800"
+        />
       </div>
     </div>
   );
 }
 
 // ============================================================================
-// TAB 3: VIDEO LECTURE EXERCISE — AMBER & CORAL THEME
+// TAB 3: VIDEO LECTURE EXERCISE — AMBER & CORAL THEME (ENHANCED)
 // ============================================================================
 
 function VideoLectureFeedbackView() {
-  const TOPICS = ['HTML', 'CSS', 'JavaScript', 'Git', 'React'];
+  const TOPICS = [
+    { name: 'HTML', desc: 'Semantic structure & form attributes' },
+    { name: 'CSS', desc: 'Responsive layouts & Tailwind styling' },
+    { name: 'JavaScript', desc: 'ES6+ array methods & regex validation' },
+    { name: 'Git', desc: 'Version control & GitHub workflow' },
+    { name: 'React', desc: 'useState, controlled inputs & onSubmit' },
+  ];
+
+  const LECTURE_MODULES = [
+    'Week 6 · React Controlled Forms & Validation (K0126_002)',
+    'Week 5 · React State, Events & Conditional Rendering',
+    'Week 4 · Modern JavaScript (ES6+) & DOM APIs',
+    'Week 3 · Responsive CSS Grid, Flexbox & Tailwind',
+  ];
+
+  const PACE_OPTIONS = ['Too Fast', 'Just Right', 'Too Slow'];
+
+  const LECTURE_QUALITY_OPTIONS = [
+    'Clear & Engaging',
+    'Well-Structured',
+    'Needs More Live Demos',
+  ];
+
+  const PARTICIPATION_OPTIONS = [
+    'Highly Interactive',
+    'Balanced Q&A',
+    'Needs More Group Practice',
+  ];
+
+  const MATERIALS_OPTIONS = [
+    'Very Helpful (Slides & Study Guide)',
+    'Good Reference Code',
+    'Needs More Examples',
+  ];
+
   const RATINGS = [
     { stars: '⭐⭐⭐⭐⭐', label: '5 / 5 — Excellent' },
     { stars: '⭐⭐⭐⭐', label: '4 / 5 — Very Good' },
@@ -1470,7 +1329,12 @@ function VideoLectureFeedbackView() {
 
   const [studentName, setStudentName] = useState('');
   const [studentId, setStudentId] = useState('');
+  const [lectureModule, setLectureModule] = useState(LECTURE_MODULES[0]);
   const [rating, setRating] = useState('');
+  const [pace, setPace] = useState('Just Right');
+  const [lectureQuality, setLectureQuality] = useState(LECTURE_QUALITY_OPTIONS[0]);
+  const [classParticipation, setClassParticipation] = useState(PARTICIPATION_OPTIONS[0]);
+  const [materialsQuality, setMaterialsQuality] = useState(MATERIALS_OPTIONS[0]);
   const [topics, setTopics] = useState([]);
   const [comments, setComments] = useState('');
   const [errors, setErrors] = useState({});
@@ -1480,8 +1344,32 @@ function VideoLectureFeedbackView() {
   // Bonus: Disable submit button while any required field is empty
   const isSubmitDisabled = !studentName.trim() || !studentId.trim() || !rating;
 
-  function handleTopicToggle(topic, checked) {
-    setTopics((prev) => (checked ? [...prev, topic] : prev.filter((t) => t !== topic)));
+  const requiredCompletedCount = [
+    studentName.trim().length > 0,
+    /^\d{8}$/.test(studentId),
+    Boolean(rating),
+  ].filter(Boolean).length;
+
+  function handleTopicToggle(topicName, checked) {
+    setTopics((prev) =>
+      checked ? [...prev, topicName] : prev.filter((t) => t !== topicName)
+    );
+  }
+
+  function fillDemoFeedback() {
+    setStudentName('Sabhyata Chhetri');
+    setStudentId('20253947');
+    setLectureModule(LECTURE_MODULES[0]);
+    setRating('⭐⭐⭐⭐⭐');
+    setPace('Just Right');
+    setLectureQuality(LECTURE_QUALITY_OPTIONS[0]);
+    setClassParticipation(PARTICIPATION_OPTIONS[0]);
+    setMaterialsQuality(MATERIALS_OPTIONS[0]);
+    setTopics(['HTML', 'CSS', 'JavaScript', 'React']);
+    setComments(
+      'The lectures were super clear and engaging, class participation kept everyone active, and the study guide + lecture slides provided great hands-on React examples!'
+    );
+    setErrors({});
   }
 
   function handleSubmit(e) {
@@ -1510,63 +1398,206 @@ function VideoLectureFeedbackView() {
   function handleReset() {
     setStudentName('');
     setStudentId('');
+    setLectureModule(LECTURE_MODULES[0]);
     setRating('');
+    setPace('Just Right');
+    setLectureQuality(LECTURE_QUALITY_OPTIONS[0]);
+    setClassParticipation(PARTICIPATION_OPTIONS[0]);
+    setMaterialsQuality(MATERIALS_OPTIONS[0]);
     setTopics([]);
     setComments('');
     setErrors({});
     setSubmitted(false);
   }
 
+  const feedbackReceiptJson = JSON.stringify(
+    {
+      course: 'Web Programming (K0126_002)',
+      institution: 'Gachon University · Department of Computer Science',
+      module: lectureModule,
+      studentName,
+      studentId,
+      rating,
+      lectureQuality,
+      classParticipation,
+      materialsProvided: materialsQuality,
+      lecturePace: pace,
+      topicsCoveredWell: topics,
+      comments: comments || '(No additional comments)',
+    },
+    null,
+    2
+  );
+
   return (
     <div className="space-y-6">
-      {/* Informative Overview Banner (Amber & Coral Theme with Marigold Floral Accents) */}
+      {/* Informative Overview Banner with Web Programming Class Context */}
       <div className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-white to-orange-50/80 border border-amber-200 rounded-2xl p-6 shadow-sm">
         <FloralBlossom
           className="w-24 h-24 absolute -top-5 -right-5 opacity-20 pointer-events-none"
           petalColor="#F59E0B"
           centerColor="#F43F5E"
         />
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold mb-2">
-          <Video className="w-3.5 h-3.5 text-amber-600" />
-          <span>Video Lecture · Page 13 Exercise</span>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold">
+              <Video className="w-3.5 h-3.5 text-amber-600" />
+              <span>Video Lecture · Page 13 Exercise · Web Programming (K0126_002)</span>
+            </div>
+            <h2
+              id="section-video-lecture"
+              tabIndex={-1}
+              className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight scroll-mt-36 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded-lg"
+            >
+              3. Video Lecture: Course Feedback Form
+            </h2>
+            <p className="text-sm text-slate-700 max-w-3xl leading-relaxed">
+              Built for <strong className="text-slate-900">Web Programming · K0126_002 (Gachon University)</strong> to evaluate our React Forms &amp; Frontend Architecture lectures. Combines 8-digit Student ID validation, star ratings, optional topic mastery chips, a 300-character live counter, and a derived boolean (<code className="text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded font-mono text-xs">isSubmitDisabled</code>) that unlocks submission once required fields are complete.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <button
+              type="button"
+              onClick={fillDemoFeedback}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-amber-50 text-amber-800 border border-amber-300 shadow-xs transition-all cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+              Fill Demo (Sabhyata)
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-xs transition-all cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
+              Reset
+            </button>
+          </div>
         </div>
-        <h2
-          id="section-video-lecture"
-          tabIndex={-1}
-          className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight scroll-mt-36 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded-lg"
-        >
-          3. Video Lecture: Course Feedback Form
-        </h2>
-        <p className="text-sm text-slate-700 mt-1.5 max-w-3xl leading-relaxed">
-          Combines required text inputs, 8-digit Student ID validation, interactive star rating cards, optional multi-select topic chips, a 300-character live counter, and a derived boolean (<code className="text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded font-mono text-xs">isSubmitDisabled</code>) that keeps the submit button disabled until all required fields are filled.
-        </p>
+
+        {/* Web Programming Class Syllabus & Metadata Strip */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 pt-4 border-t border-amber-200/70">
+          <div className="bg-white/80 border border-amber-200/80 rounded-xl p-3">
+            <p className="text-[11px] font-extrabold uppercase tracking-wider text-amber-700">
+              Course &amp; Section
+            </p>
+            <p className="text-xs font-bold text-slate-900 mt-0.5">
+              Web Programming · K0126_002
+            </p>
+            <p className="text-[11px] text-slate-600">
+              Dept. of Computer Science · Gachon Univ.
+            </p>
+          </div>
+          <div className="bg-white/80 border border-amber-200/80 rounded-xl p-3">
+            <p className="text-[11px] font-extrabold uppercase tracking-wider text-amber-700">
+              Core Stack Covered
+            </p>
+            <p className="text-xs font-bold text-slate-900 mt-0.5">
+              HTML5 · CSS3 · ES6+ JS · Git · React
+            </p>
+            <p className="text-[11px] text-slate-600">
+              Controlled inputs, hooks &amp; client validation
+            </p>
+          </div>
+          <div className="bg-white/80 border border-amber-200/80 rounded-xl p-3">
+            <p className="text-[11px] font-extrabold uppercase tracking-wider text-amber-700">
+              Bonus Unlock Gate
+            </p>
+            <p className="text-xs font-bold text-slate-900 mt-0.5">
+              {requiredCompletedCount} / 3 Required Fields Ready
+            </p>
+            <p className="text-[11px] text-slate-600">
+              {isSubmitDisabled
+                ? 'Submit button locked until Name, ID & Rating are set'
+                : 'Unlocked! Ready to submit feedback'}
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="max-w-2xl mx-auto bg-white border border-amber-200/90 rounded-2xl p-6 sm:p-8 shadow-lg shadow-amber-900/5">
+      {/* Main Feedback Card */}
+      <div className="max-w-3xl mx-auto bg-white border border-amber-200/90 rounded-2xl p-6 sm:p-8 shadow-lg shadow-amber-900/5">
         {submitted ? (
-          <div className="text-center py-8 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-orange-500/25">
-              <CheckCircle2 className="w-9 h-9" />
-            </div>
-            <h3 className="text-2xl font-extrabold text-slate-900">
-              Thank you, {studentName}!
-            </h3>
-            <p className="text-sm text-slate-600 max-w-md mx-auto">
-              Your feedback for Student ID <span className="font-mono font-bold text-slate-900">{studentId}</span> ({rating}) has been recorded.
-            </p>
-            {topics.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-1.5 pt-1">
-                {topics.map((t) => (
-                  <span
-                    key={t}
-                    className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold"
-                  >
-                    {t}
-                  </span>
-                ))}
+          <div className="space-y-5">
+            <div className="text-center space-y-3">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-orange-500/25">
+                <CheckCircle2 className="w-9 h-9" />
               </div>
-            )}
-            <div className="pt-2">
+              <h3 className="text-2xl font-extrabold text-slate-900">
+                Thank you, {studentName}!
+              </h3>
+              <p className="text-sm text-slate-600 max-w-lg mx-auto">
+                Your evaluation for <strong className="text-slate-900">Web Programming (K0126_002)</strong> has been recorded for Student ID{' '}
+                <span className="font-mono font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded">
+                  {studentId}
+                </span>.
+              </p>
+            </div>
+
+            {/* Structured Submission Receipt */}
+            <div className="bg-amber-50/60 border border-amber-200 rounded-2xl p-5 space-y-3 text-xs">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/80 pb-2.5">
+                <span className="font-extrabold uppercase tracking-wider text-amber-900">
+                  Official Course Feedback Receipt
+                </span>
+                <CopyButton text={feedbackReceiptJson} label="Copy Feedback JSON" />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <span className="text-slate-500 block">Evaluated Lecture Module</span>
+                  <span className="font-bold text-slate-900">{lectureModule}</span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">Overall Rating &amp; Lecture Pace</span>
+                  <span className="font-bold text-slate-900">
+                    {rating} · Pace: {pace}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">How Were the Lectures?</span>
+                  <span className="font-bold text-amber-900">{lectureQuality}</span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block">Class Participation</span>
+                  <span className="font-bold text-amber-900">{classParticipation}</span>
+                </div>
+                <div className="sm:col-span-2">
+                  <span className="text-slate-500 block">Materials Provided (Slides &amp; Study Guide)</span>
+                  <span className="font-bold text-amber-900">{materialsQuality}</span>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-slate-500 block mb-1">Topics Covered Well</span>
+                {topics.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5">
+                    {topics.map((t) => (
+                      <span
+                        key={t}
+                        className="px-2.5 py-1 rounded-full bg-amber-100 border border-amber-300 text-amber-900 font-bold"
+                      >
+                        ✓ {t}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-slate-600 italic">None selected (optional)</span>
+                )}
+              </div>
+
+              {comments.trim() && (
+                <div>
+                  <span className="text-slate-500 block mb-1">Student Comments</span>
+                  <p className="p-3 rounded-xl bg-white border border-amber-200/80 text-slate-800 leading-relaxed">
+                    &ldquo;{comments}&rdquo;
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="text-center pt-1">
               <button
                 type="button"
                 onClick={handleReset}
@@ -1578,6 +1609,24 @@ function VideoLectureFeedbackView() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Lecture Module Context Selector */}
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                Web Programming Lecture Session
+              </label>
+              <select
+                value={lectureModule}
+                onChange={(e) => setLectureModule(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-amber-50/40 border border-amber-200 text-slate-900 text-sm font-semibold focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+              >
+                {LECTURE_MODULES.map((mod) => (
+                  <option key={mod} value={mod}>
+                    {mod}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* 1. Student Name */}
               <div>
@@ -1591,11 +1640,13 @@ function VideoLectureFeedbackView() {
                     setStudentName(e.target.value);
                     setErrors((p) => ({ ...p, studentName: '' }));
                   }}
-                  placeholder="Enter full name"
+                  placeholder="e.g. Sabhyata Chhetri"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
                 />
                 {errors.studentName && (
-                  <p className="mt-1 text-xs font-semibold text-rose-600">{errors.studentName}</p>
+                  <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.studentName}
+                  </p>
                 )}
               </div>
 
@@ -1611,11 +1662,13 @@ function VideoLectureFeedbackView() {
                     setStudentId(e.target.value);
                     setErrors((p) => ({ ...p, studentId: '' }));
                   }}
-                  placeholder="e.g. 20241234"
+                  placeholder="e.g. 20253947"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-mono placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
                 />
                 {errors.studentId && (
-                  <p className="mt-1 text-xs font-semibold text-rose-600">{errors.studentId}</p>
+                  <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.studentId}
+                  </p>
                 )}
               </div>
             </div>
@@ -1623,7 +1676,7 @@ function VideoLectureFeedbackView() {
             {/* 3. Rating */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                3. Course Rating <span className="text-rose-600">*</span>
+                3. Video Lecture Rating <span className="text-rose-600">*</span>
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {RATINGS.map((item) => {
@@ -1661,36 +1714,165 @@ function VideoLectureFeedbackView() {
                 })}
               </div>
               {errors.rating && (
-                <p className="mt-1 text-xs font-semibold text-rose-600">{errors.rating}</p>
+                <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.rating}
+                </p>
               )}
+            </div>
+
+            {/* Lecture Pacing Selector */}
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+                Lecture Pacing &amp; Depth
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {PACE_OPTIONS.map((option) => {
+                  const active = pace === option;
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setPace(option)}
+                      className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                        active
+                          ? 'bg-amber-100 border-amber-400 text-amber-900 shadow-2xs'
+                          : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-amber-300'
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Classroom Experience: Lectures, Participation & Materials Evaluation */}
+            <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/80 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-extrabold uppercase tracking-wider text-amber-900">
+                  Classroom Experience &amp; Materials Evaluation
+                </span>
+                <span className="text-[11px] font-semibold text-amber-700">
+                  K0126_002 Course Quality
+                </span>
+              </div>
+
+              {/* How were the lectures? */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                  How were the lectures?
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {LECTURE_QUALITY_OPTIONS.map((opt) => {
+                    const active = lectureQuality === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => setLectureQuality(opt)}
+                        className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                          active
+                            ? 'bg-amber-500 border-amber-500 text-white shadow-xs'
+                            : 'bg-white border-slate-200 text-slate-700 hover:border-amber-300'
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* How was class participation? */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                  How was class participation &amp; student engagement?
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {PARTICIPATION_OPTIONS.map((opt) => {
+                    const active = classParticipation === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => setClassParticipation(opt)}
+                        className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                          active
+                            ? 'bg-amber-500 border-amber-500 text-white shadow-xs'
+                            : 'bg-white border-slate-200 text-slate-700 hover:border-amber-300'
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Were the materials provided good? */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                  Were the materials provided (Slides, Study Guide &amp; Starter Code) helpful?
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {MATERIALS_OPTIONS.map((opt) => {
+                    const active = materialsQuality === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => setMaterialsQuality(opt)}
+                        className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                          active
+                            ? 'bg-amber-500 border-amber-500 text-white shadow-xs'
+                            : 'bg-white border-slate-200 text-slate-700 hover:border-amber-300'
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
             {/* 4. Topics Covered Well */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                4. Topics Covered Well{' '}
+                4. Web Programming Topics Covered Well{' '}
                 <span className="text-slate-400 font-normal normal-case">(Optional)</span>
               </label>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {TOPICS.map((topic) => {
-                  const checked = topics.includes(topic);
+                  const checked = topics.includes(topic.name);
                   return (
                     <label
-                      key={topic}
-                      className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-bold cursor-pointer transition-all ${
+                      key={topic.name}
+                      className={`flex items-start gap-2.5 p-3 rounded-xl border text-xs cursor-pointer transition-all ${
                         checked
-                          ? 'bg-amber-100 border-amber-400 text-amber-900 shadow-2xs'
-                          : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-amber-300'
+                          ? 'bg-amber-100/90 border-amber-400 text-amber-950 shadow-2xs'
+                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-amber-300'
                       }`}
                     >
                       <input
                         type="checkbox"
                         checked={checked}
-                        onChange={(e) => handleTopicToggle(topic, e.target.checked)}
+                        onChange={(e) => handleTopicToggle(topic.name, e.target.checked)}
                         className="sr-only"
                       />
-                      {checked && <Check className="w-3.5 h-3.5 text-amber-700" />}
-                      <span>{topic}</span>
+                      <span
+                        className={`mt-0.5 w-4 h-4 rounded flex items-center justify-center shrink-0 border ${
+                          checked
+                            ? 'bg-amber-600 border-amber-600 text-white'
+                            : 'bg-white border-slate-300'
+                        }`}
+                      >
+                        {checked && <Check className="w-3 h-3" />}
+                      </span>
+                      <div>
+                        <span className="font-extrabold block">{topic.name}</span>
+                        <span className="text-[11px] text-slate-600">{topic.desc}</span>
+                      </div>
                     </label>
                   );
                 })}
@@ -1701,12 +1883,14 @@ function VideoLectureFeedbackView() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                  5. Additional Comments
+                  5. Additional Comments &amp; Questions
                 </label>
                 <span
                   className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
                     comments.length >= MAX_COMMENTS
                       ? 'bg-rose-100 text-rose-700'
+                      : comments.length > 250
+                      ? 'bg-amber-100 text-amber-800'
                       : 'bg-slate-100 text-slate-600'
                   }`}
                 >
@@ -1717,7 +1901,7 @@ function VideoLectureFeedbackView() {
                 value={comments}
                 onChange={(e) => setComments(e.target.value.slice(0, MAX_COMMENTS))}
                 rows={3}
-                placeholder="Share what worked well or suggestions for future lectures..."
+                placeholder="Share feedback on our Web Programming (K0126_002) video lecture, live coding pace, or React form concepts..."
                 className="w-full p-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
               />
             </div>
@@ -1731,8 +1915,8 @@ function VideoLectureFeedbackView() {
               >
                 <Send className="w-4 h-4" />
                 {isSubmitDisabled
-                  ? 'Fill Required Fields (*) to Enable Submit'
-                  : 'Submit Course Feedback'}
+                  ? `Fill Required Fields (${requiredCompletedCount}/3 Ready) to Enable Submit`
+                  : 'Submit Web Programming Feedback'}
               </button>
             </div>
           </form>
