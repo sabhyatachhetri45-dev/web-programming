@@ -45,6 +45,14 @@ jobs:
           rm -rf week12/dist
           rm -rf week12/node_modules
 
+      - name: Build Week 13 React forms hub
+        run: |
+          npm ci --prefix week13
+          npm run build --prefix week13
+          cp -R week13/dist/. week13/
+          rm -rf week13/dist
+          rm -rf week13/node_modules
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
