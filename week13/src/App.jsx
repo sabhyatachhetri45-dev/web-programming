@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   UserCheck,
   BookOpen,
@@ -138,69 +138,59 @@ const ACCENT_THEMES = {
 // ============================================================================
 
 const CODE_SNIPPETS = {
-  studentEditor: `import React, { useState } from 'react';
+  studentEditor: `import React, { useEffect, useRef, useState } from 'react';
 
 const MAJORS = [
-  'Computer Science',
   'Computer Engineering',
-  'Software Engineering',
-  'Information Systems',
-  'Data Science',
+  'Software',
+  'Artificial Intelligence',
+  'Design',
 ];
 
-export default function StudentProfileEditor() {
+export default function ProfileEditor() {
   const [form, setForm] = useState({
     name: '',
     studentId: '',
     major: MAJORS[0],
-    year: '',
+    year: '1',
     bio: '',
-    photoUrl: '',
   });
-  const [skills, setSkills] = useState(['react', 'javascript', 'css', 'python']);
-  const [skillInput, setSkillInput] = useState('');
   const [errors, setErrors] = useState({});
   const [submittedProfile, setSubmittedProfile] = useState(null);
+  const fileRef = useRef(null);
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [skills, setSkills] = useState([]);
+  const [skillInput, setSkillInput] = useState('');
 
-  const MAX_BIO = 200;
+  useEffect(() => {
+    if (!photoUrl.startsWith('blob:')) return undefined;
+    return () => URL.revokeObjectURL(photoUrl);
+  }, [photoUrl]);
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: '' }));
-  }
-
-  function handlePhotoChange(e) {
-    const file = e.target.files[0];
+  function handleFileChange() {
+    const file = fileRef.current?.files?.[0];
     if (!file) return;
-    setForm((prev) => ({ ...prev, photoUrl: URL.createObjectURL(file) }));
-    setErrors((prev) => ({ ...prev, photoUrl: '' }));
+    setPhotoUrl(URL.createObjectURL(file));
+    setErrors((prev) => ({ ...prev, photo: '' }));
   }
 
   function handleSkillKeyDown(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      const tag = skillInput.trim().toLowerCase();
-      if (tag && !skills.includes(tag)) {
-        setSkills((prev) => [...prev, tag]);
-      }
-      setSkillInput('');
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const trimmed = skillInput.trim();
+    if (trimmed && !skills.includes(trimmed)) {
+      setSkills((prev) => [...prev, trimmed]);
     }
-  }
-
-  function removeSkill(skillToRemove) {
-    setSkills((prev) => prev.filter((s) => s !== skillToRemove));
+    setSkillInput('');
   }
 
   function validate() {
     const errs = {};
-    if (!form.name.trim()) errs.name = 'Name is required.';
-    if (!/^\\d{10}$/.test(form.studentId)) errs.studentId = 'Student ID must be 10 digits.';
-    if (!form.major) errs.major = 'Major is required.';
-    if (!form.year) errs.year = 'Select a year (1–4).';
-    if (!form.bio.trim()) errs.bio = 'Bio is required.';
-    else if (form.bio.length >= MAX_BIO) errs.bio = 'Bio must be under 200 chars.';
-    if (!form.photoUrl) errs.photoUrl = 'Please upload a photo.';
+    if (!form.name.trim()) errs.name = 'Name is required';
+    if (!/^\\d{10}$/.test(form.studentId)) errs.studentId = 'Student ID must be exactly 10 digits';
+    if (!form.bio.trim()) errs.bio = 'Bio is required';
+    else if (form.bio.length >= 200) errs.bio = 'Bio must be less than 200 characters';
+    if (!photoUrl) errs.photo = 'Profile photo is required';
     return errs;
   }
 
@@ -209,14 +199,24 @@ export default function StudentProfileEditor() {
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
+      setSubmittedProfile(null);
       return;
     }
-    setSubmittedProfile({ ...form, skills: [...skills] });
+    setErrors({});
+    setSubmittedProfile({ ...form, photoUrl, skills: [...skills] });
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Controlled inputs, validation & Profile Preview card */}
+      <input name="name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} />
+      <input ref={fileRef} type="file" accept="image/*" onChange={handleFileChange} />
+      <input value={skillInput} onChange={(e) => setSkillInput(e.target.value)} onKeyDown={handleSkillKeyDown} />
+      {skills.map((skill) => (
+        <button key={skill} type="button" onClick={() => setSkills((p) => p.filter((item) => item !== skill))}>
+          Remove {skill}
+        </button>
+      ))}
+      {submittedProfile && <p>Profile Preview: {submittedProfile.name}</p>}
     </form>
   );
 }`,
@@ -486,36 +486,33 @@ function CodeDrawer({ title, code, accentClass = 'text-rose-700 hover:text-rose-
 
 function StudentProfileEditorView({ theme }) {
   const MAJORS = [
-    'Computer Science',
     'Computer Engineering',
-    'Software Engineering',
-    'Information Systems',
-    'Data Science',
+    'Software',
+    'Artificial Intelligence',
+    'Design',
   ];
 
   const [form, setForm] = useState({
     name: '',
     studentId: '',
     major: MAJORS[0],
-    year: '',
+    year: '1',
     bio: '',
-    photoUrl: '',
   });
 
-  const [skills, setSkills] = useState(['react', 'javascript', 'css', 'python']);
-  const [skillInput, setSkillInput] = useState('');
   const [errors, setErrors] = useState({});
-  const [submittedProfile, setSubmittedProfile] = useState({
-    name: 'Sabhyata Chhetri',
-    studentId: '2025394710',
-    major: 'Computer Science',
-    year: '2',
-    bio: 'Computer Science undergraduate at Gachon University passionate about building accessible, colorful, and responsive React web applications.',
-    photoUrl: '',
-    skills: ['react', 'javascript', 'css', 'python'],
-  });
+  const [submittedProfile, setSubmittedProfile] = useState(null);
+  const fileRef = useRef(null);
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [skills, setSkills] = useState([]);
+  const [skillInput, setSkillInput] = useState('');
 
   const MAX_BIO = 200;
+
+  useEffect(() => {
+    if (!photoUrl.startsWith('blob:')) return undefined;
+    return () => URL.revokeObjectURL(photoUrl);
+  }, [photoUrl]);
 
   const completedSteps = [
     form.name.trim().length > 0,
@@ -523,7 +520,7 @@ function StudentProfileEditorView({ theme }) {
     Boolean(form.major),
     Boolean(form.year),
     form.bio.trim().length > 0 && form.bio.length < MAX_BIO,
-    Boolean(form.photoUrl),
+    Boolean(photoUrl),
   ].filter(Boolean).length;
 
   const progressPercent = Math.round((completedSteps / 6) * 100);
@@ -534,23 +531,22 @@ function StudentProfileEditorView({ theme }) {
     setErrors((prev) => ({ ...prev, [name]: '' }));
   }
 
-  function handlePhotoChange(e) {
-    const file = e.target.files?.[0];
+  function handleFileChange() {
+    const file = fileRef.current?.files?.[0];
     if (!file) return;
     const previewUrl = URL.createObjectURL(file);
-    setForm((prev) => ({ ...prev, photoUrl: previewUrl }));
-    setErrors((prev) => ({ ...prev, photoUrl: '' }));
+    setPhotoUrl(previewUrl);
+    setErrors((prev) => ({ ...prev, photo: '' }));
   }
 
   function handleSkillKeyDown(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      const tag = skillInput.trim().toLowerCase();
-      if (tag && !skills.includes(tag)) {
-        setSkills((prev) => [...prev, tag]);
-      }
-      setSkillInput('');
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const trimmed = skillInput.trim();
+    if (trimmed && !skills.includes(trimmed)) {
+      setSkills((prev) => [...prev, trimmed]);
     }
+    setSkillInput('');
   }
 
   function removeSkill(skillToRemove) {
@@ -561,15 +557,20 @@ function StudentProfileEditorView({ theme }) {
     const demoData = {
       name: 'Sabhyata Chhetri',
       studentId: '2025394710',
-      major: 'Computer Science',
+      major: 'Software',
       year: '2',
       bio: 'Computer Science undergraduate at Gachon University passionate about building accessible, colorful, and responsive React web applications.',
-      photoUrl: 'demo-avatar',
     };
+    if (fileRef.current) fileRef.current.value = '';
     setForm(demoData);
+    setPhotoUrl(SABHYATA_AVATAR_SVG);
     setSkills(['react', 'javascript', 'css', 'python']);
     setErrors({});
-    setSubmittedProfile({ ...demoData, photoUrl: '', skills: ['react', 'javascript', 'css', 'python'] });
+    setSubmittedProfile({
+      ...demoData,
+      photoUrl: SABHYATA_AVATAR_SVG,
+      skills: ['react', 'javascript', 'css', 'python'],
+    });
   }
 
   function handleResetForm() {
@@ -577,11 +578,13 @@ function StudentProfileEditorView({ theme }) {
       name: '',
       studentId: '',
       major: MAJORS[0],
-      year: '',
+      year: '1',
       bio: '',
-      photoUrl: '',
     });
-    setSkills(['react', 'forms', 'css']);
+    if (fileRef.current) fileRef.current.value = '';
+    setPhotoUrl('');
+    setSkills([]);
+    setSubmittedProfile(null);
     setErrors({});
   }
 
@@ -591,15 +594,13 @@ function StudentProfileEditorView({ theme }) {
     if (!/^\d{10}$/.test(form.studentId)) {
       errs.studentId = 'Student ID must be exactly 10 digits.';
     }
-    if (!form.major) errs.major = 'Major is required.';
-    if (!form.year) errs.year = 'Please select an academic year (1–4).';
     if (!form.bio.trim()) {
       errs.bio = 'Bio is required.';
     } else if (form.bio.length >= MAX_BIO) {
       errs.bio = 'Bio must be strictly under 200 characters.';
     }
-    if (!form.photoUrl) {
-      errs.photoUrl = 'Please upload a profile photo (or click Fill Demo).';
+    if (!photoUrl) {
+      errs.photo = 'Profile photo is required.';
     }
     return errs;
   }
@@ -609,13 +610,11 @@ function StudentProfileEditorView({ theme }) {
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
+      setSubmittedProfile(null);
       return;
     }
-    setSubmittedProfile({
-      ...form,
-      photoUrl: form.photoUrl === 'demo-avatar' ? '' : form.photoUrl,
-      skills: [...skills],
-    });
+    setErrors({});
+    setSubmittedProfile({ ...form, photoUrl, skills: [...skills] });
   }
 
   function getInitials(fullName) {
@@ -846,27 +845,23 @@ function StudentProfileEditorView({ theme }) {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handlePhotoChange}
+                    ref={fileRef}
+                    onChange={handleFileChange}
                     className="sr-only"
                   />
                 </label>
 
-                {form.photoUrl && form.photoUrl !== 'demo-avatar' && (
+                {photoUrl && (
                   <img
-                    src={form.photoUrl}
+                    src={photoUrl}
                     alt="Uploaded preview"
                     className="w-11 h-11 rounded-full object-cover border-2 border-rose-400 shadow-xs"
                   />
                 )}
-                {form.photoUrl === 'demo-avatar' && (
-                  <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
-                    ✓ Demo Avatar Ready
-                  </span>
-                )}
               </div>
-              {errors.photoUrl && (
+              {errors.photo && (
                 <p className="mt-1 text-xs font-semibold text-rose-600 flex items-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.photoUrl}
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" /> {errors.photo}
                 </p>
               )}
             </div>
@@ -914,7 +909,7 @@ function StudentProfileEditorView({ theme }) {
           </form>
 
           <CodeDrawer
-            title="StudentProfileEditor"
+            title="ProfileEditor"
             code={CODE_SNIPPETS.studentEditor}
             accentClass="text-rose-700 hover:text-rose-800"
           />
@@ -933,7 +928,7 @@ function StudentProfileEditorView({ theme }) {
                 PROFILE PREVIEW · DIGITAL ID
               </span>
               <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[11px] font-bold">
-                Verified Student
+                {submittedProfile ? 'Profile Saved' : 'Preview After Saving'}
               </span>
             </div>
 
@@ -959,15 +954,15 @@ function StudentProfileEditorView({ theme }) {
                     </div>
                   )}
                   <span className="px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold">
-                    Year {submittedProfile?.year || '2'}
+                    Year {submittedProfile?.year || form.year}
                   </span>
                 </div>
 
                 <h3 className="text-xl font-extrabold text-slate-900">
-                  {submittedProfile?.name}
+                  {submittedProfile?.name || 'Your Name'}
                 </h3>
                 <p className="text-xs font-mono font-bold text-slate-500 mt-0.5">
-                  ID {submittedProfile?.studentId} · {submittedProfile?.major}
+                  ID {submittedProfile?.studentId || '—'} · {submittedProfile?.major || form.major}
                 </p>
 
                 <div className="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
@@ -976,7 +971,7 @@ function StudentProfileEditorView({ theme }) {
                     <span>bio: {submittedProfile?.bio?.length || 0} / 200</span>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">
-                    {submittedProfile?.bio}
+                    {submittedProfile?.bio || 'Your bio will appear here after you save your profile.'}
                   </p>
                 </div>
 
