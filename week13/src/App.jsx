@@ -162,6 +162,12 @@ export default function ProfileEditor() {
   const [skills, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState('');
 
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: '' }));
+  }
+
   useEffect(() => {
     if (!photoUrl.startsWith('blob:')) return undefined;
     return () => URL.revokeObjectURL(photoUrl);
@@ -182,6 +188,10 @@ export default function ProfileEditor() {
       setSkills((prev) => [...prev, trimmed]);
     }
     setSkillInput('');
+  }
+
+  function removeSkill(skillToRemove) {
+    setSkills((prev) => prev.filter((skill) => skill !== skillToRemove));
   }
 
   function validate() {
@@ -207,16 +217,65 @@ export default function ProfileEditor() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="name" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} />
-      <input ref={fileRef} type="file" accept="image/*" onChange={handleFileChange} />
-      <input value={skillInput} onChange={(e) => setSkillInput(e.target.value)} onKeyDown={handleSkillKeyDown} />
+    <form onSubmit={handleSubmit} noValidate>
+      <label htmlFor="name">Name</label>
+      <input id="name" name="name" value={form.name} onChange={handleChange} />
+      {errors.name && <p>{errors.name}</p>}
+
+      <label htmlFor="studentId">Student ID (10 digits)</label>
+      <input id="studentId" name="studentId" value={form.studentId} onChange={handleChange} />
+      {errors.studentId && <p>{errors.studentId}</p>}
+
+      <label htmlFor="major">Major</label>
+      <select id="major" name="major" value={form.major} onChange={handleChange}>
+        {MAJORS.map((major) => <option key={major} value={major}>{major}</option>)}
+      </select>
+
+      <fieldset>
+        <legend>Year</legend>
+        {['1', '2', '3', '4'].map((year) => (
+          <label key={year}>
+            <input type="radio" name="year" value={year} checked={form.year === year} onChange={handleChange} />
+            {year}
+          </label>
+        ))}
+      </fieldset>
+
+      <label htmlFor="bio">Bio</label>
+      <textarea id="bio" name="bio" value={form.bio} onChange={handleChange} />
+      <small>{form.bio.length} / 200 characters</small>
+      {errors.bio && <p>{errors.bio}</p>}
+
+      <label htmlFor="photo">Profile Photo</label>
+      <input id="photo" ref={fileRef} type="file" accept="image/*" onChange={handleFileChange} />
+      {errors.photo && <p>{errors.photo}</p>}
+      {photoUrl && <img src={photoUrl} alt="Selected preview" width="80" height="80" />}
+
+      <label htmlFor="skill-input">Skills (press Enter to add)</label>
+      <input
+        id="skill-input"
+        value={skillInput}
+        onChange={(e) => setSkillInput(e.target.value)}
+        onKeyDown={handleSkillKeyDown}
+      />
       {skills.map((skill) => (
-        <button key={skill} type="button" onClick={() => setSkills((p) => p.filter((item) => item !== skill))}>
-          Remove {skill}
-        </button>
+        <span key={skill}>
+          {skill}
+          <button type="button" aria-label={\`Remove \${skill}\`} onClick={() => removeSkill(skill)}>x</button>
+        </span>
       ))}
-      {submittedProfile && <p>Profile Preview: {submittedProfile.name}</p>}
+
+      <button type="submit">Save profile</button>
+      {submittedProfile && (
+        <section>
+          <h2>Profile Preview</h2>
+          <img src={submittedProfile.photoUrl} alt={submittedProfile.name} width="100" height="100" />
+          <p>{submittedProfile.name} · {submittedProfile.studentId}</p>
+          <p>{submittedProfile.major} · Year {submittedProfile.year}</p>
+          <p>{submittedProfile.bio}</p>
+          <p>Skills: {submittedProfile.skills.join(', ') || 'None'}</p>
+        </section>
+      )}
     </form>
   );
 }`,
